@@ -1,0 +1,7 @@
+{
+  "name": "axeDelivery",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

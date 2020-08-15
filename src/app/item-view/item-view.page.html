@@ -1,0 +1,30 @@
+<ion-content  [fullscreen]="true">
+		<ion-icon class="arrow" name="arrow-back"></ion-icon>
+
+  <ion-card >
+    <ion-card-header  style=" color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" >
+      <h1 style="text-align: center;"> {{itemAberto?.nome}}</h1>
+
+    </ion-card-header>
+
+    <ion-slides>
+
+      <ion-slide *ngFor="let items of itemAberto?.fotos">
+        <img style="max-width: 50%" src="{{items.link}}">
+      </ion-slide>
+
+    </ion-slides>
+
+    <ion-card-content>
+      <h4 text-center style="color: black"> Descrição </h4>
+      <p text-center> {{itemAberto?.resumo}}</p>
+      <ion-item style="border-radius: 25px; border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px rgba(128, 128, 128, 0.4);">
+        <ion-icon name="brush" style="color: #ab9121" slot="start"></ion-icon>
+        <p > Tipo de produto:</p>
+        <p slot="end">{{itemAberto?.tipoPrd}}</p>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

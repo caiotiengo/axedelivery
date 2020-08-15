@@ -1,0 +1,37 @@
+
+
+<ion-content [fullscreen]="true" class="ion-padding">
+<div>
+	<div class="background-div2"></div>
+	<img style="    position: absolute;
+    margin-top: -28%;
+    width: 65%;
+    margin-left: 36%;
+" src="/assets/Picture1.png">
+</div>
+
+
+<ion-text>
+	<h1></h1>
+	<!--p><i>Compre e venda fácil pelo nosso app.</i></p-->
+	<img src="/assets/entregador-transparente.png">
+
+</ion-text>
+
+<div class="actions">
+
+	<div class="background-div1">
+	</div>
+	<ion-item>
+  		<ion-label position="floating">Email</ion-label>
+  		<ion-input [(ngModel)]="email" type="text"></ion-input>
+	</ion-item>
+	<ion-item>
+  		<ion-label position="floating">Senha</ion-label>
+  		<ion-input [(ngModel)]="password" type="password"></ion-input>
+	</ion-item>	
+	<ion-button class="signin-button" (click)="entrar()" expand="block">Entrar</ion-button>
+	<ion-button class="signup-button" (click)="registrar()"  expand="block">Cadastre-se</ion-button>
+
+</div>
+</ion-content>

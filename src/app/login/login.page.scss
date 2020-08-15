@@ -1,0 +1,74 @@
+*{
+	font-weight: 300;
+}
+
+.background-div1{
+ 	height: 445px;
+    width: 100%;
+    overflow: hidden;
+    min-width: 500px;
+    transform: rotate(-35deg);
+    background: linear-gradient(90deg, #f5f6f9 40%, #f5f6f9a8 100%);
+    border-radius: 50px 120px 40px 0px;
+    margin-left: -70px;
+    margin-bottom: -100%;
+    overflow: hidden;
+    box-shadow: 5px 5px #f4f5f8;
+
+}
+.background-div2{
+    height: 450px;
+    width: 100%;
+    min-width: 500px;
+    transform: rotate(-35deg);
+    background: linear-gradient(90deg, #f4f5f8 6%, #f4f5f8 100%);
+    border-radius: 10px 0px 40px 150px;
+    margin-left: 70px;
+    margin-top: -100%;
+    overflow: hidden;
+    box-shadow: -10px -5px #d7d8da4a;
+
+}
+ion-item{
+	--background: transparent;
+}
+ion-content{
+	--background:#ffcb02;
+}
+ion-text{
+	position: absolute;
+	top:12%;
+
+	h1{
+		font-size: 42px;
+	}
+	p{
+		font-size: 14px;
+		color:#696969;
+	}
+
+}
+.actions{
+	position: absolute;
+	width:90%;
+	bottom: 16px;
+}
+
+ion-button{
+	--border-radius:9px;
+	--box-shadow: none;
+	text-transform: initial;
+	font-size: 12px;
+}
+.login-buttons{
+	display: flex;
+	justify-content:space-between;
+
+}
+.signin-button{
+	--background: linear-gradient(90deg, #fbbf02 6%, rgb(255 196 9 / 49%) 100%);
+    color: black;
+}
+.signup-button{
+    --background: linear-gradient(90deg, #222428 6%, #383a3ed9 100%)
+}

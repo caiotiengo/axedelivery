@@ -1,0 +1,95 @@
+
+<ion-content [fullscreen]="true" class="">
+ <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark">
+      <ion-icon style="color:#ffc409" name="person"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+   <ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="success">
+      <ion-icon style="color:white" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+<div class="background-div1">
+		<img style="width:45%"src="/assets/entregador-transparente.png">
+
+</div>
+<div>
+	<img style="position: absolute;
+    margin-top: -60%;
+    width: 40%;
+    margin-left: 65%;
+    float: right;" src="/assets/Picture1.png">
+</div>	
+
+	 <ion-searchbar style="position: absolute; margin-top: -35%" animated placeholder="Pesquise sua loja favorita" (ionInput)="filterList($event)"></ion-searchbar>	
+	 <ion-card class="card-1">
+  		<ion-card-header>
+    		<ion-card-subtitle>Seu endereço</ion-card-subtitle>
+    		<ion-card-title>{{endereco}}</ion-card-title>
+    		<p>{{numero}} - {{bairro}} - {{estado}}</p>
+  		</ion-card-header>
+  		<ion-button color="dark" class="button-card1">
+  			<ion-icon  style="color:#ffc409" name="bicycle-outline"></ion-icon>
+
+  		</ion-button>
+	</ion-card>
+ <ion-select style="margin-top: 30%" placeholder="Qual região você quer procurar?" [(ngModel)]="filtroLoja">
+          <ion-select-option value="Centro">Centro</ion-select-option>
+          <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
+          <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
+          <ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
+          <ion-select-option value="Baixada">Baixada</ion-select-option>
+ </ion-select>
+
+ <div style="text-align: center;" *ngIf="goalListFiltrado.length === 0">
+   <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
+
+  <h3>Hm...</h3>
+  <p>Parece que não encontramos a loja desejada. Já pesquisou por outra?</p>
+ 
+
+</div>
+
+
+<div style="text-align: center;" *ngIf="semLoja === 0 && filtroLoja  ">
+   <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
+
+  <p>Parece que não temos loja em sua região...</p>
+  <p>Não se preocupe! Compartilhe o app com pessoas e comerciantes da sua área e faça a festa!</p>
+
+</div>
+
+<div class="background-traco"  *ngIf="semLoja > 0 && filtroLoja ">
+
+          <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
+         
+
+              <ion-card *ngIf="items.zona === filtroLoja" [routerLink]="['/item/' + items.id]"  style=" background:white;box-shadow:1px 10px 15px 5px #8080803d;border: 1px solid #ffcb02;">
+                <img style="margin:auto;" src="/assets/Picture1.png" alt="" />
+
+                <ion-item>
+                    <ion-icon style="color: black;"name="pin" slot="start"></ion-icon>
+                    <ion-label>{{items.bairro}}</ion-label>
+                    <ion-button fill="solid" color="warning" slot="end" [routerLink]="['/item/' + items.id]" >Veja</ion-button>
+                </ion-item>
+              <ion-card-header>
+                <h4 style="text-align: center; border: 2px solid #ffce00;
+    border-radius: 25px;
+    box-shadow: 2px 2px rgba(66, 66, 66, 0.52156862745)">{{items.nome}}</h4>
+              </ion-card-header>
+
+                <ion-card-content style="text-align: center;">
+                    {{items.resumo}}<br/>
+                    <p>Entrega de:{{items.entrega}}</p>
+                    <p>Se ultrapassar, entrega de:{{items.seNao}}</p>
+                </ion-card-content>  
+                
+          </ion-card>
+
+
+         
+            
+          </ion-list>
+</div>
+</ion-content>

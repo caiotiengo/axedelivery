@@ -1,0 +1,41 @@
+*{
+	font-weight: 300;
+}
+.background-div1{
+	background: linear-gradient(180deg, #ffc409 40%, #ffc40942 100%);
+    height: 235px;
+    width: 100%;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+
+}
+ion-content{
+  --background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
+
+}
+.card-1{
+	position: absolute;
+    margin-top: -15%;
+    width: 95%;
+    margin-left:2.6%;
+    box-shadow: 1px 10px 15px 5px #8080803d;
+}
+.button-card1{
+	float: right;
+    margin-top: -17%;
+    margin-right: 2%;
+
+}
+.background-div2{
+    height: 155px;
+    float: right;
+    width: 45%;
+    min-width: 30px;
+    background: linear-gradient(90deg, #ffc409 30%, #f4f5f8 100%);
+    border-radius: 10px 13px 10px 150px;
+    margin-top: -77%;
+    margin-right: -5%;
+    box-shadow: -10px -5px #f5f6f9;
+    transform: rotate(-10deg);
+
+}
