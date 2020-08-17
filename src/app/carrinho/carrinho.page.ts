@@ -9,6 +9,7 @@ import { HaversineService, GeoCoord } from "ng2-haversine";
 import {AlertController, NavController} from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import {format} from "date-fns";
+import * as _ from 'lodash';
 
 export interface Produtos {
   nome?: string;
@@ -314,6 +315,99 @@ teste(){
   });
 
 }
+  async pagarDin() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      this.mainuser = this.afStore.doc(`users/${user.uid}`);
+      console.log(user);
+    } else {}
+    this.showalert('Obrigado pela compra!', 'A loja foi informada e você' +
+        ' pode acompanhar o seu pedido pela aba "Seus Pedidos"');
+    this.sub = this.storage.get('usuario').then(event => {
+      this.nome = event.nome;
+      this.endereco = event.endereco;
+      this.cidade = event.cidade;
+      this.email = event.email;
+      this.bairro = event.bairro;
+      this.telefone = event.telefone;
+      this.zona = event.zona;
+      this.like = event.LikeValue;
+      this.disklike = event.DislikeValue;
+      this.userCPF = event.CPFCNPJ
+
+      const date = new Date();
+      date.setMonth(date.getMonth() + 1);
+      const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+      console.log(dia);
+      const mes = date.getMonth();
+      console.log(mes)
+      this.valores = this.carrinho.map(res => res.valor);
+      this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+      this.storage.get('valorFinal').then((data) => {
+        var y = Math.floor(Number(data) + Number(this.valorDelivery));
+// Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
+        this.valor = y.toFixed(2)
+        console.log(this.valor);
+      });
+      this.storage.get('carrinhoUser').then((data) => {
+        this.produtos =  JSON.parse(data);
+        console.log(this.produtos);
+        var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+        console.log(seq);
+        this.afStore.collection('vendas').add({
+          nPedido:Number(seq),
+          nomeComprador: this.nome,
+          endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+          valor: Number(this.valor),
+          dia,
+          mes,
+          produtos: this.produtos,
+          emailComprador: this.email,
+          lojaUID: this.produtos[0].lojaUID,
+          emailLoja: this.produtos[0].emailLoja,
+          statusPag: 'Em dinheiro',
+          statusEnt: 'Loja informada',
+          telefoneComprador: this.telefoneComprador,
+          CPFComprador: this.userCPF
+        }).then(() => {
+          this.storage.remove('carrinhoUser').then(() => {
+            this.navCtrl.navigateRoot('/status');
+          });        
+        });
+      });
+    });
+
+  }
+
+  deletaItem(items) {
+    console.log(items);
+    console.log(this.carrinho);
+
+    _.remove(this.carrinho, n => n.itemNumber === items.itemNumber);
+    console.log(this.carrinho);
+    this.storage.remove('carrinhoUser').then(() => {
+        this.storage.set('carrinhoUser', JSON.stringify(this.carrinho)).then((data) => {
+          this.carrinho = JSON.parse(data);
+        });
+      });
+    this.valores = this.carrinho.map(res => res.valor);
+    this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+    this.storage.remove('valorFinal').then(() => {
+        this.storage.set('valorFinal', this.valorCompra).then((data) => {
+          this.valor =  data + Number(this.valorDelivery);
+          this.valor = this.valor.toFixed(2)
+          console.log(this.valor.toFixed(2));
+        });
+      });
+  }
+  home() {
+
+    //this.showalert('Atenção', 'Ao sair dessa pagina');
+    this.storage.remove('carrinhoUser').then(() => {
+      this.navCtrl.navigateRoot('/list');
+    });
+
+  }
   async showalert(header: string, message: string) {
     const alert = await this.alertCtrl.create({
       header,

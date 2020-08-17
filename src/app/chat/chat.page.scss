@@ -1,0 +1,46 @@
+*{
+    font-weight: 300;
+}
+.ms-right {
+    float: right !important;
+    color: black;
+    //font-size: large;
+    /* border-radius: 25px; */
+    border-top-left-radius: 35px;
+    width: auto;
+    height: 100%;
+    min-width: 15%;
+    text-align-last: center;
+    border-top-right-radius: 35px;
+    border-bottom-left-radius: 35px;
+    p{
+        background: #ffca22;
+        padding: 10px;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+}
+.ms-left {
+    float: left !important;
+    color: black;
+    border-top-right-radius: 35px;
+    width: auto;
+    height: 100%;
+    min-width: 15%;
+    text-align-last: center;
+    border-bottom-right-radius: 35px;
+    border-top-left-radius: 35px;
+    p{
+        background: #d7d8da;
+        padding: 10px;
+        border-top-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+
+}
+ion-content{
+  --background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
+
+}

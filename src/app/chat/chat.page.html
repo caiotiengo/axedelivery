@@ -1,9 +1,56 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>chat</ion-title>
+    <ion-title>
+            <img style="max-height: 5vh;" src="/assets/Picture1.png" alt="" />
+     		     
+    </ion-title>
+      <ion-buttons  slot="start">
+          <ion-back-button></ion-back-button>
+      </ion-buttons>
   </ion-toolbar>
+    <p style="    text-align: center;
+    font-weight: bold;">{{loja?.nomeLoja}} - {{loja?.nomeComprador}}</p>
 </ion-header>
+<ion-content >
 
-<ion-content>
 
-</ion-content>
+<div class="chat">
+  <ion-list style="background: transparent;"*ngFor="let msgs of loja?.mensagens">
+    <div class="ms-right"  *ngIf="userUID === msgs.uid">
+  
+        <p>{{msgs.conteudo}}</p>
+     </div> 
+    <div class="ms-left"  *ngIf="userUID != msgs.uid">
+         <p>{{msgs.conteudo}}</p>
+    </div>
+  </ion-list>
+</div>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+</ion-content >
+
+
+ <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button style="--background:#ffcb02; " (click)="enviar()">
+		<ion-icon name="send" style="color: black;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+<ion-footer class="ion-no-border">
+
+<ion-item style="width: 80%">
+  <ion-input placeholder="Digite aqui a sua mensagem"[(ngModel)]="novaMsg"></ion-input>
+
+</ion-item>
+
+</ion-footer>

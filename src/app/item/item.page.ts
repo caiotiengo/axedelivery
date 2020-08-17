@@ -161,7 +161,9 @@ export class ItemPage implements OnInit {
 
   
 
-
+ voltar(){
+    this.navCtrl.pop()
+  }
 
     loadData(event) {
         setTimeout(() => {
@@ -271,8 +273,10 @@ export class ItemPage implements OnInit {
         date.setMonth(date.getMonth() + 1);
         const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
         console.log(dia);
+        var valorTudo = Math.floor(Number(this.valorCompra)+Number(this.valorDelivery))
+        console.log(valorTudo.toFixed(2))
         this.storage.set('loja', this.loja);
-        this.storage.set('valorFinal', this.valorCompra);
+        this.storage.set('valorFinal', valorTudo.toFixed(2));
         this.storage.set('valorFrete', this.valorDelivery)
         this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(() =>{
             this.navCtrl.navigateRoot('/carrinho');

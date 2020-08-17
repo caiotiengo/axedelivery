@@ -18,5 +18,7 @@ export class ItemViewPage implements OnInit {
 
   ngOnInit() {
   }
-
+ voltar(){
+    this.navCtrl.pop()
+  }
 }

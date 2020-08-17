@@ -1,8 +1,8 @@
 
 <ion-content [fullscreen]="true" class="">
- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+ <ion-fab vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button color="dark">
-      <ion-icon style="color:#ffc409" name="person"></ion-icon>
+      <ion-icon style="color:#ffc409" name="person-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
    <ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
@@ -11,16 +11,10 @@
     </ion-fab-button>
   </ion-fab>
 <div class="background-div1">
-		<img style="width:45%"src="/assets/entregador-transparente.png">
+		<img style="width:45%"src="/assets/Picture1.png">
 
 </div>
-<div>
-	<img style="position: absolute;
-    margin-top: -60%;
-    width: 40%;
-    margin-left: 65%;
-    float: right;" src="/assets/Picture1.png">
-</div>	
+	
 
 	 <ion-searchbar style="position: absolute; margin-top: -35%" animated placeholder="Pesquise sua loja favorita" (ionInput)="filterList($event)"></ion-searchbar>	
 	 <ion-card class="card-1">
@@ -29,11 +23,13 @@
     		<ion-card-title>{{endereco}}</ion-card-title>
     		<p>{{numero}} - {{bairro}} - {{estado}}</p>
   		</ion-card-header>
-  		<ion-button color="dark" class="button-card1">
+  		<ion-button color="dark" class="button-card1" (click)="status()">
   			<ion-icon  style="color:#ffc409" name="bicycle-outline"></ion-icon>
 
   		</ion-button>
 	</ion-card>
+
+ 
  <ion-select style="margin-top: 30%" placeholder="Qual região você quer procurar?" [(ngModel)]="filtroLoja">
           <ion-select-option value="Centro">Centro</ion-select-option>
           <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>

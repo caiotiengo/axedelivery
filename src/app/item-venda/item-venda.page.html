@@ -1,9 +1,55 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>item-venda</ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
+	<div class="background-div1">
+		<ion-icon class="arrow" name="arrow-back" (click)="voltar()"></ion-icon>
 
+ 		<h1 style="text-align: center;"> {{venda?.nomeComprador}}</h1>
+ 		 <p style="text-align: center;">{{venda?.nPedido}}</p>
+
+	</div>
+  <ion-card style="text-align: center; top:20%; position: absolute;" >
+    <ion-card-header>
+
+    </ion-card-header>
+
+
+        <img style="max-width: 50%; margin: auto" src="./assets/entregador-transparente.png">
+
+
+
+    <ion-card-content>
+      <h4 text-center style="color: black"> Status da entrega: </h4>
+      <p text-center> {{venda?.statusEnt}}</p>
+      <ion-item style="border-radius: 25px; border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px rgba(128, 128, 128, 0.4);">
+        <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
+        <p slot="end">{{venda?.statusPag}}</p>
+      </ion-item>
+      <ion-label  *ngIf="typeUser === 'Loja' ">
+        <ion-select style="border: 1px solid black; margin-top: 5% !important; border-radius: 25px; padding: 10px;"
+                    placeholder="Altere o status da entrega" [(ngModel)]="statusEnt">
+          <ion-select-option value="Preparando Entrega">Preparando Entrega</ion-select-option>
+          <ion-select-option value="Saiu para Entrega">Saiu para Entrega</ion-select-option>
+          <ion-select-option value="Entregue">Entregue</ion-select-option>
+
+        </ion-select>
+        <ion-button fill="solid" color="warning" (click)="save()">Salvar</ion-button>
+      </ion-label>
+    </ion-card-content>
+
+
+  </ion-card>
+
+      <ion-list style="    position: absolute;
+    top: 105%;
+    width: 95%;" *ngFor="let items of venda?.produtos">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="{{items.fotos}}">
+        </ion-avatar>
+        <p>{{items.nome}}</p>
+        <!--ion-button fill="solid" color="warning" slot="end"(click)="veritem(items)">Veja</ion-button-->
+
+      </ion-item>
+    </ion-list>
 </ion-content>

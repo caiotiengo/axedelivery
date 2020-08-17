@@ -123,7 +123,7 @@ export class ListPage implements OnInit {
       this.proccessSubscription = this.services.getUsers().subscribe(data => {
           this.goalList = data;
           this.loadedGoalList = data;
-            this.mainuser.valueChanges().subscribe(event => {
+            this.storage.get('usuario').then(event => {
                 console.log(event)
                   this.zona = event.zona;
                   this.lat = event.lat;
@@ -205,7 +205,9 @@ ionViewWillEnter(){
 }
 
 
-
+status(){
+  this.navCtrl.navigateForward('/status')
+}
 
   ngOnInit() {
      

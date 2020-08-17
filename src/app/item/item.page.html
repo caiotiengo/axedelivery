@@ -1,7 +1,6 @@
 <ion-content [fullscreen]="true">
 <div class="background-div1">
-      <ion-icon class="arrow" name="arrow-back"></ion-icon>
-      	<img style="width: 20%"src="/assets/Picture1.png">
+    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
 
  <h1 style="text-align: center;"> {{loja.nome}}</h1>
    <p  style="text-align: center;">Entrega de: {{loja.entrega}}</p>

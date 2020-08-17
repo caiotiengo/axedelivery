@@ -1,53 +1,44 @@
 
 
-<ion-content>
-
-<ion-fab  vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button class="findme" color="findme" (click)=" home()" >
-    <ion-icon style="color:#ffcb02 !important" name="home"></ion-icon>
+<ion-content [fullscreen]="true">
+<div class="background-div1">
+    <img style="width:45%"src="/assets/Picture1.png">
+      <ion-item class="item1">
+        <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
+        <p>Total</p>
+        <p slot="end">R${{valor}}</p>
+      </ion-item>
+</div>
+  
+<ion-fab  vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button class="findme" color="dark" (click)=" home()" >
+    <ion-icon style="color:#ffcb02 !important" name="home-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-  <ion-card>
-    <ion-card-header style=" color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" >
-      <h1 style="text-align: center;"> {{loja?.nome}}</h1>
-
-      <ion-select style="border: 1px solid black; border-radius: 25px; padding: 10px;"
-                  placeholder="Escolha a forma de pagamento" [(ngModel)]="pagamento">
+  <ion-card class="card-pag">
+    <ion-card-header> 
+      <ion-select placeholder="Escolha a forma de pagamento" [(ngModel)]="pagamento">
         <ion-select-option value="credito">Crédito</ion-select-option>
         <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
       </ion-select>
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
 
-        <ion-fab-button color="findme">
+        <ion-fab-button color="dark">
 
         </ion-fab-button>
       </ion-fab>
     </ion-card-header>
 
+   <ion-item  *ngIf="pagamento ==='dinheiro'">
+      <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
+      <ion-button color="success" style="margin: auto" (click)="pagarDin()"> Confirmar Pagamento </ion-button>
+    </ion-item>
 
+  </ion-card>
 
-    <ion-card-content>
-      <ion-item style="border-radius: 25px;
-    border: 2px solid rgba(0, 0, 0, 0.21);margin-bottom: 5%;
-    box-shadow: 3px 3px rgba(128, 128, 128, 0.4);">
-        <ion-icon slot="start" style="color: black" name="car"></ion-icon>
-        <p>Entrega</p>
-        <p slot="end">R${{valorDelivery}}</p>
-        <!--p slot="end">R$8,00</p-->
+    <div style=" margin-top: 30%;" *ngIf="pagamento ==='credito'">
+      <h4 style="margin: 0; text-align: center">Informações do cartão</h4>
 
-      </ion-item>
-      <ion-item style="border-radius: 25px;
-    border: 2px solid rgba(0, 0, 0, 0.21);
-    box-shadow: 3px 3px rgba(128, 128, 128, 0.4);">
-        <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
-        <p>Total</p>
-        <p slot="end">R${{valor}}</p>
-      </ion-item>
-
-    </ion-card-content>
-    <h4 style="margin: 0;" text-center>Seu pedido</h4>
-
-    <div *ngIf="pagamento ==='credito'">
       <ion-item>
           <ion-label position="stacked">Nome no cartão</ion-label>
           <ion-input [(ngModel)]="nomeCartao"></ion-input>
@@ -109,7 +100,7 @@
       </ion-row>
       </ion-grid>
       <ion-item>
-          <ion-label position="stacked">CVC</ion-label>
+          <ion-label position="stacked">CVV</ion-label>
           <ion-input [(ngModel)]="CVV"></ion-input>
       </ion-item>
          <br/>   
@@ -118,12 +109,10 @@
           <ion-button color="success" style="margin: auto" (click)="teste()"> Confirmar Pagamento </ion-button>
       </ion-item>
     </div>
-    <ion-item *ngIf="pagamento ==='dinheiro'">
-      <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
-      <ion-button color="success" style="margin: auto" (click)="pagarDin()"> Confirmar Pagamento </ion-button>
-    </ion-item>
 
-    <ion-list *ngFor="let items of carrinho">
+
+    <ion-list style=" margin-top: 30%;" *ngFor="let items of carrinho">
+        <h4 style="margin: 0; text-align: center">Seu pedido</h4>
       <ion-item >
         <ion-avatar slot="start">
           <img src="{{items.fotos}}">
@@ -132,19 +121,6 @@
         <ion-button color="warning" fill="solid" color="warning" slot="end"(click)="deletaItem(items)">X</ion-button>
       </ion-item>
     </ion-list>
-
-
-    <!--ion-item>
-    <p style="color: gray;">Avalie essa loja:</p>
-     <ion-button fill="outline" color="findme" (click)="handleLike()">
-          <ion-icon name="thumbs-up"></ion-icon>
-      </ion-button>
-      <ion-button fill="outline" color="findme" (click)="handleDislike()">
-          <ion-icon name="thumbs-down"></ion-icon>
-      </ion-button>
-  </ion-item-->
-
-  </ion-card>
 
 
 </ion-content>

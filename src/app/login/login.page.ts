@@ -39,6 +39,11 @@ export class LoginPage implements OnInit {
             this.mainuser = this.afStore.doc(`users/${user.uid}`);
             this.userID = user.uid
               this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
+              this.mainuser.valueChanges().subscribe(event => {
+                  console.log(event)
+                  this.storage.set('usuario', event)
+
+                })
               //this.navCtrl.navigateRoot('/tabs/tab1');
               //console.log(this.userID)
               //this.navCtrl.navigateRoot('/tabs/tab1')
@@ -80,9 +85,18 @@ async presentLoading() {
       const res = await this.afAuth.signInWithEmailAndPassword(email, password);
       if (res.user) {
          const user = firebase.auth().currentUser;
+         this.mainuser = this.afStore.doc(`users/${user.uid}`);
+         this.userID = user.uid
+         this.mainuser.valueChanges().subscribe(event => {
+            console.log(event)
+            this.storage.set('usuario', event).then(() =>{
               this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
               this.navCtrl.navigateRoot('/list');
        
+            })
+                  
+         })
+             
 
       }
 
