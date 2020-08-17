@@ -38,8 +38,15 @@ export class AppComponent {
 
   pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
 
-  pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+  pushObject.on('registration').subscribe((registration: any) => {
 
+    console.log('Device registered', registration[0].registrationId)
+  /*  this.afStore.collection('devices').add({
+         idDevice: registration[0].registrationId,
+
+      });
+  */
+  } );
   pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
 
 
