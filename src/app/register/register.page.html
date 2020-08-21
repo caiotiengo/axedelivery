@@ -1,0 +1,208 @@
+<ion-content [fullscreen]="true"  >
+<div class="background-div1">
+    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+		<div>	
+
+     	 <img style="width:30%"src="/assets/Picture1.png"/>
+    		<h1  style="text-align: center;">Compre e venda agora!</h1>
+    		<p  style="text-align: center;"><i>Com o processo de registro no nosso app, você consegue rapidamente ter seus produtos anunciados e aproveitar pra fazer aquela comprinha!</i></p>
+	
+				
+		</div>
+
+</div>
+
+<div class="background-traco"  style="text-align: center;">
+<p style="text-align-last: center;">Escolha o tipo de usuario entrar como:</p>
+				<ion-select placeholder="Tipo de Usuario"  [(ngModel)]="typeUser" required>
+					<ion-select-option value="Loja">Loja</ion-select-option>
+					<ion-select-option value="user">Usúario</ion-select-option>
+				</ion-select>
+				<br/>
+				<p style="text-align-last: center;">Qual a sua região?</p>
+
+				<ion-select placeholder="Sua região" required  [(ngModel)]="type">
+					<ion-select-option value="Centro">Centro</ion-select-option>
+					<ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
+					<ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
+					<ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
+					<ion-select-option value="Baixada">Baixada</ion-select-option>
+				</ion-select>
+
+
+			<form [formGroup]="cadastro" (ngSubmit)="logForm()">	
+					<ion-item>
+		 
+					  <ion-label position="floating">E-mail</ion-label>
+					  <ion-input type="text" formControlName="email" required ></ion-input>
+					</ion-item>
+
+					<ion-item>
+					  <ion-label position="floating"> 
+					  	Senha
+					  </ion-label>
+					  <ion-input formControlName="password" type="password" required ></ion-input>
+					</ion-item>
+						<ion-item *ngIf="typeUser === 'Loja'">
+							<ion-label position="floating">Nome da sua Loja</ion-label>
+							<ion-input formControlName="nome" required></ion-input>
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'user'" >
+						  <ion-label position="floating">Seu nome</ion-label>
+						  <ion-input formControlName="nome" required></ion-input>
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'user'" >
+							<ion-label position="floating"> Data de Nascimento</ion-label>
+
+						   <ion-datetime
+		    						[dayShortNames]="customDayShortNames"
+		    						displayFormat="DD MMM, YYYY"
+		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" formControlName="DOB" placeholder="Clique aqui" required></ion-datetime>
+
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'Loja'" >
+							<ion-label position="floating"> Data de criação</ion-label>
+
+						   <ion-datetime
+		    						[dayShortNames]="customDayShortNames"
+		    						displayFormat="DD MMM, YYYY"
+		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" formControlName="DOB" placeholder="Clique aqui" required></ion-datetime>
+
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'Loja'" >
+							<ion-label position="floating">Entrega de:</ion-label>
+						  <ion-input formControlName="entregaDe" required></ion-input>
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'Loja'" >
+							<ion-label position="floating">Se ultrapassar o horário, entrega quando?:</ion-label>
+						  <ion-input formControlName="seNEntrega" required></ion-input>
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'Loja'">
+							<ion-label position="floating">CNPJ</ion-label>
+							<ion-input maxLenght="40" [brmasker]="{person: true}" formControlName="CPF" required type="text"></ion-input>
+						</ion-item>
+						<ion-item *ngIf="typeUser === 'user'" >
+						  <ion-label position="floating">CPF</ion-label>
+						  <ion-input formControlName="CPF" [brmasker]="{person: true}" required></ion-input>
+						</ion-item>
+						<ion-item>
+						  <ion-label position="floating">Endereço</ion-label>
+						  <ion-input formControlName="endereco" type="text" required></ion-input>
+						</ion-item>
+
+						<ion-grid>
+					      <ion-row>
+					          <ion-col>
+					             	<ion-item>
+						  				<ion-label position="floating">Número</ion-label>
+						  				<ion-input formControlName="numeroEND" required></ion-input>
+									</ion-item>
+
+					          </ion-col>
+					          <ion-col>
+									<ion-item>
+						 				<ion-label position="floating">CEP</ion-label>
+						  				<ion-input formControlName="CEP" required></ion-input>
+									</ion-item>
+					          </ion-col>
+					      </ion-row>
+					    </ion-grid>
+						
+
+						<ion-item>
+						  <ion-label position="floating">Bairro</ion-label>
+						  <ion-input formControlName="bairro" required type="text"></ion-input>
+						</ion-item>
+						<ion-item>
+						  <ion-label position="floating">Complemento</ion-label>
+						  <ion-input formControlName="complemento" required type="text"></ion-input>
+						</ion-item>
+						<p>No momento, estamos trabalhando somente no Rio de Janeiro!</p>
+						<p>Quer ter o Axé Delivery na sua cidade? <a href='https://forms.gle/Sty9ffR1t3VeaFEg8'>Clique aqui!</a></p>
+						<ion-grid>
+					      <ion-row>
+					          <ion-col>
+					             	<ion-item>
+									  <ion-label position="floating">Cidade</ion-label>
+									  <ion-input required formControlName="cidade"  type="text"></ion-input>
+									</ion-item>
+
+					          </ion-col>
+					          <ion-col>
+									<ion-item>
+									  <ion-label position="floating">Estado</ion-label>
+									  <ion-input placeholder="RJ"  type="text" disabled></ion-input>
+									</ion-item>
+					          </ion-col>
+					      </ion-row>
+					    </ion-grid>
+					    <ion-grid>
+					    	<ion-row>
+					    		<ion-col>
+									<ion-item>
+						  				<ion-label position="floating">DDD</ion-label>
+						  				<ion-input formControlName="ddd" required type="text"></ion-input>
+									</ion-item>							    			
+					    		</ion-col>
+					    		<ion-col>
+									<ion-item>
+						  				<ion-label position="floating">Telefone</ion-label>
+						  				<ion-input formControlName="telefone" required type="text"></ion-input>
+									</ion-item>					    			
+					    		</ion-col>
+					    	</ion-row>
+					    </ion-grid>
+						<ion-item *ngIf="typeUser === 'Loja'">
+							<ion-label position="floating">Descrição</ion-label>
+							<ion-input maxLenght="40" formControlName="resumo" required type="text"></ion-input>
+						</ion-item>
+<div *ngIf="typeUser === 'Loja'">						
+		<h3 style="text-align-last: center ">Informações bancárias</h3>
+				<ion-select placeholder="Corrente ou Poupança" required  formControlName="correnteoupou">
+					<ion-select-option value="Corrente">Corrente</ion-select-option>
+					<ion-select-option value="Poupanca">Poupança</ion-select-option>
+				</ion-select>
+				
+						<ion-item>
+						  <ion-label position="floating">Banco</ion-label>
+						  <ion-input formControlName="banco" required type="text"></ion-input>
+						</ion-item>
+						<ion-item>
+						  <ion-label position="floating">Nome na conta</ion-label>
+						  <ion-input formControlName="nomeNaConta" required type="text"></ion-input>
+						</ion-item>	
+						<ion-item>
+						  <ion-label position="floating">CPF/CNPJ da conta</ion-label>
+						  <ion-input formControlName="CPFconta" maxLenght="40" [brmasker]="{person: true}" required type="text"></ion-input>
+						</ion-item>								
+						<ion-grid>
+					      <ion-row>
+					          <ion-col>
+					             	<ion-item>
+						  				<ion-label position="floating">Agência</ion-label>
+						  				<ion-input formControlName="agencia" required></ion-input>
+									</ion-item>
+
+					          </ion-col>
+					          <ion-col>
+									<ion-item>
+						 				<ion-label position="floating">Conta com o digito</ion-label>
+						  				<ion-input formControlName="conta" required></ion-input>
+									</ion-item>
+					          </ion-col>
+					      </ion-row>
+					    </ion-grid>
+</div>
+
+			</form>
+				
+				<!-- <img src="{{img.src}}"> -->
+				<ion-label *ngIf="typeUser && type != null">
+					<ion-button (click)="registrar()" class="signin-button" style="color:white !important; max-width: 25vh;" >
+						 Confirmar
+					</ion-button>
+				</ion-label>
+
+</div>
+
+</ion-content>

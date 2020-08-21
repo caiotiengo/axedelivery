@@ -1,9 +1,177 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>user</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
 
+
+<ion-content [fullscreen]="true" style="text-align: center;">
+<div class="background-div1">
+      <img style="width:45%"src="/assets/Picture1.png">
+
+</div>
+<ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" (click)="home()">
+      <ion-icon style="color:#ffc409" name="home-outline" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+<ion-card style="background-color: white !important; ">
+    <ion-card-header > <h3 text center>Olá, {{nome}}!</h3></ion-card-header>
+    <ion-card-content>
+      <h4>Suas Informações:</h4>
+      <p>Email: {{email}}</p>
+      <p>Endereço: {{endereco}}</p>
+      <p>Bairro: {{bairro}}</p>
+      <p>Cidade: {{cidade}}</p>
+      <p>Zona: {{zona}}</p>
+      <br/>
+      <ion-button style="height: 4vh;" color="warning" (click)="sair()">Logout</ion-button>
+
+    </ion-card-content>
+  </ion-card>
+<ion-card style="background-color: white !important; ">
+    <ion-card-content>  
+     <h4 style="color: gray"> <ion-icon name="paper-plane"></ion-icon> - {{endereco}}</h4>
+     <p><i>{{bairro}}, CEP:{{CEP}}</i></p>
+     <p><i>{{cidade}} - {{estado}}</i></p>
+      <ion-button style="height: 4vh;" (click)="updateEnd()" color="warning">  
+        alterar
+      </ion-button>
+  <form [formGroup]="newCadastro" [hidden]="hideMe">
+   <br/>
+
+    <h4 style="text-align: center;">Qual o novo endereço de entrega?</h4>
+    <br/>
+         <!--ion-select placeholder="Sua região" required style="border: 1px solid black;border-radius: 25px;padding: 10px;" [(ngModel)]="type">
+          <ion-select-option value="Centro">Centro</ion-select-option>
+          <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
+          <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
+          <ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
+          <ion-select-option value="Baixada">Baixada</ion-select-option>
+        </ion-select-->
+    <ion-item>
+              <ion-label position="floating">Endereço</ion-label>
+              <ion-input formControlName="enderecoNew" type="text" required></ion-input>
+            </ion-item>
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                      <ion-label position="floating">Número</ion-label>
+                      <ion-input formControlName="numeroENDNew" required></ion-input>
+                  </ion-item>
+
+                    </ion-col>
+                    <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">CEP</ion-label>
+                      <ion-input formControlName="CEPNew" required></ion-input>
+                  </ion-item>
+                    </ion-col>
+                </ion-row>
+              </ion-grid>
+            
+
+            <ion-item>
+              <ion-label position="floating">Bairro</ion-label>
+              <ion-input formControlName="bairroNew" required type="text"></ion-input>
+            </ion-item>
+            
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                    <ion-label position="floating">Cidade</ion-label>
+                    <ion-input placeholder="EX: Rio de Janeiro" required formControlName="cidadeNew" type="text"></ion-input>
+                  </ion-item>
+
+                    </ion-col>
+                    <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Estado</ion-label>
+                    <ion-input placeholder="EX: RJ" required formControlName="estadoNew" type="text"></ion-input>
+                  </ion-item>
+                    </ion-col>
+                </ion-row>
+              </ion-grid>
+
+      <ion-button  style="height: 4vh;" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
+
+
+  </form>
+</ion-card-content>
+</ion-card>
+<ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important; ">
+    <ion-card-content>  
+     <h4 style="color: green"> <ion-icon name="cash"></ion-icon> - {{banco}}</h4>
+     <p><i>Agência:{{agencia}} - Conta:{{conta}}</i></p>
+     <p><i>Corrente ou Poupança? {{tipoConta}}</i></p>
+     <p><i>CPF Conta: {{CPFconta}}</i></p>
+      <ion-button style="height: 4vh;" (click)="updateBank()" color="warning">  
+        alterar
+      </ion-button>
+  <form [formGroup]="newBanco" [hidden]="hideMe2">
+   <br/>
+
+    <h4 style="text-align: center;">Qual a nova conta bancária?</h4>
+    <br/>
+        <ion-select placeholder="Corrente ou Poupança" required  formControlName="tipoContaNew">
+            <ion-select-option value="Corrente">Corrente</ion-select-option>
+            <ion-select-option value="Poupanca">Poupança</ion-select-option>
+        </ion-select>
+            <ion-item>
+              <ion-label position="floating">Banco</ion-label>
+              <ion-input formControlName="bancoNew" type="text" required></ion-input>
+            </ion-item>
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                      <ion-label position="floating">Agência</ion-label>
+                      <ion-input formControlName="agenciaNew" required></ion-input>
+                  </ion-item>
+
+                    </ion-col>
+                    <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Conta com o digito</ion-label>
+                      <ion-input formControlName="contaNew" required></ion-input>
+                  </ion-item>
+                    </ion-col>
+                </ion-row>
+              </ion-grid>
+            
+
+            <ion-item>
+              <ion-label position="floating">Nome na Conta</ion-label>
+              <ion-input formControlName="nomeContaNew" required type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">CPF/CNPJ da Conta</ion-label>
+              <ion-input formControlName="CPFcontaNew" required type="text"></ion-input>
+            </ion-item>           
+
+
+           
+      <ion-button  style="height: 4vh;" (click)="updateBanco()" color="success" slot="end">Atualizar</ion-button><br/>
+
+
+  </form>
+</ion-card-content>
+
+</ion-card >
+  <ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important;">
+    <ion-card-header > <h3 text center>{{nome}}, Aqui está seus produtos!</h3>  <!--ion-button color="findme" (click)="addProc()"></ion-button--></ion-card-header>
+
+    <ion-card-content>
+      <ion-list *ngFor="let items of goalListFiltrado">
+      <ion-item>
+            <h2>{{items.nome}}</h2><br/>
+            <ion-button (click)="deletarItem(items)" color="danger" slot="end">deletar produto</ion-button><br/>
+      </ion-item>
+
+    </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

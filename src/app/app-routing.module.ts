@@ -42,6 +42,10 @@ const routes: Routes = [
   {
     path: 'add-proc',
     loadChildren: () => import('./add-proc/add-proc.module').then( m => m.AddProcPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   }
 ];
 @NgModule({

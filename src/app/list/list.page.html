@@ -1,17 +1,17 @@
 
 <ion-content [fullscreen]="true" class="">
  <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button color="dark">
+    <ion-fab-button (click)="perfilPage()" color="dark">
       <ion-icon style="color:#ffc409" name="person-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
    <ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button color="success">
+    <ion-fab-button color="success" (click)="add()">
       <ion-icon style="color:white" name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 <div class="background-div1">
-		<img style="width:45%"src="/assets/Picture1.png">
+		<img style="width:38%"src="/assets/Picture1.png">
 
 </div>
 	

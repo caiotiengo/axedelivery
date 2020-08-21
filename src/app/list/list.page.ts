@@ -195,15 +195,9 @@ export class ListPage implements OnInit {
 
 
  
-ionViewWillEnter(){
-
-  
-      
-                 
-  
-  
+add(){
+  this.navCtrl.navigateForward('/add-proc')
 }
-
 
 status(){
   this.navCtrl.navigateForward('/status')
@@ -263,12 +257,15 @@ status(){
 
   perfilPage() {
       const user = firebase.auth().currentUser;
-
-      if (user) {
-      this.navCtrl.navigateForward('/user');
+this.storage.get('usuario').then(event =>{
+    if (event) {
+        this.navCtrl.navigateForward('/user');
     } else {
-      this.navCtrl.navigateForward('/login');
+        this.navCtrl.navigateForward('/');
     }
+  })
+
+      
   }
 
 

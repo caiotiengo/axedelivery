@@ -1,6 +1,7 @@
 <ion-content [fullscreen]="true">
 <div class="background-div1">
     <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+       <img style="width:30%"src="/assets/Picture1.png"/>
 
  <h1 style="text-align: center;"> {{loja.nome}}</h1>
    <p  style="text-align: center;">Entrega de: {{loja.entrega}}</p>
@@ -120,7 +121,7 @@
                 <ion-avatar slot="start">
                     <img src="{{items.fotos[0].link}}">
                 </ion-avatar>
-                <ion-label >{{items.nome}}<p>R${{items.valor}}</p></ion-label>
+                <ion-label >{{items.nome}}<p>R${{items.valor}} - Quantidade: {{items.quantity}}</p> </ion-label>
 
                 <ion-button (click)="addCarrinho(items)" slot="end" fill="solid" color="warning" style="color:#ffcb02 !important">
                     <ion-icon name="cart"></ion-icon>

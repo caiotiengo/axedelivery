@@ -36,7 +36,7 @@
 
   </ion-card>
 
-    <div style=" margin-top: 30%;" *ngIf="pagamento ==='credito'">
+    <div *ngIf="pagamento ==='credito'">
       <h4 style="margin: 0; text-align: center">Informações do cartão</h4>
 
       <ion-item>
@@ -111,9 +111,9 @@
     </div>
 
 
-    <ion-list style=" margin-top: 30%;" *ngFor="let items of carrinho">
+    <ion-list>
         <h4 style="margin: 0; text-align: center">Seu pedido</h4>
-      <ion-item >
+      <ion-item  *ngFor="let items of carrinho" >
         <ion-avatar slot="start">
           <img src="{{items.fotos}}">
         </ion-avatar>

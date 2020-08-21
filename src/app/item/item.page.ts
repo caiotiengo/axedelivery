@@ -269,6 +269,7 @@ export class ItemPage implements OnInit {
     finalizarCompra() {
         this.valores = this.produtos.map(res => res.valor);
         this.valorCompra = this.valores.reduce((acc, val) => acc += val);
+        
         const date = new Date();
         date.setMonth(date.getMonth() + 1);
         const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();

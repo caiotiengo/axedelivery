@@ -1,9 +1,68 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>add-proc</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true"  >
+<div class="background-div1">
+    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
 
-<ion-content>
+      <img style="width:30%"src="/assets/Picture1.png">
 
+</div>
+	<ion-card class="card-1">
+			<ion-card-header > <h3 text style="margin:auto;">Adicione um produto</h3></ion-card-header>
+			<ion-card-content>
+					<br/>
+				<p>Escolha o tipo de produto:</p>
+				<ion-select placeholder="Tipo de produto" [(ngModel)]="type">
+					<ion-select-option value="Velas">Velas</ion-select-option>
+					<ion-select-option value="Louca">Produtos de Louça</ion-select-option>
+					<ion-select-option value="Barro">Produtos de Barro</ion-select-option>
+					<ion-select-option value="Imagens">Imagens</ion-select-option>
+					<ion-select-option value="Contas">Contas</ion-select-option>
+					<ion-select-option value="Madeiras">Produtos de Madeira</ion-select-option>
+					<ion-select-option value="Fumos">Fumos</ion-select-option>
+					<ion-select-option value="Decoracao">Decoração</ion-select-option>
+					<ion-select-option value="Instrumentos">Jogos</ion-select-option>
+					
+
+				</ion-select>
+				<form [formGroup]="formulario" (ngSubmit)="logForm()">
+
+				<ion-item>
+				  <ion-label position="floating">Nome do produto</ion-label>
+				  <ion-input formControlName="nomePrd"></ion-input>
+				</ion-item>
+
+				<ion-item>
+				  <ion-label position="floating">Descrição</ion-label>
+				  <ion-input maxLenght="40" formControlName="resumo" type="text"></ion-input>
+				</ion-item>	
+				<ion-item>
+				  <ion-label position="floating">Quantidade</ion-label>
+				  <ion-input maxLenght="40" formControlName="qtd" type="text"></ion-input>
+				</ion-item>					
+				<ion-item>
+				  <ion-label position="floating">Nome da Loja</ion-label>
+				  <ion-input placeholder="{{nome}}" disabled type="text"></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label position="floating">Valor</ion-label>
+					<ion-input name="valor" [(ngModel)]="valor" formControlName="valor"
+					[brmasker]="{money: true}" type="text"></ion-input>
+				</ion-item>
+			
+				<p>Escolha as fotos do seu produto!</p>
+				<p>Porcentagem de cada foto: {{uploadPercent | async}}% </p>
+				
+				<ion-button shape="outline" (click)="abrirGaleria1()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+				<ion-button shape="outline" (click)="abrirGaleria2()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+				<ion-button shape="outline" (click)="abrirGaleria3()" color="findme" ><ion-icon name="camera"></ion-icon></ion-button>
+				<ion-button shape="outline" (click)="abrirGaleria4()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+				<!-- <img src="{{img.src}}"> -->
+				<br/>
+				<ion-button (click)="create()" class="signin-button" >
+					 Publicar 
+				</ion-button>
+				</form>
+			</ion-card-content>
+			
+	</ion-card>
+     
 </ion-content>
