@@ -52,11 +52,40 @@ export class LoginPage implements OnInit {
       }
 
   } 
+
+
   ngOnInit(){
-              
+        this.iniciarPush();
+            
   }
    
+  private iniciarPush(){
+    const options: PushOptions = {
+     android: {
+       senderID:'612729787094'
+     }
+  }
 
+  const pushObject: PushObject = this.push.init(options);
+
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+
+    pushObject.on('registration').subscribe((registration: any) => {
+
+    console.log('Device registered', registration.registrationId)
+        console.log('Device registered', registration)
+    this.services.
+  /*  this.afStore.collection('devices').add({
+         idDevice: registration[0].registrationId,
+
+      });
+  */
+  } );
+  pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+
+
+
+  }
 
 
 async presentLoading() {

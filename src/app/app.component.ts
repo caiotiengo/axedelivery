@@ -39,8 +39,8 @@ export class AppComponent {
   pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
 
   pushObject.on('registration').subscribe((registration: any) => {
-
-    console.log('Device registered', registration[0].registrationId)
+   console.log('Device registered', registration.registrationId)
+        console.log('Device registered', registration)
   /*  this.afStore.collection('devices').add({
          idDevice: registration[0].registrationId,
 
