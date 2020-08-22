@@ -34,6 +34,7 @@ export interface User {
     conta?:any
     correnteoupou?:any
     nomeNaConta?:any
+    fcm?:any
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -247,6 +248,9 @@ updateEnd(id: string, end: string, cep:string, bairro:string, numero:string, cid
       nomeNaConta:nomeNaConta,
       CPFconta: CPFconta
     });
+  }
+    updateFCM(id:string,FCM:string) {
+    this.userCollection.doc<User>(id).update({fcm: FCM});
   }
   updateChat(id:string,conteudo:string){
       const {uid} = firebase.auth().currentUser;

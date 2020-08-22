@@ -50,9 +50,10 @@ export class RegisterPage implements OnInit {
     strCNPJ: any;
     datou
     private cadastro : FormGroup;
-      mainuser: AngularFirestoreDocument;
-  userID
+    mainuser: AngularFirestoreDocument;
+    userID
     sub;
+    FCM
 
   constructor(public navCtrl: NavController, private storage: Storage,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
@@ -182,14 +183,16 @@ export class RegisterPage implements OnInit {
             estado: "RJ", //this.cadastro.value.estado,
             ddd:this.cadastro.value.ddd,
             entrega: this.cadastro.value.entregaDe,
-            seNao: this.cadastro.value.seNEntrega
-            //CNPJ: this.cnpj
+            seNao: this.cadastro.value.seNEntrega,
+            fcm: ''
        }).then(() => {
           const user = firebase.auth().currentUser;
 
          this.mainuser = this.afStore.doc(`users/${user.uid}`);
+         this.userID = user.uid
+
          this.sub = this.mainuser.valueChanges().subscribe(event => {
-             
+              this.services.updateFCM(this.userID, this.FCM)
               this.storage.set('usuario', event) 
                              this.storage.set('email', user.email);
 

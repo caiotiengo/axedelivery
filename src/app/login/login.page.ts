@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
   userID
   sub;
   usuarior
-
+  FCM
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public router: Router, public alertCtrl: AlertController, public afAuth: AngularFireAuth,
               public services: ServiceService,private push:Push, public modalController: ModalController,public afStore: AngularFirestore) {
@@ -73,8 +73,8 @@ export class LoginPage implements OnInit {
     pushObject.on('registration').subscribe((registration: any) => {
 
     console.log('Device registered', registration.registrationId)
+    this.FCM = registration.registrationId
         console.log('Device registered', registration)
-    this.services.
   /*  this.afStore.collection('devices').add({
          idDevice: registration[0].registrationId,
 
@@ -116,12 +116,14 @@ async presentLoading() {
          const user = firebase.auth().currentUser;
          this.mainuser = this.afStore.doc(`users/${user.uid}`);
          this.userID = user.uid
+         this.services.updateFCM(this.userID, this.FCM)
+
          this.mainuser.valueChanges().subscribe(event => {
             console.log(event)
             this.storage.set('usuario', event).then(() =>{
               this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
               this.navCtrl.navigateRoot('/list');
-       
+               
             })
                   
          })

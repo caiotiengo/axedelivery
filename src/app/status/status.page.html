@@ -42,7 +42,7 @@
   <div style="text-align: center;" *ngIf="typeUser === 'user' && valorre === 0">
         <p>Parece que você não tem pedidos...</p>
         <p>Começe a comprar agora!</p>
-        <ion-button fill="solid" color="warning" slot="end">Comprar</ion-button>
+        <ion-button fill="solid" color="warning" (click)="lista()" slot="end">Comprar</ion-button>
     </div> 
 <div class="background-traco" *ngIf=" typeUser === 'user' && valorre > 0 ">
   <h2 style="text-align-last: center;     padding-top: 22px;">Seus Pedidos</h2>

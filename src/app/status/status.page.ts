@@ -184,6 +184,9 @@ export class StatusPage implements OnInit {
    
     });
   }
+  lista(){
+    this.navCtrl.pop();
+  }
   tomaComment(items, rating){
     console.log(items)
          console.log("changed rating: ", this.formulario.value.starRating2);

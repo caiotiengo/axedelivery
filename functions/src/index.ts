@@ -4,24 +4,6 @@ import * as admin from 'firebase-admin';
 admin.initializeApp(functions.config().firebase);
 
 
-
-exports.notificacaoVenda = functions.firestore.document('vendas/{uid}').onWrite(async (event) =>{
-	//let docID = event.after.id;
-	let title = event.after.get('titulo')
-	let content = event.after.get('conteudo')
-
-	var message ={
-		notification:{
-			title: title,
-			content: content
-		},
-		topic:'venda'
-	};
-	let response = await admin.messaging().send(message);
-	console.log(response)
-})
-
-
 exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}').onWrite(async (event) => {
     const uid = event.after.get('lojaUID');
     const title = 'Você tem um novo pedido!';
@@ -32,7 +14,7 @@ exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}
     var message = {
         notification: {
             title: title,
-            body: content,
+            body: content
         },
         token: fcmToken,
     }
@@ -40,30 +22,83 @@ exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}
     let response = await admin.messaging().send(message);
     console.log(response);
 });
-
-exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}').onUpdate(async (event) => {
+ /*
+exports.sendNotificationUSER = functions.firestore.document('messages/{mUid}').onWrite(async (event) => {
     const uid = event.after.get('compradorUID');
-    const status = event.after.get('statusEnt');
-    if(status === 'Preparando Entrega'){
-    	 const title = 'Preparando seu pedido!';
-    	 const content = 'A loja ja está preparando tudo!';
-    }
-    const title = 'Você tem um novo pedido!';
-    const content = 'Abra a página de status para mais informações.';
+    const statusEnt = event.after.get('statusEnt');
+
+    var conditionOne = 'Preparando Entrega' in statusEnt;
     let userDoc = await admin.firestore().doc(`users/${uid}`).get();
     let fcmToken = userDoc.get('fcm');
+		 var message = {
+        		notification: {
+            		title: 'Preparando seu pedido!',
+            		body: 'A loja ja está preparando o seu pedido...',
+        	},
+        	token: fcmToken,
+		    condition: conditionOne
 
-    var message = {
-        notification: {
-            title: title,
-            body: content,
-        },
-        token: fcmToken,
-    }
+    	}
 
     let response = await admin.messaging().send(message);
     console.log(response);
+   if(status == 'Preparando Entrega'){
+    	 
+    }
+     if(status == 'Saiu para Entrega'){
+    	 const title = 'Seu pedido saiu!';
+    	 const content = 'Fique atento a sua porta, já já deve chegar!';
+    	 let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+    	 let fcmToken = userDoc.get('fcm');
+
+    	 var message = {
+        		notification: {
+            		title: title,
+            		body: content,
+        	},
+        	token: fcmToken,
+    	}
+
+    	let response = await admin.messaging().send(message);
+    	console.log(response);
+    }
+     if(status == 'Entregue'){
+    	 const title = 'Seu pedido foi entregue!';
+    	 const content = 'Obrigado por comprar pelo Axé Delivery! Muito axé para você!';
+    	 let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+    	 let fcmToken = userDoc.get('fcm');
+
+    	 var message = {
+        		notification: {
+            		title: title,
+            		body: content,
+        	},
+        	token: fcmToken,
+    	}
+
+    	let response = await admin.messaging().send(message);
+    	console.log(response);
+    }else {
+    	 const title = 'Erro';
+    	 const content = 'Vixi, moio';
+    	 let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+    	 let fcmToken = userDoc.get('fcm');
+
+    	 var message = {
+        		notification: {
+            		title: title,
+            		body: content,
+        	},
+        	token: fcmToken,
+    	}
+
+    	let response = await admin.messaging().send(message);
+    	console.log(response);
+    }
 });
+*/
+    
+
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
