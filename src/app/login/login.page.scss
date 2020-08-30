@@ -50,8 +50,10 @@ ion-text{
 }
 .actions{
 	position: absolute;
-	width:90%;
-	bottom: 16px;
+    width: 100%;
+    bottom: 16px;
+    right: 0px;
+    bottom: 0;
 }
 
 ion-button{

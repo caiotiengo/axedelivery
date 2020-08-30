@@ -54,6 +54,7 @@ export class ListPage implements OnInit {
     };
     email: string;
   proccess = '';
+  listaProdutosSize
   proc;
   tipo
   private goalList: any[];
@@ -62,18 +63,21 @@ export class ListPage implements OnInit {
   currentGoale;
   public products = new Array<Processo>();
   private proccessSubscription: Subscription;
-    userLocation;
+  private produtosSubscription: Subscription;
+
+  userLocation;
     userCity;
     lat;
     lng;
     location;
-   
+   tamanho
     userLocationFromLatLng;
     mainuser: AngularFirestoreDocument;
     sub;
     name;
     boss;
     zona;
+    listaProdutos
     goalListFiltrado = new Array<Processo>();
     loadedGoalListFiltrado;
     pois:any[];
@@ -204,7 +208,14 @@ status(){
 }
 
   ngOnInit() {
-     
+     this.produtos();
+  }
+  produtos(){
+    this.produtosSubscription = this.services.getProccessos().subscribe(data =>{
+      this.listaProdutos = data
+      this.listaProdutosSize= data;
+      this.tamanho = this.listaProdutosSize.lenght
+    })
   }
 
   initializeItems(): void {
@@ -267,6 +278,8 @@ this.storage.get('usuario').then(event =>{
 
       
   }
+
+
 
 
 }

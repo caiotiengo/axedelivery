@@ -1,21 +1,25 @@
-
+<ion-header class="ion-no-border">
+  <ion-navbar>
+  <img style="width:28%"src="/assets/Picture1.png">
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="perfilPage()" color="dark">
+    <ion-icon style="color:#ffc409" name="person-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+ 
+</ion-navbar>
+</ion-header>
 <ion-content [fullscreen]="true" class="">
- <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="perfilPage()" color="dark">
-      <ion-icon style="color:#ffc409" name="person-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-   <ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button color="success" (click)="add()">
-      <ion-icon style="color:white" name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+ 
 <div class="background-div1">
-		<img style="width:38%"src="/assets/Picture1.png">
 
 </div>
 	
-
+<ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button color="success" (click)="add()">
+    <ion-icon style="color:white" name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 	 <ion-searchbar style="position: absolute; margin-top: -35%" animated placeholder="Pesquise sua loja favorita" (ionInput)="filterList($event)"></ion-searchbar>	
 	 <ion-card class="card-1">
   		<ion-card-header>
@@ -27,8 +31,21 @@
   			<ion-icon  style="color:#ffc409" name="bicycle-outline"></ion-icon>
 
   		</ion-button>
-	</ion-card>
-
+  </ion-card>
+  <!--ion-slides>
+    <ion-slide *ngFor="let produtos of listaProdutos">
+      <ion-row style="margin-top: 30%;" >
+        <ion-col size="6">
+          <ion-card> 
+            <img style="margin:auto;" src="/assets/Picture1.png" alt="" />
+            <p>{{produtos.nome}}</p>
+          </ion-card>
+        </ion-col>
+       
+      </ion-row>
+    </ion-slide>
+  </ion-slides-->
+  
  
  <ion-select style="margin-top: 30%" placeholder="Qual região você quer procurar?" [(ngModel)]="filtroLoja">
           <ion-select-option value="Centro">Centro</ion-select-option>
@@ -61,7 +78,7 @@
           <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
          
 
-              <ion-card *ngIf="items.zona === filtroLoja" [routerLink]="['/item/' + items.id]"  style=" background:white;box-shadow:1px 10px 15px 5px #8080803d;border: 1px solid #ffcb02;">
+              <ion-card *ngIf="items.zona === filtroLoja" [routerLink]="['/item/' + items.id]"  style="box-shadow:1px 10px 15px 5px #8080803d;border: 1px solid #ffcb02;">
                 <img style="margin:auto;" src="/assets/Picture1.png" alt="" />
 
                 <ion-item>

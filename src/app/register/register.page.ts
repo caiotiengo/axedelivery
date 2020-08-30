@@ -81,8 +81,8 @@ export class RegisterPage implements OnInit {
                   correnteoupou:['',Validators.required],
                   CPFconta:['', Validators.required],
                   ddd:['', Validators.required],
-                  entregaDe:['', Validators.required],
-                  seNEntrega:['', Validators.required]
+                  entregaDe:[''],
+                  seNEntrega:['']
 
                 });
              }else{

@@ -1,7 +1,8 @@
 {
   "name": "axeDelivery",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular",
   "id": "41d4cb61"
