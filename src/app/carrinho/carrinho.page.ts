@@ -268,6 +268,7 @@ teste(){
       this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
       this.storage.get('valorFinal').then((data) => {
         var y = Number(data);
+
  //Math.floor(Number(data) + 8) 
         this.valor = y.toFixed(2)
         console.log(this.valor);
@@ -345,6 +346,7 @@ teste(){
       this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
       this.storage.get('valorFinal').then((data) => {
         var y = Number(data);
+
 // Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
         this.valor = y.toFixed(2)
         console.log(this.valor);

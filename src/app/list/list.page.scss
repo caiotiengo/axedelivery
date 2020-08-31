@@ -1,16 +1,19 @@
 *{
 	font-weight: 300;
 }
+ion-header{
+    background: linear-gradient(145deg, #ffc409 40%, #ffc4097d 100%);
+}
 .background-div1{
 	background: linear-gradient(45deg, #ffc409 40%, #ffc4097d 100%);
-    height: 235px;
+    height: 155px;
     width: 100%;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
 
 }
 ion-content{
-  --background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
+  //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
 
 }
 .card-slides{
@@ -43,3 +46,25 @@ ion-content{
     transform: rotate(-10deg);
 
 }
+.scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    background: #d3d3d33d;
+  
+    .card {
+      display: inline-block;
+      width:55%;
+      --background:transparent;
+    }
+  }
+
+  .label-lojas{
+    color: #ffc409;
+    background: #1e2023;
+    width: 50%;
+    text-align: center;
+    padding: 4%;
+    box-shadow: 2px 2px lightgrey;
+    font-size: large;
+  }
