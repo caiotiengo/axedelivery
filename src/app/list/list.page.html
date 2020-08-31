@@ -32,22 +32,35 @@
 
   		</ion-button>
   </ion-card>
-  <!--ion-slides>
-    <ion-slide *ngFor="let produtos of listaProdutos">
-      <ion-row style="margin-top: 30%;" >
-        <ion-col size="6">
-          <ion-card> 
-            <img style="margin:auto;" src="/assets/Picture1.png" alt="" />
-            <p>{{produtos.nome}}</p>
-          </ion-card>
-        </ion-col>
-       
-      </ion-row>
-    </ion-slide>
-  </ion-slides-->
-  
+
+
  
- <ion-select style="margin-top: 30%" placeholder="Qual região você quer procurar?" [(ngModel)]="filtroLoja">
+  <div style="margin-top:30%;">
+    <p class="label-lojas">Lojas na sua região</p>
+  </div>
+  <div class="scrolling-wrapper">
+  
+    <ion-item lines="none" class="card"  *ngFor="let items of goalListFiltrei">
+      <ion-card style="text-align: center;" [routerLink]="['/item/' + items.id]"  > 
+      <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+  
+      <img style="margin:auto;    max-width: 46%;
+      min-width: 45%;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
+      <p>{{items.nome}}</p>
+      <ion-label style="background: #ffc409;"> 	
+        <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>
+        {{items.bairro}}
+      </ion-label>
+
+    </ion-card>
+    </ion-item>
+  </div>
+  <div >
+    <p class="label-lojas">Outras regiões</p>
+  </div>
+  
+
+ <ion-select style="margin-top: 10%" placeholder="Qual região você quer procurar?" [(ngModel)]="filtroLoja">
           <ion-select-option value="Centro">Centro</ion-select-option>
           <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
           <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
@@ -65,41 +78,36 @@
 </div>
 
 
-<div style="text-align: center;" *ngIf="semLoja === 0 && filtroLoja  ">
-   <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
-
-  <p>Parece que não temos loja em sua região...</p>
-  <p>Não se preocupe! Compartilhe o app com pessoas e comerciantes da sua área e faça a festa!</p>
-
-</div>
 
 <div class="background-traco"  *ngIf="semLoja > 0 && filtroLoja ">
 
           <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
-         
+            <ion-item *ngIf="items.zona === filtroLoja" [routerLink]="['/item/' + items.id]">
 
-              <ion-card *ngIf="items.zona === filtroLoja" [routerLink]="['/item/' + items.id]"  style="box-shadow:1px 10px 15px 5px #8080803d;border: 1px solid #ffcb02;">
-                <img style="margin:auto;" src="/assets/Picture1.png" alt="" />
-
-                <ion-item>
-                    <ion-icon style="color: black;"name="pin" slot="start"></ion-icon>
-                    <ion-label>{{items.bairro}}</ion-label>
-                    <ion-button fill="solid" color="warning" slot="end" [routerLink]="['/item/' + items.id]" >Veja</ion-button>
-                </ion-item>
-              <ion-card-header>
-                <h4 style="text-align: center; border: 2px solid #ffce00;
-    border-radius: 25px;
-    box-shadow: 2px 2px rgba(66, 66, 66, 0.52156862745)">{{items.nome}}</h4>
-              </ion-card-header>
-
-                <ion-card-content style="text-align: center;">
-                    {{items.resumo}}<br/>
-                    <p>Entrega de:{{items.entrega}}</p>
-                    <p>Se ultrapassar, entrega de:{{items.seNao}}</p>
-                </ion-card-content>  
-                
-          </ion-card>
-
+              <ion-thumbnail slot="start">
+                <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+  
+                <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
+              <ion-label>
+                <h2>{{items.nome}}</h2>
+                <p>Entrega:{{items.entrega}}</p>
+                <p>Ou: {{items.seNao}}</p>
+                <p style="background: #ffc409;
+                padding: 5px;
+                text-align: center;
+                border-radius: 25px;
+                color: black;">{{items.bairro}}</p>
+              </ion-label>
+              <ion-button color="warning" slot="end">View</ion-button>
+            </ion-item>
+             
+            <div style="text-align: center;" *ngIf="semLoja === 0 && filtroLoja  ">
+              <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
+           
+             <p>Parece que não temos loja em sua região...</p>
+             <p>Não se preocupe! Compartilhe o app com pessoas e comerciantes da sua área e faça a festa!</p>
+           
+           </div>
 
          
             

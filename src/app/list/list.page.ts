@@ -100,8 +100,10 @@ export class ListPage implements OnInit {
     nomeUser
     datou
     DOB
-    goalListFiltrei
+    goalListFiltrei = new Array<Processo>();
     filtroLoja = '';
+    valorFrete
+    valorDelivery
   constructor(public navCtrl: NavController, public Platform:Platform,
               public router: Router, 
               private geolocation: Geolocation,
@@ -171,16 +173,20 @@ export class ListPage implements OnInit {
               
              let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
              console.log("A distancia entre as lojas é de:" + kilometers); 
-
+             
+           
              var km = Number(kilometers)
-               if(Number(kilometers) >= 0 ){
-                    this.goalListFiltrado.push(loja)
-                    console.log(this.goalListFiltrado.length)
+               if(Number(kilometers) >= 0 && loja.zona === this.zona ){
+                    this.goalListFiltrei.push(loja)
+                    console.log(this.goalListFiltrei.length)
                     
-                    this.lojinha = this.goalListFiltrado
-                    this.semLoja = this.goalListFiltrado.length
+                    this.lojinha = this.goalListFiltrei
+                    this.semLoja = this.goalListFiltrei.length
 
-                 }else{
+                 }
+                 if(Number(kilometers) >= 0 ){ 
+                  this.goalListFiltrado.push(loja)
+
                    console.log("Out of range" + loja.lenght)
                   this.semLoja = this.goalListFiltrado.length
 

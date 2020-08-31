@@ -46,3 +46,25 @@ ion-content{
     transform: rotate(-10deg);
 
 }
+.scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    background: #d3d3d33d;
+  
+    .card {
+      display: inline-block;
+      width:55%;
+      --background:transparent;
+    }
+  }
+
+  .label-lojas{
+    color: #ffc409;
+    background: #1e2023;
+    width: 50%;
+    text-align: center;
+    padding: 4%;
+    box-shadow: 2px 2px lightgrey;
+    font-size: large;
+  }
