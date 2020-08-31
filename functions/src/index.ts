@@ -7,6 +7,26 @@ admin.initializeApp(functions.config().firebase);
 exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}').onWrite(async (event) => {
     const uid = event.after.get('lojaUID');
     const title = 'Você tem um novo pedido!';
+    const content = 'Abra a página de pedidos para mais informações.';
+    let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+    let fcmToken = userDoc.get('fcm');
+
+    var message = {
+        notification: {
+            title: title,
+            body: content
+        },
+        token: fcmToken,
+    }
+
+    let response = await admin.messaging().send(message);
+    console.log(response);
+});
+exports.sendNotificationToFCMTokenMSG = functions.firestore.document('vendas/{mUid}/chat').onWrite(async (event) => {
+    //pegar o sender id e o receiver id
+
+    const uid = event.after.get('lojaUID');
+    const title = 'Você tem uma nova mensagem!';
     const content = 'Abra a página de status para mais informações.';
     let userDoc = await admin.firestore().doc(`users/${uid}`).get();
     let fcmToken = userDoc.get('fcm');
