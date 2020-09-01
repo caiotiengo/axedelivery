@@ -24,7 +24,7 @@
     "@angular/router": "~9.1.6",
     "@capacitor/core": "2.4.0",
     "@capacitor/ios": "^2.4.0",
-    "@ionic-native/camera": "^5.27.0",
+    "@ionic-native/camera": "^5.28.0",
     "@ionic-native/core": "^5.25.0",
     "@ionic-native/file": "^5.27.0",
     "@ionic-native/geolocation": "^5.25.0",
@@ -137,7 +137,8 @@
         "FCM_VERSION": "17.0.+"
       },
       "cordova-plugin-nativestorage": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android",
