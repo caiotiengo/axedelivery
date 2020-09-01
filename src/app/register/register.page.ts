@@ -184,7 +184,7 @@ export class RegisterPage implements OnInit {
             ddd:this.cadastro.value.ddd,
             entrega: this.cadastro.value.entregaDe,
             seNao: this.cadastro.value.seNEntrega,
-            fcm: ''
+            fcm: '1'
        }).then(() => {
           const user = firebase.auth().currentUser;
 
@@ -192,6 +192,7 @@ export class RegisterPage implements OnInit {
          this.userID = user.uid
 
          this.sub = this.mainuser.valueChanges().subscribe(event => {
+              this.FCM = event.fcm;
               this.services.updateFCM(this.userID, this.FCM)
               this.storage.set('usuario', event) 
                              this.storage.set('email', user.email);
