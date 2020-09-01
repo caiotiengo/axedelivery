@@ -116,12 +116,13 @@ async presentLoading() {
          const user = firebase.auth().currentUser;
          this.mainuser = this.afStore.doc(`users/${user.uid}`);
          this.userID = user.uid
-         this.services.updateFCM(this.userID, this.FCM)
 
          this.mainuser.valueChanges().subscribe(event => {
             console.log(event)
+            this.FCM = event.fcm
+            this.services.updateFCM(this.userID, this.FCM)
             this.storage.set('usuario', event).then(() =>{
-              this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
+              this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
               this.navCtrl.navigateRoot('/list');
                
             })
