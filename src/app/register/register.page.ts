@@ -13,6 +13,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import { AngularFirestoreDocument} from '@angular/fire/firestore';
+import { LoadingController } from '@ionic/angular';
 
 
 @Component({
@@ -55,7 +56,7 @@ export class RegisterPage implements OnInit {
     sub;
     FCM
 
-  constructor(public navCtrl: NavController, private storage: Storage,
+  constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
               private modalController: ModalController,private http: HttpClient,private formBuilder: FormBuilder) {
@@ -137,8 +138,21 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
   }
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Aguarde...',
+      duration: 5000
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }
   registrar() {
    const{email, password } = this.cadastro.value;
+   this.presentLoading() 
+
     if(this.cadastro.valid){
      return new Promise(resolve => {
             this.http.get<any[]>('https://nominatim.openstreetmap.org/search?q='+this.cadastro.value.endereco+','+
