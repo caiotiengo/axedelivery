@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NavController } from '@ionic/angular';
+import {NavController, Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { ServiceService } from '../service.service';
@@ -14,8 +14,21 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import { AngularFirestoreDocument} from '@angular/fire/firestore';
 import { LoadingController } from '@ionic/angular';
-
-
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import {
+  MediaCapture,
+  MediaFile,
+  CaptureError
+} from '@ionic-native/media-capture/ngx';
+import {finalize} from 'rxjs/operators';
+import {Observable} from 'rxjs'
+import { File, FileEntry } from '@ionic-native/File/ngx';
+import { Media, MediaObject } from '@ionic-native/media/ngx';
+export interface Foto {
+  fotoN: string;
+  link?: any;
+}
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -46,6 +59,8 @@ export class RegisterPage implements OnInit {
     banco = '';
     ddd = '';
     lat 
+    url
+
     long
     cnpj: any;
     strCNPJ: any;
@@ -55,11 +70,17 @@ export class RegisterPage implements OnInit {
     userID
     sub;
     FCM
+    public donwloadUrl: Observable<string>;
+    public uploadPercent: Observable<number>;
+    photos: Array<Foto> = [];
 
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
-              private modalController: ModalController,private http: HttpClient,private formBuilder: FormBuilder) {
+              private modalController: ModalController,private http: HttpClient,private afStorage: AngularFireStorage,
+              private mediaCapture: MediaCapture,private platform: Platform,private camera: Camera,
+              private file: File,
+              private media: Media, private formBuilder: FormBuilder) {
              if(this.typeUser === 'Loja'){
                 this.cadastro = this.formBuilder.group({
                   resumo: [''],
@@ -142,7 +163,7 @@ export class RegisterPage implements OnInit {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Aguarde...',
-      duration: 5000
+      duration: 6000
     });
     await loading.present();
 
@@ -198,7 +219,8 @@ export class RegisterPage implements OnInit {
             ddd:this.cadastro.value.ddd,
             entrega: this.cadastro.value.entregaDe,
             seNao: this.cadastro.value.seNEntrega,
-            fcm: '1'
+            fcm: '1',
+            FotoPerfil: String(this.url)
        }).then(() => {
           const user = firebase.auth().currentUser;
 
@@ -255,10 +277,56 @@ export class RegisterPage implements OnInit {
   voltar(){
   		this.navCtrl.pop();
   }
-  photo() {
-   this.showalert('Desculpe', 'Não disponivel nessa versão');
 
+  async photo(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      correctOrientation: true,
+      //mediaType: this.camera.MediaType.PICTURE
   }
+  try{
+    const fileUri: string = await this.camera.getPicture(options)
+    let file: string
+
+    if(this.platform.is('ios')){
+      file = fileUri.split('/').pop();
+    }else{
+      file = fileUri.substring(fileUri.lastIndexOf('/')+1, fileUri.indexOf('?'))
+    }
+    const path: string = fileUri.substring(0, fileUri.lastIndexOf('/'));
+    const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file)
+    const blob: Blob = new Blob([buffer],{type:'image/jpeg'})
+    this.uploadPicture(blob)
+  }catch(error){
+    console.error(error)
+  }
+
+}
+uploadPicture(blob:Blob){
+  var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+  console.log(seq);
+  const ref = this.afStorage.ref(seq +'.jpeg');
+  const task = ref.put(blob)
+  const don = this.afStorage.ref(seq+'.jpeg');
+  const task2 = don.put(blob)
+  this.uploadPercent = task.percentageChanges();
+  task2.snapshotChanges().pipe(
+      finalize(() => {
+
+        this.donwloadUrl = don.getDownloadURL();
+        this.donwloadUrl.subscribe(res => {
+          this.url = res;
+           this.photos.push({fotoN:'ionic.fotoSUB',
+                          link:String(this.url)})
+          this.showalert('Opa!', 'Concluido! Se quiser, já pode se registrar!');
+
+        })
+       
+      })
+    ).subscribe();
+}
   testaCNPJ(event) {
     // Verifica se a variável cnpj é igua a "undefined", exibindo uma msg de erro
     if (this.cnpj === undefined) {

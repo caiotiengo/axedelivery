@@ -74,7 +74,7 @@
 						  <ion-input formControlName="entregaDe" required></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'" >
-							<ion-label position="floating">Se ultrapassar o horário, entrega quando?:</ion-label>
+							<ion-label position="floating">Se ultrapassar o horário, entrega quando?</ion-label>
 						  <ion-input formControlName="seNEntrega" required></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'">
@@ -197,8 +197,12 @@
 			</form>
 				
 				<!-- <img src="{{img.src}}"> -->
-				<ion-label *ngIf="typeUser && type != null">
-					<ion-button (click)="registrar()" class="signin-button" style="color:white !important; max-width: 25vh;" >
+				<p>Escolha a foto do seu perfil!</p>
+				<p>Porcentagem da foto: {{uploadPercent | async}}% </p>
+				<ion-button shape="outline" (click)="photo()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+<br/>
+				<ion-label *ngIf="typeUser && type ">
+					<ion-button (click)="registrar()" expand="block" class="signin-button" style="color:white !important;" >
 						 Confirmar
 					</ion-button>
 				</ion-label>

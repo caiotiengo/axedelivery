@@ -129,6 +129,7 @@ export class ListPage implements OnInit {
       this.proccessSubscription = this.services.getUsers().subscribe(data => {
           this.goalList = data;
           this.loadedGoalList = data;
+          
             this.storage.get('usuario').then(event => {
                 console.log(event)
                   this.zona = event.zona;
@@ -148,51 +149,13 @@ export class ListPage implements OnInit {
                   this.filtroLoja = this.zona
                   console.log(birthdate);
                   console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-               // this.goalListFiltrado = this.goalList.filter(i => i.zona === this.zona && i.tipo === 'Loja' && i.aprovado === true);
-              // this.loadedGoalListFiltrado = this.loadedGoalList.filter(i => i.zona === this.zona && i.tipo === 'Loja' && i.aprovado === true);
-
-              this.lojaApr = this.goalList.filter(i => i.tipo === 'Loja' && i.aprovado === "Sim")       
-                                 this.goalListFiltrado = []
-
-              this.lojaApr.forEach(loja => {
-              console.log(loja)
-              this.lojaAprLat = loja.lat; 
-              this.lojaAprLng = loja.lng; 
-              console.log(this.lojaAprLng +" " + this.lojaAprLat)
-
-              let Usuario: GeoCoord = {
-                   latitude: Number(this.lat),
-                   longitude: Number(this.lng)
-              };
-              console.log(Usuario)
-              let Loja: GeoCoord = {
-                  latitude: Number(this.lojaAprLat),
-                  longitude:Number(this.lojaAprLng)
-              };
-              
-              
-             let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-             console.log("A distancia entre as lojas é de:" + kilometers); 
-             
-           
-             var km = Number(kilometers)
-               if(Number(kilometers) >= 0 && loja.zona === this.zona ){
-                    this.goalListFiltrei.push(loja)
-                    console.log(this.goalListFiltrei.length)
-                    
-                    this.lojinha = this.goalListFiltrei
-                    this.semLoja = this.goalListFiltrei.length
-
-                 }
-                 if(Number(kilometers) >= 0 ){ 
-                  this.goalListFiltrado.push(loja)
-
-                   console.log("Out of range" + loja.lenght)
+                  
+                  this.goalListFiltrado = this.goalList.filter(i => i.zona === this.zona && i.tipo === 'Loja' && i.aprovado === 'Sim');
+                  this.loadedGoalListFiltrado = this.loadedGoalList.filter(i => i.zona === this.zona && i.tipo === 'Loja' && i.aprovado === 'Sim');
+                  this.lojinha = this.goalListFiltrado
                   this.semLoja = this.goalListFiltrado.length
 
-               } 
-             
-            })
+              
          })
 
 
