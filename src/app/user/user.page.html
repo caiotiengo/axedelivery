@@ -34,71 +34,77 @@
       <ion-button style="height: 4vh;" (click)="updateEnd()" color="warning">  
         alterar
       </ion-button>
-  <form [formGroup]="newCadastro" [hidden]="hideMe">
-   <br/>
 
-    <h4 style="text-align: center;">Qual o novo endereço de entrega?</h4>
-    <br/>
-         <!--ion-select placeholder="Sua região" required style="border: 1px solid black;border-radius: 25px;padding: 10px;" [(ngModel)]="type">
-          <ion-select-option value="Centro">Centro</ion-select-option>
-          <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
-          <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
-          <ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
-          <ion-select-option value="Baixada">Baixada</ion-select-option>
-        </ion-select-->
-    <ion-item>
-              <ion-label position="floating">Endereço</ion-label>
-              <ion-input formControlName="enderecoNew" type="text" required></ion-input>
-            </ion-item>
+      <div [hidden]="hideMe">
+        <h4 style="text-align: center;">Qual o novo endereço de entrega?</h4>
+        <br/>
+             <ion-select placeholder="Sua região" required 
+             style="border: 1px solid black;border-radius: 25px;padding: 10px;" [(ngModel)]="type">
+              <ion-select-option value="Centro">Centro</ion-select-option>
+              <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
+              <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
+              <ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
+              <ion-select-option value="Baixada">Baixada</ion-select-option>
+            </ion-select>
+            <form [formGroup]="newCadastro" >
+              <br/>
+           
+           
+               <ion-item>
+                         <ion-label position="floating">Endereço</ion-label>
+                         <ion-input formControlName="enderecoNew" type="text" required></ion-input>
+                       </ion-item>
+           
+                       <ion-grid>
+                           <ion-row>
+                               <ion-col>
+                                   <ion-item>
+                                 <ion-label position="floating">Número</ion-label>
+                                 <ion-input formControlName="numeroENDNew" required></ion-input>
+                             </ion-item>
+           
+                               </ion-col>
+                               <ion-col>
+                             <ion-item>
+                               <ion-label position="floating">CEP</ion-label>
+                                 <ion-input formControlName="CEPNew" required></ion-input>
+                             </ion-item>
+                               </ion-col>
+                           </ion-row>
+                         </ion-grid>
+                       
+           
+                       <ion-item>
+                         <ion-label position="floating">Bairro</ion-label>
+                         <ion-input formControlName="bairroNew" required type="text"></ion-input>
+                       </ion-item>
+                       
+           
+           
+                       <ion-grid>
+                           <ion-row>
+                               <ion-col>
+                                   <ion-item>
+                               <ion-label position="floating">Cidade</ion-label>
+                               <ion-input placeholder="EX: Rio de Janeiro" required formControlName="cidadeNew" type="text"></ion-input>
+                             </ion-item>
+           
+                               </ion-col>
+                               <ion-col>
+                             <ion-item>
+                               <ion-label position="floating">Estado</ion-label>
+                               <ion-input placeholder="EX: RJ" required formControlName="estadoNew" type="text"></ion-input>
+                             </ion-item>
+                               </ion-col>
+                           </ion-row>
+                         </ion-grid>
+           
+                 <ion-button  style="height: 4vh;" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
+           
+           
+             </form>
+      </div>
 
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-item>
-                      <ion-label position="floating">Número</ion-label>
-                      <ion-input formControlName="numeroENDNew" required></ion-input>
-                  </ion-item>
-
-                    </ion-col>
-                    <ion-col>
-                  <ion-item>
-                    <ion-label position="floating">CEP</ion-label>
-                      <ion-input formControlName="CEPNew" required></ion-input>
-                  </ion-item>
-                    </ion-col>
-                </ion-row>
-              </ion-grid>
-            
-
-            <ion-item>
-              <ion-label position="floating">Bairro</ion-label>
-              <ion-input formControlName="bairroNew" required type="text"></ion-input>
-            </ion-item>
-            
-
-
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-item>
-                    <ion-label position="floating">Cidade</ion-label>
-                    <ion-input placeholder="EX: Rio de Janeiro" required formControlName="cidadeNew" type="text"></ion-input>
-                  </ion-item>
-
-                    </ion-col>
-                    <ion-col>
-                  <ion-item>
-                    <ion-label position="floating">Estado</ion-label>
-                    <ion-input placeholder="EX: RJ" required formControlName="estadoNew" type="text"></ion-input>
-                  </ion-item>
-                    </ion-col>
-                </ion-row>
-              </ion-grid>
-
-      <ion-button  style="height: 4vh;" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
-
-
-  </form>
 </ion-card-content>
 </ion-card>
 <ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important; ">

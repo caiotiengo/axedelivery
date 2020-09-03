@@ -123,14 +123,14 @@ export class ListPage implements OnInit {
           } else {
               this.showalert('Bem-vindo ao Axé delivery!', 'Faça o login para' 
              +'começar a explorar o mundo macumbistico na sua região');
-              //this.navCtrl.navigateRoot('/');
+              this.navCtrl.navigateRoot('/');
 
           }
       this.proccessSubscription = this.services.getUsers().subscribe(data => {
           this.goalList = data;
           this.loadedGoalList = data;
           
-            this.storage.get('usuario').then(event => {
+            this.mainuser.valueChanges().subscribe(event => {
                 console.log(event)
                   this.zona = event.zona;
                   this.lat = event.lat;

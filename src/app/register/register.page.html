@@ -195,11 +195,13 @@
 </div>
 
 			</form>
-				
-				<!-- <img src="{{img.src}}"> -->
-				<p>Escolha a foto do seu perfil!</p>
+			<div *ngIf="typeUser === 'Loja'">
+				<p> Escolha a foto do seu perfil!</p>
 				<p>Porcentagem da foto: {{uploadPercent | async}}% </p>
 				<ion-button shape="outline" (click)="photo()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+
+			</div>	
+				<!-- <img src="{{img.src}}"> -->
 <br/>
 				<ion-label *ngIf="typeUser && type ">
 					<ion-button (click)="registrar()" expand="block" class="signin-button" style="color:white !important;" >

@@ -24,7 +24,7 @@
 	 <ion-card class="card-1">
   		<ion-card-header>
     		<ion-card-subtitle>Seu endereço</ion-card-subtitle>
-    		<ion-card-title>{{endereco}}</ion-card-title>
+    		<ion-card-title style="    width: 80%;">{{endereco}}</ion-card-title>
     		<p>{{numero}} - {{bairro}} - {{estado}}</p>
   		</ion-card-header>
   		<ion-button color="dark" class="button-card1" (click)="status()">
@@ -35,8 +35,8 @@
 
 
  
-  <div style="margin-top:30%;">
-    <p class="label-lojas">Lojas na sua região</p>
+  <div style="margin-top:50%;">
+    <p class="label-lojas">Na sua região</p>
   </div>
   <div class="scrolling-wrapper">
   
@@ -44,8 +44,9 @@
       <ion-card style="text-align: center;" [routerLink]="['/item/' + items.id]"  > 
       <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
   
-      <img style="margin:auto;    max-width: 46%;
-      min-width: 45%;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
+      <img style="    margin: auto;
+    
+      max-height: 14vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
       <p>{{items.nome}}</p>
       <ion-label style="background: #ffc409;"> 	
         <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>

@@ -35,6 +35,7 @@ export interface User {
     correnteoupou?:any
     nomeNaConta?:any
     fcm?:any
+    zona?:any
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -229,8 +230,8 @@ addUser(user: User) {
   deletarItem(id){
       return this.processoCollection.doc<Processo>(id).delete();
   }
-updateEnd(id: string, end: string, cep:string, bairro:string, numero:string, cidade:string, estado:string, lat:string,lng:string) {
-    this.userCollection.doc<User>(id).update({endereco: end,
+updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numero:string, cidade:string, estado:string, lat:string,lng:string) {
+    this.userCollection.doc<User>(id).update({endereco: end,zona:tipo,
                                               CEP:cep,
                                               bairro:bairro,
                                               numeroEND: numero,           

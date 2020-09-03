@@ -63,7 +63,12 @@ export class LoginPage implements OnInit {
     const options: PushOptions = {
      android: {
        senderID:'612729787094'
-     }
+     },
+     ios: {
+      alert: 'true',
+      badge: true,
+      sound: 'true'
+    }
   }
 
   const pushObject: PushObject = this.push.init(options);
@@ -119,8 +124,12 @@ async presentLoading() {
 
          this.mainuser.valueChanges().subscribe(event => {
             console.log(event)
-            this.FCM = event.fcm
-            this.services.updateFCM(this.userID, this.FCM)
+            if(this.FCM === undefined){
+              this.FCM === event.fcm
+            }else{
+              this.services.updateFCM(this.userID, this.FCM)
+
+            }
             this.storage.set('usuario', event).then(() =>{
               this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
               this.navCtrl.navigateRoot('/list');

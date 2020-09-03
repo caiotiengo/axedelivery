@@ -16,6 +16,8 @@ import { AngularFirestoreDocument} from '@angular/fire/firestore';
 import { LoadingController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
+
 import {
   MediaCapture,
   MediaFile,
@@ -79,7 +81,7 @@ export class RegisterPage implements OnInit {
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
               private modalController: ModalController,private http: HttpClient,private afStorage: AngularFireStorage,
               private mediaCapture: MediaCapture,private platform: Platform,private camera: Camera,
-              private file: File,
+              private file: File,private push:Push,
               private media: Media, private formBuilder: FormBuilder) {
              if(this.typeUser === 'Loja'){
                 this.cadastro = this.formBuilder.group({
@@ -158,6 +160,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.iniciarPush();
   }
   async presentLoading() {
     const loading = await this.loadingController.create({
@@ -188,7 +191,9 @@ export class RegisterPage implements OnInit {
 
                         try {
        const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
-
+        if(this.FCM === undefined){
+          this.FCM === '1'
+        }
        const user = firebase.auth().currentUser;
        this.afStore.doc(`users/${user.uid}`).set({
             nome: this.cadastro.value.nome,
@@ -219,7 +224,7 @@ export class RegisterPage implements OnInit {
             ddd:this.cadastro.value.ddd,
             entrega: this.cadastro.value.entregaDe,
             seNao: this.cadastro.value.seNEntrega,
-            fcm: '1',
+            fcm: this.FCM,
             FotoPerfil: String(this.url)
        }).then(() => {
           const user = firebase.auth().currentUser;
@@ -228,8 +233,6 @@ export class RegisterPage implements OnInit {
          this.userID = user.uid
 
          this.sub = this.mainuser.valueChanges().subscribe(event => {
-              this.FCM = event.fcm;
-              this.services.updateFCM(this.userID, this.FCM)
               this.storage.set('usuario', event) 
                              this.storage.set('email', user.email);
 
@@ -304,6 +307,39 @@ export class RegisterPage implements OnInit {
   }
 
 }
+private iniciarPush(){
+  const options: PushOptions = {
+    android: {
+      senderID:'612729787094'
+    },
+    ios: {
+     alert: 'true',
+     badge: true,
+     sound: 'true'
+   }
+ }
+
+const pushObject: PushObject = this.push.init(options);
+
+  pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+
+  pushObject.on('registration').subscribe((registration: any) => {
+
+  console.log('Device registered', registration.registrationId)
+  this.FCM = registration.registrationId
+      console.log('Device registered', registration)
+/*  this.afStore.collection('devices').add({
+       idDevice: registration[0].registrationId,
+
+    });
+*/
+} );
+pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+
+
+
+}
+
 uploadPicture(blob:Blob){
   var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
   console.log(seq);

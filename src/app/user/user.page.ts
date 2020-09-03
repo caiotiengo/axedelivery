@@ -84,6 +84,8 @@ export class UserPage implements OnInit {
     tipoConta 
     agencia
     CPFcontaNew = '';
+    type = '';
+    FCM
   constructor(public navCtrl: NavController, private storage: Storage,
               public afStore: AngularFirestore, 
               public modalController: ModalController,
@@ -200,14 +202,30 @@ export class UserPage implements OnInit {
                        this.showalert('Hm...', 'Parece que não encontramos seu endereço. Já tentou sem abreviações?')
                       }else{
                         this.datou = data[0].lat;
-                       this.services.updateEnd(this.userID,this.newCadastro.value.enderecoNew, this.newCadastro.value.CEPNew,
+                       this.services.updateEnd(this.userID,this.type,this.newCadastro.value.enderecoNew, this.newCadastro.value.CEPNew,
                        this.newCadastro.value.bairroNew, this.newCadastro.value.numeroENDNew, this.newCadastro.value.cidadeNew,
                        this.newCadastro.value.estadoNew, data[0].lat, data[0].lon)
                        this.hideMe = true
-                       this.showalert('Opa!', 'Dados atualizados!')
+                       this.storage.remove('usuario').then(() =>{
+                        const user = firebase.auth().currentUser;
+                        this.mainuser = this.afStore.doc(`users/${user.uid}`);
+                        this.userID = user.uid
+               
+                        this.mainuser.valueChanges().subscribe(event => {
+                           console.log(event)
+                           this.FCM = event.fcm
+                           this.services.updateFCM(this.userID, this.FCM)
+                           this.storage.set('usuario', event).then(() =>{
+                           this.showalert('Opa!', 'Dados atualizados!')
+                           //this.navCtrl.navigateRoot('/list');
+                              
+                        })
+                                 
+                      })                        
+                    })
 
                        //Av. Ten-Cel. Muniz de Aragão 
-                      }
+                  }
                       
                   }, err => {
                    console.log(err);
