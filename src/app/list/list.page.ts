@@ -149,9 +149,9 @@ export class ListPage implements OnInit {
                   this.filtroLoja = this.zona
                   console.log(birthdate);
                   console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                  
-                  this.goalListFiltrado = this.goalList.filter(i => i.zona === this.zona && i.tipo === 'Loja' && i.aprovado === 'Sim');
-                  this.loadedGoalListFiltrado = this.loadedGoalList.filter(i => i.zona === this.zona && i.tipo === 'Loja' && i.aprovado === 'Sim');
+                  this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.aprovado === 'Sim');
+                  this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+                  this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim');
                   this.lojinha = this.goalListFiltrado
                   this.semLoja = this.goalListFiltrado.length
 

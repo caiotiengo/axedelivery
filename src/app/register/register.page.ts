@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import {NavController, Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
@@ -27,6 +27,8 @@ import {finalize} from 'rxjs/operators';
 import {Observable} from 'rxjs'
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
+declare var google;
+
 export interface Foto {
   fotoN: string;
   link?: any;
@@ -75,69 +77,49 @@ export class RegisterPage implements OnInit {
     public donwloadUrl: Observable<string>;
     public uploadPercent: Observable<number>;
     photos: Array<Foto> = [];
-
+    autocomplete: { input: string; };
+    autocompleteItems: any[];
+    location: any;
+    placeid: any;
+    GoogleAutocomplete: any;
+    hide = false
+    geocoder
+    latitudeGoogle
+    longitudeGoogle
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
               private modalController: ModalController,private http: HttpClient,private afStorage: AngularFireStorage,
               private mediaCapture: MediaCapture,private platform: Platform,private camera: Camera,
               private file: File,private push:Push,
-              private media: Media, private formBuilder: FormBuilder) {
-             if(this.typeUser === 'Loja'){
+              private media: Media, private formBuilder: FormBuilder, public zone: NgZone) {
                 this.cadastro = this.formBuilder.group({
                   resumo: [''],
-                  nome: ['', Validators.required],
-                  endereco: ['', Validators.required],
-                  telefone: ['', Validators.required],
-                  bairro: ['', Validators.required],
+                  nome: [''],
+                  endereco: [''],
+                  telefone: [''],
+                  bairro: [''],
                   cidade: [''],
                   estado: [''],
-                  email: ['', Validators.required],
-                  password: ['', Validators.required],
-                  CEP: ['', Validators.required],
+                  email: [''],
+                  password: [''],
+                  CEP: [''],
                   DOB: [''],
-                  complemento:['', Validators.required],
-                  banco:['', Validators.required],
-                  CPF: ['', Validators.required],
-                  agencia: ['', Validators.required],
-                  nomeNaConta: ['', Validators.required],
-                  conta: ['', Validators.required],                  
-                  numeroEND: ['', Validators.required],
-                  correnteoupou:['',Validators.required],
-                  CPFconta:['', Validators.required],
-                  ddd:['', Validators.required],
-                  entregaDe:[''],
-                  seNEntrega:['']
-
-                });
-             }else{
-                this.cadastro = this.formBuilder.group({
-                  resumo: [''],
-                  nome: ['', Validators.required],
-                  endereco: ['', Validators.required],
-                  telefone: ['', Validators.required],
-                  bairro: ['', Validators.required],
-                  cidade: [''],
-                  estado: [''],
-                  email: ['', Validators.required],
-                  password: ['', Validators.required],
-                  CEP: ['', Validators.required],
-                  DOB: [''],
-                  complemento:['', Validators.required],
+                  complemento:[''],
                   banco:[''],
-                  CPF: ['', Validators.required],
+                  CPF: [''],
                   agencia: [''],
                   nomeNaConta: [''],
                   conta: [''],                  
-                  numeroEND: ['', Validators.required],
+                  numeroEND: ['',],
                   correnteoupou:[''],
                   CPFconta:[''],
-                  ddd:['', Validators.required],
+                  ddd:[''],
                   entregaDe:[''],
-                  seNEntrega:['']
+                  seNEntrega:['']   
 
             });
-             }
+
             
          this.geolocation.getCurrentPosition().then((resp) => {
               console.log(resp.coords.latitude)
@@ -156,12 +138,76 @@ export class RegisterPage implements OnInit {
 
           //AIzaSyB1IBIxpEAg1qTweg3ZU2Q1SQpgz9yrG28
           });
+          this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+          this.autocomplete = { input: '' };
+          this.autocompleteItems = [];
+          this.geocoder = new google.maps.Geocoder;
 
   }
 
   ngOnInit() {
-    this.iniciarPush();
   }
+  UpdateSearchResults(){
+    this.hide = false
+
+    if (this.autocomplete.input == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ 
+      input: this.autocomplete.input,
+      componentRestrictions: {
+        country: 'br'
+      }
+    },
+    (predictions, status) => {
+      this.autocompleteItems = [];
+      this.zone.run(() => {
+        predictions.forEach((prediction) => {
+          this.autocompleteItems.push(prediction);
+        });
+      });
+    });
+  }
+  SelectSearchResult(item) {
+    this.hide = true
+
+    ///WE CAN CONFIGURE MORE COMPLEX FUNCTIONS SUCH AS UPLOAD DATA TO FIRESTORE OR LINK IT TO SOMETHING
+    console.log(String(item.terms[0].value))      
+    console.log(String(item.terms[1].value))      
+    console.log(String(item.terms[2].value))      
+    console.log(String(item.terms[3].value))   
+    console.log(JSON.stringify(item))
+    
+    this.cadastro.value.endereco = String(item.terms[0].value)
+    this.cadastro.value.bairro = String(item.terms[1].value)
+    this.endereco = String(item.terms[0].value)
+    this.bairro = String(item.terms[1].value)
+    this.cidade = String(item.terms[2].value)
+
+    console.log(this.cadastro.value.endereco)
+    this.placeid = item.place_id
+    this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
+      if(status === 'OK' && results[0]){
+        let position = {
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+        };
+        console.log(position)
+        this.latitudeGoogle =results[0].geometry.location.lat()
+        this.longitudeGoogle = results[0].geometry.location.lng()
+        console.log(results[0].geometry.location)
+        console.log(results)
+        //let marker = new google.maps.Marker({
+        //  position: results[0].geometry.location,
+        //  map: this.map,
+        //});
+        //this.markers.push(marker);
+        //this.map.setCenter(results[0].geometry.location);
+      }
+    })
+  }
+  
   async presentLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
@@ -177,89 +223,138 @@ export class RegisterPage implements OnInit {
    const{email, password } = this.cadastro.value;
    this.presentLoading() 
 
-    if(this.cadastro.valid){
-     return new Promise(resolve => {
-            this.http.get<any[]>('https://nominatim.openstreetmap.org/search?q='+this.cadastro.value.endereco+','+
-              this.cadastro.value.bairro+','+
-               this.cadastro.value.numeroEND+','+ this.cadastro.value.cidade+','+ this.cadastro.value.estado +'&format=json').subscribe(data => {
-                      resolve(data);
-                      console.log(data.length);
-                      if (data.length === 0){
-                       this.showalert('Hm...', 'Parece que não encontramos seu endereço. Já tentou sem abreviações?')
-                      }else{
-                        this.datou = data[0].lat;
-
-                        try {
-       const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
-        if(this.FCM === undefined){
-          this.FCM === '1'
-        }
-       const user = firebase.auth().currentUser;
-       this.afStore.doc(`users/${user.uid}`).set({
-            nome: this.cadastro.value.nome,
-            email: this.cadastro.value.email,
-            endereco: this.cadastro.value.endereco,
-            telefone:  this.cadastro.value.telefone,
-            bairro: this.cadastro.value.bairro,
-            cidade: this.cadastro.value.cidade,
-            zona: this.type,
-            tipo: this.typeUser,
-            LikeValue: 0,
-            DislikeValue: 0,
-            lat: data[0].lat,
-            lng: data[0].lon,
-            aprovado: "Nao avaliado",
-            banco: this.cadastro.value.banco,
-            CPFconta:this.cadastro.value.CPFconta,
-            agencia: this.cadastro.value.agencia,
-            nomeNaConta: this.cadastro.value.nomeNaConta,
-            conta: this.cadastro.value.conta,
-            correnteoupou:this.correnteoupou,
-            resumo: this.cadastro.value.resumo,
-            numeroEND: this.cadastro.value.numeroEND,
-            CPFCNPJ: this.cadastro.value.CPF,
-            CEP: this.cadastro.value.CEP,
-            DOB: this.cadastro.value.DOB,
-            estado: "RJ", //this.cadastro.value.estado,
-            ddd:this.cadastro.value.ddd,
-            entrega: this.cadastro.value.entregaDe,
-            seNao: this.cadastro.value.seNEntrega,
-            fcm: this.FCM,
-            FotoPerfil: String(this.url)
-       }).then(() => {
-          const user = firebase.auth().currentUser;
-
-         this.mainuser = this.afStore.doc(`users/${user.uid}`);
-         this.userID = user.uid
-
-         this.sub = this.mainuser.valueChanges().subscribe(event => {
-              this.storage.set('usuario', event) 
-                             this.storage.set('email', user.email);
-
-              this.navCtrl.navigateRoot('/user');
-              console.log(user);
-              this.showalert('Bem-vindo ao Axé Delivery!', 'Agora é só aproveitar!')
-            });
-
-       });
-
-
-       })
-       
-    } catch (err) {
-        console.dir(err);
-    }
-                       //Av. Ten-Cel. Muniz de Aragão 
-                      }
-                      
-                  }, err => {
-                   console.log(err);
-          });
-      });
-
-  
-  }else{
-    this.showalert('Hm...', 'Preencha todos os campos!'+ this.cadastro.valid)
+    if(this.cadastro.valid && this.typeUser == 'Loja'){
+      try {
+        const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
+         if(this.FCM === undefined){
+           this.FCM === '1'
+         }
+        const user = firebase.auth().currentUser;
+        this.afStore.doc(`users/${user.uid}`).set({
+             nome: this.cadastro.value.nome,
+             email: this.cadastro.value.email,
+             endereco: this.cadastro.value.endereco,
+             telefone:  this.cadastro.value.telefone,
+             bairro: this.cadastro.value.bairro,
+             cidade: this.cadastro.value.cidade,
+             zona: this.type,
+             tipo: this.typeUser,
+             LikeValue: 0,
+             DislikeValue: 0,
+             lat: this.latitudeGoogle,
+             lng: this.longitudeGoogle,
+             aprovado: "Nao avaliado",
+             banco: this.cadastro.value.banco,
+             CPFconta:this.cadastro.value.CPFconta,
+             agencia: this.cadastro.value.agencia,
+             nomeNaConta: this.cadastro.value.nomeNaConta,
+             conta: this.cadastro.value.conta,
+             correnteoupou:this.correnteoupou,
+             resumo: this.cadastro.value.resumo,
+             numeroEND: this.cadastro.value.numeroEND,
+             CPFCNPJ: this.cadastro.value.CPF,
+             CEP: this.cadastro.value.CEP,
+             DOB: this.cadastro.value.DOB,
+             estado: "RJ", //this.cadastro.value.estado,
+             ddd:this.cadastro.value.ddd,
+             entrega: this.cadastro.value.entregaDe,
+             seNao: this.cadastro.value.seNEntrega,
+             fcm: '1',
+             FotoPerfil: String(this.url)
+        }).then(() => {
+           const user = firebase.auth().currentUser;
+           if(this.FCM === undefined){
+            this.FCM === '1'
+          }
+          this.mainuser = this.afStore.doc(`users/${user.uid}`);
+          this.userID = user.uid
+ 
+          this.sub = this.mainuser.valueChanges().subscribe(event => {
+            if(this.FCM === undefined){
+              this.FCM === '1'
+            }
+            this.storage.set('usuario', event) 
+                              this.storage.set('email', user.email);
+                
+               this.navCtrl.navigateRoot('/user');
+               console.log(user);
+               this.showalert('Bem-vindo ao Axé Delivery!', 'Agora é só aproveitar!')
+             });
+ 
+        });
+ 
+ 
+        })
+        
+     } catch (err) {
+         console.dir(err);
+     }
+    } else if(this.cadastro.valid && this.typeUser == 'user'){
+      try {
+        const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
+         if(this.FCM === undefined){
+           this.FCM === '1'
+         }
+        const user = firebase.auth().currentUser;
+        this.afStore.doc(`users/${user.uid}`).set({
+             nome: this.cadastro.value.nome,
+             email: this.cadastro.value.email,
+             endereco: this.cadastro.value.endereco,
+             telefone:  this.cadastro.value.telefone,
+             bairro: this.cadastro.value.bairro,
+             cidade: this.cadastro.value.cidade,
+             zona: this.type,
+             tipo: this.typeUser,
+             LikeValue: 0,
+             DislikeValue: 0,
+             lat: this.latitudeGoogle,
+             lng: this.longitudeGoogle,
+             aprovado: "Nao avaliado",
+             banco: '',
+             CPFconta: '',
+             agencia: '',
+             nomeNaConta: '',
+             conta: '',
+             correnteoupou: '',
+             resumo: '',
+             numeroEND: this.cadastro.value.numeroEND,
+             CPFCNPJ: this.cadastro.value.CPF,
+             CEP: this.cadastro.value.CEP,
+             DOB: this.cadastro.value.DOB,
+             estado: "RJ", //this.cadastro.value.estado,
+             ddd:this.cadastro.value.ddd,
+             entrega: '',
+             seNao: '',
+             fcm: '1',
+             FotoPerfil: String(this.url)
+        }).then(() => {
+          if(this.FCM === undefined){
+            this.FCM === '1'
+          }
+           const user = firebase.auth().currentUser;
+ 
+          this.mainuser = this.afStore.doc(`users/${user.uid}`);
+          this.userID = user.uid
+ 
+          this.sub = this.mainuser.valueChanges().subscribe(event => {
+               this.storage.set('usuario', event) 
+                              this.storage.set('email', user.email);
+                              if(this.FCM === undefined){
+                                this.FCM === '1'
+                              }
+               this.navCtrl.navigateRoot('/user');
+               console.log(user);
+               this.showalert('Bem-vindo ao Axé Delivery!', 'Agora é só aproveitar!')
+             });
+ 
+        });
+ 
+ 
+        })
+        
+     } catch (err) {
+         console.dir(err);
+     }
   }
       // tslint:disable-next-line:indent
       // tslint:disable-next-line:indent
@@ -307,38 +402,6 @@ export class RegisterPage implements OnInit {
   }
 
 }
-private iniciarPush(){
-  const options: PushOptions = {
-    android: {
-      senderID:'612729787094'
-    },
-    ios: {
-     alert: 'true',
-     badge: true,
-     sound: 'true'
-   }
- }
-
-const pushObject: PushObject = this.push.init(options);
-
-  pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
-
-  pushObject.on('registration').subscribe((registration: any) => {
-
-  console.log('Device registered', registration.registrationId)
-  this.FCM = registration.registrationId
-      console.log('Device registered', registration)
-/*  this.afStore.collection('devices').add({
-       idDevice: registration[0].registrationId,
-
-    });
-*/
-} );
-pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
-
-
-
-}
 
 uploadPicture(blob:Blob){
   var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
@@ -363,79 +426,5 @@ uploadPicture(blob:Blob){
       })
     ).subscribe();
 }
-  testaCNPJ(event) {
-    // Verifica se a variável cnpj é igua a "undefined", exibindo uma msg de erro
-    if (this.cnpj === undefined) {
-      this.cnpjAlert();
-      return false;
-    }
 
-    // Esta função retira os caracteres . / - da string do cnpj, deixando apenas os números 
-    var strCNPJ = this.cnpj.replace('.', '').replace('.', '').replace('/', '').replace('-', '');
-
-    // Testa as sequencias que possuem todos os dígitos iguais e se o cnpj não tem 14 dígitos, retonando falso e exibindo uma msg de erro
-    if (strCNPJ === '00000000000000' || strCNPJ === '11111111111111' || strCNPJ === '22222222222222' || strCNPJ === '33333333333333' ||
-      strCNPJ === '44444444444444' || strCNPJ === '55555555555555' || strCNPJ === '66666666666666' || strCNPJ === '77777777777777' ||
-      strCNPJ === '88888888888888' || strCNPJ === '99999999999999' || strCNPJ.length !== 14) {
-      this.cnpjAlert();
-      return false;
-    }
-
-    // A variável numeros pega o bloco com os números sem o DV, a variavel digitos pega apenas os dois ultimos numeros (Digito Verificador).
-    var tamanho = strCNPJ.length - 2;
-    var numeros = strCNPJ.substring(0, tamanho);
-    var digitos = strCNPJ.substring(tamanho);
-    var soma = 0;
-    var pos = tamanho - 7;
-
-    // Os quatro blocos seguintes de funções irá reaizar a validação do CNPJ propriamente dito, conferindo se o DV bate. Caso alguma das funções não consiga verificar
-    // o DV corretamente, mostrará uma mensagem de erro ao usuário e retornará falso, para que o usário posso digitar novamente um número 
-    for (let i = tamanho; i >= 1; i--) {
-      soma += numeros.charAt(tamanho - i) * pos--;
-      if (pos < 2) {
-        pos = 9;
-      }
-    }
-
-    var resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-    if (resultado != digitos.charAt(0)) {
-      this.cnpjAlert();
-      return false;
-    }
-
-    tamanho = tamanho + 1;
-    numeros = strCNPJ.substring(0, tamanho);
-    soma = 0;
-    pos = tamanho - 7;
-    for (let k = tamanho; k >= 1; k--) {
-      soma += numeros.charAt(tamanho - k) * pos--;
-      if (pos < 2) {
-        pos = 9;
-      }
-    }
-
-    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-    if (resultado != digitos.charAt(1)) {
-      this.cnpjAlert();
-      return false;
-    }
-
-    this.update();
-    return true;
-  }
-
-  //Caso o CNPJ será valido, irá realizar a gravação do mesmo na variável strCNPJ
-  async update() {
-    await this.modalController.dismiss(this.strCNPJ);
-  }
-
-  //Exibe uma mensagem de alerta ao usuário, caso o número do CNPJ seja inválido
-  async cnpjAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'CNPJ Inválido!',
-      message: 'Digite um número de CNJP válido para prosseguir',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
 }

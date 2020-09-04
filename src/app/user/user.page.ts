@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,NgZone} from '@angular/core';
 import {NavController,AlertController} from '@ionic/angular';
 import { ServiceService } from '../service.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {HttpClient} from '@angular/common/http';
-
+declare var google;
 
 export interface Processo {
     nome: string ;
@@ -86,13 +86,25 @@ export class UserPage implements OnInit {
     CPFcontaNew = '';
     type = '';
     FCM
+    autocomplete: { input: string; };
+    autocompleteItems: any[];
+    location: any;
+    placeid: any;
+    GoogleAutocomplete: any;
+    hide = false
+    geocoder
+    latitudeGoogle
+    longitudeGoogle
   constructor(public navCtrl: NavController, private storage: Storage,
               public afStore: AngularFirestore, 
               public modalController: ModalController,
                 public services: ServiceService,
                 private formBuilder: FormBuilder,
-                private geolocation: Geolocation,private http: HttpClient, public alertCtrl: AlertController) {
-    
+                private geolocation: Geolocation,private http: HttpClient, public zone: NgZone, public alertCtrl: AlertController) {
+                  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+                  this.autocomplete = { input: '' };
+                  this.autocompleteItems = [];
+                  this.geocoder = new google.maps.Geocoder;
 
 
         this.newCadastro = this.formBuilder.group({
@@ -175,6 +187,12 @@ export class UserPage implements OnInit {
   
 
   ngOnInit() {
+
+  }
+
+  habilitar(){
+    this.services.updateFCM(this.userID, this.FCM);
+
   }
 
   updateEnd(){
@@ -191,20 +209,80 @@ export class UserPage implements OnInit {
       this.showalert('Opa!', 'Dados atualizados!')
        this.hideMe2 = true;
   }
-  update(){
+  UpdateSearchResults(){
+    this.hide = false
+
+    if (this.autocomplete.input == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ 
+      input: this.autocomplete.input,
+      componentRestrictions: {
+        country: 'br'
+      }
+    },
+    (predictions, status) => {
+      this.autocompleteItems = [];
+      this.zone.run(() => {
+        predictions.forEach((prediction) => {
+          this.autocompleteItems.push(prediction);
+        });
+      });
+    });
+  }
+  SelectSearchResult(item) {
+    this.hide = true
+
+    ///WE CAN CONFIGURE MORE COMPLEX FUNCTIONS SUCH AS UPLOAD DATA TO FIRESTORE OR LINK IT TO SOMETHING
+    console.log(String(item.terms[0].value))      
+    console.log(String(item.terms[1].value))      
+    console.log(String(item.terms[2].value))      
+    console.log(String(item.terms[3].value))   
+    console.log(JSON.stringify(item))
     
-    return new Promise(resolve => {
-            this.http.get<any[]>('https://nominatim.openstreetmap.org/search?q='+this.newCadastro.value.enderecoNew+','+this.newCadastro.value.bairroNew+','+
-               this.newCadastro.value.numeroENDNew+','+ this.newCadastro.value.cidadeNew+'&format=json').subscribe(data => {
-                      resolve(data);
-                      console.log(data.length);
-                      if (data.length === 0){
-                       this.showalert('Hm...', 'Parece que não encontramos seu endereço. Já tentou sem abreviações?')
-                      }else{
-                        this.datou = data[0].lat;
-                       this.services.updateEnd(this.userID,this.type,this.newCadastro.value.enderecoNew, this.newCadastro.value.CEPNew,
-                       this.newCadastro.value.bairroNew, this.newCadastro.value.numeroENDNew, this.newCadastro.value.cidadeNew,
-                       this.newCadastro.value.estadoNew, data[0].lat, data[0].lon)
+    this.newCadastro.value.enderecoNew = String(item.terms[0].value)
+    this.newCadastro.value.bairroNew = String(item.terms[1].value)
+    this.newCadastro.value.cidadeNew = String(item.terms[2].value)
+
+    this.enderecoNew = String(item.terms[0].value)
+    this.bairroNew = String(item.terms[1].value)
+    this.cidadeNew = String(item.terms[2].value)
+
+    console.log(this.newCadastro.value.bairroNew)
+    console.log(this.newCadastro.value.cidadeNew)
+    console.log(this.bairroNew)
+    console.log(this.cidadeNew)
+
+    this.placeid = item.place_id
+    this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
+      if(status === 'OK' && results[0]){
+        let position = {
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+        };
+        console.log(position)
+        this.latitudeGoogle =results[0].geometry.location.lat()
+        this.longitudeGoogle = results[0].geometry.location.lng()
+        console.log(results[0].geometry.location)
+        console.log(results)
+        //let marker = new google.maps.Marker({
+        //  position: results[0].geometry.location,
+        //  map: this.map,
+        //});
+        //this.markers.push(marker);
+        //this.map.setCenter(results[0].geometry.location);
+      }
+    })
+  }
+  
+  update(){
+    this.newCadastro.value.estadoNew = "RJ"
+    this.services.updateEnd(this.userID,this.type,this.newCadastro.value.enderecoNew, 
+      this.newCadastro.value.CEPNew,
+                       this.bairroNew, this.newCadastro.value.numeroENDNew, 
+                       this.cidadeNew,
+                       this.newCadastro.value.estadoNew, this.latitudeGoogle, this.longitudeGoogle)
                        this.hideMe = true
                        this.storage.remove('usuario').then(() =>{
                         const user = firebase.auth().currentUser;
@@ -214,7 +292,6 @@ export class UserPage implements OnInit {
                         this.mainuser.valueChanges().subscribe(event => {
                            console.log(event)
                            this.FCM = event.fcm
-                           this.services.updateFCM(this.userID, this.FCM)
                            this.storage.set('usuario', event).then(() =>{
                            this.showalert('Opa!', 'Dados atualizados!')
                            //this.navCtrl.navigateRoot('/list');
@@ -222,18 +299,8 @@ export class UserPage implements OnInit {
                         })
                                  
                       })                        
-                    })
-
-                       //Av. Ten-Cel. Muniz de Aragão 
-                  }
-                      
-                  }, err => {
-                   console.log(err);
+                
           });
-      });
-   
-
-    
   }
   deletarItem(items){
     this.services.deletarItem(items.id)

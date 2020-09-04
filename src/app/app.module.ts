@@ -32,6 +32,7 @@ import { File } from '@ionic-native/File/ngx';
 import ptBr from '@angular/common/locales/pt';
 
 import { Push } from '@ionic-native/push/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
 
 registerLocaleData(ptBr)
 
@@ -69,9 +70,11 @@ driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
     SplashScreen,
     ServiceService,
     AngularFirestore,
+    HttpClientModule,
     Push,
     MediaCapture,
     File,
+    HTTP,
     Media,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
      {

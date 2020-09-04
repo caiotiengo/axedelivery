@@ -111,6 +111,9 @@ async presentLoading() {
   	console.log('Fine');
    // saudade do meu amor
   }
+  entrega(){
+    this.navCtrl.navigateForward('/entregar')
+  }
  async entrar() {
     const{email, password } = this;
       this.presentLoading() 

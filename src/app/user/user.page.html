@@ -23,7 +23,7 @@
       <p>Zona: {{zona}}</p>
       <br/>
       <ion-button style="height: 4vh;" color="warning" (click)="sair()">Logout</ion-button>
-
+      <ion-button style="height: 4vh;" color="warning" (click)="habilitar()"> Habilitar Notificações</ion-button>
     </ion-card-content>
   </ion-card>
 <ion-card style="background-color: white !important; ">
@@ -52,9 +52,16 @@
            
                <ion-item>
                          <ion-label position="floating">Endereço</ion-label>
-                         <ion-input formControlName="enderecoNew" type="text" required></ion-input>
+                         <ion-input formControlName="enderecoNew" 
+						  [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" 
+						  (ionClear)="ClearAutocomplete()" value="{{enderecoNew}}"></ion-input>
+                         <!--ion-input formControlName="" type="text" required></ion-input-->
                        </ion-item>
-           
+                       <ion-list [hidden]="autocompleteItems.length == 0 || hide">
+                        <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
+                          {{ item.description }}
+                        </ion-item>
+                        </ion-list>
                        <ion-grid>
                            <ion-row>
                                <ion-col>
@@ -76,7 +83,8 @@
            
                        <ion-item>
                          <ion-label position="floating">Bairro</ion-label>
-                         <ion-input formControlName="bairroNew" required type="text"></ion-input>
+                         <ion-input formControlName="bairroNew" placeholder="{{bairroNew}}"value="{{bairroNew}"
+                           type="text"></ion-input>
                        </ion-item>
                        
            
@@ -86,14 +94,15 @@
                                <ion-col>
                                    <ion-item>
                                <ion-label position="floating">Cidade</ion-label>
-                               <ion-input placeholder="EX: Rio de Janeiro" required formControlName="cidadeNew" type="text"></ion-input>
+                               <ion-input placeholder="{{cidadeNew}}" value="{{cidadeNew}"  
+                               formControlName="cidadeNew" type="text"></ion-input>
                              </ion-item>
            
                                </ion-col>
                                <ion-col>
                              <ion-item>
                                <ion-label position="floating">Estado</ion-label>
-                               <ion-input placeholder="EX: RJ" required formControlName="estadoNew" type="text"></ion-input>
+                               <ion-input value="RJ" disabled placeholder="RJ" formControlName="estadoNew" type="text"></ion-input>
                              </ion-item>
                                </ion-col>
                            </ion-row>

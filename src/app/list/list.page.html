@@ -28,6 +28,7 @@
     		<p>{{numero}} - {{bairro}} - {{estado}}</p>
   		</ion-card-header>
   		<ion-button color="dark" class="button-card1" (click)="status()">
+
   			<ion-icon  style="color:#ffc409" name="bicycle-outline"></ion-icon>
 
   		</ion-button>
@@ -40,7 +41,7 @@
   </div>
   <div class="scrolling-wrapper">
   
-    <ion-item lines="none" class="card"  *ngFor="let items of goalListFiltrado">
+    <ion-item lines="none" class="card"  *ngFor="let items of goalListFiltrei">
       <ion-card style="text-align: center;" [routerLink]="['/item/' + items.id]"  > 
       <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
   
