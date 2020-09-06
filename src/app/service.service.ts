@@ -250,7 +250,7 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
       CPFconta: CPFconta
     });
   }
-    updateFCM(id:string,FCM:string) {
+  updateFCM(id:string,FCM:string) {
     this.userCollection.doc<User>(id).update({fcm: FCM});
   }
   updateChat(id:string,conteudo:string){

@@ -10,6 +10,8 @@ import { ModalController } from '@ionic/angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {HttpClient} from '@angular/common/http';
+import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
+
 declare var google;
 
 export interface Processo {
@@ -100,7 +102,8 @@ export class UserPage implements OnInit {
               public modalController: ModalController,
                 public services: ServiceService,
                 private formBuilder: FormBuilder,
-                private geolocation: Geolocation,private http: HttpClient, public zone: NgZone, public alertCtrl: AlertController) {
+                private geolocation: Geolocation,private http: HttpClient, public zone: NgZone, 
+                public alertCtrl: AlertController,private push:Push) {
                   this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
                   this.autocomplete = { input: '' };
                   this.autocompleteItems = [];
@@ -191,10 +194,43 @@ export class UserPage implements OnInit {
   }
 
   habilitar(){
-    this.services.updateFCM(this.userID, this.FCM);
+    const options: PushOptions = {
+      android: {
+        senderID:'612729787094'
+      },
+      ios: {
+       alert: 'true',
+       badge: true,
+       sound: 'true'
+     }
+   }
+ 
+   const pushObject: PushObject = this.push.init(options);
+ 
+     pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+ 
+     pushObject.on('registration').subscribe((registration: any) => {
+ 
+     console.log('Device registered', registration.registrationId)
+     this.FCM = registration.registrationId
+     this.services.updateFCM(this.userID, this.FCM);
+      this.showalert('Opa!', 'Notificação habilitada.')
+         console.log('Device registered', registration)
+   /*  this.afStore.collection('devices').add({
+          idDevice: registration[0].registrationId,
+ 
+       });
+   */
+   } );
+   pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+ 
+ 
 
   }
+  private iniciarPush(){
+    
 
+  }
   updateEnd(){
       this.hideMe = false;
   }
