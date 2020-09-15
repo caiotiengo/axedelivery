@@ -50,12 +50,13 @@ ion-content{
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-    background: #d3d3d32b;
+   // background: #d3d3d32b;
   
     .card {
       display: inline-block;
-      width:55%;
-      --background:transparent;
+      width:65%;
+      height: 100%;
+     // --background:transparent;
     }
   }
 

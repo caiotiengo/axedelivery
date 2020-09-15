@@ -36,6 +36,8 @@ export interface User {
     nomeNaConta?:any
     fcm?:any
     zona?:any
+    entrega?:any
+    seNao?:any
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -263,7 +265,10 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
      }
       this.vendasCollection.doc<Vendas>(id).update({mensagens: firebase.firestore.FieldValue.arrayUnion(data)})  
   }
+  updateEntrega(id: string, entrega:string, seNao:string){
+    this.userCollection.doc<User>(id).update({entrega: entrega, seNao:seNao});
 
+  }
 /*
 
 

@@ -19,12 +19,10 @@
        <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
     </ion-fab-button>
 </ion-fab>
-<ion-card>
 
-  <ion-card-header>
 
-      <ion-item style="border-radius: 25px; border: 2px solid rgba(0, 0, 0, 0.3);
-    box-shadow: 5px 5px rgba(128, 128, 128, 0.4);">
+      <ion-item style=" margin-top: 15%;
+      margin-bottom: 5%; border-radius: 25px;">
           <ion-icon name="pin" style="color: #3eab3e" slot="start"></ion-icon>
           <ion-label>{{loja.bairro}}</ion-label>
       </ion-item>
@@ -34,18 +32,14 @@
 
           </ion-fab-button>
       </ion-fab>
-  </ion-card-header>
+
 
    <!--ion-item >
      <ion-button fill="clear" expand="block" style=" margin-right: auto; margin-left: auto; " (click)="slidePrev(mySlider)"> <ion-icon color="findme" style="" name="arrow-round-back"></ion-icon> Prev </ion-button>
      <ion-button fill="clear" expand="block" style=" margin-right: auto; margin-left: auto; "  (click)="nextSlide(mySlider)"> Next <ion-icon color="findme" style="" name="arrow-round-forward"></ion-icon></ion-button>
     </ion-item-->
 
-  
-    <ion-card-content>
-            <ion-item style="border-radius: 25px;
-    border: 2px solid rgba(0, 0, 0, 0.21);
-    box-shadow: 3px 3px rgba(128, 128, 128, 0.4); margin-bottom: 5%">
+         <ion-item style="border-radius: 25px; margin-bottom: 5%">
                 <ion-icon slot="start"  style="color: black" name="car"></ion-icon>
                 <p>Entrega</p>
                 <p slot="end">R${{valorDelivery}}</p>
@@ -58,7 +52,6 @@
             <p>Total em produtos</p>
             <p slot="end">R${{visu}}</p>
         </ion-item>
-    </ion-card-content>
 
     <!--ion-select style="border: 1px solid black; border-radius: 25px; padding: 10px;" placeholder="Escolha uma categoria" [(ngModel)]="categoria">
         <ion-select-option value="Velas">Velas</ion-select-option>
@@ -77,7 +70,7 @@
     margin-bottom: 10%;"
 
     </ion-select-->
-          <h3 style="text-align: center">Comentários</h3>
+          <h3 style="text-align: center;font-weight: bold;">Comentários</h3>
 
     <div *ngIf="commentsLen === 0">
 
@@ -106,7 +99,39 @@
     border: 10px solid rgb(255, 209, 18);
     color: black;
     border-top-right-radius: 30px;" text-center>Produtos</h4>
-    <ion-searchbar  animated style="color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" placeholder="Pesquise um produto"
+    <div style="text-align: center;">
+<p style="font-weight: bold;">Escolha o tipo de produto:</p>
+<ion-select placeholder="Tipo de produto" style="border-bottom-left-radius: 25px;
+border-bottom-right-radius: 25px;
+margin-bottom: 10%;
+background: #fdd112;" [(ngModel)]="type">
+  <ion-select-option value="Alimentos">Alimentos</ion-select-option>
+  <ion-select-option value="Animais">Animais</ion-select-option>
+  <ion-select-option value="Bijuterias">Bijuterias</ion-select-option>
+  <ion-select-option value="Bebidas">Bebidas</ion-select-option>
+  <ion-select-option value="Defumacao">Defumação</ion-select-option>
+  <ion-select-option value="Decoracao">Decoração</ion-select-option>					
+  <ion-select-option value="Ervas">Ervas</ion-select-option>
+  <ion-select-option value="Contas">Guia/contas</ion-select-option>
+  <ion-select-option value="Imagens">Imagens</ion-select-option>
+  <ion-select-option value="Instrumentos">Instrumentos musicais</ion-select-option>					
+  <ion-select-option value="Livraria">Livraria</ion-select-option>
+  <ion-select-option value="Outros">Outros</ion-select-option>
+  <ion-select-option value="Pedras/Cristais">Pedras / Cristais</ion-select-option>
+  <ion-select-option value="Cera">Produtos de cera</ion-select-option>
+  <ion-select-option value="Agata">Produtos de Ágata </ion-select-option>
+  <ion-select-option value="Vidro">Produtos de vidro</ion-select-option>
+  <ion-select-option value="Ferro">Produtos de ferro</ion-select-option>
+  <ion-select-option value="Palha">Produtos de palha</ion-select-option>
+  <ion-select-option value="Louca">Produtos de Louça</ion-select-option>
+  <ion-select-option value="Barro">Produtos de Barro</ion-select-option>
+  <ion-select-option value="Madeiras">Produtos de Madeira</ion-select-option>
+  <ion-select-option value="Tabacaria">Tabacaria</ion-select-option>
+  <ion-select-option value="Velas">Velas</ion-select-option>
+  <ion-select-option value="Vestuario">Vestuário</ion-select-option>
+</ion-select>
+</div>
+<ion-searchbar  animated style="color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" placeholder="Pesquise um produto"
                     (ionInput)="filterList($event)">
 
 
@@ -114,21 +139,29 @@
     </ion-searchbar>
 
     <ion-list *ngFor="let items of goalList" >
+      <ion-item *ngIf="items.tipoPrd === type "> 
 
+        <ion-thumbnail slot="start">
+          <img  *ngIf="items.fotos" src="{{items.fotos[0].link}}">
+          <img  *ngIf="!items.fotos" src="/assets/Picture1.png">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{items.nome}}</h2>
+          <p>R${{items.valor}}</p>
+          <p>Quantidade:{{items.quantity}}</p>
+          <p style="background: #ffc409;
+          padding: 5px;
+          text-align: center;
+          border-radius: 25px;
+          color: black;">{{items.tipoPrd}}</p>
+        </ion-label>
+        <ion-button (click)="addCarrinho(items)" slot="end" fill="solid" color="warning" style="color:#ffcb02 !important">
+          <ion-icon name="cart"></ion-icon>
+      </ion-button>
+      <ion-button fill="solid" color="warning" slot="end"(click)="veritem(items)">Veja</ion-button>
+  </ion-item>
 
-            <ion-item>
-
-                <ion-avatar slot="start">
-                    <img src="{{items.fotos[0].link}}">
-                </ion-avatar>
-                <ion-label >{{items.nome}}<p>R${{items.valor}} - Quantidade: {{items.quantity}}</p> </ion-label>
-
-                <ion-button (click)="addCarrinho(items)" slot="end" fill="solid" color="warning" style="color:#ffcb02 !important">
-                    <ion-icon name="cart"></ion-icon>
-                </ion-button>
-                <ion-button fill="solid" color="warning" slot="end"(click)="veritem(items)">Veja</ion-button>
-
-            </ion-item>
+  
 
 
     </ion-list>
@@ -144,7 +177,7 @@
           </ion-button>
       </ion-item-->
 
-  </ion-card>
+ 
 
 
 </ion-content>

@@ -77,6 +77,7 @@ export class UserPage implements OnInit {
     estado:string
     lat
     newBanco
+    newEntrega
     lng
     datou
     numero
@@ -88,6 +89,9 @@ export class UserPage implements OnInit {
     CPFcontaNew = '';
     type = '';
     FCM
+    hideMe3 = true
+    entrega
+    seNao
     autocomplete: { input: string; };
     autocompleteItems: any[];
     location: any;
@@ -129,7 +133,14 @@ export class UserPage implements OnInit {
                   tipoContaNew: ['', Validators.required],
                   CPFcontaNew: ['', Validators.required]
                   
-            });        
+            }); 
+            this.newEntrega = this.formBuilder.group({
+                  
+              entregas: ['', Validators.required],
+              senaoEntregas: ['', Validators.required],
+
+              
+        });        
         this.geolocation.getCurrentPosition().then((resp) => {
               console.log(resp.coords.latitude)
               console.log(resp.coords.longitude)
@@ -183,6 +194,8 @@ export class UserPage implements OnInit {
       this.nomeNaConta = event.nomeNaConta
       this.tipoConta = event.correnteoupou
       this.CPFconta = event.CPFconta
+      this.entrega = event.entrega
+      this.seNao = event.seNao
     });
 
    }
@@ -192,7 +205,12 @@ export class UserPage implements OnInit {
   ngOnInit() {
 
   }
-
+  entregaz(){
+    this.services.updateEntrega(this.userID, this.newEntrega.value.entregas,
+       this.newEntrega.value.senaoEntregas)
+   this.showalert('Opa!', 'Dados atualizados!')
+    this.hideMe3 = true;
+  }
   habilitar(){
     const options: PushOptions = {
       android: {
@@ -235,7 +253,10 @@ export class UserPage implements OnInit {
       this.hideMe = false;
   }
   updateBank(){
-    this.hideMe2 = false
+    this.hideMe2 = false;
+  }
+  updateEntrega(){
+    this.hideMe3 = false;
   }
   updateBanco(){
 

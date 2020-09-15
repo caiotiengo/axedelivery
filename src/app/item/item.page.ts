@@ -107,6 +107,7 @@ export class ItemPage implements OnInit {
     lat 
     lng
     lojaLng
+    type = 'Alimentos';
     lojaLat
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,

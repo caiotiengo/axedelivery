@@ -42,17 +42,29 @@
   <div class="scrolling-wrapper">
   
     <ion-item lines="none" class="card"  *ngFor="let items of goalListFiltrei">
-      <ion-card style="text-align: center;" [routerLink]="['/item/' + items.id]"  > 
-      <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+      <ion-card style="    text-align: center;
+      height: 100%;
+      margin: auto;
+      min-height: 34vh;
+      max-height: 34vh;
+      width: 30vh; border: 1px solid #bfbfbf;" [routerLink]="['/item/' + items.id]"  >
+        <ion-card-header>
+          <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
   
-      <img style="    margin: auto;
-    
-      max-height: 15vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
-      <p>{{items.nome}}</p>
-      <ion-label style="background: #ffc409;"> 	
-        <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>
-        {{items.bairro}}
-      </ion-label>
+          <img style="    margin: auto;
+        
+          max-height: 15vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
+        </ion-card-header> 
+        <ion-label style="background: #ffc409;    border-radius: 25px;
+        border: 1px solid black;"> 	
+    <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>
+    {{items.bairro}}
+  </ion-label>
+        <ion-card-content>
+          <p style="white-space: break-spaces;">{{items.nome}}</p>
+
+        </ion-card-content>
+
 
     </ion-card>
     </ion-item>

@@ -176,6 +176,46 @@
 </ion-card-content>
 
 </ion-card >
+
+<ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important; ">
+  <ion-card-content>  
+   <p><i>Horário de Entrega:{{entrega}}</i></p>
+   <p><i>Se ultrapassar esse horário: {{seNao}}</i></p>
+    <ion-button style="height: 4vh;" (click)="updateEntrega()" color="warning">  
+      alterar
+    </ion-button>
+<form [formGroup]="newEntrega" [hidden]="hideMe3">
+ <br/>
+
+  <h4 style="text-align: center;">Quais são os seus horários?</h4>
+  <br/>
+
+          <ion-grid>
+              <ion-row>
+                  <ion-col>
+                      <ion-item>
+                    <ion-label position="floating">Horário de entrega</ion-label>
+                    <ion-input formControlName="entregas" required></ion-input>
+                </ion-item>
+
+                  </ion-col>
+                  <ion-col>
+                <ion-item>
+                  <ion-label position="floating">Se ultrapassar esse horário</ion-label>
+                    <ion-input formControlName="senaoEntregas" required></ion-input>
+                </ion-item>
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+          
+         
+    <ion-button  style="height: 4vh;" (click)="entregaz()" color="success" slot="end">Atualizar</ion-button><br/>
+
+
+</form>
+</ion-card-content>
+
+</ion-card >
   <ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important;">
     <ion-card-header > <h3 text center>{{nome}}, Aqui está seus produtos!</h3>  <!--ion-button color="findme" (click)="addProc()"></ion-button--></ion-card-header>
 
