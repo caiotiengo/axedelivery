@@ -33,13 +33,37 @@
 
   		</ion-button>
   </ion-card>
+  <!--div style="margin-top:50%;" class="card-background-page">
+    <ion-grid>
+      <ion-row>
+          <ion-col>
+            <ion-card >
+              <img src="/assets/artigos.png"/>
+              <p>Artigos Religiosos</p>
+            </ion-card>
+        
 
+          </ion-col>
+          <ion-col>
+            <ion-card >
+              <img src="/assets/roupa.png"/>
+              <p>Roupas</p>
+            
+            </ion-card>
+        
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </div-->
+  
 
  
   <div style="margin-top:50%;">
     <p class="label-lojas">Na sua região</p>
   </div>
-  <div class="scrolling-wrapper">
+  <div  class="scrolling-wrapper">
   
     <ion-item lines="none" class="card"  *ngFor="let items of goalListFiltrei">
       <ion-card style="    text-align: center;
@@ -47,7 +71,7 @@
       margin: auto;
       min-height: 34vh;
       max-height: 34vh;
-      width: 30vh; border: 1px solid #bfbfbf;" [routerLink]="['/item/' + items.id]"  >
+      width: 30vh; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.id]"  >
         <ion-card-header style="min-height: 20vh;
         max-height: 20vh;">
           <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
@@ -56,8 +80,11 @@
         
           max-height: 15vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
         </ion-card-header> 
-        <ion-label style="background: #ffc409;    border-radius: 25px;
-        border: 1px solid black;"> 	
+        <ion-label style="background: linear-gradient(45deg, #ffc40933,#ffc409);
+        border-radius: 25px;
+        color: black;
+        padding: 3px;
+    "> 	
     <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>
     {{items.bairro}}
   </ion-label>
@@ -107,7 +134,7 @@
                 <h2>{{items.nome}}</h2>
                 <p>Entrega:{{items.entrega}}</p>
                 <p>Ou: {{items.seNao}}</p>
-                <p style="background: #ffc409;
+                <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
                 padding: 5px;
                 text-align: center;
                 border-radius: 25px;

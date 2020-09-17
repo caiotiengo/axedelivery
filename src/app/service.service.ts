@@ -49,6 +49,7 @@ export interface Processo {
     type?: string;
     resumo?: string;
     lastEdit?: string;
+    tipoPrd?:any
 }
 export interface Vendas {
     nomeComprador?: string;

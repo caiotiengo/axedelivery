@@ -46,6 +46,7 @@ export interface Produtos {
     quantity: number;
     detail?: string;
     fotos?: string
+    tipoPrd?:any;
 }
 
 @Component({
@@ -107,7 +108,7 @@ export class ItemPage implements OnInit {
     lat 
     lng
     lojaLng
-    type = 'Alimentos';
+    type = '';
     lojaLat
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,

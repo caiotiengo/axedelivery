@@ -2,7 +2,7 @@
 	font-weight: 300;
 }
 .background-div1{
-	background: linear-gradient(45deg, #ffc409 40%, #ffc4097d 100%);
+    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
     height: 235px;
     width: 100%;
     border-bottom-left-radius: 50px;
@@ -14,12 +14,13 @@ ion-content{
 
 }
 .card-1{
-	background-color: white;
+    background-color: white;
     position: absolute;
+    margin-left: 0%;
     top: 14%;
     box-shadow: 0px 2px 0px 5px #d3d3d35c;
     text-align: center;
-    width: 95%;
+    width: 100%;
 }
 .arrow{
 	color: black;

@@ -373,7 +373,7 @@ export class RegisterPage implements OnInit {
     await alert.present();
   }
   voltar(){
-  		this.navCtrl.pop();
+  		this.navCtrl.navigateForward('/');
   }
 
   async photo(){
