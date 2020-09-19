@@ -3,9 +3,9 @@
     <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
        <img style="width:30%"src="/assets/Picture1.png"/>
 
- <h1 style="text-align: center;"> {{loja.nome}}</h1>
+ <h1 style="text-align: center;    font-weight: bold;
+ font-style: italic;"> {{loja.nome}}</h1>
    <p  style="text-align: center;">Entrega de: {{loja.entrega}}</p>
-   <p  style="text-align: center;"> Se ultrapassar o horario, entregamos:{{loja.seNao}}</p>
 
 </div>
 
@@ -13,6 +13,9 @@
 
 <div>
 </div>
+<p  style="text-align: center;"> Se ultrapassar o horario, entregamos:</p>
+<p  style="text-align: center;">{{loja.seNao}}</p>
+
 <ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">
    <ion-badge class="badge-produtos" *ngIf="produtos.length > 0" color="danger">{{produtos.length}}</ion-badge>
    	<ion-fab-button (click)="finalizarCompra()" color="dark">
@@ -26,12 +29,7 @@
           <ion-icon name="pin" style="color: #3eab3e" slot="start"></ion-icon>
           <ion-label>{{loja.bairro}}</ion-label>
       </ion-item>
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
 
-      <ion-fab-button color="findme">
-
-          </ion-fab-button>
-      </ion-fab>
 
 
    <!--ion-item >
@@ -109,7 +107,7 @@ background: #fdd112;" [(ngModel)]="type">
   <ion-select-option value="Animais">Animais</ion-select-option>
   <ion-select-option value="Bijuterias">Bijuterias</ion-select-option>
   <ion-select-option value="Bebidas">Bebidas</ion-select-option>
-  <ion-select-option value="Defumacao">Defumação</ion-select-option>
+  <ion-select-option value="Defumcao/Incenso">Defumação / Incenso</ion-select-option>
   <ion-select-option value="Decoracao">Decoração</ion-select-option>					
   <ion-select-option value="Ervas">Ervas</ion-select-option>
   <ion-select-option value="Contas">Guia/contas</ion-select-option>
@@ -139,7 +137,7 @@ background: #fdd112;" [(ngModel)]="type">
     </ion-searchbar>
 
     <ion-list *ngFor="let items of goalList" >
-      <ion-item> 
+      <ion-item *ngIf="items.tipoPrd === type"> 
 
         <ion-thumbnail slot="start">
           <img  *ngIf="items.fotos" src="{{items.fotos[0].link}}">

@@ -50,6 +50,10 @@ const routes: Routes = [
   {
     path: 'entregar',
     loadChildren: () => import('./entregar/entregar.module').then( m => m.EntregarPageModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./edit/edit.module').then( m => m.EditPageModule)
   }
 ];
 @NgModule({
