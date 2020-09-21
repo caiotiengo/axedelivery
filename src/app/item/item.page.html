@@ -137,11 +137,10 @@ background: #fdd112;" [(ngModel)]="type">
     </ion-searchbar>
 
     <ion-list *ngFor="let items of goalList" >
-      <ion-item *ngIf="items.tipoPrd === type"> 
-
+      <ion-item >
         <ion-thumbnail slot="start">
-          <img  *ngIf="items.fotos" src="{{items.fotos[0].link}}">
-          <img  *ngIf="!items.fotos" src="/assets/Picture1.png">
+          <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
+          <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
         </ion-thumbnail>
         <ion-label>
           <h2>{{items.nome}}</h2>

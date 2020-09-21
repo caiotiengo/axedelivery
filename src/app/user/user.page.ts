@@ -108,7 +108,7 @@ export class UserPage implements OnInit {
                 private formBuilder: FormBuilder,
                 private geolocation: Geolocation,private http: HttpClient, public zone: NgZone, 
                 public alertCtrl: AlertController,private push:Push) {
-                  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+        this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
                   this.autocomplete = { input: '' };
                   this.autocompleteItems = [];
                   this.geocoder = new google.maps.Geocoder;

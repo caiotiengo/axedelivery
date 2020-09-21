@@ -211,8 +211,8 @@ addUser(user: User) {
   }
  getLikes(id: string) {
     return this.userCollection.doc<User>(id).valueChanges().subscribe((data) => {
-      this.likes = data.LikeValue;
-      this.dislikes = data.DislikeValue;
+      //this.likes = data.LikeValue;
+      //this.dislikes = data.DislikeValue;
       console.log(this.likes);
     });
  }

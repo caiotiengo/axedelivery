@@ -223,7 +223,8 @@
       <ion-list *ngFor="let items of goalListFiltrado">
       <ion-item>
             <h2>{{items.nome}}</h2><br/>
-            <ion-button (click)="deletarItem(items)" color="danger" slot="end">deletar produto</ion-button><br/>
+            <ion-button  color="primary" [routerLink]="['/edit/' + items.id]" >Editar</ion-button>
+            <ion-button (click)="deletarItem(items)" color="danger" slot="end">Deletar</ion-button><br/>
       </ion-item>
 
     </ion-list>
