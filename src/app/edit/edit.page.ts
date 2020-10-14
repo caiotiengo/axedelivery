@@ -51,7 +51,8 @@ export class EditPage implements OnInit {
   public uploadPercent: Observable<number>;
   private formulario : FormGroup;
   photos: Array<Foto> = [];
-  
+  foto
+  produtoz
 
   constructor(public navCtrl: NavController, public afStore: AngularFirestore,
     public alertCtrl: AlertController,
@@ -85,11 +86,12 @@ export class EditPage implements OnInit {
   if (this.que) {
     this.procUser.subscribe(event =>{
       console.log(event)
-      this.nomePrd = event.nomePrd;
-      this.valor = event.valor;
+      this.produtoz = event;
+      this.nomePrd = event.nome;
+      this.foto = event.fotos;
       this.type = event.tipoPrd;
-      this.qtd = event.qtd;
-      this.resumo = event.resumo
+      this.qtd = event.quantity;
+      this.resumo = event.detail
     })
         //this.loadProduct();
         //this.loadComments();

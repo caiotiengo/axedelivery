@@ -145,6 +145,18 @@ export class CarrinhoPage implements OnInit {
      key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
         // production: false
     production: false
+
+    /*
+              accessToken: '292bed0bd3244409b835986edca4119f_v2',
+          token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
+          //secret:'cf87986f39c342caa5d9a49c6c166a2a',
+          key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
+          channelId:"APP-16HIIBI5HPS8",
+          // production: false
+          production: true,
+          "Accept" : 
+    
+    */
   })
   }
   ngOnInit() {
@@ -213,7 +225,29 @@ teste(){
                     state: this.estado,
                     country: 'BRA',
                     zipCode: this.CEP
-                }
+                },
+                receivers: [
+                  {
+                    moipAccount: {
+                        id: "MPA-E3C8493A06AE"
+                    },
+                    type: "PRIMARY",
+                    feePayor: true,
+                    amount: {
+                      percentual: 84
+                      }
+                  },
+                  {
+                    moipAccount: {
+                        id: "MPA-B4DEE9232459B"
+                    },
+                    type: "SECONDARY",
+                    feePayor: false,
+                    amount: {
+                      percentual: 16
+                      }
+                  }
+                ]
             }
         }).then((response) => {
             console.log(response.body)

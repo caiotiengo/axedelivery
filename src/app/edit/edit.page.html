@@ -6,7 +6,14 @@
   
   </div>
     <ion-card class="card-1">
-        <ion-card-header > <h3 text style="margin:auto;">Adicione um produto</h3></ion-card-header>
+        <ion-card-header> 
+          <h3 text style="margin:auto;">Adicione um produto</h3>
+          <ion-slides *ngIf="produtoz.fotos.lenght != 0">
+            <ion-slide *ngFor="let items of produtoz.fotos">
+              <img src="{{items.link}}">
+            </ion-slide>
+          </ion-slides>
+        </ion-card-header>
         <ion-card-content>
             <br/>
           <p>Escolha o tipo de produto:</p>
@@ -40,7 +47,7 @@
   
           <ion-item>
             <ion-label position="floating">Nome do produto</ion-label>
-            <ion-input formControlName="nomePrd"></ion-input>
+            <ion-input value={{nomePrd}} formControlName="nomePrd"></ion-input>
           </ion-item>
   
           <ion-item>

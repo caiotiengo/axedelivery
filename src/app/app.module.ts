@@ -45,16 +45,15 @@ firebase.initializeApp(firebaseConfig);
   AngularFireModule.initializeApp(firebaseConfig),
   AngularFireStorageModule,
   AngularFireAuthModule,
-          HttpClientModule,
-
-    HttpModule,
+  HttpClientModule,
+  HttpModule,
   BrowserModule,
   HttpClientModule,
-      BrMaskerModule,
+  BrMaskerModule,
   IonicModule.forRoot(),
   IonicStorageModule.forRoot({
   name: '_myDb',
-driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+  driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
 
   }),
   AppRoutingModule,
