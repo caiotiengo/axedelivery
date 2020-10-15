@@ -71,6 +71,24 @@ ion-content{
     transform: rotate(-10deg);
 
 }
+.card-content-ios p {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 2px;
+  font-size: 14px;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+card-content-ios p {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 2px;
+  font-size: 14px;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
 .scrolling-wrapper {
     overflow-x: scroll;
     overflow-y: hidden;
@@ -79,12 +97,11 @@ ion-content{
   
     .card {
       display: inline-block;
-      width:65%;
+      width:75%;
       height: 100%;
      // --background:transparent;
     }
   }
-
   .label-lojas{
     color: #ffc409;
     background: #1e2023;

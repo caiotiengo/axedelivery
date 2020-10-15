@@ -48,7 +48,7 @@ export class AddProcPage implements OnInit {
     url
     public donwloadUrl: Observable<string>;
     public uploadPercent: Observable<number>;
-    private formulario : FormGroup;
+    public formulario : FormGroup;
     photos: Array<Foto> = [];
 
 

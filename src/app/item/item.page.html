@@ -98,8 +98,8 @@
     color: black;
     border-top-right-radius: 30px;" text-center>Produtos</h4>
     <div style="text-align: center;">
-<p style="font-weight: bold;">Escolha o tipo de produto:</p>
-<ion-select placeholder="Tipo de produto" style="border-bottom-left-radius: 25px;
+<!--p style="font-weight: bold;">Escolha o tipo de produto:</p-->
+<!--ion-select placeholder="Tipo de produto" style="border-bottom-left-radius: 25px;
 border-bottom-right-radius: 25px;
 margin-bottom: 10%;
 background: #fdd112;" [(ngModel)]="type">
@@ -127,7 +127,7 @@ background: #fdd112;" [(ngModel)]="type">
   <ion-select-option value="Tabacaria">Tabacaria</ion-select-option>
   <ion-select-option value="Velas">Velas</ion-select-option>
   <ion-select-option value="Vestuario">Vestuário</ion-select-option>
-</ion-select>
+</ion-select-->
 </div>
 <ion-searchbar  animated style="color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" placeholder="Pesquise um produto"
                     (ionInput)="filterList($event)">
@@ -137,7 +137,7 @@ background: #fdd112;" [(ngModel)]="type">
     </ion-searchbar>
 
     <ion-list *ngFor="let items of goalList" >
-      <ion-item >
+      <ion-item>
         <ion-thumbnail slot="start">
           <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
           <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">

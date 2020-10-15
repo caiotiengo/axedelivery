@@ -48,6 +48,7 @@ export interface Processo {
     email?: string;
     type?: string;
     resumo?: string;
+    noApp?:string;
     lastEdit?: string;
     tipoPrd?:any
 }

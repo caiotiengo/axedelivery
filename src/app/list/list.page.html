@@ -65,20 +65,20 @@
   </div>
   <div  class="scrolling-wrapper">
   
-    <ion-item lines="none" class="card"  *ngFor="let items of goalListFiltrei">
+    <ion-item lines="none"  class="card"  *ngFor="let items of goalListFiltrei">
       <ion-card style="    text-align: center;
       height: 100%;
       margin: auto;
-      min-height: 34vh;
-      max-height: 34vh;
-      width: 30vh; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.id]"  >
+      min-height: 40vh;
+      max-height: 40vh;
+      width: 30vh; margin:15px; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.id]"  >
         <ion-card-header style="min-height: 20vh;
         max-height: 20vh;">
           <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
   
           <img style="    margin: auto;
         
-          max-height: 15vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
+          max-height: 15vh;max-width: 22vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
         </ion-card-header> 
         <ion-label style="background: linear-gradient(45deg, #ffc40933,#ffc409);
         border-radius: 25px;
@@ -89,8 +89,9 @@
     {{items.bairro}}
   </ion-label>
         <ion-card-content>
-          <p style="white-space: break-spaces;">{{items.nome}}</p>
-
+          <ion-label text-wrap>
+            {{items.nome}}
+        </ion-label>
         </ion-card-content>
 
 

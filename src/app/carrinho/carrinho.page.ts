@@ -81,6 +81,10 @@ export class CarrinhoPage implements OnInit {
     dataNCartao ='';
     telefoneCartao ='';
     dddCartao ='';
+    idmoip
+    porcentagemAxe:number
+    porcentagemLoja:number
+    count = [];
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -106,7 +110,13 @@ export class CarrinhoPage implements OnInit {
       this.valor = x.toFixed(2)
       console.log(this.valor);
     });
+    this.storage.get('contagem').then((data) =>{
+      var z = data
+      this.count = z;
+    })
     this.sub = this.storage.get('usuario').then(event => {
+      console.log(event)
+
       this.nome = event.nome;
       this.endereco = event.endereco;
       this.cidade = event.cidade;
@@ -124,39 +134,41 @@ export class CarrinhoPage implements OnInit {
       this.telefoneComprador = event.telefone;
       this.complemento = event.complemento;
       this.ddd = event.ddd;
+      this.idmoip = event.idmoip;
+      this.porcentagemLoja =  event.porcentagemLoja;
+      this.porcentagemAxe = event.porcentagemAxe;
     });
     console.log(this.moip);
     this.hash = 'Gerando hash...';
 
 
     this.pubKey = `-----BEGIN PUBLIC KEY-----
-                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodkPNhEFaP90CU2z6zKZ
-                     kyPb98kI3NA4C/j9lJnzUNsqgPzfx0xdHxk0rvQvqH/shJIm76EXGBtsWuUjyO8n
-                     UMrq9l/8lWPY5OsOmpHiiBZ7oLjfPN1tSs3CgNMqMyWay8F82zowXOdwZk4hY+aa
-                     mkkZcg8Sou3Wo7pIcInNXy9cLClp+qhrTR9LlrMcxT7oMDwxw8CFzX7SK9EEnBz0
-                     H5T1BRSXVd3VXjC75I1w6RFk9AzbDfSKgj2b6Ladf0PKm4XdruiA+C7Gad8mg7Wu
-                     ZBBwoPkwFHnKFtCs+P84OqNjAyEqxOc3oGgCi6LkFRWL43DfFPcPj6QkOMZM64WO
-                     DQIDAQAB
-                    -----END PUBLIC KEY-----`;
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4QUZH3Y8mQaCqYtOT9g
+    +yQTtmtGkESK1AnQ66roMlsJRyZ8xiCsmO0OC2hckKKA7h7KQNBTMMWCAhXr0jRB
+    SqeFhD9QOqQGh5NcLgf6DZ2WhalwozfnCaYmjwWCPfTaWARem+8k/7VhctpoEM7B
+    PWCbqSsUFicQlhXvM8p5tMacVhEVxGe0SGvDpS3DaX8FoIUyI8Jn6fWXMV/Ya59p
+    f+yrk2ufrSI/gtmJpOZ4/5W/bsGEGtiJtGBtnI+cjRLjPa8kyQ7pa266ozmRqnst
+    +EJhsHdW1P8T254YByuKdc6OU73UwPYowYt2DtNemI2KHQExarj7+70Ez4w5gAch
+    xwIDAQAB
+    -----END PUBLIC KEY-----
+    `;
 
   this.moip = moipSdk({
     //accessToken: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
-     token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
+    /*
+    token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
      key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
         // production: false
     production: false
-
-    /*
-              accessToken: '292bed0bd3244409b835986edca4119f_v2',
-          token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
-          //secret:'cf87986f39c342caa5d9a49c6c166a2a',
-          key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
-          channelId:"APP-16HIIBI5HPS8",
-          // production: false
-          production: true,
-          "Accept" : 
-    
     */
+    accessToken: '292bed0bd3244409b835986edca4119f_v2',
+    token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
+    //secret:'cf87986f39c342caa5d9a49c6c166a2a',
+    key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
+    channelId:"APP-16HIIBI5HPS8",
+    // production: false
+    production: true,
+    "Accept" : "*/*"
   })
   }
   ngOnInit() {
@@ -209,7 +221,7 @@ teste(){
                 birthDate: x,
                 taxDocument: {
                     type: 'CPF',
-                    number: this.userCPF
+                    number: this.cpfCartao
                 },
                 phone: {
                     countryCode: '55',
@@ -226,29 +238,29 @@ teste(){
                     country: 'BRA',
                     zipCode: this.CEP
                 },
-                receivers: [
-                  {
-                    moipAccount: {
-                        id: "MPA-E3C8493A06AE"
-                    },
-                    type: "PRIMARY",
-                    feePayor: true,
-                    amount: {
-                      percentual: 84
-                      }
-                  },
-                  {
-                    moipAccount: {
-                        id: "MPA-B4DEE9232459B"
-                    },
-                    type: "SECONDARY",
-                    feePayor: false,
-                    amount: {
-                      percentual: 16
-                      }
+            },
+            receivers: [
+              {
+                moipAccount: {
+                    id: "MPA-888C5307676A"
+                },
+                type: "PRIMARY",
+                feePayor: true,
+                amount: {
+                  percentual: this.loja.porcentagemAxe
                   }
-                ]
-            }
+              },
+              {
+                moipAccount: {
+                    id: this.loja.idmoip
+                },
+                type: "SECONDARY",
+                feePayor: false,
+                amount: {
+                  percentual: this.loja.porcentagemLoja
+                  }
+              }
+            ]
         }).then((response) => {
             console.log(response.body)
             this.moip.payment.create(response.body.id, {
@@ -310,6 +322,8 @@ teste(){
 
       this.storage.get('carrinhoUser').then((data) => {
         this.produtos =  JSON.parse(data);
+        
+        
         console.log(this.produtos);
         var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
         console.log(seq);
@@ -342,9 +356,13 @@ teste(){
           }
         }).catch((err) => {
             console.log(err)
+            alert("Pagamento não concluido:"+" "+ err)
+
         })
         }).catch((err) => {
             console.log(err)
+            alert("Pagamento não concluido:"+" "+ err)
+
         })
 
   });
@@ -387,6 +405,7 @@ teste(){
       });
       this.storage.get('carrinhoUser').then((data) => {
         this.produtos =  JSON.parse(data);
+
         console.log(this.produtos);
         var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
         console.log(seq);

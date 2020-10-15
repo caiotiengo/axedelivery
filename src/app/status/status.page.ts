@@ -34,11 +34,11 @@ export interface Comentario{
   styleUrls: ['./status.page.scss'],
 })
 export class StatusPage implements OnInit {
-  private vendasSub: Subscription;
-  private goalListUs: any[];
-  private loadedGoalListUs: any[];
-  private goalListST: any[];
-  private loadedGoalListST: any[];
+  public vendasSub: Subscription;
+  public goalListUs: any[];
+  public loadedGoalListUs: any[];
+  public goalListST: any[];
+  public loadedGoalListST: any[];
   public  loja: Loja = {};
   public commentsSubscription: Subscription;
 
@@ -60,7 +60,7 @@ export class StatusPage implements OnInit {
   emailCom
   hideMe
   usuario: Array<Comentario> = [];
-  private formulario : FormGroup;
+  public formulario : FormGroup;
   lojaUIDvenda
   comentou
   idComent

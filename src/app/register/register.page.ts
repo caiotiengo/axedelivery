@@ -69,7 +69,7 @@ export class RegisterPage implements OnInit {
     cnpj: any;
     strCNPJ: any;
     datou
-    private cadastro : FormGroup;
+    public cadastro : FormGroup;
     mainuser: AngularFirestoreDocument;
     userID
     sub;

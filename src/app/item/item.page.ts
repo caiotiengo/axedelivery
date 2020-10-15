@@ -30,6 +30,8 @@ export interface Loja {
     email?: string;
     resumo?: string;
     comments?:string;
+    entrega?:string;
+    seNao?:string;
 }
 export interface Produtos {
     nome?: string;
@@ -74,13 +76,13 @@ export class ItemPage implements OnInit {
     likes: number;
     dislikes: number;
     public  loja: Loja = {};
-    private que: string = null;
-    private loading: any;
-    private lojaSubscription: Subscription;
-    private productSubscription: Subscription;
-    private goalList: any[];
+    public que: string = null;
+    public loading: any;
+    public lojaSubscription: Subscription;
+    public productSubscription: Subscription;
+    public goalList: any[];
     public commentsSubscription: Subscription;
-    private loadedGoalList: any[];
+    public loadedGoalList: any[];
     emailLoja;
     qualquer;
     produtos: Array<Produtos> = [];
@@ -110,6 +112,7 @@ export class ItemPage implements OnInit {
     lojaLng
     type = '';
     lojaLat
+    quantidade: any = []
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -212,8 +215,8 @@ export class ItemPage implements OnInit {
 
     });
     this.productSubscription = this.services.getProccessos().subscribe(res => {
-           this.goalList = res.filter(i => i.email === this.emailLoja);
-           this.loadedGoalList = res.filter(i => i.email === this.emailLoja);
+           this.goalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
+           this.loadedGoalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
        });
     this.commentsSubscription = this.services.getComments().subscribe(res =>{
            this.lojaID = res.filter(i => i.emailLoja === this.emailLoja)
@@ -266,12 +269,27 @@ export class ItemPage implements OnInit {
       this.visu = Number(this.valorCompra.toFixed(2))
       console.log(this.valorCompra.toFixed(2));
       console.log(this.produtos);
+      var counts = {};
+      var count = {
 
+      };
+      this.produtos.forEach(function(i) { count[i.nome] = (count[i.nome]||0) + 1;});
+      console.log(count);
+      var x = this.produtos.filter(i => i.nome === count[i.nome])
+      console.log(x)
+      this.quantidade.push(count)
+      console.log(this.quantidade)
+      var y = this.produtos.forEach( data =>{
+        if(data.nome === count[data.nome]){
+          console.log(data.nome + "tem")
+        }
+      })
+      this.storage.set('contagem', count)
     }
     finalizarCompra() {
         this.valores = this.produtos.map(res => res.valor);
         this.valorCompra = this.valores.reduce((acc, val) => acc += val);
-        
+
         const date = new Date();
         date.setMonth(date.getMonth() + 1);
         const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();

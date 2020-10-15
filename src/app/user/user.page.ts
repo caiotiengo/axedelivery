@@ -48,13 +48,13 @@ export class UserPage implements OnInit {
     proc;
     que: any;
     procUser;
-    private goalList: any[];
-    private loadedGoalList: any[];
+    public goalList: any[];
+    public loadedGoalList: any[];
     processos;
     typeUser;
     currentGoale;
     public products = new Array<Processo>();
-    private proccessSubscription: Subscription;
+    public proccessSubscription: Subscription;
     goalListFiltrado;
     loadedGoalListFiltrado;
     userID

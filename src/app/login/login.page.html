@@ -22,21 +22,21 @@
 
 </ion-text>
 
-<div class="actions">
-<ion-card style="margin: auto; padding:10px; ">
-	<ion-item>
-		<ion-label position="floating">Email</ion-label>
-		<ion-input [(ngModel)]="email" type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-		<ion-label position="floating">Senha</ion-label>
-		<ion-input [(ngModel)]="password" type="password"></ion-input>
-  </ion-item>	
-  <ion-button class="signin-button" (click)="entrar()" expand="block">Entrar</ion-button>
-  <ion-button class="signup-button" (click)="registrar()"  expand="block">Cadastre-se</ion-button>
-  <!--ion-button class="signup-button" (click)="entrega()"  expand="block">entrega</ion-button-->
 
-</ion-card>
-
-</div>
 </ion-content>
+<div class="actions">
+	<ion-card style="margin: auto; padding:10px; ">
+		<ion-item>
+			<ion-label position="floating">Email</ion-label>
+			<ion-input [(ngModel)]="email" type="text"></ion-input>
+	  </ion-item>
+	  <ion-item>
+			<ion-label position="floating">Senha</ion-label>
+			<ion-input [(ngModel)]="password" type="password"></ion-input>
+	  </ion-item>	
+	  <ion-button class="signin-button" (click)="entrar()" expand="block">Entrar</ion-button>
+	  <ion-button class="signup-button" (click)="registrar()"  expand="block">Cadastre-se</ion-button>
+	  <!--ion-button class="signup-button" (click)="entrega()"  expand="block">entrega</ion-button-->
+	
+	</ion-card>
+</div>
