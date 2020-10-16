@@ -188,5 +188,23 @@ async presentLoading() {
     await alert.present();
   }
 
+  voltar(){
+    this.navCtrl.pop()
+  }
+  senhaEsquecida(){
+    console.log(this.email)
+    if(this.email){
+      console.log(this.email)
+      var auth = firebase.auth()
+      var emailAddress = this.email;
+      auth.sendPasswordResetEmail(emailAddress).then((res)=>{
+        console.log(res)
+        this.showalert('Tudo certo!', 'Corre no seu email agora para resetar a senha!')
+      })
+    }else{
+      this.showalert('Opa!','digite por favor o seu email no campo "Email" e clique em "Esqueceu a senha?" novamente.')
+    }
 
+  }
+  
 }

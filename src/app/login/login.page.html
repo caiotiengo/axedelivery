@@ -5,6 +5,8 @@
   </ion-header>
 
 <ion-content  class="ion-padding">
+	<ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+
 <div>
 	<div class="background-div2"></div>
 	<img style="    position: absolute;
@@ -36,7 +38,7 @@
 	  </ion-item>	
 	  <ion-button class="signin-button" (click)="entrar()" expand="block">Entrar</ion-button>
 	  <ion-button class="signup-button" (click)="registrar()"  expand="block">Cadastre-se</ion-button>
-	  <!--ion-button class="signup-button" (click)="entrega()"  expand="block">entrega</ion-button-->
-	
+	  <ion-button color="white" style="color:black;"(click)="senhaEsquecida()">Esqueceu a senha?</ion-button> 
+
 	</ion-card>
 </div>

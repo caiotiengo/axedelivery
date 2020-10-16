@@ -288,6 +288,13 @@ export class RegisterPage implements OnInit {
         
      } catch (err) {
          console.dir(err);
+         if(err.code === 'auth/email-already-exists'){
+           this.showalert('Ops!', 'Esse email já está cadastrado... tente outro!')
+         }
+         if(err.code === 'auth/invalid-email'){
+           this.showalert('Ops!', "Esse email está em um formato inválido!")
+         }
+
      }
     } else if(this.cadastro.valid && this.typeUser == 'user'){
       try {
@@ -354,6 +361,13 @@ export class RegisterPage implements OnInit {
         
      } catch (err) {
          console.dir(err);
+         if(err.code === 'auth/email-already-exists'){
+          this.showalert('Ops!', 'Esse email já está cadastrado... tente outro!')
+        }
+        if(err.code === 'auth/invalid-email'){
+          this.showalert('Ops!', "Esse email está em um formato inválido!")
+        }
+
      }
   }
       // tslint:disable-next-line:indent

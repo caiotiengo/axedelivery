@@ -10,6 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { IonSlides} from '@ionic/angular';
 import {AlertController} from '@ionic/angular';
 import { HaversineService, GeoCoord } from "ng2-haversine";
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 export interface User {
     name: string;
@@ -116,7 +117,7 @@ export class ItemPage implements OnInit {
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
-              public modalController: ModalController,private _haversineService: HaversineService
+              public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
 ) {
 
 
@@ -124,22 +125,32 @@ export class ItemPage implements OnInit {
       console.log(user);
       if (user) {
           this.mainuser = this.afStore.doc(`users/${user.uid}`);
-
+          this.sub = this.mainuser.valueChanges().subscribe(event => {
+            this.nome = event.nome;
+            this.endereco = event.endereco;
+            this.cidade = event.cidade;
+            this.email = event.email;
+            this.bairro = event.bairro;
+            this.telefone = event.telefone;
+            this.zona = event.zona;
+            this.lat = event.lat;
+            this.lng = event.lng
+  
+        });
       } else {
+        this.geolocation.getCurrentPosition().then((resp) => {
+          // resp.coords.latitude
+          // resp.coords.longitude
+          console.log(resp.coords.latitude)
+          this.lat = Number(resp.coords.latitude);
+          this.lng = Number(resp.coords.longitude);
 
+         }).catch((error) => {
+           console.log('Error getting location', error);
+         });
+         
       }
-      this.sub = this.mainuser.valueChanges().subscribe(event => {
-          this.nome = event.nome;
-          this.endereco = event.endereco;
-          this.cidade = event.cidade;
-          this.email = event.email;
-          this.bairro = event.bairro;
-          this.telefone = event.telefone;
-          this.zona = event.zona;
-          this.lat = event.lat;
-          this.lng = event.lng
 
-      });
       this.que = this.route.snapshot.paramMap.get('id');
 
       console.log(this.que);

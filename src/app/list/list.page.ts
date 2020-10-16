@@ -112,56 +112,14 @@ export class ListPage implements OnInit {
               private storage: Storage, 
               public afStore: AngularFirestore,
               public services: ServiceService,
-              private _haversineService: HaversineService
+              private _haversineService: HaversineService,
+              private nativeGeocoder: NativeGeocoder
               ) {
-          let user = firebase.auth().currentUser;
-          console.log(user);
-          if (user) {
-              this.mainuser = this.afStore.doc(`users/${user.uid}`);
-            
-
-          } else {
-              this.showalert('Bem-vindo ao Axé delivery!', 'Faça o login para' 
-             +'começar a explorar o mundo macumbistico na sua região');
-              //this.navCtrl.navigateRoot('/');
-
-          }
-      this.proccessSubscription = this.services.getUsers().subscribe(data => {
-          this.goalList = data;
-          this.loadedGoalList = data;
-          
-            this.mainuser.valueChanges().subscribe(event => {
-                console.log(event)
-                  this.zona = event.zona;
-                  this.lat = event.lat;
-                  this.lng = event.lng
-                  this.endereco = event.endereco;
-                  this.cidade = event.cidade;
-                  this.cep = event.CEP;
-                  this.bairro = event.bairro;
-                  this.numero = event.numeroEND;
-                  this.estado = event.estado;
-                  this.nomeUser = event.nome
-                  this.DOB = event.DOB
-                  this.tipo = event.tipo
-                  let birthdate = this.DOB
-                  format(new Date(birthdate), "yyyy-MM-dd");
-                  this.filtroLoja = this.zona
-                  console.log(birthdate);
-                  console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                  this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.aprovado === 'Sim');
-                  this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
-                  this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim');
-                  this.lojinha = this.goalListFiltrado
-                  this.semLoja = this.goalListFiltrado.length
-
-              
-         })
 
 
-
-    });
-
+          /*
+          */
+      
             
       
   }
@@ -177,6 +135,49 @@ status(){
 }
 
   ngOnInit() {
+    let user = firebase.auth().currentUser;
+          console.log(user);
+          if (user) {
+              this.mainuser = this.afStore.doc(`users/${user.uid}`);
+              this.proccessSubscription = this.services.getUsers().subscribe(data => {
+                this.goalList = data;
+                this.loadedGoalList = data;
+                  this.mainuser.valueChanges().subscribe(event => {
+                      console.log(event)
+                        this.zona = event.zona;
+                        this.lat = event.lat;
+                        this.lng = event.lng
+                        this.endereco = event.endereco;
+                        this.cidade = event.cidade;
+                        this.cep = event.CEP;
+                        this.bairro = event.bairro;
+                        this.numero = event.numeroEND;
+                        this.estado = event.estado;
+                        this.nomeUser = event.nome
+                        this.DOB = event.DOB
+                        this.tipo = event.tipo
+                        let birthdate = this.DOB
+                        format(new Date(birthdate), "yyyy-MM-dd");
+                        this.filtroLoja = this.zona
+                        console.log(birthdate);
+                        console.log(format(new Date(birthdate), "yyyy-MM-dd"))
+                        this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.aprovado === 'Sim');
+                        this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+                        this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim');
+                        this.lojinha = this.goalListFiltrado
+                        this.semLoja = this.goalListFiltrado.length
+            
+                    
+               })
+            
+            
+            });            
+
+          } else {
+            this.navCtrl.navigateRoot('/')
+          }
+
+
      this.produtos();
   }
   produtos(){
