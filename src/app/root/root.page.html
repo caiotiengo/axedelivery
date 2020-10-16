@@ -1,0 +1,79 @@
+<ion-header class="ion-no-border">
+  <ion-navbar>
+  <img style="width:28%"src="/assets/Picture1.png"> 
+</ion-navbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+
+
+  <div class="background-div1">
+  
+  </div>
+    
+  <ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="success" (click)="add()">
+      <ion-icon style="color:white" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+     <ion-searchbar style="position: absolute; margin-top: -35%" animated placeholder="Pesquise sua loja favorita" (ionInput)="filterList($event)"></ion-searchbar>	
+  
+  
+    <ion-card style="text-align: center;" class="card-1">
+      <ion-card-header>
+        <ion-card-subtitle>Quer comprar pelo nosso app?</ion-card-subtitle>
+        <ion-card-title>Use sua conta Axé Delivery!</ion-card-title>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button expand="full" class="signup-button" (click)="login()">Entrar</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="full" class="signin-button"(click)="registro()">Cadastre-se</ion-button>
+            </ion-col>
+          </ion-row>
+          
+        </ion-grid>
+      </ion-card-header>
+  </ion-card>
+    <div style="margin-top:45%;">
+      <div>
+        
+      </div>
+      <div class="background-traco" >
+  
+        <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
+          <ion-item [routerLink]="['/item/' + items.id]">
+  
+            <ion-thumbnail slot="start">
+              <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+  
+              <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
+            <ion-label>
+              <h2>{{items.nome}}</h2>
+              <p>Entrega:{{items.entrega}}</p>
+              <p>Ou: {{items.seNao}}</p>
+              <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
+              padding: 5px;
+              text-align: center;
+              border-radius: 25px;
+              color: black;">{{items.bairro}}</p>
+            </ion-label>
+            <ion-button color="warning" slot="end">VEJA</ion-button>
+          </ion-item>
+           
+          <div style="text-align: center;" *ngIf="semLoja === 0 && filtroLoja  ">
+            <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
+         
+           <p>Parece que não temos loja em sua região...</p>
+           <p>Não se preocupe! Compartilhe o app com pessoas e comerciantes da sua área e faça a festa!</p>
+         
+         </div>
+  
+       
+          
+        </ion-list>
+  </div>
+  
+    </div>
+  
+  </ion-content>
