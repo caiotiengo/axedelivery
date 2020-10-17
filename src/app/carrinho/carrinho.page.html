@@ -115,10 +115,16 @@
         <h4 style="margin: 0; text-align: center">Seu pedido</h4>
       <ion-item  *ngFor="let items of carrinho" >
         <ion-avatar slot="start">
-          <img src="{{items.fotos}}">
+          <img  *ngIf="items.fotos.length != 0" src="{{items.fotos}}">
+          <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
         </ion-avatar>
-        <ion-label >{{items.nome}}<p>R${{items.valor}}</p></ion-label>
-        <ion-button color="warning" fill="solid" color="warning" slot="end"(click)="deletaItem(items)">X</ion-button>
+        <ion-label>
+          {{items.nome}}
+          <p>R${{items.valor}}</p>
+          <p *ngIf="items.especi !=' ' "><b>Tipo:</b> {{items.especi}}</p>
+          <p><b>Quantidade:</b> {{items.quantity}}</p>
+        </ion-label>
+        <ion-button color="warning" fill="solid" color="danger" slot="end"(click)="deletaItem(items)">Excluir</ion-button>
       </ion-item>
     </ion-list>
 

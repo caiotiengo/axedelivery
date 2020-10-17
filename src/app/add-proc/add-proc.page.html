@@ -71,20 +71,34 @@
 				<!-- <img src="{{img.src}}"> -->
 
 				</form>
-				<ion-button (click)="abrir()">Incluir Variedade</ion-button>
+				<ion-button expand="full" (click)="abrir()">Incluir Variedade</ion-button>
 				<ion-list [hidden]="hide">
-					<ion-item>
-					  <ion-label>Variedade</ion-label>
-					  <ion-input [(ngModel)]="variedade"></ion-input>
+					<ion-grid>
+						<ion-row>
+							<ion-col>
+								<ion-item>
+									<ion-label position="floating">Variedade</ion-label>
+									<ion-input [(ngModel)]="variedade"></ion-input>
+								  </ion-item>
+							</ion-col>
+							<ion-col>
+								<ion-button style="margin-top: 20%;" [hidden]="hide" expand="full" (click)="addItem()" color="success">
+									Adicionar  
+							   </ion-button>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+					
+					<ion-item *ngFor="let items of check">
+						<ion-label>{{items.value}}</ion-label>
+						<ion-button color="danger" slot="end" (click)="deletaItem(items)">Excluir</ion-button>
 					</ion-item>
 				  </ion-list>
 				 <br/>
-				 <ion-button (click)="addItem()" color="success">
-					Adicionar  
-			   </ion-button>				  
+				  
 				  <br/>
 
-				  <ion-button (click)="create()" class="signin-button" >
+				  <ion-button (click)="create()" expand="full" class="signin-button" >
 					   Publicar 
 				  </ion-button>
 			</ion-card-content>

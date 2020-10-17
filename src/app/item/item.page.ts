@@ -182,34 +182,35 @@ export class ItemPage implements OnInit {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
       header: items.nome,
-      message: 'Deseja adicionar ao carrinho?',
+      message: 'Deseja adicionar esse item ao carrinho?',
       inputs: [
         {
-          name: 'Quantidade',
-          type: 'number',
-          placeholder: 'Quantidade',
-          max: 3
-        }
-      ],
+          name: 'name1',
+          type: 'text',
+          placeholder: 'Placeholder 1'
+        }],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Ok',
-          handler: (alertdata) => {
-            console.log(alertdata.Quantidade)
-
+          text: 'Quero!',
+          handler: (data) => {
+            var x = 1;
             console.log('Confirm Ok');
-            if(items.especi === undefined){
-              this.addCarrinho(items,alertdata.Quantidade,items.id)
+            if(data.name1 != 1){
+              x = data.name1;
             }else{
-              this.presentAlertCheckbox(items, alertdata.Quantidade)
-
+              x = 1;
+            }
+            if(items.especi === undefined){
+              this.addCarrinho(items,x, ' ')
+            }else{
+              this.presentAlertCheckbox(items, x)
             }
           }
         }
@@ -221,11 +222,12 @@ export class ItemPage implements OnInit {
   async presentAlertCheckbox(items, qtd) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Escolha os detalhes!',
+      header: 'Detalhes!',
+      message:'Escolha um dos itens abaixo',
       inputs: items.especi,
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
@@ -234,7 +236,9 @@ export class ItemPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (data) => {
-            this.addCarrinho(items, qtd, data.checkbox2 )
+            console.log(data[0])
+            console.log(data.checkbox2)
+            this.addCarrinho(items, qtd, data[0])
             console.log('Confirm Ok');
           }
         }
@@ -245,7 +249,7 @@ export class ItemPage implements OnInit {
   }
 
 
- voltar(){
+  voltar(){
     this.navCtrl.pop()
   }
 
@@ -253,9 +257,6 @@ export class ItemPage implements OnInit {
         setTimeout(() => {
             console.log('Done');
             event.target.complete();
-
-            // App logic to determine if all data is loaded
-            // and disable the infinite scroll
             if (this.goalList.length === 1000) {
                 event.target.disabled = true;
             }
@@ -289,7 +290,7 @@ export class ItemPage implements OnInit {
               
              let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
              console.log("A distancia entre as lojas é de:" + Number(kilometers));
-             this.valorFrete = Math.floor(1.40+2.0)*Number(kilometers) + 5
+             this.valorFrete = Math.floor(2.0)*Number(kilometers) + 5
              this.valorDelivery = this.valorFrete.toFixed(2)
 
     });
@@ -325,13 +326,13 @@ export class ItemPage implements OnInit {
     }
 
     addCarrinho(items,qtd, data) {
-      console.log(items);
+      console.log(items.valor * qtd );
       this.qtd++;
       console.log(this.qtd);
       if(items.fotos[0] === undefined){
         this.produtos.push({
           nome: items.nome,
-          valor: items.valor,
+          valor: items.valor * Number(qtd),
           price: items.price,
           product:items.nome,
           quantity: Number(qtd),
@@ -347,7 +348,7 @@ export class ItemPage implements OnInit {
       }else{
         this.produtos.push({
           nome: items.nome,
-          valor: items.valor,
+          valor: items.valor * Number(qtd),
           price: items.price,
           product:items.nome,
           quantity: Number(qtd),
@@ -360,7 +361,7 @@ export class ItemPage implements OnInit {
           emailLoja: this.loja.email,
           fotos: items.fotos[0].link,
       });
-      }
+    }
       
       var quant = this.produtos.map(res => res.quantity)
       var quantTotal = quant.reduce((acc, val) => acc += val)

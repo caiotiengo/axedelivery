@@ -17,6 +17,8 @@ import {
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 import {finalize} from 'rxjs/operators';
+import * as _ from 'lodash';
+
 export interface Foto {
     fotoN: string;
     link?: any;
@@ -107,7 +109,11 @@ export class AddProcPage implements OnInit {
   }
   ngOnInit() {
   }
-
+  deletaItem(items){
+    _.remove(this.check, n => n.value === items.value);
+    console.log(this.check);
+    
+  }
   async abrirGaleria1(){
       const options: CameraOptions = {
         quality: 100,
