@@ -48,7 +48,7 @@
           <ion-col>
               <ion-item>
                 <ion-label position="stacked">CPF</ion-label>
-                <ion-input [(ngModel)]="cpfCartao"></ion-input>
+                <ion-input  maxLenght="40" [brmasker]="{person: true}" [(ngModel)]="cpfCartao"></ion-input>
               </ion-item>            
           </ion-col>
           <ion-col>
@@ -88,20 +88,20 @@
           <ion-col>
               <ion-item>
                   <ion-label position="stacked">Mês de validade</ion-label>
-                  <ion-input [(ngModel)]="mesValidade"></ion-input>
+                  <ion-input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="mesValidade"></ion-input>
               </ion-item>
           </ion-col>
           <ion-col>
               <ion-item>
                   <ion-label position="stacked">Ano de validade</ion-label>
-                  <ion-input [(ngModel)]="anoValidade"></ion-input>
+                  <ion-input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="anoValidade"></ion-input>
               </ion-item>
           </ion-col>
       </ion-row>
       </ion-grid>
       <ion-item>
-          <ion-label position="stacked">CVV</ion-label>
-          <ion-input [(ngModel)]="CVV"></ion-input>
+          <ion-label position="stacked">Código de Segurança</ion-label>
+          <ion-input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="CVV"></ion-input>
       </ion-item>
          <br/>   
       <ion-item>  

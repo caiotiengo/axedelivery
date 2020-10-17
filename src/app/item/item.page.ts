@@ -50,6 +50,9 @@ export interface Produtos {
     detail?: string;
     fotos?: string
     tipoPrd?:any;
+    descrito?:any;
+    especi?:any;
+
 }
 
 @Component({
@@ -175,7 +178,72 @@ export class ItemPage implements OnInit {
 
   }
 
-  
+  async presentAlertPrompt(items) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: items.nome,
+      message: 'Deseja adicionar ao carrinho?',
+      inputs: [
+        {
+          name: 'Quantidade',
+          type: 'number',
+          placeholder: 'Quantidade',
+          max: 3
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (alertdata) => {
+            console.log(alertdata.Quantidade)
+
+            console.log('Confirm Ok');
+            if(items.especi === undefined){
+              this.addCarrinho(items,alertdata.Quantidade,items.id)
+            }else{
+              this.presentAlertCheckbox(items, alertdata.Quantidade)
+
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  async presentAlertCheckbox(items, qtd) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Escolha os detalhes!',
+      inputs: items.especi,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            this.addCarrinho(items, qtd, data.checkbox2 )
+            console.log('Confirm Ok');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
  voltar(){
     this.navCtrl.pop()
@@ -256,28 +324,53 @@ export class ItemPage implements OnInit {
         this.goalList = this.loadedGoalList;
     }
 
-    addCarrinho(items) {
+    addCarrinho(items,qtd, data) {
       console.log(items);
       this.qtd++;
       console.log(this.qtd);
-      this.produtos.push({
-            nome: items.nome,
-            valor: items.valor,
-            price: items.price,
-            product:items.nome,
-            quantity: 1,
-            detail: items.resumo,
-            email: items.email,
-            itemId: items.id,
-            lojaUID: this.que,
-            itemNumber: this.qtd,
-            emailLoja: this.loja.email,
-            fotos: items.fotos[0].link
-        });
+      if(items.fotos[0] === undefined){
+        this.produtos.push({
+          nome: items.nome,
+          valor: items.valor,
+          price: items.price,
+          product:items.nome,
+          quantity: Number(qtd),
+          detail: items.resumo,
+          email: items.email,
+          itemId: items.id,
+          especi: data,
+          lojaUID: this.que,
+          itemNumber: this.qtd,
+          emailLoja: this.loja.email,
+          fotos: ''
+      });
+      }else{
+        this.produtos.push({
+          nome: items.nome,
+          valor: items.valor,
+          price: items.price,
+          product:items.nome,
+          quantity: Number(qtd),
+          detail: items.resumo,
+          email: items.email,
+          itemId: items.id,
+          especi: data,
+          lojaUID: this.que,
+          itemNumber: this.qtd,
+          emailLoja: this.loja.email,
+          fotos: items.fotos[0].link,
+      });
+      }
+      
+      var quant = this.produtos.map(res => res.quantity)
+      var quantTotal = quant.reduce((acc, val) => acc += val)
+      console.log(quantTotal)
+      var contaBasica = Number(items.valor) * Number(qtd);
+      console.log(contaBasica)
       this.valores = this.produtos.map(res => res.valor);
       this.valorCompra = this.valores.reduce((acc, val) => acc += val);
-      
-      this.visu = Number(this.valorCompra.toFixed(2))
+      this.visu = Number(this.valorCompra.toFixed(2)) 
+      console.log(this.visu)
       console.log(this.valorCompra.toFixed(2));
       console.log(this.produtos);
       var counts = {};
@@ -305,7 +398,9 @@ export class ItemPage implements OnInit {
         date.setMonth(date.getMonth() + 1);
         const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
         console.log(dia);
-        var valorTudo = Math.floor(Number(this.valorCompra)+Number(this.valorDelivery))
+        console.log(Number(this.visu.toFixed(2)))
+        console.log(this.valorDelivery)
+        var valorTudo = Number(this.visu.toFixed(2)) + Number(this.valorDelivery)
         console.log(valorTudo.toFixed(2))
         this.storage.set('loja', this.loja);
         this.storage.set('valorFinal', valorTudo.toFixed(2));

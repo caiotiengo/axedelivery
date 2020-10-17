@@ -189,6 +189,9 @@ export class ServiceService {
   listenToNotifications(){
     return this.firebaseNative.onMessageReceived()
   }*/
+  addCarrinho(){
+    
+  }
 addUser(user: User) {
     this.userCollection.add(user);
   }

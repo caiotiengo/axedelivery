@@ -60,7 +60,7 @@
 					<ion-input name="valor" [(ngModel)]="valor" formControlName="valor"
 					[brmasker]="{money: true}" type="text"></ion-input>
 				</ion-item>
-			
+
 				<p>Escolha as fotos do seu produto!</p>
 				<p>Porcentagem de cada foto: {{uploadPercent | async}}% </p>
 				
@@ -69,11 +69,24 @@
 				<ion-button shape="outline" (click)="abrirGaleria3()" color="findme" ><ion-icon name="camera"></ion-icon></ion-button>
 				<ion-button shape="outline" (click)="abrirGaleria4()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
 				<!-- <img src="{{img.src}}"> -->
-				<br/>
-				<ion-button (click)="create()" class="signin-button" >
-					 Publicar 
-				</ion-button>
+
 				</form>
+				<ion-button (click)="abrir()">Incluir Variedade</ion-button>
+				<ion-list [hidden]="hide">
+					<ion-item>
+					  <ion-label>Variedade</ion-label>
+					  <ion-input [(ngModel)]="variedade"></ion-input>
+					</ion-item>
+				  </ion-list>
+				 <br/>
+				 <ion-button (click)="addItem()" color="success">
+					Adicionar  
+			   </ion-button>				  
+				  <br/>
+
+				  <ion-button (click)="create()" class="signin-button" >
+					   Publicar 
+				  </ion-button>
 			</ion-card-content>
 			
 	</ion-card>

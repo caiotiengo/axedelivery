@@ -152,7 +152,7 @@ background: #fdd112;" [(ngModel)]="type">
           border-radius: 25px;
           color: black;">{{items.tipoPrd}}</p>
         </ion-label>
-        <ion-button *ngIf="email != undefined" (click)="addCarrinho(items)" slot="end" fill="solid" color="warning" style="color:#ffcb02 !important">
+        <ion-button *ngIf="email != undefined" (click)="presentAlertPrompt(items)" slot="end" fill="solid" color="warning" style="color:#ffcb02 !important">
           <ion-icon name="cart"></ion-icon>
       </ion-button>
       <ion-button fill="solid" color="warning" slot="end"(click)="veritem(items)">Veja</ion-button>

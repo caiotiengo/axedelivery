@@ -80,7 +80,8 @@
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">CNPJ</ion-label>
-							<ion-input maxLenght="40" [brmasker]="{person: true}" formControlName="CPF"  type="text"></ion-input>
+							<ion-input maxLenght="40" [brmasker]="{person: true}"
+							 formControlName="CPF"  type="text"></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'user'" >
 						  <ion-label position="floating">CPF</ion-label>

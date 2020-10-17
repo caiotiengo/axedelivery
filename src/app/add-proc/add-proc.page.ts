@@ -21,7 +21,13 @@ export interface Foto {
     fotoN: string;
     link?: any;
 }
-
+export interface CheckBox{
+    name: string;// 'checkbox2',
+    type: string; //'checkbox',
+    label: string;// 'Checkbox 2',
+    value: string; //'value2'
+  
+}
 @Component({
   selector: 'app-add-proc',
   templateUrl: './add-proc.page.html',
@@ -42,6 +48,7 @@ export class AddProcPage implements OnInit {
     sub;
     name;
     nome = '';
+    variedade = '';
     boss;
     procUser: any ;
     que;
@@ -50,7 +57,9 @@ export class AddProcPage implements OnInit {
     public uploadPercent: Observable<number>;
     public formulario : FormGroup;
     photos: Array<Foto> = [];
+    check: Array<CheckBox> = [];
 
+    hide = true;
 
   constructor(public navCtrl: NavController, public afStore: AngularFirestore,
               public alertCtrl: AlertController,
@@ -81,8 +90,21 @@ export class AddProcPage implements OnInit {
       qtd:['', Validators.required]      
 
     });
+    
   }
-
+  abrir(){
+    this.hide = false;
+  }
+  addItem(){
+    this.check.push({
+      name: 'checkbox2',
+      type: 'checkbox',
+      label: this.variedade ,
+      value:  this.variedade 
+    })
+    this.variedade = '';
+    console.log(this.check)
+  }
   ngOnInit() {
   }
 
@@ -233,7 +255,9 @@ export class AddProcPage implements OnInit {
          quantity: Number(this.formulario.value.qtd),
          detail:  this.resumo,
          price: Number(valorN),
-         fotos: this.photos
+         fotos: this.photos,
+         especi: this.check,
+         noApp: "Sim"
       });
     }
     this.showalert('Obrigado!', 'Seu produto estará disponível em breve!');

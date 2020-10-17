@@ -107,6 +107,7 @@ export class CarrinhoPage implements OnInit {
     });
     this.storage.get('valorFinal').then((data) => {
       var x =  Number(data);
+      console.log(x)
       this.valor = x.toFixed(2)
       console.log(this.valor);
     });
@@ -218,10 +219,10 @@ teste(){
                 ownId: this.userCPF,
                 fullname: this.nome,
                 email: this.email,
-                birthDate: x,
+                birthDate: b,
                 taxDocument: {
                     type: 'CPF',
-                    number: this.cpfCartao
+                    number: this.userCPF
                 },
                 phone: {
                     countryCode: '55',

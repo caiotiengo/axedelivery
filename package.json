@@ -41,7 +41,7 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "~2.2.0",
     "@types/google-maps": "^3.2.2",
-    "br-mask": "0.0.9",
+    "br-mask": "0.0.10",
     "brmasker-ionic-3": "^1.6.3",
     "card.io.cordova.mobilesdk": "^2.1.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
