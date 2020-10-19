@@ -1,6 +1,4 @@
 
-
-
 <ion-content [fullscreen]="true" style="text-align: center;">
 <div class="background-div1">
       <img style="width:45%"src="/assets/Picture1.png">
@@ -214,21 +212,28 @@
 
 </form>
 </ion-card-content>
+</ion-card>
 
-</ion-card >
-  <ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important;">
-    <ion-card-header > <h3 text center>{{nome}}, Aqui está seus produtos!</h3>
-        <ion-button color="findme" (click)="addProc()"></ion-button></ion-card-header>
-
-    <ion-card-content>
-      <ion-list *ngFor="let items of goalListFiltrado">
-      <ion-item>
-            <h2>{{items.nome}}</h2><br/>
-            <ion-button  color="primary" [routerLink]="['/edit/' + items.id]" >Editar</ion-button>
-            <ion-button (click)="deletarItem(items)" color="danger" slot="end">Deletar</ion-button><br/>
+  <ion-list *ngIf="typeUser === 'Loja'" >
+    <h3 text center>{{nome}}, Aqui está seus produtos!</h3>
+    <ion-item *ngFor="let items of goalListFiltrado">
+      <ion-thumbnail slot="start">
+        <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
+        <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{items.nome}}</h2>
+        <p>R${{items.valor}}</p>
+        <p>Quantidade:{{items.quantity}}</p>
+        <p style="background: #ffc409;
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: black;">{{items.tipoPrd}}</p>
+      </ion-label>
+      <ion-button slot="end" color="primary" [routerLink]="['/editar/' + items.id]" >Editar</ion-button>
+      <ion-button (click)="deletarItem(items)" color="danger" slot="end">x</ion-button><br/>
       </ion-item>
 
-    </ion-list>
-    </ion-card-content>
-  </ion-card>
+</ion-list>
 </ion-content>

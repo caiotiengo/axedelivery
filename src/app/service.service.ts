@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 //import {Produtos} from './item/item.page';
 import * as firebase from 'firebase/app';
 import { Platform } from '@ionic/angular';
+import { Foto, CheckBox } from './add-proc/add-proc.page';
 
 
 
@@ -44,13 +45,19 @@ export interface Processo {
     nome?: string;
     LikeValue?: number;
     DislikeValue?: number;
-    valor?: string;
+    valor?: number;
     email?: string;
     type?: string;
     resumo?: string;
     noApp?:string;
     lastEdit?: string;
-    tipoPrd?:any
+    tipoPrd?:any;
+    price?:number;
+    product?:string;
+    quantity?: number;
+    detail?: string;
+    especi?:Array<CheckBox>
+    fotos?:Array<Foto>
 }
 export interface Vendas {
     nomeComprador?: string;
@@ -274,8 +281,37 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
     this.userCollection.doc<User>(id).update({entrega: entrega, seNao:seNao});
 
   }
+  updateProduto(id: string, nomeNovo:string, priceNovo:number, productNovo:string,quantityNovo:number,
+    tipoPrdNovo:string, valorNovo:number, detailNovo:string, resumoNovo:string,especiNovo:Array<CheckBox>,fotosNovo:Array<Foto>){
+    this.processoCollection.doc<Processo>(id).update({
+      nome: nomeNovo,
+      price: priceNovo,
+      product: nomeNovo,
+      quantity: quantityNovo,
+      valor: valorNovo,
+      tipoPrd: tipoPrdNovo,
+      noApp: "Sim",
+      detail: detailNovo,
+      resumo:resumoNovo,
+      especi:especiNovo,
+      fotos:fotosNovo
+    })
+  }
 /*
 
+
+
+detail: "Uma caixa de velas"
+email: "lojazonanorte@gmail.com"
+fotos: [{…}]
+noApp: "Sim"
+nome: "Caixa de Velas"
+price: 1000
+product: "caixa de obi"
+quantity: 10
+resumo: "Uma caixa de velas"
+tipoPrd: "Velas"
+valor: 10
 
 .nomeNaConta}}</p>
       <p>{{loja.banco}}</p>

@@ -66,7 +66,40 @@
   <div  class="scrolling-wrapper">
   
     <ion-item lines="none"  class="card"  *ngFor="let items of goalListFiltrei">
-      <ion-card style="    text-align: center;
+      <ion-card  *ngIf="items.zona === filtroLoja && items.status ==='Offline'" disabled  style="text-align: center;
+      height: 100%;
+      margin: auto;
+      min-height: 40vh;
+      max-height: 40vh;
+      width: 30vh; margin:15px; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.id]"  >
+        <ion-card-header style="min-height: 20vh;
+        max-height: 20vh;">
+          <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+  
+          <img style="    margin: auto;
+        
+          max-height: 15vh;max-width: 22vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
+        </ion-card-header> 
+        <ion-label style="background: linear-gradient(45deg, #ffc40933,#ffc409);
+        border-radius: 25px;
+        color: black;
+        padding: 3px;
+    "> 	
+    <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>
+    {{items.bairro}}
+  </ion-label>
+        <ion-card-content>
+          <ion-label text-wrap>
+            {{items.nome}}
+            <br/>
+            <ion-button color="danger" *ngIf="items.status ==='Offline'" disabled>Fechada</ion-button>
+
+          </ion-label>
+        </ion-card-content>
+
+
+    </ion-card>
+    <ion-card  *ngIf="items.zona === filtroLoja && items.status ==='Online'"   style="text-align: center;
       height: 100%;
       margin: auto;
       min-height: 40vh;
@@ -125,11 +158,10 @@
 <div class="background-traco"  *ngIf="semLoja > 0 && filtroLoja ">
 
           <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
-            <ion-item *ngIf="items.zona === filtroLoja" [routerLink]="['/item/' + items.id]">
+            <ion-item *ngIf="items.zona === filtroLoja && items.status ==='Offline'" disabled [routerLink]="['/item/' + items.id]">
 
               <ion-thumbnail slot="start">
                 <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
-  
                 <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
               <ion-label>
                 <h2>{{items.nome}}</h2>
@@ -141,9 +173,27 @@
                 border-radius: 25px;
                 color: black;">{{items.bairro}}</p>
               </ion-label>
-              <ion-button color="warning" slot="end">VEJA</ion-button>
+              <ion-button  *ngIf="items.status ==='Offline'" color="danger" disabled>Fechada</ion-button>
+              <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
             </ion-item>
-             
+            <ion-item *ngIf="items.zona === filtroLoja && items.status ==='Online'"  [routerLink]="['/item/' + items.id]">
+
+              <ion-thumbnail slot="start">
+                <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+                <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
+              <ion-label>
+                <h2>{{items.nome}}</h2>
+                <p>Entrega:{{items.entrega}}</p>
+                <p>Ou: {{items.seNao}}</p>
+                <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
+                padding: 5px;
+                text-align: center;
+                border-radius: 25px;
+                color: black;">{{items.bairro}}</p>
+              </ion-label>
+              <ion-button  *ngIf="items.status ==='Offline'"  color="danger" disabled>Fechada</ion-button>
+              <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
+            </ion-item>             
             <div style="text-align: center;" *ngIf="semLoja === 0 && filtroLoja  ">
               <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
            

@@ -27,6 +27,7 @@ import {finalize} from 'rxjs/operators';
 import {Observable} from 'rxjs'
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
+import { PoliticaPage } from '../politica/politica.page';
 declare var google;
 
 export interface Foto {
@@ -62,6 +63,7 @@ export class RegisterPage implements OnInit {
     nomeNaConta = '';
     banco = '';
     ddd = '';
+    check:boolean
     lat 
     url
 
@@ -104,7 +106,7 @@ export class RegisterPage implements OnInit {
                   email: [''],
                   password: [''],
                   CEP: [''],
-                  DOB: [''],
+                  //DOB: [''],
                   complemento:[''],
                   banco:[''],
                   CPF: [''],
@@ -254,7 +256,7 @@ export class RegisterPage implements OnInit {
              numeroEND: this.cadastro.value.numeroEND,
              CPFCNPJ: this.cadastro.value.CPF,
              CEP: this.cadastro.value.CEP,
-             DOB: this.cadastro.value.DOB,
+             status: 'Offline',
              estado: "RJ", //this.cadastro.value.estado,
              ddd:this.cadastro.value.ddd,
              entrega: this.cadastro.value.entregaDe,
@@ -327,7 +329,7 @@ export class RegisterPage implements OnInit {
              numeroEND: this.cadastro.value.numeroEND,
              CPFCNPJ: this.cadastro.value.CPF,
              CEP: this.cadastro.value.CEP,
-             DOB: this.cadastro.value.DOB,
+             status: 'Offline', 
              estado: "RJ", //this.cadastro.value.estado,
              ddd:this.cadastro.value.ddd,
              entrega: '',
@@ -389,7 +391,16 @@ export class RegisterPage implements OnInit {
   voltar(){
   		this.navCtrl.navigateForward('/');
   }
-
+  politica(){
+    this.presentModal();
+  }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: PoliticaPage,
+      cssClass: 'my-custom-class'
+    });
+    return await modal.present();
+  }
   async photo(){
     const options: CameraOptions = {
       quality: 100,

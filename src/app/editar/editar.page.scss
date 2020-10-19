@@ -1,0 +1,40 @@
+*{
+	font-weight: 300;
+}
+.background-div1{
+    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
+    height: 235px;
+    width: 100%;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+
+}
+ion-content{
+  //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
+
+}
+.card-1{
+    background-color: white;
+    position: absolute;
+    margin-left: 0%;
+    top: 14%;
+    box-shadow: 0px 2px 0px 5px #d3d3d35c;
+    text-align: center;
+    width: 100%;
+}
+.arrow{
+	color: black;
+    width: 14%;
+    height: 12%;
+    margin-top: 5%;
+    float:left;
+}
+.signin-button{
+    --background: linear-gradient(90deg, #222428 6%, #383a3ed9 100%)
+}
+ion-button{
+	--border-radius:9px;
+	--box-shadow: none;
+	text-transform: initial;
+	font-size: 12px;
+}

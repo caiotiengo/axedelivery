@@ -15,14 +15,16 @@
 <div class="background-traco"  style="text-align: center;    margin-top: 8%;">
 
 <p style="text-align-last: center;">Escolha o tipo de usuario entrar como:</p>
-				<ion-select placeholder="Tipo de Usuario"  [(ngModel)]="typeUser" required>
+				<ion-select placeholder="Tipo de Usuario" style="border: 1px solid #d7d8da;
+				padding: 13px;" [(ngModel)]="typeUser" required>
 					<ion-select-option value="Loja">Loja</ion-select-option>
 					<ion-select-option value="user">Usúario</ion-select-option>
 				</ion-select>
 				<br/>
 				<p style="text-align-last: center;">Qual a sua região?</p>
 
-				<ion-select placeholder="Sua região" required  [(ngModel)]="type">
+				<ion-select placeholder="Sua região" style="border: 1px solid #d7d8da;
+				padding: 13px;" required  [(ngModel)]="type">
 					<ion-select-option value="Centro">Centro</ion-select-option>
 					<ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
 					<ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
@@ -52,7 +54,7 @@
 						  <ion-label position="floating">Seu nome</ion-label>
 						  <ion-input formControlName="nome" ></ion-input>
 						</ion-item>
-						<ion-item *ngIf="typeUser === 'user'" >
+						<!--ion-item *ngIf="typeUser === 'user'" >
 							<ion-label position="floating"> Data de Nascimento</ion-label>
 
 						   <ion-datetime
@@ -69,7 +71,7 @@
 		    						displayFormat="DD MMM, YYYY"
 		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" formControlName="DOB" placeholder="Clique aqui" required></ion-datetime>
 
-						</ion-item>
+						</ion-item-->
 						<ion-item *ngIf="typeUser === 'Loja'" >
 							<ion-label position="floating">Entrega de:</ion-label>
 						  <ion-input formControlName="entregaDe" ></ion-input>
@@ -213,8 +215,13 @@
 				<!-- <img src="{{img.src}}"> -->
 <br/>
 <ion-button color="white" style="color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
+		<ion-item>
+			<ion-label>Confirmo que li e concordo com os termos.</ion-label>
+			<ion-checkbox [(ngModel)]="check"></ion-checkbox>
 
-				<ion-label *ngIf="typeUser && type ">
+		</ion-item>		
+		
+				<ion-label *ngIf="typeUser && type && check">
 					<ion-button (click)="registrar()" expand="block" class="signin-button" style="color:white !important;" >
 						 Confirmar
 					</ion-button>

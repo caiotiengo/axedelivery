@@ -207,7 +207,7 @@ teste(){
       console.log('hash', hash)
       this.hash = hash;
         this.moip.order.create({
-            ownId: this.userCPF,
+            ownId: this.cpfCartao,
             amount: {
                 currency: 'BRL',
                 subtotals: {
@@ -216,13 +216,13 @@ teste(){
             },
             items: this.carrinho,
             customer: {
-                ownId: this.userCPF,
+                ownId: this.cpfCartao,
                 fullname: this.nome,
                 email: this.email,
                 birthDate: b,
                 taxDocument: {
                     type: 'CPF',
-                    number: this.userCPF
+                    number: this.cpfCartao
                 },
                 phone: {
                     countryCode: '55',
@@ -258,7 +258,7 @@ teste(){
                 type: "SECONDARY",
                 feePayor: false,
                 amount: {
-                  percentual: this.loja.porcentagemLoja
+                  percentual: this.loja.porcentagemLoja,
                   }
               }
             ]
@@ -287,7 +287,7 @@ teste(){
             }
         }).then((response) => {
           if(response.body.status === 'IN_ANALYSIS'){
-              console.log(response)
+              console.log(response.body.id)
               const user = firebase.auth().currentUser;
     if (user) {
       this.mainuser = this.afStore.doc(`users/${user.uid}`);
@@ -343,7 +343,8 @@ teste(){
           statusPag: 'Aprovado',
           statusEnt: 'Loja informada',
           telefoneComprador: this.telefoneComprador,
-          CPFComprador: this.userCPF
+          CPFComprador: this.userCPF,
+          idPagamento: response.body.id
         }).then(() => {
           this.storage.remove('carrinhoUser').then(() => {
             this.navCtrl.navigateRoot('/status');

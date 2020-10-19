@@ -54,6 +54,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./root/root.module').then( m => m.RootPageModule)
+  },
+  {
+    path: 'editar/:id',
+    loadChildren: () => import('./editar/editar.module').then( m => m.EditarPageModule)
+  },
+  {
+    path: 'politica',
+    loadChildren: () => import('./politica/politica.module').then( m => m.PoliticaPageModule)
   }
 ];
 @NgModule({
