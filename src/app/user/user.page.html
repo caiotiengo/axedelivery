@@ -222,7 +222,7 @@
 </ion-card>
 
   <ion-list *ngIf="typeUser === 'Loja'" >
-    <h3 text center>{{nome}}, Aqui está seus produtos!</h3>
+    <h3 text center>Seus produtos no App!</h3>
     <ion-item *ngFor="let items of goalListFiltrado">
       <ion-thumbnail slot="start">
         <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">

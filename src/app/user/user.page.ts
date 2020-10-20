@@ -169,8 +169,8 @@ export class UserPage implements OnInit {
 
       }
     this.proccessSubscription = this.services.getProccessos().subscribe(data => {
-          this.goalListFiltrado = data.filter(i => i.email === user.email);
-          this.loadedGoalListFiltrado = data.filter(i => i.email === user.email);
+          this.goalListFiltrado = data.filter(i => i.email === user.email && i.noApp === "Sim");
+          this.loadedGoalListFiltrado = data.filter(i => i.email === user.email && i.noApp === "Sim");
           console.log(this.goalList);
 
 

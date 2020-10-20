@@ -10,7 +10,7 @@
         <ion-card-content>
             <br/>
           <p>Escolha o tipo do produto:</p>
-          <ion-select placeholder="produto?.type" style="border: 1px solid #d7d8da;
+          <ion-select placeholder="{{produto?.tipoPrd}}" value="{{produto?.tipoPrd}}" style="border: 1px solid #d7d8da;
           padding: 13px;"  [(ngModel)]="type">
             <ion-select-option value="Alimentos">Alimentos</ion-select-option>
             <ion-select-option value="Animais">Animais</ion-select-option>
