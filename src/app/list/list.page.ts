@@ -161,7 +161,7 @@ status(){
                         this.filtroLoja = this.zona
                         //console.log(birthdate);
                         //console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                        this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.status === "Online");//
+                        this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.status === "Online" && i.aprovado === 'Sim');//
                         this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
                         this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim' );
                         this.lojinha = this.goalListFiltrado
