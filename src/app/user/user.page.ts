@@ -101,6 +101,7 @@ export class UserPage implements OnInit {
     geocoder
     latitudeGoogle
     longitudeGoogle
+    status
   constructor(public navCtrl: NavController, private storage: Storage,
               public afStore: AngularFirestore, 
               public modalController: ModalController,
@@ -196,6 +197,7 @@ export class UserPage implements OnInit {
       this.CPFconta = event.CPFconta
       this.entrega = event.entrega
       this.seNao = event.seNao
+      this.status = event.status
     });
 
    }
@@ -244,6 +246,15 @@ export class UserPage implements OnInit {
  
  
 
+  }
+
+  abrirLoja(){
+    var opc = "Online"
+    this.services.updateStatus(this.userID,opc)
+  }
+  fecharLoja(){
+    var opc = "Offline"
+    this.services.updateStatus(this.userID,opc)
   }
   private iniciarPush(){
     

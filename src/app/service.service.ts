@@ -39,6 +39,7 @@ export interface User {
     zona?:any
     entrega?:any
     seNao?:any
+    status?:any;
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -296,6 +297,14 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
       especi:especiNovo,
       fotos:fotosNovo
     })
+  }
+  updateStatus(id:string, opc: string){
+    this.userCollection.doc<User>(id).update({
+      status: opc
+    })
+  }
+  updatePagamento(id:string,status:string){
+    this.vendasCollection.doc<Vendas>(id).update({statusPag: status})
   }
 /*
 

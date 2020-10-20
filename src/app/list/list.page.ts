@@ -156,14 +156,14 @@ status(){
                         this.nomeUser = event.nome
                         this.DOB = event.DOB
                         this.tipo = event.tipo
-                        let birthdate = this.DOB
-                        format(new Date(birthdate), "yyyy-MM-dd");
+                        //let birthdate = this.DOB
+                       // format(new Date(birthdate), "yyyy-MM-dd");
                         this.filtroLoja = this.zona
-                        console.log(birthdate);
-                        console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                        this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja');
-                        this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja'); // && i.aprovado === 'Sim'
-                        this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' );
+                        //console.log(birthdate);
+                        //console.log(format(new Date(birthdate), "yyyy-MM-dd"))
+                        this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.status === "Online");//
+                        this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
+                        this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim' );
                         this.lojinha = this.goalListFiltrado
                         this.semLoja = this.goalListFiltrado.length
             

@@ -182,12 +182,12 @@ export class ItemPage implements OnInit {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
       header: items.nome,
-      message: 'Deseja adicionar esse item ao carrinho?',
+      message: 'Qual a quantidade que você deseja adicionar ao carrinho?',
       inputs: [
         {
           name: 'name1',
           type: 'text',
-          placeholder: 'Placeholder 1'
+          placeholder: 'Quantidade'
         }],
       buttons: [
         {
@@ -198,7 +198,7 @@ export class ItemPage implements OnInit {
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Quero!',
+          text: 'Ok',
           handler: (data) => {
             var x = 1;
             console.log('Confirm Ok');
@@ -236,9 +236,9 @@ export class ItemPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (data) => {
-            console.log(data[0])
+            console.log(data)
             console.log(data.checkbox2)
-            this.addCarrinho(items, qtd, data[0])
+            this.addCarrinho(items, qtd, data)
             console.log('Confirm Ok');
           }
         }
@@ -290,8 +290,18 @@ export class ItemPage implements OnInit {
               
              let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
              console.log("A distancia entre as lojas é de:" + Number(kilometers));
-             this.valorFrete = Math.floor(2.0)*Number(kilometers) + 5
-             this.valorDelivery = this.valorFrete.toFixed(2)
+             
+             this.valorFrete = Math.floor(1.20)*Number(kilometers) + 5;
+             if(this.valorFrete > 30.00){
+               console.log('maior')
+               var y = 35.00
+               this.valorDelivery = y.toFixed(2)
+
+             }else{
+               console.log('menor')
+               this.valorDelivery = this.valorFrete.toFixed(2)
+
+             }
 
     });
     this.productSubscription = this.services.getProccessos().subscribe(res => {

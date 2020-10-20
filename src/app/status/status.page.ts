@@ -8,7 +8,8 @@ import {Subscription} from 'rxjs';
 import * as firebase from 'firebase';
 import {Loja} from '../item/item.page';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
-
+import { MoipCreditCard } from 'moip-sdk-js';
+import moipSdk from 'moip-sdk-node'
 export interface Vendas {
   nomeComprador: string;
   endereco: string;
@@ -41,6 +42,7 @@ export class StatusPage implements OnInit {
   public loadedGoalListST: any[];
   public  loja: Loja = {};
   public commentsSubscription: Subscription;
+  moip: any;
 
   mainuser: AngularFirestoreDocument;
   emailUsr;
@@ -85,7 +87,23 @@ export class StatusPage implements OnInit {
           starRating2:[0]
            
     });
-
+    this.moip = moipSdk({
+      //accessToken: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
+      /*
+      token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
+       key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
+          // production: false
+      production: false
+      */
+      accessToken: '292bed0bd3244409b835986edca4119f_v2',
+      token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
+      //secret:'cf87986f39c342caa5d9a49c6c166a2a',
+      key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
+      channelId:"APP-16HIIBI5HPS8",
+      // production: false
+      production: true,
+      "Accept" : "*/*"
+    })
       
   }
   ngOnInit(){
@@ -96,7 +114,8 @@ export class StatusPage implements OnInit {
  
   }
   atualiza(){
-        this.vendasSub = this.services.getVendas().subscribe(res => {
+    
+    this.vendasSub = this.services.getVendas().subscribe(res => {
       const user = firebase.auth().currentUser;
       console.log(user);
       
@@ -106,10 +125,83 @@ export class StatusPage implements OnInit {
            
         this.mainuser = this.afStore.doc(`users/${user.uid}`);
         this.emailUsr = user.email;
-        this.goalListUs = res.filter(i => i.emailComprador === this.emailUsr && i.statusEnt != 'Cancelada' );
-        
+        this.goalListUs = res.filter(i => i.emailComprador === this.emailUsr && i.statusEnt != 'Cancelada'  );  
         this.loadedGoalListUs = res.filter(i => i.emailComprador  === this.emailUsr && i.statusEnt != 'Cancelada' );
         this.goalListST = res.filter(i => i.emailLoja === this.emailUsr && i.statusEnt != 'Cancelada' && i.statusEnt != 'Entregue');
+
+        this.goalListST.forEach( i =>{
+          if(i.idPagamento){
+            this.moip.payment.getOne(i.idPagamento)
+            .then((response) => {
+              if(response.body.status === "AUTHORIZED"){
+                var x = "Aprovado"
+                this.services.updatePagamento(i.id, x)
+              }else if(response.body.status === 'CANCELLED'){
+                var y = "Cancelado pelo banco"
+                this.services.updatePagamento(i.id,y)
+              }else if(response.body.status === 'IN_ANALYSIS'){
+                var z = "Em Análise"
+                this.services.updatePagamento(i.id,z)
+  
+              }else if(response.body.status === 'REFUNDED'){
+                var n = "Reembolsado"
+                this.services.updatePagamento(i.id,n)
+  
+              }else if(response.body.status === 'REVERSED'){
+                var j = "Revertido ao cliente"
+                this.services.updatePagamento(i.id,j)
+  
+              }else{
+                console.log(response.body.status)
+              }
+              console.log(response.body.status)
+  
+            }).catch((err) => {
+                console.log(err)
+            })
+          }else{
+            console.log('não tem')
+          }
+
+        })
+        this.goalListUs.forEach( i =>{
+          if(i.idPagamento){
+            this.moip.payment.getOne(i.idPagamento)
+            .then((response) => {
+              if(response.body.status === "AUTHORIZED"){
+                var x = "Aprovado"
+                this.services.updatePagamento(i.id, x)
+              }else if(response.body.status === 'CANCELLED'){
+                var y = "Cancelado pelo banco"
+                this.services.updatePagamento(i.id,y)
+              }else if(response.body.status === 'IN_ANALYSIS'){
+                var z = "Em Análise"
+                this.services.updatePagamento(i.id,z)
+  
+              }else if(response.body.status === 'REFUNDED'){
+                var n = "Reembolsado"
+                this.services.updatePagamento(i.id,n)
+  
+              }else if(response.body.status === 'REVERSED'){
+                var j = "Revertido ao cliente"
+                this.services.updatePagamento(i.id,j)
+  
+              }else{
+                console.log(response.body.status)
+              }
+              console.log(response.body.status)
+  
+            }).catch((err) => {
+                console.log(err)
+            })
+          }else{
+            console.log('não tem')
+          }
+
+        })
+
+        
+        
         if(res.filter(i => i.emailLoja === this.emailUsr)){
           this.typeUser = 'Loja'
           console.log(this.typeUser)
@@ -118,7 +210,7 @@ export class StatusPage implements OnInit {
                     console.log(this.typeUser)
 
         }
-        this.loadedGoalListST = res.filter(i => i.emailLoja  === this.emailUsr && i.statusEnt != 'Cancelada' && i.statusEnt != 'Entregue'); 
+        this.loadedGoalListST = res.filter(i => i.emailLoja  === this.emailUsr && i.statusEnt != 'Cancelado pelo usuário' && i.statusEnt != 'Entregue'); 
              this.commentsSubscription = this.services.getComments().subscribe(data =>{
                 console.log(data)
                 this.comentariando = data
@@ -168,7 +260,7 @@ export class StatusPage implements OnInit {
             return null
           }
         }).reduce(function(a, b) { return a + b; })
-        var count = 84 * Number(this.mapVal.toFixed(2))
+        var count = Number(this.usuarioLogado.porcentagemLoja) * Number(this.mapVal.toFixed(2))
         console.log(count/100)   
         var percent = count/100
         this.receber = Number(percent.toFixed(2))
@@ -330,7 +422,7 @@ export class StatusPage implements OnInit {
         handler: () => {
           console.log('sim clicked');
           //this.atualiza();
-          this.services.vendasCollection.doc<Vendas>(items.id).update({statusEnt: 'Cancelada' });
+          this.services.vendasCollection.doc<Vendas>(items.id).update({statusEnt: 'Cancelado pelo usuário:' +' '+ this.usuarioLogado.nome });
         }
       }]
     });

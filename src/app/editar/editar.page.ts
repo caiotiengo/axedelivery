@@ -117,7 +117,7 @@ export class EditarPage implements OnInit {
   addItem(){
     this.check.push({
       name: 'checkbox2',
-      type: 'checkbox',
+      type: 'radio',
       label: this.variedade ,
       value:  this.variedade 
     })

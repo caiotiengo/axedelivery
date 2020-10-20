@@ -217,7 +217,7 @@ teste(){
             items: this.carrinho,
             customer: {
                 ownId: this.cpfCartao,
-                fullname: this.nome,
+                fullname: this.nomeCartao,
                 email: this.email,
                 birthDate: b,
                 taxDocument: {
@@ -286,75 +286,195 @@ teste(){
                 }
             }
         }).then((response) => {
-          if(response.body.status === 'IN_ANALYSIS'){
+          if(response.body.status === 'AUTHORIZED'){
               console.log(response.body.id)
               const user = firebase.auth().currentUser;
-    if (user) {
-      this.mainuser = this.afStore.doc(`users/${user.uid}`);
-      console.log(user);
-    } else {}
+            if (user) {
+              this.mainuser = this.afStore.doc(`users/${user.uid}`);
+              console.log(user);
+            } else {}
                this.showalert('Obrigado pela compra!', 'A loja foi informada e você' +
-        ' pode acompanhar o seu pedido pela aba "Seus Pedidos"')
-      this.sub = this.storage.get('usuario').then(event => {
-      this.nome = event.nome;
-      this.endereco = event.endereco;
-      this.cidade = event.cidade;
-      this.email = event.email;
-      this.bairro = event.bairro;
-      this.telefone = event.telefone;
-      this.zona = event.zona;
-      this.like = event.LikeValue;
-      this.disklike = event.DislikeValue;
+                    ' pode acompanhar o seu pedido pela aba "Seus Pedidos"')
+                this.sub = this.storage.get('usuario').then(event => {
+                this.nome = event.nome;
+                this.endereco = event.endereco;
+                this.cidade = event.cidade;
+                this.email = event.email;
+                this.bairro = event.bairro;
+                this.telefone = event.telefone;
+                this.zona = event.zona;
+                this.like = event.LikeValue;
+                this.disklike = event.DislikeValue;
 
-      const date = new Date();
-      date.setMonth(date.getMonth() + 1);
-      const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
-      console.log(dia);
-      const mes = date.getMonth();
-      this.valores = this.carrinho.map(res => res.valor);
-      this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-      this.storage.get('valorFinal').then((data) => {
-        var y = Number(data);
+                const date = new Date();
+                date.setMonth(date.getMonth() + 1);
+                const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+                console.log(dia);
+                const mes = date.getMonth();
+                this.valores = this.carrinho.map(res => res.valor);
+                this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+                this.storage.get('valorFinal').then((data) => {
+                  var y = Number(data);
 
- //Math.floor(Number(data) + 8) 
-        this.valor = y.toFixed(2)
-        console.log(this.valor);
-      });
+          //Math.floor(Number(data) + 8) 
+                  this.valor = y.toFixed(2)
+                  console.log(this.valor);
+                });
 
-      this.storage.get('carrinhoUser').then((data) => {
-        this.produtos =  JSON.parse(data);
-        
-        
-        console.log(this.produtos);
-        var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-        console.log(seq);
-        this.afStore.collection('vendas').add({
-          nPedido:Number(seq),
-          nomeComprador: this.nome,
-          endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
-          nomeLoja: this.loja.nome,
-          valor: Number(this.valor),
-          dia,
-          mes,
-          produtos: this.produtos,
-          emailComprador: this.email,
-          lojaUID: this.produtos[0].lojaUID,
-          emailLoja: this.produtos[0].emailLoja,
-          statusPag: 'Aprovado',
-          statusEnt: 'Loja informada',
-          telefoneComprador: this.telefoneComprador,
-          CPFComprador: this.userCPF,
-          idPagamento: response.body.id
-        }).then(() => {
-          this.storage.remove('carrinhoUser').then(() => {
-            this.navCtrl.navigateRoot('/status');
-          });        
-        });
-      });
-    });
-          }else{
-            this.showalert('Ops...', 'Hove um erro na sua compra,' +
-        ' verifique suas informações e tente novamente.')
+                this.storage.get('carrinhoUser').then((data) => {
+                  this.produtos =  JSON.parse(data);
+                  
+                  
+                  console.log(this.produtos);
+                  var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                  console.log(seq);
+                  this.afStore.collection('vendas').add({
+                    nPedido:Number(seq),
+                    nomeComprador: this.nome,
+                    endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                    nomeLoja: this.loja.nome,
+                    valor: Number(this.valor),
+                    dia,
+                    mes,
+                    produtos: this.produtos,
+                    emailComprador: this.email,
+                    lojaUID: this.produtos[0].lojaUID,
+                    emailLoja: this.produtos[0].emailLoja,
+                    statusPag: 'Aprovado',
+                    statusEnt: 'Loja informada',
+                    telefoneComprador: this.telefoneComprador,
+                    CPFComprador: this.userCPF,
+                    idPagamento: response.body.id,
+                    //pagamento: 'Completo'
+                  }).then(() => {
+                    this.storage.remove('carrinhoUser').then(() => {
+                      this.navCtrl.navigateRoot('/status');
+                    });        
+                  });
+                });
+              });
+          }else if(response.body.status === 'IN_ANALYSIS'){
+            this.showalert('Opa!', 'Seu pagamento está em análise, assim que for autorizado vamos liberar o produto para você!')
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+              this.storage.get('valorFinal').then((data) => {
+                var y = Number(data);
+
+        //Math.floor(Number(data) + 8) 
+                this.valor = y.toFixed(2)
+                console.log(this.valor);
+              });
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.produtos[0].emailLoja,
+                  statusPag: 'Em análise',
+                  statusEnt: 'Loja informada',
+                  telefoneComprador: this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: response.body.id,
+                  //pagamento:'Em análise'
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+          }else if(response.body.status === 'CANCELLED'){
+            this.showalert('Opa!', 'Seu pagamento foi cancelado por algum motivo, entre em contato com o seu banco!')
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+              this.storage.get('valorFinal').then((data) => {
+                var y = Number(data);
+
+        //Math.floor(Number(data) + 8) 
+                this.valor = y.toFixed(2)
+                console.log(this.valor);
+              });
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.produtos[0].emailLoja,
+                  statusPag: 'Cancelado pelo banco',
+                  statusEnt: 'Cancelado pelo banco',
+                  telefoneComprador: this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: response.body.id,
+                  //pagamento:'Em análise'
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+          }else {
+            this.showalert('Ops...', 'Houve algum erro no seu pagamento.')
           }
         }).catch((err) => {
             console.log(err)
@@ -423,6 +543,71 @@ teste(){
           lojaUID: this.produtos[0].lojaUID,
           emailLoja: this.produtos[0].emailLoja,
           statusPag: 'Em dinheiro',
+          statusEnt: 'Loja informada',
+          telefoneComprador: this.telefoneComprador,
+          CPFComprador: this.userCPF
+        }).then(() => {
+          this.storage.remove('carrinhoUser').then(() => {
+            this.navCtrl.navigateRoot('/status');
+          });        
+        });
+      });
+    });
+
+  }
+  async pagarDeb() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      this.mainuser = this.afStore.doc(`users/${user.uid}`);
+      console.log(user);
+    } else {}
+    this.showalert('Obrigado pela compra!', 'A loja foi informada e você' +
+        ' pode acompanhar o seu pedido pela aba "Seus Pedidos"');
+    this.sub = this.storage.get('usuario').then(event => {
+      this.nome = event.nome;
+      this.endereco = event.endereco;
+      this.cidade = event.cidade;
+      this.email = event.email;
+      this.bairro = event.bairro;
+      this.telefone = event.telefone;
+      this.zona = event.zona;
+      this.like = event.LikeValue;
+      this.disklike = event.DislikeValue;
+      this.userCPF = event.CPFCNPJ
+
+      const date = new Date();
+      date.setMonth(date.getMonth() + 1);
+      const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+      console.log(dia);
+      const mes = date.getMonth();
+      console.log(mes)
+      this.valores = this.carrinho.map(res => res.valor);
+      this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+      this.storage.get('valorFinal').then((data) => {
+        var y = Number(data);
+
+// Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
+        this.valor = y.toFixed(2)
+        console.log(this.valor);
+      });
+      this.storage.get('carrinhoUser').then((data) => {
+        this.produtos =  JSON.parse(data);
+
+        console.log(this.produtos);
+        var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+        console.log(seq);
+        this.afStore.collection('vendas').add({
+          nPedido:Number(seq),
+          nomeComprador: this.nome,
+          endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+          valor: Number(this.valor),
+          dia,
+          mes,
+          produtos: this.produtos,
+          emailComprador: this.email,
+          lojaUID: this.produtos[0].lojaUID,
+          emailLoja: this.produtos[0].emailLoja,
+          statusPag: 'Débito presencial',
           statusEnt: 'Loja informada',
           telefoneComprador: this.telefoneComprador,
           CPFComprador: this.userCPF
