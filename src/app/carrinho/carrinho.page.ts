@@ -128,7 +128,7 @@ export class CarrinhoPage implements OnInit {
       this.like = event.LikeValue;
       this.disklike = event.DislikeValue;
       this.userCPF = event.CPFCNPJ;
-      this.DOB = event.DOB;
+      //this.DOB = event.DOB;
       this.numeroEND = event.numeroEND;
       this.CEP = event.CEP;
       this.estado = event.estado;
@@ -188,8 +188,8 @@ export class CarrinhoPage implements OnInit {
   }
 teste(){
   this.presentLoading() 
-  let birthdate = this.DOB
-  var x = format(new Date(birthdate), "yyyy-MM-dd");
+  //let birthdate = this.DOB
+  //var x = format(new Date(birthdate), "yyyy-MM-dd");
   let birthdateCard = this.dataNCartao
   var b = format(new Date(birthdateCard),"yyyy-MM-dd")
 
