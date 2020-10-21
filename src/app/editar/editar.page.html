@@ -61,6 +61,10 @@
             <ion-input name="valor" value="{{produto?.price}}" [(ngModel)]="valor" formControlName="valor"
             [brmasker]="{money: true}" type="text"></ion-input>
           </ion-item>
+          <p>No momento, ainda não disponibilizamos a atualização de fotos!</p>
+          <br/>
+          <p>Fique tranquilo, em breve será liberado.</p>
+          <!--
           <ion-slides style="width: 50%;">
             <ion-slide *ngFor="let items of produto?.fotos">
                 <img src="{{items.link}}">
@@ -76,7 +80,7 @@
           <ion-button shape="outline" (click)="abrirGaleria2()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
           <ion-button shape="outline" (click)="abrirGaleria3()" color="findme" ><ion-icon name="camera"></ion-icon></ion-button>
           <ion-button shape="outline" (click)="abrirGaleria4()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
-          <!-- <img src="{{img.src}}"> -->
+          <<img src="{{img.src}}"> -->
   
           </form>
           <ion-button expand="block" (click)="abrir()">Incluir Variedade</ion-button>

@@ -113,7 +113,7 @@
                            </ion-row>
                          </ion-grid>
            
-                 <ion-button  style="height: 4vh;" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
+                 <ion-button  style="height: 4vh;" expand="block" *ngIf="type" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
            
            
              </form>

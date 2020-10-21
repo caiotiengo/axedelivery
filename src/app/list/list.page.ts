@@ -64,7 +64,7 @@ export class ListPage implements OnInit {
   public products = new Array<Processo>();
   private proccessSubscription: Subscription;
   private produtosSubscription: Subscription;
-
+    naoTem
   userLocation;
     userCity;
     lat;
@@ -104,7 +104,7 @@ export class ListPage implements OnInit {
     filtroLoja = '';
     valorFrete
     valorDelivery
-  constructor(public navCtrl: NavController, public Platform:Platform,
+  constructor(public navCtrl: NavController,public Platform:Platform,
               public router: Router, 
               private geolocation: Geolocation,
               public modalController: ModalController,  
@@ -129,7 +129,14 @@ export class ListPage implements OnInit {
 add(){
   this.navCtrl.navigateForward('/add-proc')
 }
+/*share(){
+  if(this.Platform.is("ios")){
+    this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://apps.apple.com/us/app/ax%C3%A9-delivery/id1528911749')
 
+  }else{
+    this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://play.google.com/store/apps/details?id=io.ionic.axeDelivery')
+  }
+}*/
 status(){
   this.navCtrl.navigateForward('/status')
 }
@@ -165,8 +172,10 @@ status(){
                         this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
                         this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim' );
                         this.lojinha = this.goalListFiltrado
-                        this.semLoja = this.goalListFiltrado.length
-            
+                        this.semLoja = this.goalListFiltrei.length
+                        console.log(this.semLoja)
+                        console.log(this.lojinha)
+ 
                     
                })
             
@@ -187,9 +196,35 @@ status(){
       this.tamanho = this.listaProdutosSize.lenght
     })
   }
+  filtroZona(evt){
+    this.initializeItems();
+
+    const searchTerm = evt.srcElement.value;
+    var x = this.lojinha.filter(i => i.zona === evt.srcElement.value)
+    this.naoTem = x.length
+    console.log(this.naoTem)
+    console.log(searchTerm)
+    if (!searchTerm) {
+       return;
+    }
+    this.goalListFiltrado = this.lojinha.filter(currentGoal => {
+       if (currentGoal.zona && searchTerm) {
+           if (currentGoal.zona.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+
+             return true;
+           } else {
+             return false;
+           }
+       }else{
+        this.naoTem = this.goalListFiltrado.length
+        console.log(this.naoTem)
+       }
+     });
+  }
 
   initializeItems(): void {
     this.goalListFiltrado = this.lojinha;
+
   }
   filterList(evt) {
     this.initializeItems();

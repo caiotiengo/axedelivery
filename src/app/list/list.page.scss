@@ -71,6 +71,11 @@ ion-content{
     transform: rotate(-10deg);
 
 }
+ion-segment-button{
+  width: auto !important;
+    color: black;
+    font: -webkit-control;
+}
 .card-content-ios p {
   margin-left: 0;
   margin-right: 0;

@@ -20,6 +20,8 @@
     <ion-card-content>
       <h4 text-center style="color: black"> Status da entrega: </h4>
       <p text-center> {{venda?.statusEnt}}</p>
+      <h4 text-center style="color:black"> Endereço da entrega:</h4>
+      <p>{{venda?.endereco}}</p>
       <ion-item style="border-radius: 25px; border: 2px solid rgba(0, 0, 0, 0.3);
     box-shadow: 5px 5px rgba(128, 128, 128, 0.4);">
         <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
@@ -44,12 +46,16 @@
     top: 105%;
     width: 95%;" *ngFor="let items of venda?.produtos">
       <ion-item>
-        <ion-avatar slot="start">
-          <img src="{{items.fotos}}">
+         <ion-avatar slot="start">
+          <img  *ngIf="items.fotos.length != 0" src="{{items.fotos}}">
+          <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
         </ion-avatar>
-        <p>{{items.nome}}</p>
-        <!--ion-button fill="solid" color="warning" slot="end"(click)="veritem(items)">Veja</ion-button-->
-
+        <ion-label>
+          {{items.nome}}
+          <p>R${{items.valor}}</p>
+          <p *ngIf="items.especi !=' ' "><b>Tipo:</b> {{items.especi}}</p>
+          <p><b>Quantidade:</b> {{items.quantity}}</p>
+        </ion-label>
       </ion-item>
     </ion-list>
 </ion-content>

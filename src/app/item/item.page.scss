@@ -13,6 +13,11 @@ ion-content{
   //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
 
 }
+ion-segment-button{
+  //width: auto !important;
+    color: black;
+    font: -webkit-control;
+}
 .arrow{
 	color: black;
     width: 14%;

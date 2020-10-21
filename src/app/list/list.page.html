@@ -67,7 +67,7 @@
   
     <ion-item lines="none"  class="card"  *ngFor="let items of goalListFiltrei">
 
-    <ion-card    style="text-align: center;
+    <ion-card style="text-align: center;
       height: 100%;
       margin: auto;
       min-height: 40vh;
@@ -77,7 +77,7 @@
         max-height: 20vh;">
           <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
   
-          <img style="    margin: auto;
+          <img style=" margin: auto;
         
           max-height: 15vh;max-width: 22vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
         </ion-card-header> 
@@ -97,36 +97,71 @@
 
 
     </ion-card>
+    
+    </ion-item>
+    <ion-item lines="none"  class="card"  *ngIf="semLoja === 0" >
+      <ion-card style="text-align: center;
+    height: 100%;
+    margin: auto;
+    min-height: 40vh;
+    max-height: 40vh;
+    width: 30vh; margin:15px; border: 1px solid #ffc40938;" >
+      <ion-card-header style="min-height: 20vh;
+      max-height: 20vh;">
+        <img style="margin:auto;" src="/assets/Picture1.png" alt="" />
+
+      </ion-card-header> 
+
+      <ion-card-content>
+        <ion-label text-wrap>
+          Já imaginou você comprando por aqui na sua loja favorita?<br/><br/>
+              Indique lojas da sua região! 
+              <!--ion-button color="warning" (click)="share()">Compartilhar</ion-button-->
+      </ion-label>
+      </ion-card-content>
+
+
+  </ion-card>
     </ion-item>
   </div>
   <div >
     <p class="label-lojas">Outras regiões</p>
   </div>
   
+  <ion-segment scrollable (ionChange)="filtroZona($event)">
 
- <ion-select style="margin-top: 10%" placeholder="Qual região você quer procurar?" [(ngModel)]="filtroLoja">
+    <ion-segment-button style="width: auto !important;" value="Centro">
+      <p>Centro</p>
+    </ion-segment-button>
+    <ion-segment-button style="width: auto !important;" value="Zona Oeste">
+      <p>Zona Oeste</p>
+    </ion-segment-button>
+    <ion-segment-button style="width: auto !important;" value="Zona Norte">
+      <p>Zona Norte</p>
+    </ion-segment-button>
+    <ion-segment-button style="width: auto !important;" value="Zona Sul">
+      <p>Zona Sul</p>
+    </ion-segment-button>
+    <ion-segment-button style="width: auto !important;" value="Baixada">
+      <p>Baixada</p>
+    </ion-segment-button>
+  </ion-segment>  
+ <!--ion-select style="margin-top: 10%" placeholder="Qual região você quer procurar?" (ionInput)="filtroZona($event)"[(ngModel)]="filtroLoja">
           <ion-select-option value="Centro">Centro</ion-select-option>
           <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
           <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
           <ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
           <ion-select-option value="Baixada">Baixada</ion-select-option>
- </ion-select>
+ </ion-select-->
 
- <div style="text-align: center;" *ngIf="goalListFiltrado.length === 0">
-   <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
-
-  <h3>Hm...</h3>
-  <p>Parece que não encontramos a loja desejada. Já pesquisou por outra?</p>
  
 
-</div>
 
 
-
-<div class="background-traco"  *ngIf="semLoja > 0 && filtroLoja ">
+<div class="background-traco">
 
           <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
-            <ion-item *ngIf="items.zona === filtroLoja && items.status ==='Offline'" disabled [routerLink]="['/item/' + items.id]">
+            <ion-item *ngIf="items.status ==='Offline'" disabled [routerLink]="['/item/' + items.id]">
 
               <ion-thumbnail slot="start">
                 <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
@@ -144,7 +179,7 @@
               <ion-button  *ngIf="items.status ==='Offline'" color="danger" disabled>Fechada</ion-button>
               <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
             </ion-item>
-            <ion-item *ngIf="items.zona === filtroLoja && items.status ==='Online'"  [routerLink]="['/item/' + items.id]">
+            <ion-item *ngIf="items.status ==='Online'"  [routerLink]="['/item/' + items.id]">
 
               <ion-thumbnail slot="start">
                 <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
@@ -162,18 +197,19 @@
               <ion-button  *ngIf="items.status ==='Offline'"  color="danger" disabled>Fechada</ion-button>
               <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
             </ion-item>             
-            <div style="text-align: center;" *ngIf="semLoja === 0 && filtroLoja  ">
-              <img style="max-width: 55vh" src="/assets/Picture1.png" alt="" />
-           
-             <p>Parece que não temos loja em sua região...</p>
-             <p>Não se preocupe! Compartilhe o app com pessoas e comerciantes da sua área e faça a festa!</p>
-           
-           </div>
-
-         
-            
           </ion-list>
+
+
 </div>
+
+</div>
+<div style="text-align: center;" *ngIf="naoTem === 0">
+  <img src="/assets/Picture1.png" alt="" />
+  <h2>Já deu uma olhadinha em outra região?</h2>
+  <p>Parece que no momento não temos loja na selecionada...</p>
+  <p>Mas não se preocupe, em breve teremos! 
+ Compartilhe o app com pessoas e comerciantes da área e venha as compras!</p>
+ <!--on-button expand="block" color="warning" (click)="share()">Compartilhar</ion-button-->
 
 </div>
 </ion-content>
