@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {IonInfiniteScroll, NavController} from '@ionic/angular';
+import {IonInfiniteScroll, NavController, Platform} from '@ionic/angular';
 import { ServiceService } from '../service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
@@ -117,12 +117,22 @@ export class ItemPage implements OnInit {
     type = '';
     lojaLat
     quantidade: any = []
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController,
+    categorias
+    segumentacao = ''
+    plataforma
+    valorinicial
+    constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
               public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
 ) {
-
+      if(this.platform.is("ios")){
+        this.plataforma = "Ios"
+      }else if(this.platform.is("android")){
+        this.plataforma = "Android"
+      }else if(this.platform.is("pwa")){
+        this.plataforma = "Web"
+      }
 
       const user = firebase.auth().currentUser;
       console.log(user);
@@ -154,6 +164,14 @@ export class ItemPage implements OnInit {
          
       }
 
+
+   }
+    optionsFn(value: any ) {
+        this.segmento = value;
+        this.categoria = this.segmento;
+        console.log(this.categoria);
+    }
+    ionViewWillEnter(){
       this.que = this.route.snapshot.paramMap.get('id');
 
       console.log(this.que);
@@ -164,19 +182,11 @@ export class ItemPage implements OnInit {
             this.loadProduct();
             //this.loadComments();
         }
-      console.log(this.services.getLikes(this.que));
+      //console.log(this.services.getLikes(this.que));
 
       
-   }
-    optionsFn(value: any ) {
-        this.segmento = value;
-        this.categoria = this.segmento;
-        console.log(this.categoria);
     }
-  ngOnInit() {
-
-
-  }
+    ngOnInit(){}
 
   async presentAlertPrompt(items) {
     const alert = await this.alertCtrl.create({
@@ -305,8 +315,13 @@ export class ItemPage implements OnInit {
 
     });
     this.productSubscription = this.services.getProccessos().subscribe(res => {
-           this.goalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
-           this.loadedGoalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
+      this.goalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
+      this.loadedGoalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
+      this.categorias = Array.from(new Set(this.goalList.map((item: any) => item.tipoPrd)))
+      this.valorinicial = this.categorias[0]
+      console.log(this.valorinicial)
+           //this.categorias = Array.from(new Set(this.loadedGoalList.map((item: any) => item.tipoPrd)))
+           console.log(this.categorias)
        });
     this.commentsSubscription = this.services.getComments().subscribe(res =>{
            this.lojaID = res.filter(i => i.emailLoja === this.emailLoja)
@@ -322,17 +337,34 @@ export class ItemPage implements OnInit {
                 console.log(mySlider);
                 mySlider.slidePrev(mySlider);
       }
-  async handleLike() {
-       this.likes++;
-       try {
-          await this.services.like(this.que, this.loja);
-          this.showalert('Obrigado pelo feedback!', 'Isso ajuda a todos nós!');
-        } catch (e) {
-          console.log('Erro' + e);
-        }
-  }
+
     initializeItems(): void {
         this.goalList = this.loadedGoalList;
+    }
+    
+
+    segmentChanged(items){
+      this.initializeItems();
+
+      console.log(items.detail.value)
+      //this.segumentacao = items.detail.value
+      const searchTerm = items.detail.value;
+
+      if (!searchTerm) {
+          return;
+      }
+      this.goalList = this.goalList.filter(currentGoal => {
+          if (currentGoal.tipoPrd && searchTerm) {
+              if (currentGoal.tipoPrd.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+
+                  return true;
+              } else {
+                  return false;
+              }
+          }
+      });
+    //  this.goalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
+     // this.loadedGoalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
     }
 
     addCarrinho(items,qtd, data) {
@@ -417,7 +449,7 @@ export class ItemPage implements OnInit {
         this.storage.set('valorFinal', valorTudo.toFixed(2));
         this.storage.set('valorFrete', this.valorDelivery)
         this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(() =>{
-            this.navCtrl.navigateRoot('/carrinho');
+            this.navCtrl.navigateForward('/carrinho');
         });
 
     }

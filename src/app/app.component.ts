@@ -27,6 +27,9 @@ export class AppComponent {
       this.iniciarPush();
     });
   }
+
+  
+
   private iniciarPush(){
     const options: PushOptions = {
      android: {

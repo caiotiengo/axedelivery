@@ -113,10 +113,14 @@ export class RootPage implements OnInit {
     public afStore: AngularFirestore,
     public services: ServiceService,
     private _haversineService: HaversineService,
-    private nativeGeocoder: NativeGeocoder) { }
+    private nativeGeocoder: NativeGeocoder) {
+
+
+     }
 
   ngOnInit() {
     //
+ 
     this.proccessSubscription = this.services.getUsers().subscribe(data => {
       this.goalList = data;
       this.loadedGoalList = data;

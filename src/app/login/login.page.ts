@@ -44,7 +44,7 @@ export class LoginPage implements OnInit {
                   this.storage.set('usuario', event)
 
                 })
-              //this.navCtrl.navigateRoot('/tabs/tab1');
+               this.navCtrl.navigateRoot('/list');
               //console.log(this.userID)
               //this.navCtrl.navigateRoot('/tabs/tab1')
       } else {

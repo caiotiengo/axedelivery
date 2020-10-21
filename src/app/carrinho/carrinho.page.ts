@@ -620,7 +620,9 @@ teste(){
     });
 
   }
-
+  voltar(){
+  	this.navCtrl.pop();
+  }
   deletaItem(items) {
     console.log(items);
     console.log(this.carrinho);

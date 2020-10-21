@@ -148,6 +148,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+  
   }
   UpdateSearchResults(){
     this.hide = false

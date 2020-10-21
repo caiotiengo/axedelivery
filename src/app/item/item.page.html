@@ -98,36 +98,12 @@
     color: black;
     border-top-right-radius: 30px;" text-center>Produtos</h4>
     <div style="text-align: center;">
-<!--p style="font-weight: bold;">Escolha o tipo de produto:</p-->
-<!--ion-select placeholder="Tipo de produto" style="border-bottom-left-radius: 25px;
-border-bottom-right-radius: 25px;
-margin-bottom: 10%;
-background: #fdd112;" [(ngModel)]="type">
-  <ion-select-option value="Alimentos">Alimentos</ion-select-option>
-  <ion-select-option value="Animais">Animais</ion-select-option>
-  <ion-select-option value="Bijuterias">Bijuterias</ion-select-option>
-  <ion-select-option value="Bebidas">Bebidas</ion-select-option>
-  <ion-select-option value="Defumcao/Incenso">Defumação / Incenso</ion-select-option>
-  <ion-select-option value="Decoracao">Decoração</ion-select-option>					
-  <ion-select-option value="Ervas">Ervas</ion-select-option>
-  <ion-select-option value="Contas">Guia/contas</ion-select-option>
-  <ion-select-option value="Imagens">Imagens</ion-select-option>
-  <ion-select-option value="Instrumentos">Instrumentos musicais</ion-select-option>					
-  <ion-select-option value="Livraria">Livraria</ion-select-option>
-  <ion-select-option value="Outros">Outros</ion-select-option>
-  <ion-select-option value="Pedras/Cristais">Pedras / Cristais</ion-select-option>
-  <ion-select-option value="Cera">Produtos de cera</ion-select-option>
-  <ion-select-option value="Agata">Produtos de Ágata </ion-select-option>
-  <ion-select-option value="Vidro">Produtos de vidro</ion-select-option>
-  <ion-select-option value="Ferro">Produtos de ferro</ion-select-option>
-  <ion-select-option value="Palha">Produtos de palha</ion-select-option>
-  <ion-select-option value="Louca">Produtos de Louça</ion-select-option>
-  <ion-select-option value="Barro">Produtos de Barro</ion-select-option>
-  <ion-select-option value="Madeiras">Produtos de Madeira</ion-select-option>
-  <ion-select-option value="Tabacaria">Tabacaria</ion-select-option>
-  <ion-select-option value="Velas">Velas</ion-select-option>
-  <ion-select-option value="Vestuario">Vestuário</ion-select-option>
-</ion-select-->
+      <ion-segment scrollable (ionChange)="segmentChanged($event)" value="{{valorinicial}}">
+        <ion-segment-button style="width: auto !important; min-width: 160px;" *ngFor="let items of categorias" value="{{items}}">
+          <p value="{{items}}">{{items}}</p>
+        </ion-segment-button>
+
+      </ion-segment>  
 </div>
 <ion-searchbar  animated style="color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" placeholder="Pesquise um produto"
                     (ionInput)="filterList($event)">
