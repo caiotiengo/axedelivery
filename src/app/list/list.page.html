@@ -128,7 +128,7 @@
     <p class="label-lojas">Outras regiões</p>
   </div>
   
-  <ion-segment scrollable (ionChange)="filtroZona($event)">
+  <ion-segment style="background: white;" scrollable (ionChange)="filtroZona($event)">
 
     <ion-segment-button style="width: auto !important;" value="Centro">
       <p>Centro</p>
@@ -206,7 +206,7 @@
 <div style="text-align: center;" *ngIf="naoTem === 0">
   <img src="/assets/Picture1.png" alt="" />
   <h2>Já deu uma olhadinha em outra região?</h2>
-  <p>Parece que no momento não temos loja na selecionada...</p>
+  <p>Parece que no momento não temos loja na região selecionada...</p>
   <p>Mas não se preocupe, em breve teremos! 
  Compartilhe o app com pessoas e comerciantes da área e venha as compras!</p>
  <!--on-button expand="block" color="warning" (click)="share()">Compartilhar</ion-button-->

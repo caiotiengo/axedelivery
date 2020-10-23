@@ -66,7 +66,6 @@ export class RegisterPage implements OnInit {
     check:boolean
     lat 
     url
-
     long
     cnpj: any;
     strCNPJ: any;
@@ -263,7 +262,10 @@ export class RegisterPage implements OnInit {
              entrega: this.cadastro.value.entregaDe,
              seNao: this.cadastro.value.seNEntrega,
              fcm: '1',
-             FotoPerfil: String(this.url)
+             FotoPerfil: String(this.url),
+             idmoip: '1',
+             porcentagemLoja: 0,
+             porcentagemAxe: 0
         }).then(() => {
            const user = firebase.auth().currentUser;
            if(this.FCM === undefined){

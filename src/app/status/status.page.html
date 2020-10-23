@@ -45,7 +45,7 @@
         <ion-button fill="solid" color="warning" (click)="lista()" slot="end">Comprar</ion-button>
     </div> 
 <div class="background-traco" *ngIf=" typeUser === 'user' && valorre > 0 ">
-  <h2 style="text-align-last: center;     padding-top: 22px;">Seus Pedidos</h2>
+  <h2 style="text-align: center; padding-top: 22px;">Seus Pedidos</h2>
     
 
   <ion-list style="background: transparent" *ngFor="let items of goalListUs" >
@@ -62,7 +62,9 @@
 
       <ion-card-header>
         <h4 style="text-align: center;">{{items.nomeLoja}}</h4>
-        <ion-label style="" [hidden]="hideMe" *ngIf="items.statusEnt === 'Entregue'  ">
+        <h4 style="text-align: center;">{{items.nPedido}}</h4>
+
+        <ion-label [hidden]="hideMe" *ngIf="items.statusEnt === 'Entregue'  ">
          
        <form [formGroup]="formulario" style="display: block;" id="{{items.nPedido}}" (ngSubmit)="logForm()">
          <ion-item>

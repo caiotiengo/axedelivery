@@ -82,7 +82,7 @@
     color: black;
     border-top-right-radius: 30px;" text-center>Produtos</h4>
     <div style="text-align: center;">
-      <ion-segment scrollable (ionChange)="segmentChanged($event)" value="{{valorinicial}}">
+      <ion-segment style="background: white;" scrollable (ionChange)="segmentChanged($event)" value="{{valorinicial}}">
         <ion-segment-button style="width: auto !important; min-width: 160px;" *ngFor="let items of categorias" value="{{items}}">
           <p value="{{items}}">{{items}}</p>
         </ion-segment-button>

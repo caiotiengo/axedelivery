@@ -85,12 +85,17 @@ export class CarrinhoPage implements OnInit {
     porcentagemAxe:number
     porcentagemLoja:number
     count = [];
+    uid
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
               private _haversineService: HaversineService, 
               public alertCtrl: AlertController, 
               private storage: Storage){
+
+                const user = firebase.auth().currentUser;
+                this.uid = user.uid;
+                console.log(this.uid)            
     this.storage.get('carrinhoUser').then((data) => {
       this.carrinho =  JSON.parse(data);
       console.log(this.carrinho);
@@ -117,7 +122,6 @@ export class CarrinhoPage implements OnInit {
     })
     this.sub = this.storage.get('usuario').then(event => {
       console.log(event)
-
       this.nome = event.nome;
       this.endereco = event.endereco;
       this.cidade = event.cidade;
@@ -345,7 +349,7 @@ teste(){
                     telefoneComprador: this.telefoneComprador,
                     CPFComprador: this.userCPF,
                     idPagamento: response.body.id,
-                    //pagamento: 'Completo'
+                    compradorUID: this.uid
                   }).then(() => {
                     this.storage.remove('carrinhoUser').then(() => {
                       this.navCtrl.navigateRoot('/status');
@@ -405,7 +409,7 @@ teste(){
                   telefoneComprador: this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
-                  //pagamento:'Em análise'
+                  compradorUID: this.uid
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
@@ -465,7 +469,7 @@ teste(){
                   telefoneComprador: this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
-                  //pagamento:'Em análise'
+                  compradorUID: this.uid
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
@@ -545,7 +549,9 @@ teste(){
           statusPag: 'Em dinheiro',
           statusEnt: 'Loja informada',
           telefoneComprador: this.telefoneComprador,
-          CPFComprador: this.userCPF
+          CPFComprador: this.userCPF,
+          compradorUID: this.uid
+
         }).then(() => {
           this.storage.remove('carrinhoUser').then(() => {
             this.navCtrl.navigateRoot('/status');
@@ -610,7 +616,9 @@ teste(){
           statusPag: 'Débito presencial',
           statusEnt: 'Loja informada',
           telefoneComprador: this.telefoneComprador,
-          CPFComprador: this.userCPF
+          CPFComprador: this.userCPF,
+          compradorUID: this.uid
+          
         }).then(() => {
           this.storage.remove('carrinhoUser').then(() => {
             this.navCtrl.navigateRoot('/status');

@@ -146,6 +146,7 @@ status(){
           console.log(user);
           if (user) {
               this.mainuser = this.afStore.doc(`users/${user.uid}`);
+
               this.proccessSubscription = this.services.getUsers().subscribe(data => {
                 this.goalList = data;
                 this.loadedGoalList = data;
