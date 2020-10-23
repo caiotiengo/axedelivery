@@ -270,7 +270,7 @@ export class EditarPage implements OnInit {
      valorS = this.formulario.value.valor.replace(',','.')
      this.services.updateProduto(this.que,this.formulario.value.nomePrd, Number(valorN), this.formulario.value.nome,
      Number(this.formulario.value.qtd),
-      this.type, Number(valorS), this.resumo, this.formulario.value.resumo,this.check,this.photos)
+      this.type, Number(valorS), this.resumo, this.formulario.value.resumo,this.check)
     }
     this.showalert('Obrigado!', 'Seu produto foi atualizado!');
     this.navCtrl.navigateForward('/user');

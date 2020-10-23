@@ -283,7 +283,7 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
 
   }
   updateProduto(id: string, nomeNovo:string, priceNovo:number, productNovo:string,quantityNovo:number,
-    tipoPrdNovo:string, valorNovo:number, detailNovo:string, resumoNovo:string,especiNovo:Array<CheckBox>,fotosNovo:Array<Foto>){
+    tipoPrdNovo:string, valorNovo:number, detailNovo:string, resumoNovo:string,especiNovo:Array<CheckBox>){
     this.processoCollection.doc<Processo>(id).update({
       nome: nomeNovo,
       price: priceNovo,
@@ -294,8 +294,7 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
       noApp: "Sim",
       detail: detailNovo,
       resumo:resumoNovo,
-      especi:especiNovo,
-      fotos:fotosNovo
+      especi:especiNovo
     })
   }
   updateStatus(id:string, opc: string){
