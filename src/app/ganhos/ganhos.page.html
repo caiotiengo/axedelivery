@@ -1,0 +1,114 @@
+
+<ion-content [fullscreen]="true">
+
+
+  <div class="background-div1">
+    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+  
+    <img style="width:30%;
+    background: white;
+    border-radius: 50px;
+    margin-top: 5px; "src="/assets/Picture1.png"/>
+
+<ion-item style="margin-top: 16px!important;
+width: 95%;
+margin: auto; ">
+  <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
+  <p>Transações fora do App</p>
+  <p slot="end">R${{valorDevedorHTML}}</p>
+</ion-item>
+
+
+<ion-grid >
+  <ion-row>
+    <ion-col>
+      <ion-card style="text-align: center;">
+        <p style="font-size: xx-large;
+        color: black;">R$ {{valor}}</p>
+        <p>Em conta</p>
+      </ion-card>
+    </ion-col>
+    <ion-col>
+      <ion-card style="text-align: center;">
+        <p style="font-size: xx-large;
+        color: black;">R$ {{areceber}}</p>
+        <p>A receber</p>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</div>
+<ion-button *ngIf="valorDevedor === 0" expand="block" style="--background: #002946;margin-top: 100px;" (click)="transfer()">Transferir Valores</ion-button>
+<ion-button *ngIf="valorDevedor != 0" expand="block" style="--background:red;margin-top: 100px;" (click)="transferirAxe()">Pagar Taxas</ion-button>
+
+<div style="text-align: center;">
+  <h2>Pagamentos</h2>
+  <ion-list *ngFor="let items of ordens">
+    <ion-item  *ngIf="items.status === 'NOT_PAID'" >
+      <ion-label>
+        <h2>{{items.ownId}}</h2>
+        <p>{{items.customer.fullname}}</p>
+        <p>{{items.id}}</p>
+        <p style="background: linear-gradient(45deg, #eb445a,#ea0e0e);
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: #f4f5f8;
+        font-weight: bolder;">Não aprovado</p>
+
+      </ion-label>
+      <ion-button style="--background: #002946;" slot="end">Pedir Revisão</ion-button>
+
+    </ion-item>
+    <ion-item  *ngIf="items.status === 'PAID'">
+      <ion-label>
+        <h2>{{items.ownId}}</h2>
+        <p>{{items.customer.fullname}}</p>
+        <p>{{items.id}}</p>
+        <p  style="background: linear-gradient(45deg, #2dd36f,#1b8000);
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: #f4f5f8;
+        font-weight: bolder;">Aprovado</p>
+
+
+      </ion-label>
+      <ion-button (click)="reembolso(items.payments[0].id)" style="--background: #002946;" slot="end">Reembolsar</ion-button>
+
+    </ion-item>
+    <ion-item *ngIf="items.status === 'WAITING'" >
+      <ion-label>
+        <h2>{{items.ownId}}</h2>
+        <p>{{items.customer.fullname}}</p>
+        <p>{{items.id}}</p>
+   
+        <p  style="background: linear-gradient(45deg, #ffc40933,#ffc409);
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: #f4f5f8;
+        font-weight: bolder;">Aguardando processamento</p>
+
+      </ion-label>
+    
+    </ion-item>
+    <ion-item  *ngIf="items.status === 'REVERTED'" >
+      <ion-label>
+        <h2>{{items.ownId}}</h2>
+        <p>{{items.customer.fullname}}</p>
+        <p>{{items.id}}</p>
+   
+        <p style="background: linear-gradient(45deg, #d7d8da,#737373);
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: #f4f5f8;
+        font-weight: bolder;">Reembolsado</p> 
+
+      </ion-label>
+    
+    </ion-item>
+  </ion-list>
+</div>
+</ion-content>
