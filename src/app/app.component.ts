@@ -17,10 +17,12 @@ export class AppComponent {
     private statusBar: StatusBar,private push: Push
   ) {
     this.initializeApp();
+    
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.statusBar.overlaysWebView(false);

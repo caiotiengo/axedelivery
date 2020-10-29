@@ -74,6 +74,7 @@ export interface Vendas {
     lojaUID?:any;
     nPedido?:Number;
     mensagens?:any;
+    valorDevedor?: number;
 }
 export interface Comentario{
         comments?: string;

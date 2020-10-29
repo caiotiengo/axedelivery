@@ -26,6 +26,7 @@
     "@capacitor/ios": "^2.4.0",
     "@ionic-native/camera": "^5.28.0",
     "@ionic-native/core": "^5.25.0",
+    "@ionic-native/deeplinks": "^5.29.0",
     "@ionic-native/file": "^5.28.0",
     "@ionic-native/geolocation": "^5.25.0",
     "@ionic-native/google-maps": "^5.5.0",
@@ -42,6 +43,7 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "~2.2.0",
     "@types/google-maps": "^3.2.2",
+    "@types/numeral": "0.0.28",
     "br-mask": "0.0.10",
     "brmasker-ionic-3": "^1.6.3",
     "card.io.cordova.mobilesdk": "^2.1.0",
@@ -67,6 +69,7 @@
     "firebase": "^7.14.3",
     "firebase-tools": "^8.2.0",
     "fs": "0.0.1-security",
+    "ionic-plugin-deeplinks": "^1.0.20",
     "ionic-selectable": "^4.7.1",
     "ionic4-star-rating": "^1.1.1",
     "jsencrypt": "^3.0.0-rc.1",
@@ -82,6 +85,7 @@
     "ng2-haversine": "^0.1.1",
     "ngx-currency": "^2.3.3",
     "node-sass": "^4.14.1",
+    "numeral": "^2.0.6",
     "rxjs": "^6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -149,6 +153,11 @@
       "cordova-plugin-x-socialsharing": {
         "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      },
+      "ionic-plugin-deeplinks": {
+        "URL_SCHEME": "axedelivery",
+        "DEEPLINK_SCHEME": "https",
+        "DEEPLINK_HOST": "axedelivery.com.br"
       }
     },
     "platforms": [

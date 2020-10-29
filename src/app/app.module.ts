@@ -19,7 +19,7 @@ import { NativeGeocoder,  NativeGeocoderOptions } from '@ionic-native/native-geo
 import {HttpClientModule} from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { HaversineService } from "ng2-haversine";
-import { BrMaskerModule } from 'br-mask';
+import { BrMaskerModule, BrMaskDirective } from 'br-mask';
 import { FormsModule } from '@angular/forms'; 
 import { ReactiveFormsModule } from '@angular/forms';
 import {LOCALE_ID} from '@angular/core';
@@ -33,6 +33,7 @@ import ptBr from '@angular/common/locales/pt';
 
 import { Push } from '@ionic-native/push/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 
 registerLocaleData(ptBr)
 
@@ -75,10 +76,12 @@ firebase.initializeApp(firebaseConfig);
     File,
     HTTP,
     Media,
+    BrMaskDirective,
+    Deeplinks,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
      {
       provide: LOCALE_ID,
-      useValue: 'pt'
+      useValue: 'pt-BR'
     }
   ],
   bootstrap: [AppComponent],

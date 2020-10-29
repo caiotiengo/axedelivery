@@ -253,7 +253,7 @@ export class StatusPage implements OnInit {
       });
         if(this.usuarioLogado.tipo === 'Loja'){
           this.mapVal = this.goalListST.map(i => {
-          if(i.statusEnt != 'Cancelada'){
+          if(i.statusEnt != 'Cancelada' && i.statusPag !='Aprovado Cartão'){
             return i.valor
           }
           else{
@@ -455,6 +455,10 @@ export class StatusPage implements OnInit {
       console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
+  }
+
+  mojuba(){
+    this.navCtrl.navigateForward('/ganhos')
   }
  
 }

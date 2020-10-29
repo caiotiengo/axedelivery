@@ -59,6 +59,7 @@ export class CarrinhoPage implements OnInit {
   lojaUID;
   userCPF
   produtinz;
+  value
   numeroCard = "";
   nomeCartao = "";
   CVV = "";
@@ -86,6 +87,9 @@ export class CarrinhoPage implements OnInit {
     porcentagemLoja:number
     count = [];
     uid
+    parcelamento =''
+    moip2: any;
+    porcentagemAxeDIN
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -115,6 +119,9 @@ export class CarrinhoPage implements OnInit {
       console.log(x)
       this.valor = x.toFixed(2)
       console.log(this.valor);
+      
+     
+
     });
     this.storage.get('contagem').then((data) =>{
       var z = data
@@ -148,6 +155,17 @@ export class CarrinhoPage implements OnInit {
 
 
     this.pubKey = `-----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodkPNhEFaP90CU2z6zKZ
+    kyPb98kI3NA4C/j9lJnzUNsqgPzfx0xdHxk0rvQvqH/shJIm76EXGBtsWuUjyO8n
+    UMrq9l/8lWPY5OsOmpHiiBZ7oLjfPN1tSs3CgNMqMyWay8F82zowXOdwZk4hY+aa
+    mkkZcg8Sou3Wo7pIcInNXy9cLClp+qhrTR9LlrMcxT7oMDwxw8CFzX7SK9EEnBz0
+    H5T1BRSXVd3VXjC75I1w6RFk9AzbDfSKgj2b6Ladf0PKm4XdruiA+C7Gad8mg7Wu
+    ZBBwoPkwFHnKFtCs+P84OqNjAyEqxOc3oGgCi6LkFRWL43DfFPcPj6QkOMZM64WO
+    DQIDAQAB
+    -----END PUBLIC KEY-----`
+    
+    
+    /* `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4QUZH3Y8mQaCqYtOT9g
     +yQTtmtGkESK1AnQ66roMlsJRyZ8xiCsmO0OC2hckKKA7h7KQNBTMMWCAhXr0jRB
     SqeFhD9QOqQGh5NcLgf6DZ2WhalwozfnCaYmjwWCPfTaWARem+8k/7VhctpoEM7B
@@ -157,24 +175,31 @@ export class CarrinhoPage implements OnInit {
     xwIDAQAB
     -----END PUBLIC KEY-----
     `;
-
+*/
   this.moip = moipSdk({
-    //accessToken: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
-    /*
+    //accessToken:'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
     token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
-     key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
-        // production: false
+    key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
     production: false
-    */
-    accessToken: '292bed0bd3244409b835986edca4119f_v2',
-    token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
+    
+    //accessToken: '292bed0bd3244409b835986edca4119f_v2',
+    //token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
     //secret:'cf87986f39c342caa5d9a49c6c166a2a',
-    key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
-    channelId:"APP-16HIIBI5HPS8",
-    // production: false
-    production: true,
-    "Accept" : "*/*"
+    //key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
+    //channelId:"APP-16HIIBI5HPS8",
+    //production: true,
+    //"Accept" : "*/*"
   })
+  setTimeout(() => {
+    console.log(this.loja.accessToken)
+
+    this.moip2 = moipSdk({
+      accessToken: this.loja.accessToken,
+
+      production: true,
+      //"Accept" : "*/*"
+    })
+  }, 1000);
   }
   ngOnInit() {
 
@@ -243,7 +268,7 @@ teste(){
                     country: 'BRA',
                     zipCode: this.CEP
                 },
-            },
+            }/*,
             receivers: [
               {
                 moipAccount: {
@@ -265,11 +290,11 @@ teste(){
                   percentual: this.loja.porcentagemLoja,
                   }
               }
-            ]
+            ]*/
         }).then((response) => {
             console.log(response.body)
             this.moip.payment.create(response.body.id, {
-            installmentCount: 1,
+            installmentCount: Number(this.parcelamento),
             fundingInstrument: {
                 method: 'CREDIT_CARD',
                 creditCard: {
@@ -344,7 +369,7 @@ teste(){
                     emailComprador: this.email,
                     lojaUID: this.produtos[0].lojaUID,
                     emailLoja: this.produtos[0].emailLoja,
-                    statusPag: 'Aprovado',
+                    statusPag: 'Aprovado Cartão',
                     statusEnt: 'Loja informada',
                     telefoneComprador: this.telefoneComprador,
                     CPFComprador: this.userCPF,
@@ -494,6 +519,17 @@ teste(){
   });
 
 }
+
+
+
+
+
+
+
+/* PAGAMENTO EM DINHEIRO */
+
+
+
   async pagarDin() {
     const user = firebase.auth().currentUser;
     if (user) {
@@ -525,42 +561,92 @@ teste(){
       this.storage.get('valorFinal').then((data) => {
         var y = Number(data);
 
-// Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
+        // Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
         this.valor = y.toFixed(2)
         console.log(this.valor);
-      });
-      this.storage.get('carrinhoUser').then((data) => {
-        this.produtos =  JSON.parse(data);
+        var porcentagemDinheiro = this.loja.porcentagemAxe - 2
+        console.log(porcentagemDinheiro)
+        var count = Number(porcentagemDinheiro) * Number(this.valor)
+        console.log(count)
+        console.log('porcentagem do axé vai ser: ' + count/100)  
+        this.porcentagemAxeDIN = Number(count/100)
+        console.log(this.porcentagemAxeDIN)
+        var value = String(this.porcentagemAxeDIN).replace('.','')
+        console.log(value)
+        if(Number(value) < 100){
+          var v = '0'+ value
+          this.value = v
+          console.log(v)
+          console.log(this.value)
 
-        console.log(this.produtos);
-        var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-        console.log(seq);
-        this.afStore.collection('vendas').add({
-          nPedido:Number(seq),
-          nomeComprador: this.nome,
-          endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
-          valor: Number(this.valor),
-          dia,
-          mes,
-          produtos: this.produtos,
-          emailComprador: this.email,
-          lojaUID: this.produtos[0].lojaUID,
-          emailLoja: this.produtos[0].emailLoja,
-          statusPag: 'Em dinheiro',
-          statusEnt: 'Loja informada',
-          telefoneComprador: this.telefoneComprador,
-          CPFComprador: this.userCPF,
-          compradorUID: this.uid
+          this.transferirDin(this.value)
+        }else{
+          this.value = Number(value)
+          console.log(this.value)
 
-        }).then(() => {
-          this.storage.remove('carrinhoUser').then(() => {
-            this.navCtrl.navigateRoot('/status');
-          });        
-        });
+          this.transferirDin(this.value)
+
+        }
       });
+
+
     });
 
   }
+
+  transferirDin(value){
+    console.log(value)
+    console.log(Number(value))
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+    console.log(dia);
+    const mes = date.getMonth();
+    console.log(mes)
+    this.valores = this.carrinho.map(res => res.valor);
+    this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+    this.storage.get('carrinhoUser').then((data) => {
+      this.produtos =  JSON.parse(data);
+      console.log(this.produtos);
+      var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+      console.log(seq);
+      this.afStore.collection('vendas').add({
+        nPedido:Number(seq),
+        nomeComprador: this.nome,
+        endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+        valor: Number(this.valor),
+        dia,
+        mes,
+        produtos: this.produtos,
+        emailComprador: this.email,
+        lojaUID: this.produtos[0].lojaUID,
+        emailLoja: this.produtos[0].emailLoja,
+        statusPag: 'Em dinheiro',
+        statusEnt: 'Loja informada',
+        telefoneComprador: this.telefoneComprador,
+        CPFComprador: this.userCPF,
+        compradorUID: this.uid,
+        valorDevedor: Number(value)
+
+      }).then(() => {
+        this.storage.remove('carrinhoUser').then(() => {
+          this.navCtrl.navigateRoot('/status');
+        });        
+      });
+    });
+
+
+
+
+  }
+
+
+
+
+
+
+
   async pagarDeb() {
     const user = firebase.auth().currentUser;
     if (user) {
@@ -595,38 +681,78 @@ teste(){
 // Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
         this.valor = y.toFixed(2)
         console.log(this.valor);
-      });
-      this.storage.get('carrinhoUser').then((data) => {
-        this.produtos =  JSON.parse(data);
 
-        console.log(this.produtos);
-        var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-        console.log(seq);
-        this.afStore.collection('vendas').add({
-          nPedido:Number(seq),
-          nomeComprador: this.nome,
-          endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
-          valor: Number(this.valor),
-          dia,
-          mes,
-          produtos: this.produtos,
-          emailComprador: this.email,
-          lojaUID: this.produtos[0].lojaUID,
-          emailLoja: this.produtos[0].emailLoja,
-          statusPag: 'Débito presencial',
-          statusEnt: 'Loja informada',
-          telefoneComprador: this.telefoneComprador,
-          CPFComprador: this.userCPF,
-          compradorUID: this.uid
-          
-        }).then(() => {
-          this.storage.remove('carrinhoUser').then(() => {
-            this.navCtrl.navigateRoot('/status');
-          });        
-        });
+        var porcentagemDinheiro = this.loja.porcentagemAxe - 2
+        console.log(porcentagemDinheiro)
+        var count = Number(porcentagemDinheiro) * Number(this.valor)
+        console.log(count)
+        console.log('porcentagem do axé vai ser: ' + count/100)  
+        this.porcentagemAxeDIN = Number(count/100)
+        console.log(this.porcentagemAxeDIN)
+        var value = String(this.porcentagemAxeDIN).replace('.','')
+        console.log(value)
+        if(Number(value) < 100){
+          var v = '0'+ value
+          this.value = v
+          console.log(v)
+          console.log(this.value)
+
+          this.transferirDeb(this.value)
+        }else{
+          this.value = Number(value)
+          console.log(this.value)
+
+          this.transferirDeb(this.value)
+
+        }
       });
+
     });
 
+  }
+
+  transferirDeb(value){
+    console.log(value)
+    console.log(Number(value))
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+    console.log(dia);
+    const mes = date.getMonth();
+    console.log(mes)
+    this.valores = this.carrinho.map(res => res.valor);
+    this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+    this.storage.get('carrinhoUser').then((data) => {
+      this.produtos =  JSON.parse(data);
+
+      console.log(this.produtos);
+      var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+      console.log(seq);
+      this.afStore.collection('vendas').add({
+        nPedido:Number(seq),
+        nomeComprador: this.nome,
+        endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+        valor: Number(this.valor),
+        dia,
+        mes,
+        produtos: this.produtos,
+        emailComprador: this.email,
+        lojaUID: this.produtos[0].lojaUID,
+        emailLoja: this.produtos[0].emailLoja,
+        statusPag: 'Débito presencial',
+        statusEnt: 'Loja informada',
+        telefoneComprador: this.telefoneComprador,
+        CPFComprador: this.userCPF,
+        compradorUID: this.uid,
+        valorDevedor: Number(value)
+        
+      }).then(() => {
+        this.storage.remove('carrinhoUser').then(() => {
+          this.navCtrl.navigateRoot('/status');
+        });        
+      });
+    });
   }
   voltar(){
   	this.navCtrl.pop();

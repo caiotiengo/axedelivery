@@ -52,6 +52,10 @@
     <param name="ios-package" value="SQLitePlugin"/>
   </feature>
 
+  <feature name="IonicDeeplinkPlugin">
+    <param name="ios-package" value="IonicDeeplinkPlugin" onload="true"/>
+  </feature>
+
   <feature name="Device">
     <param name="ios-package" value="CDVDevice"/>
   </feature>

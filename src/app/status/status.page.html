@@ -19,7 +19,6 @@
   </ion-fab>
 
 
-
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -38,6 +37,7 @@
   </ion-row>
 </ion-grid>
 </div>
+<ion-button expand="block" *ngIf="typeUser === 'Loja'" style="--background: #002946;" (click)="mojuba()">Ganhos no cartão</ion-button>
 
   <div style="text-align: center;" *ngIf="typeUser === 'user' && valorre === 0">
         <p>Parece que você não tem pedidos...</p>
