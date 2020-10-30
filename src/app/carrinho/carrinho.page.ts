@@ -155,6 +155,19 @@ export class CarrinhoPage implements OnInit {
 
 
     this.pubKey = `-----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4QUZH3Y8mQaCqYtOT9g
+    +yQTtmtGkESK1AnQ66roMlsJRyZ8xiCsmO0OC2hckKKA7h7KQNBTMMWCAhXr0jRB
+    SqeFhD9QOqQGh5NcLgf6DZ2WhalwozfnCaYmjwWCPfTaWARem+8k/7VhctpoEM7B
+    PWCbqSsUFicQlhXvM8p5tMacVhEVxGe0SGvDpS3DaX8FoIUyI8Jn6fWXMV/Ya59p
+    f+yrk2ufrSI/gtmJpOZ4/5W/bsGEGtiJtGBtnI+cjRLjPa8kyQ7pa266ozmRqnst
+    +EJhsHdW1P8T254YByuKdc6OU73UwPYowYt2DtNemI2KHQExarj7+70Ez4w5gAch
+    xwIDAQAB
+    -----END PUBLIC KEY-----
+    `;
+    /*
+    
+    
+    `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodkPNhEFaP90CU2z6zKZ
     kyPb98kI3NA4C/j9lJnzUNsqgPzfx0xdHxk0rvQvqH/shJIm76EXGBtsWuUjyO8n
     UMrq9l/8lWPY5OsOmpHiiBZ7oLjfPN1tSs3CgNMqMyWay8F82zowXOdwZk4hY+aa
@@ -165,30 +178,24 @@ export class CarrinhoPage implements OnInit {
     -----END PUBLIC KEY-----`
     
     
-    /* `-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4QUZH3Y8mQaCqYtOT9g
-    +yQTtmtGkESK1AnQ66roMlsJRyZ8xiCsmO0OC2hckKKA7h7KQNBTMMWCAhXr0jRB
-    SqeFhD9QOqQGh5NcLgf6DZ2WhalwozfnCaYmjwWCPfTaWARem+8k/7VhctpoEM7B
-    PWCbqSsUFicQlhXvM8p5tMacVhEVxGe0SGvDpS3DaX8FoIUyI8Jn6fWXMV/Ya59p
-    f+yrk2ufrSI/gtmJpOZ4/5W/bsGEGtiJtGBtnI+cjRLjPa8kyQ7pa266ozmRqnst
-    +EJhsHdW1P8T254YByuKdc6OU73UwPYowYt2DtNemI2KHQExarj7+70Ez4w5gAch
-    xwIDAQAB
-    -----END PUBLIC KEY-----
-    `;
-*/
+    */
   this.moip = moipSdk({
-    //accessToken:'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
+    /*
     token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
     key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
     production: false
-    
-    //accessToken: '292bed0bd3244409b835986edca4119f_v2',
+         idmoip account "MPA-CC3641B4B904"
+    */
+
+    accessToken: '292bed0bd3244409b835986edca4119f_v2',
+    secret:'cf87986f39c342caa5d9a49c6c166a2a',
+    key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
+    channelId:"APP-16HIIBI5HPS8",
+    production: true,
+    "Accept" : "*/*"
     //token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
-    //secret:'cf87986f39c342caa5d9a49c6c166a2a',
-    //key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
-    //channelId:"APP-16HIIBI5HPS8",
-    //production: true,
-    //"Accept" : "*/*"
+    //id moip account prod "MPA-888C5307676A"
+
   })
   setTimeout(() => {
     console.log(this.loja.accessToken)
@@ -268,7 +275,7 @@ teste(){
                     country: 'BRA',
                     zipCode: this.CEP
                 },
-            }/*,
+            },
             receivers: [
               {
                 moipAccount: {
@@ -290,7 +297,7 @@ teste(){
                   percentual: this.loja.porcentagemLoja,
                   }
               }
-            ]*/
+            ]
         }).then((response) => {
             console.log(response.body)
             this.moip.payment.create(response.body.id, {

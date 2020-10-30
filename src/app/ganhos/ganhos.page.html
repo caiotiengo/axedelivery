@@ -13,8 +13,7 @@
 <ion-item style="margin-top: 16px!important;
 width: 95%;
 margin: auto; ">
-  <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
-  <p>Transações fora do App</p>
+  <p>Taxa de pagamentos presenciais</p>
   <p slot="end">R${{valorDevedorHTML}}</p>
 </ion-item>
 
@@ -23,14 +22,14 @@ margin: auto; ">
   <ion-row>
     <ion-col>
       <ion-card style="text-align: center;">
-        <p style="font-size: xx-large;
+        <p style="font-size: large;
         color: black;">R$ {{valor}}</p>
         <p>Em conta</p>
       </ion-card>
     </ion-col>
     <ion-col>
       <ion-card style="text-align: center;">
-        <p style="font-size: xx-large;
+        <p style="font-size: large;
         color: black;">R$ {{areceber}}</p>
         <p>A receber</p>
       </ion-card>
@@ -38,8 +37,8 @@ margin: auto; ">
   </ion-row>
 </ion-grid>
 </div>
-<ion-button *ngIf="valorDevedor === 0" expand="block" style="--background: #002946;margin-top: 100px;" (click)="transfer()">Transferir Valores</ion-button>
-<ion-button *ngIf="valorDevedor != 0" expand="block" style="--background:red;margin-top: 100px;" (click)="transferirAxe()">Pagar Taxas</ion-button>
+<ion-button  *ngIf="valorDevedor === 0" expand="block" style="--background: #002946;margin-top: 100px;" (click)="transfer()">Transferir Valores</ion-button>
+<ion-button  *ngIf="valorDevedor != 0" expand="block" style="--background:red;margin-top: 100px;" (click)="transferirAxe()">Pagar Taxas</ion-button>
 
 <div style="text-align: center;">
   <h2>Pagamentos</h2>
@@ -57,7 +56,7 @@ margin: auto; ">
         font-weight: bolder;">Não aprovado</p>
 
       </ion-label>
-      <ion-button style="--background: #002946;" slot="end">Pedir Revisão</ion-button>
+      <ion-button (click)="presentAlertPrompt2(items)"  style="--background: #002946;" slot="end">Pedir Revisão</ion-button>
 
     </ion-item>
     <ion-item  *ngIf="items.status === 'PAID'">
@@ -74,9 +73,10 @@ margin: auto; ">
 
 
       </ion-label>
-      <ion-button (click)="reembolso(items.payments[0].id)" style="--background: #002946;" slot="end">Reembolsar</ion-button>
+      <ion-button (click)="presentAlertPrompt(items) " style="--background: #002946;" slot="end">Reembolso</ion-button>
 
     </ion-item>
+
     <ion-item *ngIf="items.status === 'WAITING'" >
       <ion-label>
         <h2>{{items.ownId}}</h2>

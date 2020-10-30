@@ -40,6 +40,8 @@ export interface User {
     entrega?:any
     seNao?:any
     status?:any;
+    digitoConta?:any;
+    numeroBank?:any;
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -256,14 +258,16 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
                                               lat:lat,
                                               lng:lng  });
   }
-  updateBanco(id:string,banco:string, agencia:string,conta:string,correnteoupou:string, nomeNaConta:string, CPFconta:string) {
+  updateBanco(id:string,banco:string, agencia:number,conta:number,correnteoupou:string, nomeNaConta:string, CPFconta:string, digito:number,numeroBank:number) {
     this.userCollection.doc<User>(id).update({
       banco:banco,
-      agencia:agencia,
-      conta:conta,
+      agencia:Number(agencia),
+      conta:Number(conta),
       correnteoupou:correnteoupou,
       nomeNaConta:nomeNaConta,
-      CPFconta: CPFconta
+      CPFconta: CPFconta,
+      digitoConta: Number(digito),
+      numeroBank: Number(numeroBank)
     });
   }
   updateFCM(id:string,FCM:string) {
@@ -305,6 +309,9 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
   }
   updatePagamento(id:string,status:string){
     this.vendasCollection.doc<Vendas>(id).update({statusPag: status})
+  }
+  updateDivida(id:string,divida:number){
+    this.vendasCollection.doc<Vendas>(id).update({valorDevedor: divida})
   }
 /*
 

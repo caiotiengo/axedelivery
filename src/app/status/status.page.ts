@@ -257,9 +257,9 @@ export class StatusPage implements OnInit {
             return i.valor
           }
           else{
-            return null
+            return 0
           }
-        }).reduce(function(a, b) { return a + b; })
+        }).reduce((a, b) =>   a + b, 0 )
         var count = Number(this.usuarioLogado.porcentagemLoja) * Number(this.mapVal.toFixed(2))
         console.log(count/100)   
         var percent = count/100

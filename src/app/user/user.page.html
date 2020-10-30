@@ -126,7 +126,7 @@
      <h4 style="color: green"> <ion-icon name="cash"></ion-icon> - {{banco}}</h4>
      <p><i>Agência:{{agencia}} - Conta:{{conta}}</i></p>
      <p><i>Corrente ou Poupança? {{tipoConta}}</i></p>
-     <p><i>CPF Conta: {{CPFconta}}</i></p>
+     <p><i>CNPJ Conta: {{CPFconta}}</i></p>
       <ion-button style="height: 4vh;" (click)="updateBank()" color="warning">  
         alterar
       </ion-button>
@@ -139,25 +139,43 @@
             <ion-select-option value="Corrente">Corrente</ion-select-option>
             <ion-select-option value="Poupanca">Poupança</ion-select-option>
         </ion-select>
-            <ion-item>
-              <ion-label position="floating">Banco</ion-label>
-              <ion-input formControlName="bancoNew" type="text" required></ion-input>
-            </ion-item>
+        <ion-item>
+          <ion-label position="floating">Banco</ion-label>
+          <ion-input formControlName="bancoNew" value={{nomeBanco}} (ionInput)="buscaBanco($event)" type="text"></ion-input>
+        </ion-item>
 
-            <ion-grid>
+
+
+              <!--  -->
+
+              <ion-list [hidden]="hider">
+                <ion-item *ngFor="let item of bancos" tappable (click)="updateBusca(item)">
+                  <p>{{ item.value }} - {{item.label}}</p>
+                </ion-item>
+              </ion-list>
+
+              <!-- -->
+              <ion-item>
+                <ion-label position="floating">Número do Banco</ion-label>
+                <ion-input disabled formControlName="numeroBank" value={{numeroBank}} type="text"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Agência</ion-label>
+                <ion-input formControlName="agenciaNew" required></ion-input>
+              </ion-item>
+              <ion-grid>
                 <ion-row>
                     <ion-col>
-                        <ion-item>
-                      <ion-label position="floating">Agência</ion-label>
-                      <ion-input formControlName="agenciaNew" required></ion-input>
-                  </ion-item>
-
+                      <ion-item>
+                        <ion-label position="floating">Conta</ion-label>
+                          <ion-input formControlName="contaNew" required></ion-input>
+                      </ion-item>
                     </ion-col>
                     <ion-col>
-                  <ion-item>
-                    <ion-label position="floating">Conta com o digito</ion-label>
-                      <ion-input formControlName="contaNew" required></ion-input>
-                  </ion-item>
+                      <ion-item>
+                        <ion-label position="floating">Digito</ion-label>
+                        <ion-input  type="tel" pattern="[0-9]*" maxlength="1" formControlName="digitoNew" required></ion-input>
+                      </ion-item>
                     </ion-col>
                 </ion-row>
               </ion-grid>
@@ -168,8 +186,8 @@
               <ion-input formControlName="nomeContaNew" required type="text"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-label position="floating">CPF/CNPJ da Conta</ion-label>
-              <ion-input formControlName="CPFcontaNew" required type="text"></ion-input>
+              <ion-label position="floating">CNPJ da Conta</ion-label>
+              <ion-input formControlName="CPFcontaNew" [brmasker]="{person: true}"  required type="text"></ion-input>
             </ion-item>           
 
 

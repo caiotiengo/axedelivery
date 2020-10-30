@@ -8,6 +8,7 @@ import { UserPageRoutingModule } from './user-routing.module';
 
 import { UserPage } from './user.page';
 import {ReactiveFormsModule } from '@angular/forms';
+import { BrMaskerModule } from 'br-mask';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     UserPageRoutingModule,
-                ReactiveFormsModule
+    ReactiveFormsModule,
+    BrMaskerModule
 
   ],
   declarations: [UserPage]
