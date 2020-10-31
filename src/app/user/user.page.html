@@ -241,7 +241,7 @@
 
   <ion-list *ngIf="typeUser === 'Loja'" >
     <h3 text center>Seus produtos no App!</h3>
-    <ion-item *ngFor="let items of goalListFiltrado">
+    <ion-item *ngFor="let items of goalListFiltrado"  >
       <ion-thumbnail slot="start">
         <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
         <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
@@ -250,14 +250,13 @@
         <h2>{{items.nome}}</h2>
         <p>R${{items.valor}}</p>
         <p>Quantidade:{{items.quantity}}</p>
-        <p style="background: #ffc409;
+        <p [routerLink]="['/editar/' + items.id]" style="background: #ffc409;
         padding: 5px;
         text-align: center;
         border-radius: 25px;
-        color: black;">{{items.tipoPrd}}</p>
+        color: black;">Editar</p>
       </ion-label>
-      <ion-button slot="end" color="primary" [routerLink]="['/editar/' + items.id]" >Editar</ion-button>
-      <ion-button (click)="deletarItem(items)" color="danger" slot="end">x</ion-button><br/>
+      <ion-button (click)="presentAlertConfirm(items)" color="danger" slot="end">Deletar</ion-button><br/>
       </ion-item>
 
 </ion-list>

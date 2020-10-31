@@ -7,6 +7,23 @@
   </div>
     <ion-card class="card-1">
         <ion-card-header > <h3 text style="margin:auto;">Edite: {{produto?.nome}}</h3></ion-card-header>
+        <ion-slides style="border: 20px solid #ffcb02;
+        border-radius: 25px;">
+          <ion-slide *ngFor="let items of photos">
+              <img  src="{{items.link}}">
+              <ion-button color="danger" style="position: absolute;
+              /* float: right; */
+              bottom: 10px;" (click)="deletafoto(items)">X</ion-button>
+          </ion-slide>
+        </ion-slides>
+        <p>Arraste para os lados</p>
+        <p>Escolha as fotos do seu produto!</p>
+        <p>Porcentagem de cada foto: {{uploadPercent | async}}% </p>
+        
+        <ion-button shape="outline" (click)="abrirGaleria1()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+        <ion-button shape="outline" (click)="abrirGaleria2()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
+        <ion-button shape="outline" (click)="abrirGaleria3()" color="findme" ><ion-icon name="camera"></ion-icon></ion-button>
+        <ion-button shape="outline" (click)="abrirGaleria4()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
         <ion-card-content>
             <br/>
           <p>Escolha o tipo do produto:</p>
@@ -61,9 +78,7 @@
             <ion-input name="valor" value="{{produto?.price}}" [(ngModel)]="valor" formControlName="valor"
             [brmasker]="{money: true}" type="text"></ion-input>
           </ion-item>
-          <p>No momento, ainda não disponibilizamos a atualização de fotos!</p>
-          <br/>
-          <p>Fique tranquilo, em breve será liberado.</p>
+        
           <!--
           <ion-slides style="width: 50%;">
             <ion-slide *ngFor="let items of produto?.fotos">
@@ -83,6 +98,12 @@
           <<img src="{{img.src}}"> -->
   
           </form>
+          <h4 style="text-align: center;">Variedades</h4>
+          <ion-list>
+            <ion-item *ngFor="let itens of produto?.especi">
+              <ion-label>{{itens.value}}</ion-label>
+            </ion-item>
+          </ion-list>
           <ion-button expand="block" (click)="abrir()">Incluir Variedade</ion-button>
           <ion-list [hidden]="hide">
             <ion-grid>

@@ -14,8 +14,8 @@
 
 <div class="background-traco"  style="text-align: center;    margin-top: 8%;">
 
-<p style="text-align-last: center;">Escolha o tipo de usuario entrar como:</p>
-				<ion-select placeholder="Tipo de Usuario" style="border: 1px solid #d7d8da;
+<p style="text-align-last: center;">Escolha o tipo de usuario:</p>
+				<ion-select placeholder="Clique aqui" style="color:black; border: 1px solid #d7d8da;
 				padding: 13px;" [(ngModel)]="typeUser" required>
 					<ion-select-option value="Loja">Loja</ion-select-option>
 					<ion-select-option value="user">Usúario</ion-select-option>
@@ -23,7 +23,7 @@
 				<br/>
 				<p style="text-align-last: center;">Qual a sua região?</p>
 
-				<ion-select placeholder="Sua região" style="border: 1px solid #d7d8da;
+				<ion-select placeholder="Clique aqui" style="color:black; border: 1px solid #d7d8da;
 				padding: 13px;" required  [(ngModel)]="type">
 					<ion-select-option value="Centro">Centro</ion-select-option>
 					<ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
@@ -46,10 +46,34 @@
 					  </ion-label>
 					  <ion-input formControlName="password" type="password" required ></ion-input>
 					</ion-item>
+					<ion-grid *ngIf="typeUser === 'Loja'">
+						<h4>Sobre o responsável</h4>
+						<ion-row>
+							<ion-col>
+								<ion-item *ngIf="typeUser === 'Loja'">
+									<ion-label position="floating">Nome</ion-label>
+									<ion-input formControlName="Prinome" ></ion-input>
+								</ion-item>
+							</ion-col>
+							<ion-col>
+								<ion-item *ngIf="typeUser === 'Loja'">
+									<ion-label position="floating">Sobrenome</ion-label>
+									<ion-input formControlName="Segnome" ></ion-input>
+								</ion-item>
+							</ion-col>
+						</ion-row>
+					</ion-grid>	
+					<ion-item *ngIf="typeUser === 'Loja'">
+						<ion-label position="floating">CPF do responsável</ion-label>
+						<ion-input formControlName="CPFRES" ></ion-input>
+					</ion-item>		
+					<h4 style="text-align: center;" *ngIf="typeUser === 'Loja'">Sobre a loja</h4>		
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">Nome da sua Loja</ion-label>
 							<ion-input formControlName="nome" ></ion-input>
 						</ion-item>
+
+						
 						<ion-item *ngIf="typeUser === 'user'" >
 						  <ion-label position="floating">Seu nome completo</ion-label>
 						  <ion-input formControlName="nome" ></ion-input>
@@ -245,9 +269,12 @@
 		</ion-item>		
 		
 				<ion-label *ngIf="typeUser && type && check">
-					<ion-button (click)="registrar()" expand="block" class="signin-button" style="color:white !important;" >
+					<ion-button (click)="contaWirecard()" *ngIf="typeUser === 'Loja'" expand="block" class="signin-button" style="color:white !important;" >
 						 Confirmar
 					</ion-button>
+					<ion-button (click)="registrarUsuario()" *ngIf="typeUser === 'user'" expand="block" style="color:white !important;" >
+						Confirmar
+				   </ion-button>
 				</ion-label>
 
 </div>

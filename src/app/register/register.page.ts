@@ -17,7 +17,8 @@ import { LoadingController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
-
+import { MoipCreditCard } from 'moip-sdk-js';
+import moipSdk from 'moip-sdk-node'
 import {
   MediaCapture,
   MediaFile,
@@ -1641,6 +1642,9 @@ export class RegisterPage implements OnInit {
     hider = true
     numeroBank =''
     nomeBanco = ''
+    moip: any;
+  pubKey: any;
+  hash: string;
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
@@ -1673,7 +1677,10 @@ export class RegisterPage implements OnInit {
                   entregaDe:[''],
                   seNEntrega:[''],
                   numeroBank:[''],
-                  digitoConta:['']   
+                  digitoConta:[''],
+                  Prinome:[''],
+                  Segnome:[''],
+                  CPFRES:['']   
    
    
 
@@ -1702,11 +1709,75 @@ export class RegisterPage implements OnInit {
           this.autocompleteItems = [];
           this.geocoder = new google.maps.Geocoder;
 
+          this.moip = moipSdk({
+            /*
+            token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
+            key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
+            production: false
+                 idmoip account "MPA-CC3641B4B904"
+            */
+        
+            accessToken: '292bed0bd3244409b835986edca4119f_v2',
+            secret:'cf87986f39c342caa5d9a49c6c166a2a',
+            key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
+            channelId:"APP-16HIIBI5HPS8",
+            production: true,
+            "Accept" : "*/*"
+            //token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
+            //id moip account prod "MPA-888C5307676A"
+        
+          })
   }
 
   ngOnInit() {
-    console.log(this.bancos)
   }
+/**
+ Registro wirecard
+ */
+contaWirecard(){
+  this.moip.account.create({
+    email: {
+        address: this.cadastro.value.email
+    },
+    person: {
+        name: this.cadastro.value.Prinome,
+        lastName: this.cadastro.value.Segnome,
+        taxDocument: {
+            type: "CPF",
+            number: this.cadastro.value.CPFRES
+        },
+        identityDocument: {
+            type : "CNPJ",
+            number: this.cadastro.value.CPF,
+            issuer: "JUCERJA",
+            issueDate: "2000-12-12"
+        },
+        birthDate: "1990-01-01",
+        phone: {
+            countryCode: "55",
+            areaCode: this.cadastro.value.ddd,
+            number: this.cadastro.value.telefone
+        },
+        address: {
+            street: this.cadastro.value.endereco,
+            streetNumber: this.cadastro.value.numeroEND,
+            district: this.cadastro.value.bairro,
+            zipCode: this.cadastro.value.CEP,
+            city: this.cadastro.value.cidade,
+            state: "RJ",
+            country: "BRA"
+        }
+    },
+    type: "MERCHANT",
+    transparentAccount: true
+}).then((response) => {
+    console.log(response.body)
+    this.registrarLoja(response.body.id, response.body.accessToken)
+}).catch((err) => {
+    console.log(err)
+})
+}
+
 
 
 /*
@@ -1823,7 +1894,9 @@ Autocomplete
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
   }
-  registrar() {
+  registrarLoja(idmoip, accessToken) {
+    console.log(idmoip)
+    console.log(accessToken)
    const{email, password } = this.cadastro.value;
    this.presentLoading() 
 
@@ -1865,12 +1938,12 @@ Autocomplete
              seNao: this.cadastro.value.seNEntrega,
              fcm: '1',
              FotoPerfil: String(this.url),
-             idmoip: '1',
+             idmoip: idmoip,
              porcentagemLoja: 0,
              porcentagemAxe: 0,
              numeroBank: Number(this.cadastro.value.numeroBank),
              digitoConta: Number(this.cadastro.value.digitoConta),
-             accessToken:'1'
+             accessToken: accessToken
 
         }).then(() => {
            const user = firebase.auth().currentUser;
@@ -1907,7 +1980,21 @@ Autocomplete
          }
 
      }
-    } else if(this.cadastro.valid && this.typeUser == 'user'){
+    } else {
+      alert('Ocorreu um erro inexperado')
+    }
+      // tslint:disable-next-line:indent
+      // tslint:disable-next-line:indent
+  	 console.log(this.cadastro);
+
+      // tslint:disable-next-line:indent
+  	// Após o registro, ele fará a insersão no firebase.
+  }
+  registrarUsuario(){
+    const{email, password } = this.cadastro.value;
+    this.presentLoading() 
+ 
+    if(this.cadastro.valid && this.typeUser == 'user'){
       try {
         const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
          if(this.FCM === undefined){
@@ -1982,13 +2069,13 @@ Autocomplete
 
      }
   }
-      // tslint:disable-next-line:indent
-      // tslint:disable-next-line:indent
-  	 console.log(this.cadastro);
-
-      // tslint:disable-next-line:indent
-  	// Após o registro, ele fará a insersão no firebase.
   }
+
+
+
+
+
+
   async showalert(header: string, message: string) {
     const alert = await this.alertCtrl.create({
       header,

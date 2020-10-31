@@ -2,10 +2,27 @@
 	font-weight: 300;
 }
 .arrow{
-	color: black;
+    color: black;
     width: 8%;
     height: 12%;
-    margin-top: 0%;
+    margin-top: 12%;
     margin-left: 5px;
-    float:left;
+    float: left;
+}
+.background-div1{
+    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
+    height: 235px;
+    width: 100%;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+
+}
+.card-1{
+    background-color: white;
+    position: absolute;
+    margin-left: 0%;
+    top: 14%;
+    box-shadow: 0px 2px 0px 5px #d3d3d35c;
+    text-align: center;
+    width: 100%;
 }

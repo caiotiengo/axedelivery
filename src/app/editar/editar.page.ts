@@ -99,6 +99,22 @@ export class EditarPage implements OnInit {
       if (this.que) {
         this.services.getProdutos(this.que).subscribe(data =>{
           this.produto = data;
+          if(this.produto.especi != undefined){
+            if(this.produto.especi.lenght != 0){
+              this.produto.especi.forEach(i => {
+                this.check.push(i)
+  
+              });
+            }
+          }
+          if(this.produto.fotos != undefined){
+
+          if(this.produto.fotos.lenght != 0){
+            this.produto.fotos.forEach(i => {
+              this.photos.push(i)
+            });
+          }
+        }
           console.log(this.produto)
           //this.type = this.produto.type
          // this.formulario.value.nomePrd = this.produto.nome
@@ -115,6 +131,7 @@ export class EditarPage implements OnInit {
     this.hide = false;
   }
   addItem(){
+    
     this.check.push({
       name: 'checkbox2',
       type: 'radio',
@@ -268,9 +285,10 @@ export class EditarPage implements OnInit {
      var valorS
      valorN = this.formulario.value.valor.replace(',','')
      valorS = this.formulario.value.valor.replace(',','.')
-     this.services.updateProduto(this.que,this.formulario.value.nomePrd, Number(valorN), this.formulario.value.nome,
+     this.services.updateProduto(this.que,this.formulario.value.nomePrd, Number(valorN), 
+     this.formulario.value.nome,
      Number(this.formulario.value.qtd),
-      this.type, Number(valorS), this.resumo, this.formulario.value.resumo,this.check)
+      this.type, Number(valorS), this.resumo, this.formulario.value.resumo,this.check, this.photos)
     }
     this.showalert('Obrigado!', 'Seu produto foi atualizado!');
     this.navCtrl.navigateForward('/user');
@@ -299,11 +317,16 @@ async showalert(header: string, message: string) {
   	// ele vai fazer o processo de registar no firebase e depois joga para uma lista que vai estar na pagina do user.
   }
 
-  deletafoto(items){
+  /*deletafoto(items){
     return this.afStorage.storage.refFromURL(items.link).delete().then(() =>{
       this.showalert("Opa!", "Imagem excluida com sucesso!")
     }).catch(err => {
       this.showalert("Ops!","Ocorreu um erro no processamento..." + err)
     })
+  }*/
+  deletafoto(items){
+    _.remove(this.photos, n => n.link === items.link);
+    console.log(this.photos);
+    
   }
 }

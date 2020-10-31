@@ -1962,8 +1962,36 @@ export class UserPage implements OnInit {
                 
           });
   }
+
+  async presentAlertConfirm(items) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Quase apagando o seu item...',
+      message: 'Você tem certeza disso?',
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Tenho',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.deletarItem(items)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
   deletarItem(items){
-    this.services.deletarItem(items.id)
+    this.services.deletarItem(items.id).then(() =>{
+      alert('Seu produto foi deletado com sucesso!');
+    })
   }
  async showalert(header: string, message: string) {
     const alert = await this.alertCtrl.create({

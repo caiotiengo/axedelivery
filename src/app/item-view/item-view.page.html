@@ -1,10 +1,13 @@
 <ion-content  [fullscreen]="true">
-		<ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+  <div class="background-div1">
+    <img style="width:30%"src="/assets/Picture1.png">
+    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+</div>
+		
 
-  <ion-card style="top: 1%;
-    width: 100%;">
-    <ion-card-header  style=" color: black; background: linear-gradient(180deg, #ffce00, #ffce0091, #2224280a);" >
-      <h1 style="text-align: center;"> {{itemAberto?.nome}}</h1>
+  <ion-card class="card-1">
+    <ion-card-header  style=" color: black; " >
+      <h1 style="text-align: center;     font-weight: bold;"> {{itemAberto?.nome}}</h1>
 
     </ion-card-header>
 
@@ -15,7 +18,7 @@
       </ion-slide>
 
     </ion-slides>
-
+    <p style="text-align: center;">Arraste para os lados</p>
     <ion-card-content>
       <h4 text-center style="color: black"> Descrição </h4>
       <p text-center> {{itemAberto?.resumo}}</p>
