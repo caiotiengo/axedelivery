@@ -1735,6 +1735,8 @@ export class RegisterPage implements OnInit {
  Registro wirecard
  */
 contaWirecard(){
+  this.presentLoading() 
+
   this.moip.account.create({
     email: {
         address: this.cadastro.value.email

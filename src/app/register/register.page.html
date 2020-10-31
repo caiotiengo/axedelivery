@@ -196,23 +196,10 @@
 					<ion-select-option value="Corrente">Corrente</ion-select-option>
 					<ion-select-option value="Poupanca">Poupança</ion-select-option>
 				</ion-select>
-						<ion-grid>
-							<ion-row>
-								<ion-col>
-									<ion-item>
-										<ion-label position="floating">Banco</ion-label>
-										<ion-input formControlName="banco" value={{nomeBanco}} (ionInput)="buscaBanco($event)" type="text"></ion-input>
-									  </ion-item>
-								</ion-col>
-								<ion-col>
-									<ion-item>
-										<ion-label position="floating">Número do Banco</ion-label>
-										<ion-input disabled formControlName="numeroBank" value={{numeroBank}} type="text"></ion-input>
-									  </ion-item>
-								</ion-col>
-							</ion-row>
-						</ion-grid>
-
+				<ion-item>
+					<ion-label position="floating">Banco</ion-label>
+					<ion-input formControlName="banco" value={{nomeBanco}} (ionInput)="buscaBanco($event)" type="text"></ion-input>
+				  </ion-item>
 						<!-- -->
 						
 						<ion-list [hidden]="hider">
@@ -221,7 +208,14 @@
 							</ion-item>
 						</ion-list>
 
-						<!-- -->
+						<!-- -->				  
+				  <ion-item>
+					<ion-label position="floating">Número do Banco</ion-label>
+					<ion-input disabled formControlName="numeroBank" value={{numeroBank}} type="text"></ion-input>
+				  </ion-item>
+
+
+
 						<ion-item>
 						  <ion-label position="floating">Nome na conta</ion-label>
 						  <ion-input formControlName="nomeNaConta"  type="text"></ion-input>
