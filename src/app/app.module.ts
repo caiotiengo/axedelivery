@@ -33,7 +33,6 @@ import ptBr from '@angular/common/locales/pt';
 
 import { Push } from '@ionic-native/push/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
-import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 
 registerLocaleData(ptBr)
 
@@ -77,7 +76,6 @@ firebase.initializeApp(firebaseConfig);
     HTTP,
     Media,
     BrMaskDirective,
-    Deeplinks,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
      {
       provide: LOCALE_ID,

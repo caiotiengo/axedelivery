@@ -43,8 +43,8 @@
       <div [hidden]="hideMe">
         <h4 style="text-align: center;">Qual o novo endereço de entrega?</h4>
         <br/>
-             <ion-select placeholder="Sua região" required 
-             style="border: 1px solid black;border-radius: 25px;padding: 10px;" [(ngModel)]="type">
+             <ion-select required 
+             style="color:black;" placeholder="Clique aqui" [(ngModel)]="type">
               <ion-select-option value="Centro">Centro</ion-select-option>
               <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
               <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
@@ -113,7 +113,7 @@
                            </ion-row>
                          </ion-grid>
            
-                 <ion-button  style="height: 4vh;" expand="block" *ngIf="type" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
+                 <ion-button style="height: 4vh;" expand="block" *ngIf="type" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
            
            
              </form>
@@ -135,7 +135,8 @@
 
     <h4 style="text-align: center;">Qual a nova conta bancária?</h4>
     <br/>
-        <ion-select placeholder="Corrente ou Poupança" required  formControlName="tipoContaNew">
+    <p style="text-align: center;"> Conta Corrente ou Poupança? </p>
+        <ion-select style="color:black;" placeholder="Clique aqui" required  formControlName="tipoContaNew">
             <ion-select-option value="Corrente">Corrente</ion-select-option>
             <ion-select-option value="Poupanca">Poupança</ion-select-option>
         </ion-select>
@@ -192,7 +193,7 @@
 
 
            
-      <ion-button  style="height: 4vh;" (click)="updateBanco()" color="success" slot="end">Atualizar</ion-button><br/>
+      <ion-button   style="height: 4vh;" (click)="updateBanco()" color="success" slot="end">Atualizar</ion-button><br/>
 
 
   </form>

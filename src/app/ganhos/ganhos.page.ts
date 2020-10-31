@@ -11,7 +11,6 @@ import { LoadingController } from '@ionic/angular';
 import {format} from "date-fns";
 import * as _ from 'lodash';
 import { BrMaskDirective, BrMaskModel } from 'br-mask';
-import * as numeral from 'numeral'
 import { ServiceService } from '../service.service';
 @Component({
   selector: 'app-ganhos',

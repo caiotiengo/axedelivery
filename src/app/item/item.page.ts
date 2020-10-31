@@ -217,11 +217,17 @@ export class ItemPage implements OnInit {
             }else{
               x = 1;
             }
+            console.log(items.especi)
             if(items.especi === undefined){
               this.addCarrinho(items,x, ' ')
+            }else if(items.especi.length === 0){
+              this.addCarrinho(items,x, ' ')
+
             }else{
               this.presentAlertCheckbox(items, x)
             }
+
+        
           }
         }
       ]

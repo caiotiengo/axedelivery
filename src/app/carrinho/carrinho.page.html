@@ -19,7 +19,8 @@
 </ion-fab>
   <ion-card class="card-pag">
     <ion-card-header> 
-      <ion-select placeholder="Escolha a forma de pagamento" [(ngModel)]="pagamento">
+      <p style="text-align:center;">Escolha a forma de pagamento:</p>
+      <ion-select placeholder="Clique aqui" style="color:black;" [(ngModel)]="pagamento">
         <ion-select-option value="credito">Crédito</ion-select-option>
         <ion-select-option value="debito">Débito Presencial</ion-select-option>
         <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
@@ -45,7 +46,9 @@
 
     <div *ngIf="pagamento ==='credito'">
       <h4 style="margin: 0; text-align: center">Informações do cartão</h4>
-      <ion-select placeholder="Quantas vezes?" style="border: 1px solid #d7d8da;
+      <p style="text-align: center;
+      margin-top:5px; margin-bottom: 5px;"> Em quantas vezes?</p>
+      <ion-select placeholder="Clique aqui" style="border: 1px solid #d7d8da;
 				padding: 13px;" [(ngModel)]="parcelamento">
 					<ion-select-option value="1">Á vista</ion-select-option>
 					<ion-select-option value="2">2</ion-select-option>

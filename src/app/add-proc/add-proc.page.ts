@@ -98,14 +98,19 @@ export class AddProcPage implements OnInit {
     this.hide = false;
   }
   addItem(){
-    this.check.push({
-      name: 'checkbox2',
-      type: 'radio',
-      label: this.variedade ,
-      value:  this.variedade 
-    })
-    this.variedade = '';
-    console.log(this.check)
+    if(this.variedade != ''){
+      this.check.push({
+        name: 'checkbox2',
+        type: 'radio',
+        label: this.variedade ,
+        value:  this.variedade 
+      })
+      this.variedade = '';
+      console.log(this.check)
+    }else{
+      alert('Coloque um valor para variedade!')
+    }
+    
   }
   ngOnInit() {
   }
