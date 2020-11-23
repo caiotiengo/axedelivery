@@ -1,0 +1,86 @@
+<ion-content>
+  <div style="margin:auto; text-align: center;">
+    <ion-button style="
+    margin-top: 5%;--background: gray;" (click)="dismiss2()">
+    Voltar para a loja
+  
+    </ion-button>
+  </div>
+
+  <ion-card class="card-1">
+    <ion-card-header  style=" color: black; " >
+      <h1 style="text-align: center;     font-weight: bold;"> {{produto?.nome}}</h1>
+
+    </ion-card-header>
+
+    <ion-slides>
+
+      <ion-slide *ngFor="let items of produto?.fotos">
+        <img style="max-width: 50%" src="{{items.link}}">
+      </ion-slide>
+
+    </ion-slides>
+    <p style="text-align: center;">Arraste para os lados</p>
+    <ion-card-content>
+      <h4 text-center style="color: black"> Descrição </h4>
+      <p text-center> {{produto?.resumo}}</p>
+      <ion-item style="border-radius: 25px; border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px rgba(128, 128, 128, 0.4);">
+        <ion-icon name="brush" style="color: #ab9121" slot="start"></ion-icon>
+        <p > Tipo de produto:</p>
+        <p slot="end">{{produto?.tipoPrd}}</p>
+      </ion-item>
+
+    </ion-card-content>
+    
+  </ion-card>
+  <ion-item *ngIf="produto?.especi.length === 0" >
+
+    <ion-label>
+    <h2>Quantidade</h2>
+    </ion-label>
+    <ion-button *ngIf="qtd !== 0" color="warning" style="margin-right: 5%;" (click)="retirar()">
+      <ion-icon name="remove-outline"></ion-icon>
+    </ion-button>
+    {{qtd}}
+    <ion-button style="margin-left: 5%;" color="warning" (click)="adicionar()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+</ion-item>
+
+
+
+
+<ion-list *ngIf="produto?.especi.length !== 0">
+  <h2  style="text-align: center;">Escolha o tipo do produto</h2>
+  <ion-item *ngFor="let itm of produtoEspeci; let i=index">
+
+      <ion-label>
+      <h2>{{itm.especi}}</h2>
+      </ion-label>
+      <ion-button *ngIf="itm.qtd !== 0" color="warning" style="margin-right: 5%;" (click)="retirarQTD(i)">
+        <ion-icon name="remove-outline"></ion-icon>
+      </ion-button>
+      {{itm.qtd}}
+      <ion-button style="margin-left: 5%;" color="warning" (click)="adicionarQTD(i)">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+  </ion-item>
+ </ion-list> 
+<p style="color: red;    text-align: center;">Preço calculado sem o frete.</p>
+ <ion-item style="--background: #ffcb02;">
+   <ion-label><h3 style="    font-weight: bold;
+    font-size: 25px;
+    background: white;
+    text-align: center;
+    padding: 8px;
+    border-radius: 10px;
+    width: 85%;
+    min-width: 85%;">R${{price}}</h3></ion-label>
+  <ion-button style="    --background: #1f1f1f;
+  height: 45px;"(click)="add()"> Calcular </ion-button>
+  <ion-button *ngIf="price" style="--background: #21bd3f;
+  height: 45px;" (click)="dismiss()">Adicionar</ion-button>
+  
+</ion-item>
+</ion-content>
