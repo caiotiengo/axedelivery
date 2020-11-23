@@ -60,7 +60,8 @@ export class AddProcPage implements OnInit {
     public formulario : FormGroup;
     photos: Array<Foto> = [];
     check: Array<CheckBox> = [];
-
+    tipoPrd
+    qtd
     hide = true;
 
   constructor(public navCtrl: NavController, public afStore: AngularFirestore,
@@ -247,7 +248,36 @@ export class AddProcPage implements OnInit {
         })
       ).subscribe();
   }
+  validade(){
+    if(this.nomePrd !== ''){
+      if(this.tipoPrd !== ''){
+       if(this.resumo !== ''){
+         if(this.qtd !== 0){
+           if(this.valor !== 0){
+            this.create();
+            }else{
+              alert('Por favor, preencha o campo "Nome"') 
+
+            }
+          }else{
+            alert('Por favor, preencha o campo "Nome"') 
+
+          }
+        }else{
+          alert('Por favor, preencha o campo "Nome"') 
+
+        }
+      }else{
+        alert('Por favor, preencha o campo "Nome"') 
+
+      }
+     }else{
+      alert('Por favor, preencha o campo "Nome"') 
+
+     }
+  }
   create() {
+    
         console.log()
 
     const user = firebase.auth().currentUser;

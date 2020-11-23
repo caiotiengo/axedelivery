@@ -66,6 +66,10 @@ const routes: Routes = [
   {
     path: 'ganhos',
     loadChildren: () => import('./ganhos/ganhos.module').then( m => m.GanhosPageModule)
+  },
+  {
+    path: 'modal-venda',
+    loadChildren: () => import('./modal-venda/modal-venda.module').then( m => m.ModalVendaPageModule)
   }
 ];
 @NgModule({

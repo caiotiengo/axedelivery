@@ -11,6 +11,7 @@ import { IonSlides} from '@ionic/angular';
 import {AlertController} from '@ionic/angular';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { ModalVendaPage } from '../modal-venda/modal-venda.page';
 
 export interface User {
     name: string;
@@ -95,6 +96,7 @@ export class ItemPage implements OnInit {
        speed: 400
        };
     qtd = 0;
+    testy
     categoria;
     segmento;
     valores;
@@ -122,7 +124,7 @@ export class ItemPage implements OnInit {
     plataforma
     valorinicial
     constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
-              private route: ActivatedRoute, private storage: Storage,
+              private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
               public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
 ) {
@@ -166,6 +168,28 @@ export class ItemPage implements OnInit {
 
 
    }
+
+
+  async presentModal(id) {
+    const modal = await this.modalController.create({
+      component: ModalVendaPage,
+      cssClass: 'my-custom-modal-css',
+      componentProps: {
+        'id': id
+      }
+    });
+     await modal.present();
+
+    await modal.onDidDismiss().then((r) => {
+      this.testy = r.data.data;
+      this.testy.forEach(element => {
+        this.addCarrinho(element)
+      });
+      console.log("the result:", r , 'test'+ this.testy);
+      
+    })
+  }
+
     optionsFn(value: any ) {
         this.segmento = value;
         this.categoria = this.segmento;
@@ -188,81 +212,8 @@ export class ItemPage implements OnInit {
     }
     ngOnInit(){}
 
-  async presentAlertPrompt(items) {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: items.nome,
-      message: 'Qual a quantidade que você deseja adicionar ao carrinho?',
-      inputs: [
-        {
-          name: 'name1',
-          type: 'text',
-          placeholder: 'Quantidade'
-        }],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: (data) => {
-            var x = 1;
-            console.log('Confirm Ok');
-            if(data.name1 != 1){
-              x = data.name1;
-            }else{
-              x = 1;
-            }
-            console.log(items.especi)
-            if(items.especi === undefined){
-              this.addCarrinho(items,x, ' ')
-            }else if(items.especi.length === 0){
-              this.addCarrinho(items,x, ' ')
 
-            }else{
-              this.presentAlertCheckbox(items, x)
-            }
 
-        
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-  async presentAlertCheckbox(items, qtd) {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: 'Detalhes!',
-      message:'Escolha um dos itens abaixo',
-      inputs: items.especi,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: (data) => {
-            console.log(data)
-            console.log(data.checkbox2)
-            this.addCarrinho(items, qtd, data)
-            console.log('Confirm Ok');
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
 
 
   voltar(){
@@ -373,21 +324,20 @@ export class ItemPage implements OnInit {
      // this.loadedGoalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
     }
 
-    addCarrinho(items,qtd, data) {
-      console.log(items.valor * qtd );
-      this.qtd++;
+    addCarrinho(items) {
+      console.log(items.valor * items.qtd );
       console.log(this.qtd);
       if(items.fotos[0] === undefined){
         this.produtos.push({
           nome: items.nome,
-          valor: items.valor * Number(qtd),
+          valor: items.valor * Number(items.qtd),
           price: items.price,
           product:items.nome,
-          quantity: Number(qtd),
+          quantity: Number(items.qtd),
           detail: items.resumo,
           email: items.email,
           itemId: items.id,
-          especi: data,
+          especi: items.especi,
           lojaUID: this.que,
           itemNumber: this.qtd,
           emailLoja: this.loja.email,
@@ -396,14 +346,14 @@ export class ItemPage implements OnInit {
       }else{
         this.produtos.push({
           nome: items.nome,
-          valor: items.valor * Number(qtd),
+          valor: items.valor * Number(items.qtd),
           price: items.price,
           product:items.nome,
-          quantity: Number(qtd),
+          quantity: Number(items.qtd),
           detail: items.resumo,
           email: items.email,
           itemId: items.id,
-          especi: data,
+          especi: items.especi,
           lojaUID: this.que,
           itemNumber: this.qtd,
           emailLoja: this.loja.email,
@@ -414,7 +364,7 @@ export class ItemPage implements OnInit {
       var quant = this.produtos.map(res => res.quantity)
       var quantTotal = quant.reduce((acc, val) => acc += val)
       console.log(quantTotal)
-      var contaBasica = Number(items.valor) * Number(qtd);
+      var contaBasica = Number(items.valor) * Number(items.qtd);
       console.log(contaBasica)
       this.valores = this.produtos.map(res => res.valor);
       this.valorCompra = this.valores.reduce((acc, val) => acc += val);

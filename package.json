@@ -73,6 +73,7 @@
     "ionic-selectable": "^4.7.1",
     "ionic4-star-rating": "^1.1.1",
     "jsencrypt": "^3.0.0-rc.1",
+    "lalamove-js": "^1.0.0",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.15",
     "mercadopago": "^1.3.1",

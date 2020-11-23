@@ -30,21 +30,22 @@
 					<ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
 					<ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
 					<ion-select-option value="Baixada">Baixada</ion-select-option>
+					<ion-select-option value="Niteroi e Regiao">Niterói & Região</ion-select-option>
+
 				</ion-select>
 
 
-			<form [formGroup]="cadastro" (ngSubmit)="logForm()">	
 					<ion-item>
 		 
 					  <ion-label position="floating">E-mail</ion-label>
-					  <ion-input type="text" formControlName="email" required ></ion-input>
+					  <ion-input type="text" [(ngModel)]="email" required ></ion-input>
 					</ion-item>
 
 					<ion-item>
 					  <ion-label position="floating"> 
 					  	Senha
 					  </ion-label>
-					  <ion-input formControlName="password" type="password" required ></ion-input>
+					  <ion-input [(ngModel)]="password" type="password" required ></ion-input>
 					</ion-item>
 					<ion-grid *ngIf="typeUser === 'Loja'">
 						<h4>Sobre o responsável</h4>
@@ -52,31 +53,31 @@
 							<ion-col>
 								<ion-item *ngIf="typeUser === 'Loja'">
 									<ion-label position="floating">Nome</ion-label>
-									<ion-input formControlName="Prinome" ></ion-input>
+									<ion-input [(ngModel)]="Prinome" ></ion-input>
 								</ion-item>
 							</ion-col>
 							<ion-col>
 								<ion-item *ngIf="typeUser === 'Loja'">
 									<ion-label position="floating">Sobrenome</ion-label>
-									<ion-input formControlName="Segnome" ></ion-input>
+									<ion-input [(ngModel)]="Segnome" ></ion-input>
 								</ion-item>
 							</ion-col>
 						</ion-row>
 					</ion-grid>	
 					<ion-item *ngIf="typeUser === 'Loja'">
 						<ion-label position="floating">CPF do responsável</ion-label>
-						<ion-input maxLenght="40" [brmasker]="{person: true}" formControlName="CPFRES" ></ion-input>
+						<ion-input maxLenght="40" [brmasker]="{person: true}" [(ngModel)]="CPFRES" ></ion-input>
 					</ion-item>		
 					<h4 style="text-align: center;" *ngIf="typeUser === 'Loja'">Sobre a loja</h4>		
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">Nome da sua Loja</ion-label>
-							<ion-input formControlName="nome" ></ion-input>
+							<ion-input [(ngModel)]="nome" ></ion-input>
 						</ion-item>
 
 						
 						<ion-item *ngIf="typeUser === 'user'" >
 						  <ion-label position="floating">Seu nome completo</ion-label>
-						  <ion-input formControlName="nome" ></ion-input>
+						  <ion-input [(ngModel)]="nome" required ></ion-input>
 						</ion-item>
 						<!--ion-item *ngIf="typeUser === 'user'" >
 							<ion-label position="floating"> Data de Nascimento</ion-label>
@@ -84,7 +85,7 @@
 						   <ion-datetime
 		    						[dayShortNames]="customDayShortNames"
 		    						displayFormat="DD MMM, YYYY"
-		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" formControlName="DOB" placeholder="Clique aqui" required></ion-datetime>
+		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" [(ngModel)]="DOB" placeholder="Clique aqui" required></ion-datetime>
 
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'" >
@@ -93,32 +94,32 @@
 						   <ion-datetime
 		    						[dayShortNames]="customDayShortNames"
 		    						displayFormat="DD MMM, YYYY"
-		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" formControlName="DOB" placeholder="Clique aqui" required></ion-datetime>
+		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" [(ngModel)]="DOB" placeholder="Clique aqui" required></ion-datetime>
 
 						</ion-item-->
 						<ion-item *ngIf="typeUser === 'Loja'" >
 							<ion-label position="floating">Entrega de:</ion-label>
-						  <ion-input formControlName="entregaDe" ></ion-input>
+						  <ion-input [(ngModel)]="entregaDe" ></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'" >
 							<ion-label position="floating">Se ultrapassar o horário, entrega quando?</ion-label>
-						  <ion-input formControlName="seNEntrega" ></ion-input>
+						  <ion-input [(ngModel)]="seNEntrega" ></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">CNPJ</ion-label>
 							<ion-input maxLenght="40" [brmasker]="{person: true}"
-							 formControlName="CPF"  type="text"></ion-input>
+							 [(ngModel)]="CPF"  type="text"></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'user'" >
 						  <ion-label position="floating">CPF</ion-label>
-						  <ion-input formControlName="CPF" maxLenght="40" [brmasker]="{person: true}"></ion-input>
+						  <ion-input [(ngModel)]="CPF" maxLenght="40" [brmasker]="{person: true}"></ion-input>
 						</ion-item>
 						<ion-item>
 						  <ion-label position="floating">Endereço</ion-label>
-						  <ion-input formControlName="endereco" 
+						  <ion-input [(ngModel)]="endereco" 
 						  [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" 
 						  (ionClear)="ClearAutocomplete()" value="{{endereco}}"></ion-input>
-						  <!--ion-input formControlName="endereco" type="text" required></ion-input-->
+						  <!--ion-input [(ngModel)]="endereco" type="text" required></ion-input-->
 						</ion-item>
 						<ion-list [hidden]="autocompleteItems.length == 0 || hide">
 							<ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
@@ -129,26 +130,26 @@
 					      <ion-row>
 					          <ion-col>
 					             	<ion-item>
-						  				<ion-label position="floating">Número</ion-label>
-						  				<ion-input type="tel" formControlName="numeroEND" ></ion-input>
+						  				<ion-label position="floating">Número (Somente números)</ion-label>
+						  				<ion-input type="tel" pattern="[0-9]*" [(ngModel)]="numeroEND" ></ion-input>
 									</ion-item>
 
 					          </ion-col>
 					          <ion-col>
 									<ion-item>
 						 				<ion-label position="floating">CEP</ion-label>
-						  				<ion-input formControlName="CEP" ></ion-input>
+						  				<ion-input [(ngModel)]="CEP" ></ion-input>
 									</ion-item>
 					          </ion-col>
 					      </ion-row>
 					    </ion-grid>
 						<ion-item>
 							<ion-label position="floating">Complemento</ion-label>
-							<ion-input formControlName="complemento"  type="text"></ion-input>
+							<ion-input [(ngModel)]="complemento"  type="text"></ion-input>
 						  </ion-item>
 						<ion-item>
 						  <ion-label position="floating">Bairro</ion-label>
-						  <ion-input formControlName="bairro" placeholder="{{bairro}}" value="{{bairro}}"  type="text"></ion-input>
+						  <ion-input [(ngModel)]="bairro" placeholder="{{bairro}}" value="{{bairro}}"  type="text"></ion-input>
 						</ion-item>
 
 						<p>No momento, estamos trabalhando somente no Rio de Janeiro!</p>
@@ -158,7 +159,7 @@
 					          <ion-col>
 					             	<ion-item>
 									  <ion-label position="floating">Cidade</ion-label>
-									  <ion-input required formControlName="cidade" placeholder="{{cidade}}" value="{{cidade}}"  type="text"></ion-input>
+									  <ion-input required [(ngModel)]="cidade" placeholder="{{cidade}}" value="{{cidade}}"  type="text"></ion-input>
 									</ion-item>
 
 					          </ion-col>
@@ -175,31 +176,31 @@
 					    		<ion-col>
 									<ion-item>
 						  				<ion-label position="floating">DDD</ion-label>
-						  				<ion-input type="tel" pattern="[0-9]*" maxlength="2" formControlName="ddd"  type="text"></ion-input>
+						  				<ion-input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="ddd"  type="text"></ion-input>
 									</ion-item>							    			
 					    		</ion-col>
 					    		<ion-col>
 									<ion-item>
 						  				<ion-label position="floating">Telefone</ion-label>
-						  				<ion-input formControlName="telefone"  type="text"></ion-input>
+						  				<ion-input [(ngModel)]="telefone"  type="text"></ion-input>
 									</ion-item>					    			
 					    		</ion-col>
 					    	</ion-row>
 					    </ion-grid>
 						<ion-item *ngIf="typeUser === 'Loja'">
-							<ion-label position="floating">Descrição</ion-label>
-							<ion-input maxLenght="40" formControlName="resumo"  type="text"></ion-input>
+							<ion-label position="floating">Descrição da sua Loja</ion-label>
+							<ion-input maxLenght="40" [(ngModel)]="resumo"  type="text"></ion-input>
 						</ion-item>
 <div *ngIf="typeUser === 'Loja'">						
 		<h3 style="text-align-last: center ">Informações bancárias</h3>
 				<p style="text-align: center;">Conta Corrente ou Poupança?</p>
-				<ion-select placeholder="Clique aqui"  formControlName="correnteoupou">
+				<ion-select placeholder="Clique aqui"  [(ngModel)]="correnteoupou">
 					<ion-select-option value="Corrente">Corrente</ion-select-option>
 					<ion-select-option value="Poupanca">Poupança</ion-select-option>
 				</ion-select>
 				<ion-item>
 					<ion-label position="floating">Banco</ion-label>
-					<ion-input formControlName="banco" value={{nomeBanco}} (ionInput)="buscaBanco($event)" type="text"></ion-input>
+					<ion-input [(ngModel)]="banco" value={{nomeBanco}} (ionInput)="buscaBanco($event)" type="text"></ion-input>
 				  </ion-item>
 						<!-- -->
 						
@@ -212,42 +213,40 @@
 						<!-- -->				  
 				  <ion-item>
 					<ion-label position="floating">Número do Banco</ion-label>
-					<ion-input disabled formControlName="numeroBank" value={{numeroBank}} type="text"></ion-input>
+					<ion-input disabled [(ngModel)]="numeroBank" value={{numeroBank}} type="text"></ion-input>
 				  </ion-item>
 
 
 
 						<ion-item>
 						  <ion-label position="floating">Nome na conta</ion-label>
-						  <ion-input formControlName="nomeNaConta"  type="text"></ion-input>
+						  <ion-input [(ngModel)]="nomeNaConta"  type="text"></ion-input>
 						</ion-item>	
 						<ion-item>
 						  <ion-label position="floating">CNPJ da conta</ion-label>
-						  <ion-input formControlName="CPFconta" maxLenght="40" [brmasker]="{person: true}"  type="text"></ion-input>
+						  <ion-input [(ngModel)]="CPFconta" maxLenght="40" [brmasker]="{person: true}"  type="text"></ion-input>
 						</ion-item>	
 						<ion-item>
 							<ion-label position="floating">Agência</ion-label>
-							<ion-input formControlName="agencia" ></ion-input>
+							<ion-input [(ngModel)]="agencia" ></ion-input>
 					  </ion-item>							
 						<ion-grid>
 					      <ion-row>
 					          <ion-col>
 								<ion-item>
 									<ion-label position="floating">Conta</ion-label>
-									 <ion-input formControlName="conta" ></ion-input>
+									 <ion-input [(ngModel)]="conta" ></ion-input>
 							   </ion-item>
 					          </ion-col>
 					          <ion-col>
 									<ion-item>
 						 				<ion-label position="floating">Digito</ion-label>
-						  				<ion-input type="tel" pattern="[0-9]*" maxlength="1" formControlName="digitoConta" ></ion-input>
+						  				<ion-input type="tel" pattern="[0-9]*" maxlength="1" [(ngModel)]="digitoConta" ></ion-input>
 									</ion-item>
 					          </ion-col>
 						  </ion-row>
 					    </ion-grid>
-</div>
-
-			</form>
+		</div>
 			<div *ngIf="typeUser === 'Loja'">
 				<p> Escolha a foto do seu perfil!</p>
 				<p>Porcentagem da foto: {{uploadPercent | async}}% </p>
@@ -261,13 +260,15 @@
 			<ion-label>Confirmo que li e concordo com os termos.</ion-label>
 			<ion-checkbox [(ngModel)]="check"></ion-checkbox>
 
-		</ion-item>		
+		</ion-item>
+		
+
 		
 				<ion-label *ngIf="typeUser && type && check">
-					<ion-button (click)="contaWirecard()" *ngIf="typeUser === 'Loja'" expand="block" class="signin-button" style="color:white !important;" >
+					<ion-button (click)="checklistLoja()" *ngIf="typeUser === 'Loja'" expand="block" class="signin-button" style="color:white !important;" >
 						 Confirmar
 					</ion-button>
-					<ion-button (click)="registrarUsuario()" *ngIf="typeUser === 'user'" expand="block" style="color:white !important;" >
+					<ion-button (click)="checklistUsuario()" *ngIf="typeUser === 'user'" expand="block" style="color:white !important;" >
 						Confirmar
 				   </ion-button>
 				</ion-label>

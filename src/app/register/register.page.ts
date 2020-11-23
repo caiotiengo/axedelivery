@@ -1589,9 +1589,358 @@ export class RegisterPage implements OnInit {
       "label": "Banco Keb Hana do Brasil S. A."
     }
   ]
+  errors = [
+    {
+        "code": "auth/app-deleted",
+        "message": "O banco de dados não foi localizado."
+    },
+    {
+        "code": "auth/expired-action-code",
+        "message": "O código da ação o ou link expirou."
+    },
+    {
+        "code": "auth/invalid-action-code",
+        "message": "O código da ação é inválido. Isso pode acontecer se o código estiver malformado ou já tiver sido usado."
+    },
+    {
+        "code": "auth/user-disabled",
+        "message": "O usuário correspondente à credencial fornecida foi desativado."
+    },
+    {
+        "code": "auth/user-not-found",
+        "message": "O usuário não correponde à nenhuma credencial."
+    },
+    {
+        "code": "auth/weak-password",
+        "message": "A senha é muito fraca."
+    },
+    {
+        "code": "auth/email-already-in-use",
+        "message": "Já existi uma conta com o endereço de email fornecido."
+    },
+    {
+        "code": "auth/invalid-email",
+        "message": "O endereço de e-mail não é válido."
+    },
+    {
+        "code": "auth/operation-not-allowed",
+        "message": "O tipo de conta correspondente à esta credencial ainda não encontra-se ativada."
+    },
+    {
+        "code": "auth/account-exists-with-different-credential",
+        "message": "E-mail já associado a outra conta."
+    },
+    {
+        "code": "auth/auth-domain-config-required",
+        "message": "A configuração para autenticação não foi fornecida."
+    },
+    {
+        "code": "auth/credential-already-in-use",
+        "message": "Já existe uma conta para esta credencial."
+    },
+    {
+        "code": "auth/operation-not-supported-in-this-environment",
+        "message": "Esta operação não é suportada no ambiente que está sendo executada. Verifique se deve ser http ou https."
+    },
+    {
+        "code": "auth/timeout",
+        "message": "Excedido o tempo de resposta. O domínio pode não estar autorizado para realizar operações."
+    },
+    {
+        "code": "auth/missing-android-pkg-name",
+        "message": "Deve ser fornecido um nome de pacote para instalação do aplicativo Android."
+    },
+    {
+        "code": "auth/missing-continue-uri",
+        "message": "A próxima URL deve ser fornecida na solicitação."
+    },
+    {
+        "code": "auth/missing-ios-bundle-id",
+        "message": "Deve ser fornecido um nome de pacote para instalação do aplicativo iOS."
+    },
+    {
+        "code": "auth/invalid-continue-uri",
+        "message": "A próxima URL fornecida na solicitação é inválida."
+    },
+    {
+        "code": "auth/unauthorized-continue-uri",
+        "message": "O domínio da próxima URL não está na lista de autorizações."
+    },
+    {
+        "code": "auth/invalid-dynamic-link-domain",
+        "message": "O domínio de link dinâmico fornecido não está autorizado ou configurado no projeto atual."
+    },
+    {
+        "code": "auth/argument-error",
+        "message": "Verifique a configuração de link para o aplicativo."
+    },
+    {
+        "code": "auth/invalid-persistence-type",
+        "message": "O tipo especificado para a persistência dos dados é inválido."
+    },
+    {
+        "code": "auth/unsupported-persistence-type",
+        "message": "O ambiente atual não suportar o tipo especificado para persistência dos dados."
+    },
+    {
+        "code": "auth/invalid-credential",
+        "message": "A credencial expirou ou está mal formada."
+    },
+    {
+        "code": "auth/wrong-password",
+        "message": "Senha incorreta."
+    },
+    {
+        "code": "auth/invalid-verification-code",
+        "message": "O código de verificação da credencial não é válido."
+    },
+    {
+        "code": "auth/invalid-verification-id",
+        "message": "O ID de verificação da credencial não é válido."
+    },
+    {
+        "code": "auth/custom-token-mismatch",
+        "message": "O token está diferente do padrão solicitado."
+    },
+    {
+        "code": "auth/invalid-custom-token",
+        "message": "O token fornecido não é válido."
+    },
+    {
+        "code": "auth/captcha-check-failed",
+        "message": "O token de resposta do reCAPTCHA não é válido expirou ou o domínio não é permitido."
+    },
+    {
+        "code": "auth/invalid-phone-number",
+        "message": "O número de telefone está em um formato inválido (padrão E.164)."
+    },
+    {
+        "code": "auth/missing-phone-number",
+        "message": "O número de telefone é requerido."
+    },
+    {
+        "code": "auth/quota-exceeded",
+        "message": "A cota de SMS foi excedida."
+    },
+    {
+        "code": "auth/cancelled-popup-request",
+        "message": "Somente uma solicitação de janela pop-up é permitida de uma só vez."
+    },
+    {
+        "code": "auth/popup-blocked",
+        "message": "A janela pop-up foi bloqueado pelo navegador."
+    },
+    {
+        "code": "auth/popup-closed-by-user",
+        "message": "A janela pop-up foi fechada pelo usuário sem concluir o login no provedor."
+    },
+    {
+        "code": "auth/unauthorized-domain",
+        "message": "O domínio do aplicativo não está autorizado para realizar operações."
+    },
+    {
+        "code": "auth/invalid-user-token",
+        "message": "O usuário atual não foi identificado."
+    },
+    {
+        "code": "auth/user-token-expired",
+        "message": "O token do usuário atual expirou."
+    },
+    {
+        "code": "auth/null-user",
+        "message": "O usuário atual é nulo."
+    },
+    {
+        "code": "auth/app-not-authorized",
+        "message": "Aplicação não autorizada para autenticar com a chave informada."
+    },
+    {
+        "code": "auth/invalid-api-key",
+        "message": "A chave da API fornecida é inválida."
+    },
+    {
+        "code": "auth/network-request-failed",
+        "message": "Falha de conexão com a rede."
+    },
+    {
+        "code": "auth/requires-recent-login",
+        "message": "O último horário de acesso do usuário não atende ao limite de segurança."
+    },
+    {
+        "code": "auth/too-many-requests",
+        "message": "As solicitações foram bloqueadas devido a atividades incomuns. Tente novamente depois que algum tempo."
+    },
+    {
+        "code": "auth/web-storage-unsupported",
+        "message": "O navegador não suporta armazenamento ou se o usuário desativou este recurso."
+    },
+    {
+        "code": "auth/invalid-claims",
+        "message": "Os atributos de cadastro personalizado são inválidos."
+    },
+    {
+        "code": "auth/claims-too-large",
+        "message": "O tamanho da requisição excede o tamanho máximo permitido de 1 Megabyte."
+    },
+    {
+        "code": "auth/id-token-expired",
+        "message": "O token informado expirou."
+    },
+    {
+        "code": "auth/id-token-revoked",
+        "message": "O token informado perdeu a validade."
+    },
+    {
+        "code": "auth/invalid-argument",
+        "message": "Um argumento inválido foi fornecido a um método."
+    },
+    {
+        "code": "auth/invalid-creation-time",
+        "message": "O horário da criação precisa ser uma data UTC válida."
+    },
+    {
+        "code": "auth/invalid-disabled-field",
+        "message": "A propriedade para usuário desabilitado é inválida."
+    },
+    {
+        "code": "auth/invalid-display-name",
+        "message": "O nome do usuário é inválido."
+    },
+    {
+        "code": "auth/invalid-email-verified",
+        "message": "O e-mail é inválido."
+    },
+    {
+        "code": "auth/invalid-hash-algorithm",
+        "message": "O algoritmo de HASH não é uma criptografia compatível."
+    },
+    {
+        "code": "auth/invalid-hash-block-size",
+        "message": "O tamanho do bloco de HASH não é válido."
+    },
+    {
+        "code": "auth/invalid-hash-derived-key-length",
+        "message": "O tamanho da chave derivada do HASH não é válido."
+    },
+    {
+        "code": "auth/invalid-hash-key",
+        "message": "A chave de HASH precisa ter um buffer de byte válido."
+    },
+    {
+        "code": "auth/invalid-hash-memory-cost",
+        "message": "O custo da memória HASH não é válido."
+    },
+    {
+        "code": "auth/invalid-hash-parallelization",
+        "message": "O carregamento em paralelo do HASH não é válido."
+    },
+    {
+        "code": "auth/invalid-hash-rounds",
+        "message": "O arredondamento de HASH não é válido."
+    },
+    {
+        "code": "auth/invalid-hash-salt-separator",
+        "message": "O campo do separador de SALT do algoritmo de geração de HASH precisa ser um buffer de byte válido."
+    },
+    {
+        "code": "auth/invalid-id-token",
+        "message": "O código do token informado não é válido."
+    },
+    {
+        "code": "auth/invalid-last-sign-in-time",
+        "message": "O último horário de login precisa ser uma data UTC válida."
+    },
+    {
+        "code": "auth/invalid-page-token",
+        "message": "A próxima URL fornecida na solicitação é inválida."
+    },
+    {
+        "code": "auth/invalid-password",
+        "message": "A senha é inválida precisa ter pelo menos 6 caracteres."
+    },
+    {
+        "code": "auth/invalid-password-hash",
+        "message": "O HASH da senha não é válida."
+    },
+    {
+        "code": "auth/invalid-password-salt",
+        "message": "O SALT da senha não é válido."
+    },
+    {
+        "code": "auth/invalid-photo-url",
+        "message": "A URL da foto de usuário é inválido."
+    },
+    {
+        "code": "auth/invalid-provider-id",
+        "message": "O identificador de provedor não é compatível."
+    },
+    {
+        "code": "auth/invalid-session-cookie-duration",
+        "message": "A duração do COOKIE da sessão precisa ser um número válido em milissegundos entre 5 minutos e 2 semanas."
+    },
+    {
+        "code": "auth/invalid-uid",
+        "message": "O identificador fornecido deve ter no máximo 128 caracteres."
+    },
+    {
+        "code": "auth/invalid-user-import",
+        "message": "O registro do usuário a ser importado não é válido."
+    },
+    {
+        "code": "auth/invalid-provider-data",
+        "message": "O provedor de dados não é válido."
+    },
+    {
+        "code": "auth/maximum-user-count-exceeded",
+        "message": "O número máximo permitido de usuários a serem importados foi excedido."
+    },
+    {
+        "code": "auth/missing-hash-algorithm",
+        "message": "É necessário fornecer o algoritmo de geração de HASH e seus parâmetros para importar usuários."
+    },
+    {
+        "code": "auth/missing-uid",
+        "message": "Um identificador é necessário para a operação atual."
+    },
+    {
+        "code": "auth/reserved-claims",
+        "message": "Uma ou mais propriedades personalizadas fornecidas usaram palavras reservadas."
+    },
+    {
+        "code": "auth/session-cookie-revoked",
+        "message": "O COOKIE da sessão perdeu a validade."
+    },
+    {
+        "code": "auth/uid-alread-exists",
+        "message": "O indentificador fornecido já está em uso."
+    },
+    {
+        "code": "auth/email-already-exists",
+        "message": "O e-mail fornecido já está em uso."
+    },
+    {
+        "code": "auth/phone-number-already-exists",
+        "message": "O telefone fornecido já está em uso."
+    },
+    {
+        "code": "auth/project-not-found",
+        "message": "Nenhum projeto foi encontrado."
+    },
+    {
+        "code": "auth/insufficient-permission",
+        "message": "A credencial utilizada não tem permissão para acessar o recurso solicitado."
+    },
+    {
+        "code": "auth/internal-error",
+        "message": "O servidor de autenticação encontrou um erro inesperado ao tentar processar a solicitação."
+    }
+]
     nome = '';
     endereco = '';
     telefone = '';
+    Prinome = '';
+    Segnome = '';
+    CPFRES ='';
     bairro = '';
     cidade = '';
     estado = '';
@@ -1612,6 +1961,7 @@ export class RegisterPage implements OnInit {
     nomeNaConta = '';
     banco = '';
     ddd = '';
+    digitoConta ='';
     check:boolean
     lat 
     url
@@ -1642,6 +1992,8 @@ export class RegisterPage implements OnInit {
     hider = true
     numeroBank =''
     nomeBanco = ''
+    entregaDe = '';
+    seNEntrega = '';
     moip: any;
   pubKey: any;
   hash: string;
@@ -1654,19 +2006,19 @@ export class RegisterPage implements OnInit {
               private media: Media, private formBuilder: FormBuilder, public zone: NgZone) {
                 this.cadastro = this.formBuilder.group({
                   resumo: [''],
-                  nome: [''],
-                  endereco: [''],
-                  telefone: [''],
-                  bairro: [''],
-                  cidade: [''],
+                  nome: ['', [Validators.required]],
+                  endereco: ['',[Validators.required]],
+                  telefone: ['', [Validators.required]],
+                  bairro: ['', [Validators.required]],
+                  cidade: ['', [Validators.required]],
                   estado: [''],
-                  email: [''],
-                  password: [''],
-                  CEP: [''],
+                  email: ['', [Validators.required]],
+                  password: ['',[Validators.required]],
+                  CEP: ['',[Validators.required]],
                   //DOB: [''],
                   complemento:[''],
                   banco:[''],
-                  CPF: [''],
+                  CPF: ['',[Validators.required]],
                   agencia: [''],
                   nomeNaConta: [''],
                   conta: [''],                  
@@ -1739,33 +2091,33 @@ contaWirecard(){
 
   this.moip.account.create({
     email: {
-        address: this.cadastro.value.email
+        address: this.email
     },
     person: {
-        name: this.cadastro.value.Prinome,
-        lastName: this.cadastro.value.Segnome,
+        name: this.Prinome,
+        lastName: this.Segnome,
         taxDocument: {
             type: "CPF",
-            number: this.cadastro.value.CPFRES
+            number: this.CPFRES
         },
         identityDocument: {
             type : "CNPJ",
-            number: this.cadastro.value.CPF,
+            number: this.CPF,
             issuer: "JUCERJA",
             issueDate: "2000-12-12"
         },
         birthDate: "1990-01-01",
         phone: {
             countryCode: "55",
-            areaCode: this.cadastro.value.ddd,
-            number: this.cadastro.value.telefone
+            areaCode: this.ddd,
+            number: this.telefone
         },
         address: {
-            street: this.cadastro.value.endereco,
-            streetNumber: this.cadastro.value.numeroEND,
-            district: this.cadastro.value.bairro,
-            zipCode: this.cadastro.value.CEP,
-            city: this.cadastro.value.cidade,
+            street: this.endereco,
+            streetNumber: this.numeroEND,
+            district: this.bairro,
+            zipCode: this.CEP,
+            city: this.cidade,
             state: "RJ",
             country: "BRA"
         }
@@ -1856,13 +2208,13 @@ Autocomplete
     console.log(String(item.terms[3].value))   
     console.log(JSON.stringify(item))
     
-    this.cadastro.value.endereco = String(item.terms[0].value)
-    this.cadastro.value.bairro = String(item.terms[1].value)
+    this.endereco = String(item.terms[0].value)
+    this.bairro = String(item.terms[1].value)
     this.endereco = String(item.terms[0].value)
     this.bairro = String(item.terms[1].value)
     this.cidade = String(item.terms[2].value)
 
-    console.log(this.cadastro.value.endereco)
+    console.log(this.endereco)
     this.placeid = item.place_id
     this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
       if(status === 'OK' && results[0]){
@@ -1896,26 +2248,26 @@ Autocomplete
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
   }
-  registrarLoja(idmoip, accessToken) {
+async registrarLoja(idmoip, accessToken) {
     console.log(idmoip)
     console.log(accessToken)
-   const{email, password } = this.cadastro.value;
    this.presentLoading() 
+   try{
+     const res = await this.afAuth.createUserWithEmailAndPassword(this.email, this.password)
+     if(this.FCM === undefined){
+       this.FCM === '1'
+     }
+     setTimeout(() => {
 
-    if(this.cadastro.valid && this.typeUser == 'Loja'){
-      try {
-        const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
-         if(this.FCM === undefined){
-           this.FCM === '1'
-         }
-        const user = firebase.auth().currentUser;
-        this.afStore.doc(`users/${user.uid}`).set({
-             nome: this.cadastro.value.nome,
-             email: this.cadastro.value.email,
-             endereco: this.cadastro.value.endereco,
-             telefone:  this.cadastro.value.telefone,
-             bairro: this.cadastro.value.bairro,
-             cidade: this.cadastro.value.cidade,
+      if(res.user){
+      const userid = res.user.uid
+      this.afStore.doc(`users/${userid}`).set({
+             nome: this.nome,
+             email: this.email,
+             endereco: this.endereco,
+             telefone:  this.telefone,
+             bairro: this.bairro,
+             cidade: this.cidade,
              zona: this.type,
              tipo: this.typeUser,
              LikeValue: 0,
@@ -1923,28 +2275,28 @@ Autocomplete
              lat: this.latitudeGoogle,
              lng: this.longitudeGoogle,
              aprovado: "Nao avaliado",
-             banco: this.cadastro.value.banco,
-             CPFconta:this.cadastro.value.CPFconta,
-             agencia: Number(this.cadastro.value.agencia),
-             nomeNaConta: this.cadastro.value.nomeNaConta,
-             conta: Number(this.cadastro.value.conta),
+             banco: this.banco,
+             CPFconta:this.CPFconta,
+             agencia: Number(this.agencia),
+             nomeNaConta: this.nomeNaConta,
+             conta: Number(this.conta),
              correnteoupou:this.correnteoupou,
-             resumo: this.cadastro.value.resumo,
-             numeroEND: this.cadastro.value.numeroEND,
-             CPFCNPJ: this.cadastro.value.CPF,
-             CEP: this.cadastro.value.CEP,
+             resumo: this.resumo,
+             numeroEND: this.numeroEND,
+             CPFCNPJ: this.CPF,
+             CEP: this.CEP,
              status: 'Offline',
-             estado: "RJ", //this.cadastro.value.estado,
-             ddd:this.cadastro.value.ddd,
-             entrega: this.cadastro.value.entregaDe,
-             seNao: this.cadastro.value.seNEntrega,
+             estado: "RJ", //this.estado,
+             ddd:this.ddd,
+             entrega: this.entregaDe,
+             seNao: this.seNEntrega,
              fcm: '1',
              FotoPerfil: String(this.url),
              idmoip: idmoip,
-             porcentagemLoja: 0,
-             porcentagemAxe: 0,
-             numeroBank: Number(this.cadastro.value.numeroBank),
-             digitoConta: Number(this.cadastro.value.digitoConta),
+             porcentagemLoja: 84,
+             porcentagemAxe: 16,
+             numeroBank: Number(this.numeroBank),
+             digitoConta: Number(this.digitoConta),
              accessToken: accessToken
 
         }).then(() => {
@@ -1964,52 +2316,50 @@ Autocomplete
                 
                this.navCtrl.navigateRoot('/user');
                console.log(user);
-               this.showalert('Bem-vindo ao Axé Delivery!', 'Agora é só aproveitar!')
-             });
+               this.showalert('Bem-vindo ao Axé Delivery!', 'Agora vamos aproveitar!')
+               this.showalert('Não esqueça!', 'Lembre-se de ativar as notificações clicando no botão "Habilitar notificações"!')
+            });
  
         });
+      }else{
+        alert('Verifique a sua conexão com a internet e tente novamente mais tarde.') 
+       }
+     }, 1200);
  
- 
-        })
-        
-     } catch (err) {
-         console.dir(err);
-         if(err.code === 'auth/email-already-exists'){
-           this.showalert('Ops!', 'Esse email já está cadastrado... tente outro!')
-         }
-         if(err.code === 'auth/invalid-email'){
-           this.showalert('Ops!', "Esse email está em um formato inválido!")
-         }
+   } catch(e){
+    console.dir(e)
+    var erro = this.errors.filter(i => i.code === e.code)
+    console.log(erro[0].message)
+    if(erro.length > 0){
+      this.showalert('Ops!',erro[0].message )
 
-     }
-    } else {
-      alert('Ocorreu um erro inexperado')
+    }else{
+      this.showalert('Ops!',e )
     }
-      // tslint:disable-next-line:indent
-      // tslint:disable-next-line:indent
-  	 console.log(this.cadastro);
 
-      // tslint:disable-next-line:indent
-  	// Após o registro, ele fará a insersão no firebase.
   }
-  registrarUsuario(){
-    const{email, password } = this.cadastro.value;
+   
+}
+
+
+async registrarUsuario(){
     this.presentLoading() 
- 
-    if(this.cadastro.valid && this.typeUser == 'user'){
-      try {
-        const res =  this.afAuth.createUserWithEmailAndPassword(email, password).then(() => {
-         if(this.FCM === undefined){
-           this.FCM === '1'
-         }
-        const user = firebase.auth().currentUser;
-        this.afStore.doc(`users/${user.uid}`).set({
-             nome: this.cadastro.value.nome,
-             email: this.cadastro.value.email,
-             endereco: this.cadastro.value.endereco,
-             telefone:  this.cadastro.value.telefone,
-             bairro: this.cadastro.value.bairro,
-             cidade: this.cadastro.value.cidade,
+    try{
+      const res = await this.afAuth.createUserWithEmailAndPassword(this.email, this.password)
+      if(this.FCM === undefined){
+        this.FCM === '1'
+      }
+      setTimeout(() => {
+
+      if(res.user){
+          const userid = res.user.uid
+          this.afStore.doc(`users/${userid}`).set({
+             nome: this.nome,
+             email: this.email,
+             endereco: this.endereco,
+             telefone:  this.telefone,
+             bairro: this.bairro,
+             cidade: this.cidade,
              zona: this.type,
              tipo: this.typeUser,
              LikeValue: 0,
@@ -2017,33 +2367,22 @@ Autocomplete
              lat: this.latitudeGoogle,
              lng: this.longitudeGoogle,
              aprovado: "Nao avaliado",
-             banco: '',
-             CPFconta: '',
-             agencia: '',
-             nomeNaConta: '',
-             conta: '',
-             correnteoupou: '',
-             resumo: '',
-             numeroEND: this.cadastro.value.numeroEND,
-             CPFCNPJ: this.cadastro.value.CPF,
-             CEP: this.cadastro.value.CEP,
+             numeroEND: this.numeroEND,
+             CPFCNPJ: this.CPF,
+             CEP: this.CEP,
              status: 'Offline', 
-             estado: "RJ", //this.cadastro.value.estado,
-             ddd:this.cadastro.value.ddd,
-             entrega: '',
-             seNao: '',
-             fcm: '1',
-             FotoPerfil: String(this.url)
-             
+             estado: "RJ", //this.estado,
+             ddd: this.ddd,
+             fcm: '1',          
         }).then(() => {
           if(this.FCM === undefined){
             this.FCM === '1'
           }
            const user = firebase.auth().currentUser;
- 
+   
           this.mainuser = this.afStore.doc(`users/${user.uid}`);
           this.userID = user.uid
- 
+   
           this.sub = this.mainuser.valueChanges().subscribe(event => {
                this.storage.set('usuario', event) 
                               this.storage.set('email', user.email);
@@ -2052,25 +2391,31 @@ Autocomplete
                               }
                this.navCtrl.navigateRoot('/user');
                console.log(user);
-               this.showalert('Bem-vindo ao Axé Delivery!', 'Agora é só aproveitar!')
+               this.showalert('Bem-vindo ao Axé Delivery!', 'Agora vamos aproveitar!')
+               this.showalert('Não esqueça!', 'Lembre-se de ativar as notificações clicando no botão "Habilitar notificações"!')
+   
              });
- 
-        });
- 
- 
-        })
-        
-     } catch (err) {
-         console.dir(err);
-         if(err.code === 'auth/email-already-exists'){
-          this.showalert('Ops!', 'Esse email já está cadastrado... tente outro!')
-        }
-        if(err.code === 'auth/invalid-email'){
-          this.showalert('Ops!', "Esse email está em um formato inválido!")
-        }
+   
+        })       
+      }else{
+       alert('Verifique a sua conexão com a internet e tente novamente mais tarde.') 
+      }
+    }, 1200);
 
-     }
-  }
+    } catch(e){
+      console.dir(e)
+      var erro = this.errors.filter(i => i.code === e.code)
+      console.log(erro[0].message)
+      if(erro.length > 0){
+        this.showalert('Ops!',erro[0].message )
+
+      }else{
+        this.showalert('Ops!',e )
+      }
+
+    }
+     
+  
   }
 
 
@@ -2149,6 +2494,215 @@ uploadPicture(blob:Blob){
        
       })
     ).subscribe();
+}
+
+checklistLoja(){
+  if(this.type !=''){
+    if(this.typeUser != ''){
+      if(this.email !=''){
+        if(this.password !=''){
+          if(this.Prinome !=''){
+            if(this.Segnome !=''){
+              if(this.CPFRES !=''){
+                if(this.nome != ''){
+                  if(this.entregaDe !=''){
+                    if(this.seNEntrega !=''){
+                        if(this.CPF !=''){
+                          console.log('ok cpf')
+                          if(this.endereco !=''){
+                            console.log('ok end')
+                            if(this.numeroEND != null){
+                              console.log('ok num')
+                              if(this.CEP !=''){
+                                console.log('ok Cep')
+                                if(this.complemento !=''){
+                                  console.log('ok com')
+                                  if(this.bairro !=''){
+                                    console.log('ok bairro')
+                                    if(this.cidade !=''){
+                                      console.log('ok cid')
+                                      if(this.ddd !=''){
+                                        console.log('ok ddd')
+                                        if(this.telefone !=''){
+                                          console.log('ok Tel')
+                                          if(this.resumo != ''){
+                                            if(this.correnteoupou !=''){
+                                              console.log('ok corrente ou pou')
+                                              if(this.banco !=''){
+                                                if(this.nomeNaConta != ''){
+                                                  console.log('ok nome conta')
+                                                  if(this.CPFconta != ''){
+                                                    console.log('okCPf conta')
+                                                    if(this.agencia!=''){
+                                                      console.log('ok agencia')
+                                                      if(this.conta != ''){
+                                                        console.log('ok conta')
+                                                        if(this.digitoConta != ''){
+                                                          console.log('ok digito')
+                                                          this.contaWirecard()
+      
+                                                        }else{
+                                                          alert('Preencha o campo "Digito"')
+                                                        }
+                                                      }else{
+                                                        alert('Preencha o campo "Conta"')
+                                                      }
+                                                    }else{
+                                                      alert('Preencha o campo "Agência"')
+                                                    }
+                                                  }else{
+                                                    alert('Preencha o campo "CNPJ da conta", se não tiver conta atrelada ao CNPJ, informe o CPF da conta. ')
+                                                  }
+                                                }else{
+                                                  alert('Preencha o campo "Nome na conta"')
+                                                }
+                                              }else{
+                                                alert('Selecione o seu Banco')
+                                              }
+                                              
+                                            }else{
+                                              alert('Selecione o tipo de Conta')
+                                            }
+                                          }else{
+                                            alert('Preencha o campo "Descrição"')
+                                          }
+                                          
+                                        }else{
+                                          alert('Preencha o campo "Telefone"')
+                                        }
+                                      }else{
+                                        alert('Preencha o campo "DDD"')
+                                      }
+                                
+                                    }else{
+                                      alert('Preencha o campo "Cidade"')
+                                    }
+                                  }else{
+                                    alert('Preencha o campo "Bairro"')
+                                  }
+                            
+                                }else{
+                                  alert('Preencha o campo "Complemento"')
+                                }
+                              }else{
+                                alert('Preencha o campo "CEP"')
+                              }
+                            }else{
+                              alert('Preencha o campo "Número"')
+                            }
+                          }else{
+                            alert('Preencha o campo "Endereço"')
+                          }
+                        }else{
+                          alert('Preencha o campo "CPF"')
+                        }
+                    }else{
+                      alert('Preencha o campo "Se não, entrega quando?"')
+                    }
+                  }else{
+                    alert('Preencha o campo "Entrega de:", com o seu horário de entrega.')
+                  }
+                }else{
+                  alert('Preencha o campo "Nome da Loja"')
+                }
+
+              }else{
+                alert('Preencha o campo "CPF do Responsavél"')
+              }
+            }else{
+              alert('Preencha o campo "Segundo Nome"')
+            }
+          }else{
+            alert('Preencha o campo "Primeiro Nome"')
+          }
+        }else{
+          alert('Preencha o campo "Senha"')
+        }
+      }else{
+        alert('Preencha o campo "Email"')
+      }
+    }else{
+      alert('Selecione o campo "Tipo de Usuário"')
+    }
+  }else{
+    alert('Selecione o campo "Sua Região"')
+  }
+
+
+}
+
+checklistUsuario(){
+  if(this.type !=''){
+    if(this.typeUser != ''){
+      if(this.email !=''){
+        if(this.password !=''){
+          if(this.nome !=''){
+            console.log('ok nome')
+            if(this.CPF !=''){
+              console.log('ok cpf')
+              if(this.endereco !=''){
+                console.log('ok end')
+                if(this.numeroEND != null){
+                  console.log('ok num')
+                  if(this.CEP !=''){
+                    console.log('ok Cep')
+                    if(this.complemento !=''){
+                      console.log('ok com')
+                      if(this.bairro !=''){
+                        console.log('ok bairro')
+                        if(this.cidade !=''){
+                          console.log('ok cid')
+                          if(this.ddd !=''){
+                            console.log('ok ddd')
+                            if(this.telefone !=''){
+                              console.log('ok Tel')
+                              this.registrarUsuario()
+                            }else{
+                              alert('Preencha o campo "Telefone"')
+                            }
+                          }else{
+                            alert('Preencha o campo "DDD"')
+                          }
+                    
+                        }else{
+                          alert('Preencha o campo "Cidade"')
+                        }
+                      }else{
+                        alert('Preencha o campo "Bairro"')
+                      }
+                
+                    }else{
+                      alert('Preencha o campo "Complemento"')
+                    }
+                  }else{
+                    alert('Preencha o campo "CEP"')
+                  }
+                }else{
+                  alert('Preencha o campo "Número"')
+                }
+              }else{
+                alert('Preencha o campo "Endereço"')
+              }
+            }else{
+              alert('Preencha o campo "CPF"')
+            }
+          }else{
+            alert('Preencha o campo "Nome Completo"')
+          }
+        }else{
+          alert('Preencha o campo "Senha"')
+        }
+      }else{
+        alert('Preencha o campo "Email"')
+      }
+    }else{
+      alert('Selecione o campo "Tipo de Usuário"')
+    }
+  }else{
+    alert('Selecione o campo "Sua Região"')
+  }
+
+
 }
 
 }
