@@ -39,7 +39,7 @@ export class AddProcPage implements OnInit {
     nomePrd = '';
     email = '';
     tellme = '';
-    valor: number;
+    valor='';
     nomeLoja = '';
     LikeValue: number;
     DislikeValue: number;
@@ -86,13 +86,7 @@ export class AddProcPage implements OnInit {
       this.nome = event.nome;
       this.boss = event.boss;
     });
-     this.formulario = this.formBuilder.group({
-      valor: ['', Validators.required],
-      nomePrd: ['', Validators.required],
-      resumo: ['', Validators.required],
-      qtd:['', Validators.required]      
 
-    });
     
   }
   abrir(){
@@ -249,30 +243,30 @@ export class AddProcPage implements OnInit {
       ).subscribe();
   }
   validade(){
-    if(this.nomePrd !== ''){
-      if(this.tipoPrd !== ''){
-       if(this.resumo !== ''){
-         if(this.qtd !== 0){
-           if(this.valor !== 0){
+    if(this.type != ''){
+      if(this.nomePrd != ''){
+       if(this.resumo != ''){
+         if(this.qtd != ''){
+           if(this.valor != ''){
             this.create();
             }else{
-              alert('Por favor, preencha o campo "Nome"') 
+              alert('Por favor, preencha o campo "Valor"') 
 
             }
           }else{
-            alert('Por favor, preencha o campo "Nome"') 
+            alert('Por favor, informe a "Quantidade"') 
 
           }
         }else{
-          alert('Por favor, preencha o campo "Nome"') 
+          alert('Por favor, preencha o campo "Descrição do Produto"') 
 
         }
       }else{
-        alert('Por favor, preencha o campo "Nome"') 
+        alert('Por favor, selecione o campo "Nome do Produto"') 
 
       }
      }else{
-      alert('Por favor, preencha o campo "Nome"') 
+      alert('Por favor, preencha o campo "Tipo do produto"') 
 
      }
   }
@@ -284,16 +278,16 @@ export class AddProcPage implements OnInit {
     if (user) {
      var valorN
      var valorS
-     valorN = this.formulario.value.valor.replace(',','')
-     valorS = this.formulario.value.valor.replace(',','.')
+     valorN = String(this.valor).replace(',','')
+     valorS = String(this.valor).replace(',','.')
       this.afStore.collection('produto').add({
-         nome: this.formulario.value.nomePrd,
+         nome: this.nomePrd,
          email: user.email,
          valor: Number(valorS),
          tipoPrd: this.type,
-         resumo: this.formulario.value.resumo,
-         product: this.formulario.value.nomePrd,
-         quantity: Number(this.formulario.value.qtd),
+         resumo: this.resumo,
+         product: this.nomePrd,
+         quantity: Number(this.qtd),
          detail:  this.resumo,
          price: Number(valorN),
          fotos: this.photos,

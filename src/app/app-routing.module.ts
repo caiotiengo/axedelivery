@@ -70,6 +70,10 @@ const routes: Routes = [
   {
     path: 'modal-venda',
     loadChildren: () => import('./modal-venda/modal-venda.module').then( m => m.ModalVendaPageModule)
+  },
+  {
+    path: 'procurar',
+    loadChildren: () => import('./procurar/procurar.module').then( m => m.ProcurarPageModule)
   }
 ];
 @NgModule({
