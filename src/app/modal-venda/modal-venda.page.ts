@@ -48,7 +48,6 @@ export class ModalVendaPage implements OnInit {
 
   ngOnInit() {
     console.log(this.id)
-
     this.services.getProdutos(this.id).subscribe(data =>{
       console.log(data)
       this.produto = data
@@ -283,4 +282,5 @@ export class ModalVendaPage implements OnInit {
       data: this.especi
     });
   }
+  
 }

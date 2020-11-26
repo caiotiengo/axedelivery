@@ -284,7 +284,10 @@ this.storage.get('usuario').then(event =>{
 
       
   }
+modal(){
+  this.navCtrl.navigateForward('/procurar');
 
+}
 
 
 

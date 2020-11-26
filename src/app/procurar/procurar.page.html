@@ -1,9 +1,65 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>procurar</ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
+  
+  <div class="background-div1">
+    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+       <img style="width:30%"src="/assets/Picture1.png"/>
+       <h1 style="text-align: center;font-weight: bold;
+       font-style: italic;"></h1>
+  </div>
+  <ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">
+    <ion-badge class="badge-produtos" *ngIf="produtos.length > 0" color="danger">{{produtos.length}}</ion-badge>
+      <ion-fab-button (click)="finalizarCompra()" color="dark">
+        <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
+     </ion-fab-button>
+ </ion-fab>
+  <ion-searchbar style="position: absolute; margin-top: -25%" animated placeholder="Pesquise pelo produto desejado" (ionInput)="filterList($event)"></ion-searchbar>	
+  <h4 style="text-align: center;
+  font-weight: bold;
+  padding: 10px;" >Categorias</h4>
+  <ion-segment style="background: white;" scrollable (ionChange)="segmentChanged($event)" value="{{valorinicial}}">
+    <ion-segment-button style="width: auto !important; min-width: 170px;" *ngFor="let items of categorias" value="{{items}}">
+      <p value="{{items}}">{{items}}</p>
+    </ion-segment-button>
+  </ion-segment>  
+  
+  
+  <ion-row>
+    <ion-col *ngFor="let items of categorias"  size="6">
+      <ion-card (click)="segmentChanged($event)" value="{{valorinicial}}">
+        <p value="{{items}}">{{items}}</p>
+
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-list *ngFor="let items of lista">
+
+    <ion-item>
+
+      <ion-thumbnail slot="start">
+        <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
+        <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{items.nome}}</h2>
+        <p>R${{items.valor}}</p>
+        <p>Quantidade:{{items.quantity}}</p>
+        <p style="background: #ffc409;
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: black;">{{items.tipoPrd}}</p>
+      </ion-label>
+      <ion-button  (click)="presentModal(items.id, items.email)"  fill="solid" color="warning" style="color:#ffcb02 !important">
+          Veja
+      </ion-button>
+</ion-item>
+
+
+
+
+  </ion-list>
 
 </ion-content>

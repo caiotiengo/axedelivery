@@ -35,6 +35,7 @@ export interface User {
     conta?:any
     correnteoupou?:any
     nomeNaConta?:any
+    aprovado?:string
     fcm?:any
     zona?:any
     entrega?:any
