@@ -184,7 +184,7 @@ status(){
             });            
 
           } else {
-            this.navCtrl.navigateRoot('/')
+            //this.navCtrl.navigateRoot('/')
           }
 
 

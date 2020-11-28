@@ -1608,7 +1608,7 @@ export class RegisterPage implements OnInit {
     },
     {
         "code": "auth/user-not-found",
-        "message": "O usuário não correponde à nenhuma credencial."
+        "message": "O usuário não encontrado."
     },
     {
         "code": "auth/weak-password",
@@ -1616,7 +1616,7 @@ export class RegisterPage implements OnInit {
     },
     {
         "code": "auth/email-already-in-use",
-        "message": "Já existi uma conta com o endereço de email fornecido."
+        "message": "Já existe uma conta com o endereço de email fornecido."
     },
     {
         "code": "auth/invalid-email",

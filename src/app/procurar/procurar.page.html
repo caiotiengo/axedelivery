@@ -22,44 +22,35 @@
       <p value="{{items}}">{{items}}</p>
     </ion-segment-button>
   </ion-segment>  
-  
-  
-  <ion-row>
-    <ion-col *ngFor="let items of categorias"  size="6">
-      <ion-card (click)="segmentChanged($event)" value="{{valorinicial}}">
-        <p value="{{items}}">{{items}}</p>
+  <ion-grid>
 
-      </ion-card>
+  <ion-row >
+    <ion-col class="extra-2" *ngFor="let items of lista">
+      <ion-card class="extra" >
+        <img style="margin:auto; max-height: 15vh;"  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png" alt="" />
+  
+        <img style=" margin: auto;max-height: 15vh;" *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}"alt="" />
+        <ion-label>
+            <p style="text-align: center;
+            min-height: 5vh;
+            max-height: 5vh;">{{items.nomeLoja}}</p>
+        </ion-label>
+    </ion-card>
+    <p style="text-align: center;
+    /* background: #ffc409; */
+    font-weight: bold;
+    border-radius: 25px;
+    margin-bottom: -5%;">R${{items.valor}}</p>
+
+    <p style="text-align: center;">{{items.nome}}</p>
+            
+    <ion-button  (click)="presentModal(items.id, items.email)"  fill="solid" color="warning" style="color:#ffcb02 !important">
+      Veja
+  </ion-button>
     </ion-col>
   </ion-row>
+</ion-grid>
 
 
-  <ion-list *ngFor="let items of lista">
-
-    <ion-item>
-
-      <ion-thumbnail slot="start">
-        <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
-        <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{items.nome}}</h2>
-        <p>R${{items.valor}}</p>
-        <p>Quantidade:{{items.quantity}}</p>
-        <p style="background: #ffc409;
-        padding: 5px;
-        text-align: center;
-        border-radius: 25px;
-        color: black;">{{items.tipoPrd}}</p>
-      </ion-label>
-      <ion-button  (click)="presentModal(items.id, items.email)"  fill="solid" color="warning" style="color:#ffcb02 !important">
-          Veja
-      </ion-button>
-</ion-item>
-
-
-
-
-  </ion-list>
 
 </ion-content>

@@ -10,7 +10,20 @@
 </ion-navbar>
 </ion-header>
 <ion-content [fullscreen]="true" class="">
- 
+  <ion-segment style="    background: transparent;
+  margin-top: 5%;" scrollable (ionChange)="filtroZona($event)">
+
+    <ion-segment-button  value="">
+      <img style="width: 75%;    border-radius: 10px;" src="/assets/roupa.png">
+      <p>Lojas</p>
+    </ion-segment-button>
+    <ion-segment-button (click)="modal()" value="Produtos">
+      <img style="width: 75%;    border-radius: 10px;" src="/assets/produtos.png">
+  
+      <p>Produtos</p>
+    </ion-segment-button>
+   
+  </ion-segment>  
 <div class="background-div1">
 
 </div>
@@ -20,7 +33,7 @@
     <ion-icon style="color:white" name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-	 <ion-searchbar style="position: absolute; margin-top: -35%" animated placeholder="Pesquise pelo produto desejado" (click)="modal()"></ion-searchbar>	
+
 	 <ion-card class="card-1">
   		<ion-card-header>
     		<ion-card-subtitle>Seu endereço</ion-card-subtitle>
@@ -58,10 +71,11 @@
 
 
   </div-->
-  
+
  <div>
+  
   <div style="margin-top:50%;">
-    <p class="label-lojas">Na sua região</p>
+    <p class="label-lojas">Próximas de você</p>
   </div>
   <div  class="scrolling-wrapper">
   
@@ -124,28 +138,13 @@
   </ion-card>
     </ion-item>
   </div>
-  <div >
-    <p class="label-lojas">Outras regiões</p>
-  </div>
-  
-  <ion-segment style="background: white;" scrollable (ionChange)="filtroZona($event)">
 
-    <ion-segment-button style="width: auto !important;" value="Centro">
-      <p>Centro</p>
-    </ion-segment-button>
-    <ion-segment-button style="width: auto !important;" value="Zona Oeste">
-      <p>Zona Oeste</p>
-    </ion-segment-button>
-    <ion-segment-button style="width: auto !important;" value="Zona Norte">
-      <p>Zona Norte</p>
-    </ion-segment-button>
-    <ion-segment-button style="width: auto !important;" value="Zona Sul">
-      <p>Zona Sul</p>
-    </ion-segment-button>
-    <ion-segment-button style="width: auto !important;" value="Baixada">
-      <p>Baixada</p>
-    </ion-segment-button>
-  </ion-segment>  
+  
+  <!--div>
+    <p class="label-lojas">Outras regiões</p>
+  </div-->
+  
+
  <!--ion-select style="margin-top: 10%" placeholder="Qual região você quer procurar?" (ionInput)="filtroZona($event)"[(ngModel)]="filtroLoja">
           <ion-select-option value="Centro">Centro</ion-select-option>
           <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>

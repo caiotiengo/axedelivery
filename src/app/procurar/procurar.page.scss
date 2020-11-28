@@ -10,6 +10,23 @@
       border-bottom-right-radius: 50px;
   
   }
+  .extra-2{
+    text-align: -webkit-center;
+    //border: 1px solid #dddd;
+    box-shadow: 5px 3px #dddddd57;
+    border-radius: 25px;
+    margin-bottom: 15px;
+  }
+  .extra{
+    text-align: center;
+      height: 100%;
+      margin: auto;
+      min-height: 25vh;
+      max-height: 25vh;
+      width: 20vh;
+      margin:15px; 
+      //border: 1px solid #ffc40938;
+  }
   ion-content{
     //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
   

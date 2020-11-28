@@ -27,10 +27,10 @@
   
   }
 ion-header{
-    background: linear-gradient(145deg, #ffcb0254 70%, #ffc409 138%);
+   // background: linear-gradient(145deg, #ffcb0254 70%, #ffc409 138%);
 }
 .background-div1{
-    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
+    //background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
     height: 155px;
     width: 100%;
     border-bottom-left-radius: 50px;
@@ -41,13 +41,20 @@ ion-content{
   //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
 
 }
+.cardre{
+    --background: url('../../assets/lojista.png') no-repeat no-repeat center;
+    border: 1px solid #d7ceb0;
+    width: 100%;
+    height: 190px;
+    background-size: cover;
+}
 .card-slides{
     width: 100%;
     background: linear-gradient(45deg, #ffc200, #eab4078a);
 }
 .card-1{
 	position: absolute;
-    margin-top: -15%;
+    margin-top: -35%;
     width: 95%;
     margin-left:2.6%;
     box-shadow: 1px 10px 15px 5px #8080803d;
@@ -72,9 +79,10 @@ ion-content{
 
 }
 ion-segment-button{
-  width: auto !important;
-    color: black;
-    font: -webkit-control;
+    width: 100px;
+  //width: auto !important;
+    //color: black;
+    //font: -webkit-control;
 }
 .card-content-ios p {
   margin-left: 0;
