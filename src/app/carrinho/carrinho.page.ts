@@ -10,6 +10,7 @@ import {AlertController, NavController} from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import {format} from "date-fns";
 import * as _ from 'lodash';
+import { ServiceService } from '../service.service';
 
 export interface Produtos {
   nome?: string;
@@ -90,12 +91,15 @@ export class CarrinhoPage implements OnInit {
     parcelamento =''
     moip2: any;
     porcentagemAxeDIN
+    cupom =''
+    esconde = false
+    descontin
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
               private _haversineService: HaversineService, 
               public alertCtrl: AlertController, 
-              private storage: Storage){
+              private storage: Storage, public services: ServiceService){
 
                 const user = firebase.auth().currentUser;
                 this.uid = user.uid;
@@ -211,6 +215,27 @@ export class CarrinhoPage implements OnInit {
   ngOnInit() {
 
   }
+  cupo(){
+    this.services.getCupom().subscribe((data) =>{
+      var x = data.filter(i => i.cupom === this.cupom)
+      if(x.length != 0 ){
+        console.log(x)
+        alert('Não é uma oferenda, mas o cupom foi aceito com sucesso!')
+        this.descontin = x[0].desconto
+        console.log(this.descontin)
+        this.esconde = true
+
+        var y = Number(this.valorFrete)
+        
+
+      }else{
+        console.log(x)
+        alert('Cupom inválido!')
+
+      }
+    })
+  }
+
    async presentLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',

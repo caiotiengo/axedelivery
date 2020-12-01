@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {IonInfiniteScroll, NavController, Platform} from '@ionic/angular';
+import {IonInfiniteScroll, NavController, Platform, LoadingController} from '@ionic/angular';
 import { ServiceService } from '../service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
@@ -134,8 +134,10 @@ export class ProcurarPage implements OnInit {
     plataforma
     valorinicial
        emails
+       semLoja
+       estado
   constructor(public navCtrl: NavController,private platform: Platform, public alertCtrl: AlertController,
-    private route: ActivatedRoute, public storage: Storage,
+    private route: ActivatedRoute, public storage: Storage,public loadingController: LoadingController,
     public afStore: AngularFirestore,  public services: ServiceService,
     public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService) { 
 
@@ -144,10 +146,10 @@ export class ProcurarPage implements OnInit {
 
   ngOnInit() {
     this.services.getUsers().subscribe(data =>{
-      this.plataforma = data.filter(i => i.aprovado ==='Sim')
-      console.log(this.plataforma)
       const user = firebase.auth().currentUser;
       console.log(user);
+      this.presentLoading();
+
       if (user) {
           this.mainuser = this.afStore.doc(`users/${user.uid}`);
           this.sub = this.mainuser.valueChanges().subscribe(event => {
@@ -160,8 +162,11 @@ export class ProcurarPage implements OnInit {
             this.zona = event.zona;
             this.lat = event.lat;
             this.lng = event.lng
+            this.estado = event.estado;
   
         });
+        this.plataforma = data.filter(i => i.aprovado ==='Sim' && i.estado === this.estado)
+        console.log(this.plataforma)
       } else {
         this.geolocation.getCurrentPosition().then((resp) => {
           // resp.coords.latitude
@@ -223,7 +228,8 @@ export class ProcurarPage implements OnInit {
 
 
           })
-
+          this.semLoja = this.lista.length
+          this.semLoja = this.lista2.length
         });
       console.log(this.lista)
       this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
@@ -484,5 +490,19 @@ export class ProcurarPage implements OnInit {
         this.navCtrl.navigateForward('/carrinho');
     });
 
+  }
+  voltar(){
+  	this.navCtrl.navigateBack('/list');
+  }
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Aguarde...',
+      duration: 6000
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
   }
 }

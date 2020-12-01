@@ -1904,10 +1904,12 @@ export class UserPage implements OnInit {
     this.newCadastro.value.enderecoNew = String(item.terms[0].value)
     this.newCadastro.value.bairroNew = String(item.terms[1].value)
     this.newCadastro.value.cidadeNew = String(item.terms[2].value)
+    this.newCadastro.value.estadoNew = String(item.terms[3].value)
 
     this.enderecoNew = String(item.terms[0].value)
     this.bairroNew = String(item.terms[1].value)
     this.cidadeNew = String(item.terms[2].value)
+    this.estadoNew = String(item.terms[3].value)
 
     console.log(this.newCadastro.value.bairroNew)
     console.log(this.newCadastro.value.cidadeNew)
@@ -1937,7 +1939,6 @@ export class UserPage implements OnInit {
   }
   
   update(){
-    this.newCadastro.value.estadoNew = "RJ"
     this.services.updateEnd(this.userID,this.type,this.newCadastro.value.enderecoNew, 
       this.newCadastro.value.CEPNew,
                        this.bairroNew, this.newCadastro.value.numeroENDNew, 

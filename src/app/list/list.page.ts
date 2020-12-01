@@ -6,7 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import{ ViewChild, ElementRef} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ServiceService } from '../service.service';
+import { ServiceService, User } from '../service.service';
 import * as firebase from 'firebase/app';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
@@ -100,10 +100,13 @@ export class ListPage implements OnInit {
     nomeUser
     datou
     DOB
-    goalListFiltrei = new Array<Processo>();
+    goalListFiltrei = new Array<User>();
     filtroLoja = '';
     valorFrete
     valorDelivery
+    lojaLat
+    lojaLng
+    lojaperto : Array<User> = []
   constructor(public navCtrl: NavController,public Platform:Platform,
               public router: Router, 
               private geolocation: Geolocation,
@@ -169,13 +172,57 @@ status(){
                         this.filtroLoja = this.zona
                         //console.log(birthdate);
                         //console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                        this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.status === "Online" && i.aprovado === 'Sim');//
-                        this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
-                        this.loadedGoalListFiltrado = this.loadedGoalList.filter(i =>i.tipo === 'Loja' && i.aprovado === 'Sim' );
+                        this.goalListFiltrado = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
+
+                        this.goalListFiltrei = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.status === "Online" && i.aprovado === 'Sim');//
+                        this.loadedGoalListFiltrado = this.loadedGoalList.filter(i => i.estado === this.estado && i.tipo === 'Loja' && i.aprovado === 'Sim' );
                         this.lojinha = this.goalListFiltrado
-                        this.semLoja = this.goalListFiltrei.length
-                        console.log(this.semLoja)
                         console.log(this.lojinha)
+                        
+                        this.geolocation.getCurrentPosition().then((resp) => {
+                          // resp.coords.latitude
+                          // resp.coords.longitude
+                          console.log(resp.coords.latitude)
+                          this.lat = Number(resp.coords.latitude);
+                          this.lng = Number(resp.coords.longitude);
+                
+                         }).catch((error) => {
+                           console.log('Error getting location', error);
+                         });
+                         this.lojaperto = []
+
+                          this.goalListFiltrei.forEach(element => {
+                            this.lojaLat = element.lat
+                            this.lojaLng = element.lng
+
+                            let Usuario: GeoCoord = {
+                              latitude: Number(this.lat),
+                              longitude: Number(this.lng)
+                         };
+                         console.log(Usuario)
+                         let Loja: GeoCoord = {
+                             latitude: Number(this.lojaLat),
+                             longitude:Number(this.lojaLng)
+                         };
+                         
+                         
+                        let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+                        console.log("A distancia entre as lojas é de:" + Number(kilometers));
+
+                        if(Number(kilometers) < 8.0){
+                          console.log('maior')
+                          this.lojaperto.push(element)
+                          console.log(this.lojaperto)
+                          
+                        }else{
+
+                          console.log('menor')
+                          
+                        }
+                          });                
+                          this.semLoja = this.lojaperto.length
+
+                        console.log(this.semLoja)
  
                     
                })
@@ -184,7 +231,7 @@ status(){
             });            
 
           } else {
-            //this.navCtrl.navigateRoot('/')
+            this.navCtrl.navigateRoot('/')
           }
 
 
@@ -201,7 +248,7 @@ status(){
     this.initializeItems();
 
     const searchTerm = evt.srcElement.value;
-    var x = this.lojinha.filter(i => i.zona === evt.srcElement.value)
+    var x = this.lojinha.filter(i => i.estado === this.estado)
     this.naoTem = x.length
     console.log(this.naoTem)
     console.log(searchTerm)
@@ -222,7 +269,12 @@ status(){
        }
      });
   }
-
+  slidesDidLoad(slides) {
+    slides.startAutoplay();
+  }
+  cli(){
+    alert('Calma! Em breve estaremos com uma sessão de ervas para vocês!')
+  }
   initializeItems(): void {
     this.goalListFiltrado = this.lojinha;
 
@@ -284,8 +336,12 @@ this.storage.get('usuario').then(event =>{
 
       
   }
+
+  
 modal(){
+  
   this.navCtrl.navigateForward('/procurar');
+  
 
 }
 

@@ -43,15 +43,11 @@
       <div [hidden]="hideMe">
         <h4 style="text-align: center;">Qual o novo endereço de entrega?</h4>
         <br/>
+        <p>Local de entrega</p>
              <ion-select required 
-             style="color:black;" placeholder="Clique aqui" [(ngModel)]="type">
-              <ion-select-option value="Centro">Centro</ion-select-option>
-              <ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
-              <ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
-              <ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
-              <ion-select-option value="Baixada">Baixada</ion-select-option>
-              <ion-select-option value="Niteroi e Regiao">Niterói & Região</ion-select-option>
-
+             style="color:black;border: 1px solid gainsboro;" placeholder="Clique aqui" [(ngModel)]="type">
+              <ion-select-option value="Casa / Apartamento">Casa / Apartamento</ion-select-option>
+              <ion-select-option value="Escritório">Escritório</ion-select-option>
             </ion-select>
             <form [formGroup]="newCadastro" >
               <br/>
@@ -101,15 +97,15 @@
                                <ion-col>
                                    <ion-item>
                                <ion-label position="floating">Cidade</ion-label>
-                               <ion-input placeholder="{{cidadeNew}}" value="{{cidadeNew}"  
+                               <ion-input placeholder="{{cidadeNew}}" value="{{cidadeNew}}"  
                                formControlName="cidadeNew" type="text"></ion-input>
                              </ion-item>
            
                                </ion-col>
                                <ion-col>
                              <ion-item>
-                               <ion-label position="floating">Estado</ion-label>
-                               <ion-input value="RJ" disabled placeholder="RJ" formControlName="estadoNew" type="text"></ion-input>
+                               <ion-label position="floating">Estado(Exemplo: RJ, SP, MG)</ion-label>
+                               <ion-input placeholder="{{estadoNew}}" value="{{estadoNew}}" formControlName="estadoNew" type="text"></ion-input>
                              </ion-item>
                                </ion-col>
                            </ion-row>

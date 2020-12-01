@@ -21,18 +21,12 @@
 					<ion-select-option value="user">Usúario</ion-select-option>
 				</ion-select>
 				<br/>
-				<p style="text-align-last: center;">Qual a sua região?</p>
-
-				<ion-select placeholder="Clique aqui" style="color:black; border: 1px solid #d7d8da;
-				padding: 13px;" required  [(ngModel)]="type">
-					<ion-select-option value="Centro">Centro</ion-select-option>
-					<ion-select-option value="Zona Oeste">Zona Oeste</ion-select-option>
-					<ion-select-option value="Zona Norte">Zona Norte</ion-select-option>
-					<ion-select-option value="Zona Sul">Zona Sul</ion-select-option>
-					<ion-select-option value="Baixada">Baixada</ion-select-option>
-					<ion-select-option value="Niteroi e Regiao">Niterói & Região</ion-select-option>
-
-				</ion-select>
+				<p style="text-align-last: center;">Local de entrega</p>
+				<ion-select required 
+				style="color:black;border: 1px solid gainsboro;" placeholder="Clique aqui" [(ngModel)]="type">
+				 <ion-select-option value="Casa / Apartamento">Casa / Apartamento</ion-select-option>
+				 <ion-select-option value="Escritório">Escritório</ion-select-option>
+			   </ion-select>
 
 
 					<ion-item>
@@ -165,8 +159,8 @@
 					          </ion-col>
 					          <ion-col>
 									<ion-item>
-									  <ion-label position="floating">Estado</ion-label>
-									  <ion-input placeholder="RJ"  type="text" disabled></ion-input>
+									  <ion-label position="floating">Estado(Exemplo: RJ, SP, MG)</ion-label>
+									  <ion-input placeholder="{{Es}}" value="{{Es}}"  type="text"></ion-input>
 									</ion-item>
 					          </ion-col>
 					      </ion-row>

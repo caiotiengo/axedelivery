@@ -88,6 +88,10 @@ export interface Comentario{
         nPedido?:Number;
 
 }
+export interface Cupom{
+  cupom?:string;
+  desconto?:number
+}
 
 @Injectable({
   providedIn: 'root'
@@ -99,8 +103,11 @@ export class ServiceService {
   private processoCollection: AngularFirestoreCollection<Processo>;
   public vendasCollection: AngularFirestoreCollection<Vendas>;
   public commentsCollection: AngularFirestoreCollection<Comentario>;
+  public cuponsCollection: AngularFirestoreCollection<Cupom>;
 
   users: Observable<User[]>;
+  cupom: Observable<Cupom[]>;
+
   processos: Observable<Processo[]>;
   vendas: Observable<Vendas[]>;
   comentario: Observable<Comentario[]>;
@@ -121,7 +128,7 @@ export class ServiceService {
   	 // this.processos = this.processoCollection.valueChanges();
     this.vendasCollection = afs.collection<Vendas>('vendas');
     this.commentsCollection = afs.collection<Comentario>('comments');
-
+    this.cuponsCollection = afs.collection<Cupom>('cupons')
     this.getUsers();
       // tslint:disable-next-line:indent
     this.getProccessos();
@@ -139,6 +146,16 @@ export class ServiceService {
 
       );
   }
+  getCupom() {
+    return this.cupom = this.cuponsCollection.snapshotChanges().pipe(
+         map(actions => actions.map(a => {
+             const data = a.payload.doc.data() as Cupom;
+             const id = a.payload.doc.id;
+             return { id, ...data };
+         }))
+
+     );
+ }
   getProccessos() {
    return this.processos = this.processoCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -232,6 +249,7 @@ addUser(user: User) {
       console.log(this.likes);
     });
  }
+
 
   like(id: string , loja: Processo) {
       this.likes++;

@@ -10,20 +10,7 @@
 </ion-navbar>
 </ion-header>
 <ion-content [fullscreen]="true" class="">
-  <ion-segment style="    background: transparent;
-  margin-top: 5%;" scrollable (ionChange)="filtroZona($event)">
-
-    <ion-segment-button  value="">
-      <img style="width: 75%;    border-radius: 10px;" src="/assets/roupa.png">
-      <p>Lojas</p>
-    </ion-segment-button>
-    <ion-segment-button (click)="modal()" value="Produtos">
-      <img style="width: 75%;    border-radius: 10px;" src="/assets/produtos.png">
   
-      <p>Produtos</p>
-    </ion-segment-button>
-   
-  </ion-segment>  
 <div class="background-div1">
 
 </div>
@@ -46,40 +33,42 @@
 
   		</ion-button>
   </ion-card>
+   
+<ion-slides style="margin-top: 25%;" pager #mySlider class="slides" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
+  <ion-slide>
+    <ion-card class="img-back" >
 
-  <!--div style="margin-top:50%;" class="card-background-page">
-    <ion-grid>
-      <ion-row>
-          <ion-col>
-            <ion-card >
-              <img src="/assets/artigos.png"/>
-              <p>Artigos Religiosos</p>
-            </ion-card>
-        
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card class="img-back2" >
 
-          </ion-col>
-          <ion-col>
-            <ion-card >
-              <img src="/assets/roupa.png"/>
-              <p>Roupas</p>
-            
-            </ion-card>
-        
-          </ion-col>
-      </ion-row>
-    </ion-grid>
+    </ion-card>
+  </ion-slide>
+</ion-slides>
 
+  <ion-segment style="background: transparent; margin-top:10%" scrollable>
 
-  </div-->
+    <ion-segment-button  (click)="cli()">
+      <img style="width: 75%; border-radius: 10px;" src="/assets/ervinha.png">
+      <p>Ervas *</p>
+    </ion-segment-button>
+    <ion-segment-button (click)="modal()" value="Produtos">
+      <img style="width: 75%;    border-radius: 10px;" src="/assets/produtos.png">
+      <p>Produtos</p>
+    </ion-segment-button>
+   
+  </ion-segment>  
+
 
  <div>
   
-  <div style="margin-top:50%;">
+  <div >
     <p class="label-lojas">Próximas de você</p>
   </div>
   <div  class="scrolling-wrapper">
   
-    <ion-item lines="none"  class="card"  *ngFor="let items of goalListFiltrei">
+    <ion-item lines="none"  class="card"  *ngFor="let items of lojaperto">
 
     <ion-card style="text-align: center;
       height: 100%;
@@ -129,7 +118,7 @@
       <ion-card-content>
         <ion-label text-wrap>
           Já imaginou você comprando por aqui na sua loja favorita?<br/><br/>
-              Indique lojas da sua região! 
+              Indique o Axé Delivery!
               <!--ion-button color="warning" (click)="share()">Compartilhar</ion-button-->
       </ion-label>
       </ion-card-content>
@@ -153,12 +142,12 @@
           <ion-select-option value="Baixada">Baixada</ion-select-option>
  </ion-select-->
 
- 
-
 
 
 <div class="background-traco">
-
+  <div>
+    <p class="label-lojas">Lojas</p>
+  </div>
           <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
             <ion-item *ngIf="items.status ==='Offline'" disabled [routerLink]="['/item/' + items.id]">
 
@@ -202,10 +191,10 @@
 </div>
 
 </div>
-<div style="text-align: center;" *ngIf="naoTem === 0">
+<div style="text-align: center;" *ngIf="semLoja === 0">
   <img src="/assets/Picture1.png" alt="" />
-  <h2>Já deu uma olhadinha em outra região?</h2>
-  <p>Parece que no momento não temos loja na região selecionada...</p>
+  <h2>Ops... :(</h2>
+  <p>Parece que no momento não temos loja na sua região...</p>
   <p>Mas não se preocupe, em breve teremos! 
  Compartilhe o app com pessoas e comerciantes da área e venha as compras!</p>
  <!--on-button expand="block" color="warning" (click)="share()">Compartilhar</ion-button-->

@@ -27,10 +27,10 @@
   
   }
 ion-header{
-   // background: linear-gradient(145deg, #ffcb0254 70%, #ffc409 138%);
+   background: linear-gradient(145deg, #ffcb0254 70%, #ffc409 138%);
 }
 .background-div1{
-    //background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
+    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
     height: 155px;
     width: 100%;
     border-bottom-left-radius: 50px;
@@ -47,6 +47,18 @@ ion-content{
     width: 100%;
     height: 190px;
     background-size: cover;
+}
+.img-back{
+  --background: url('../../assets/Ervas.png') no-repeat no-repeat center;
+  background-size: cover;
+  width: 100%;
+  height: 225px;
+}
+.img-back2{
+  --background: url('../../assets/CUPOM.png') no-repeat no-repeat center;
+  background-size: cover;
+  width: 100%;
+  height: 225px;
 }
 .card-slides{
     width: 100%;

@@ -13,7 +13,7 @@
         <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
      </ion-fab-button>
  </ion-fab>
-  <ion-searchbar style="position: absolute; margin-top: -25%" animated placeholder="Pesquise pelo produto desejado" (ionInput)="filterList($event)"></ion-searchbar>	
+  <ion-searchbar style="position: absolute; margin-top: -25%" animated placeholder="Pesquise pelo produto" (ionInput)="filterList($event)"></ion-searchbar>	
   <h4 style="text-align: center;
   font-weight: bold;
   padding: 10px;" >Categorias</h4>
@@ -51,6 +51,14 @@
   </ion-row>
 </ion-grid>
 
+<div style="text-align: center;" *ngIf="semLoja === 0">
+  <img src="/assets/Picture1.png" alt="" />
+  <h2>Ops... :(</h2>
+  <p>Parece que no momento não temos loja na sua região...</p>
+  <p>Mas não se preocupe, em breve teremos! 
+ Compartilhe o app com pessoas e comerciantes da área e venha as compras!</p>
+ <!--on-button expand="block" color="warning" (click)="share()">Compartilhar</ion-button-->
 
+</div>
 
 </ion-content>

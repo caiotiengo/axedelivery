@@ -22,6 +22,13 @@
     <ion-icon style="color:#ffcb02 !important" name="home-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
+<ion-card [hidden]="esconde" class="card-1">
+  <ion-item>
+    <ion-label position="stacked">Cupom</ion-label>
+    <ion-input  maxLenght="40" [(ngModel)]="cupom"></ion-input>
+  </ion-item>  
+  <ion-button color="warning" (click)="cupo()" fill="solid" expand="block" >Adicionar</ion-button>  
+</ion-card>
   <ion-card class="card-pag">
     <ion-card-header> 
       <p style="text-align:center;">Escolha a forma de pagamento:</p>

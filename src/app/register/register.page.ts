@@ -1997,6 +1997,7 @@ export class RegisterPage implements OnInit {
     moip: any;
   pubKey: any;
   hash: string;
+  Es
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
@@ -2213,6 +2214,7 @@ Autocomplete
     this.endereco = String(item.terms[0].value)
     this.bairro = String(item.terms[1].value)
     this.cidade = String(item.terms[2].value)
+    this.Es = String(item.terms[3].value)
 
     console.log(this.endereco)
     this.placeid = item.place_id
