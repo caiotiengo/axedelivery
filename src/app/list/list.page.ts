@@ -275,6 +275,9 @@ status(){
   cli(){
     alert('Calma! Em breve estaremos com uma sessão de ervas para vocês!')
   }
+  cli2(){
+    alert('Calma! Em breve estaremos com uma sessão de animais para vocês!')
+  }
   initializeItems(): void {
     this.goalListFiltrado = this.lojinha;
 

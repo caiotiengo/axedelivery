@@ -59,6 +59,8 @@ export interface Produtos {
     id?:any;
     nomeLoja?:string;
     fotoPerfil?:any;
+    valorReal?:any;
+    priceReal?:any;
 
 }
 @Component({
@@ -136,37 +138,44 @@ export class ProcurarPage implements OnInit {
        emails
        semLoja
        estado
+       datou
+       user
   constructor(public navCtrl: NavController,private platform: Platform, public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,public loadingController: LoadingController,
     public afStore: AngularFirestore,  public services: ServiceService,
     public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService) { 
+       this.user = firebase.auth().currentUser;
+      console.log(this.user);
+      this.mainuser = this.afStore.doc(`users/${this.user.uid}`);
+      this.sub = this.mainuser.valueChanges().subscribe(event => {
+        this.nome = event.nome;
+        this.endereco = event.endereco;
+        this.cidade = event.cidade;
+        this.email = event.email;
+        this.bairro = event.bairro;
+        this.telefone = event.telefone;
+        this.zona = event.zona;
+        this.lat = event.lat;
+        this.lng = event.lng
+        this.estado = event.estado;
 
-
+    });
     }
 
   ngOnInit() {
     this.services.getUsers().subscribe(data =>{
-      const user = firebase.auth().currentUser;
-      console.log(user);
       this.presentLoading();
+      if (this.user) {
+        this.datou = data
+        console.log(this.datou)
+        this.plataforma = this.datou.filter(i => i.aprovado ==='Sim' )
+        console.log(this.plataforma)
 
-      if (user) {
-          this.mainuser = this.afStore.doc(`users/${user.uid}`);
-          this.sub = this.mainuser.valueChanges().subscribe(event => {
-            this.nome = event.nome;
-            this.endereco = event.endereco;
-            this.cidade = event.cidade;
-            this.email = event.email;
-            this.bairro = event.bairro;
-            this.telefone = event.telefone;
-            this.zona = event.zona;
-            this.lat = event.lat;
-            this.lng = event.lng
-            this.estado = event.estado;
+        console.log(this.estado)
+        this.plataforma.forEach(element => {
+          this.loadProduct(element.id)
   
         });
-        this.plataforma = data.filter(i => i.aprovado ==='Sim' && i.estado === this.estado)
-        console.log(this.plataforma)
       } else {
         this.geolocation.getCurrentPosition().then((resp) => {
           // resp.coords.latitude
@@ -180,17 +189,18 @@ export class ProcurarPage implements OnInit {
          });
          
       }
-      this.plataforma.forEach(element => {
-        this.loadProduct(element.id)
 
-      });
+
     })
     this.services.getProccessos().subscribe(res => {
       this.goalList = Array.from(new Set(res.map((item: any) => item)))
       this.plataforma.forEach(element => {
         var nomeLoja = element.nome
         var fotoLoja = element.FotoPerfil
-        this.emails = this.goalList.filter(i => i.email === element.email)
+        var estado = element.estado
+        var UID = element.id
+        console.log(estado)
+        this.emails = this.goalList.filter(i => i.email === element.email && estado === this.estado)
         //console.log(this.emails)
 
         this.emails.forEach(element => {
@@ -208,7 +218,8 @@ export class ProcurarPage implements OnInit {
             noApp: element.noApp,
             id:element.id,
             nomeLoja: nomeLoja,
-            fotoPerfil:fotoLoja
+            fotoPerfil:fotoLoja,
+            lojaUID: UID
           })
           this.lista2.push({
             nome: element.nome,
@@ -224,14 +235,16 @@ export class ProcurarPage implements OnInit {
             noApp: element.noApp,
             id:element.id,
             nomeLoja: nomeLoja,
-            fotoPerfil:fotoLoja
+            fotoPerfil:fotoLoja,
+            lojaUID: UID
 
 
           })
-          this.semLoja = this.lista.length
-          this.semLoja = this.lista2.length
+
         });
       console.log(this.lista)
+      this.semLoja = this.lista.length
+      this.semLoja = this.lista2.length
       this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
 
       });
@@ -420,10 +433,12 @@ export class ProcurarPage implements OnInit {
         email: items.email,
         itemId: items.id,
         especi: items.especi,
-        lojaUID: this.que,
+        lojaUID: items.lojaUID,
         itemNumber: this.qtd,
         emailLoja: this.loja.email,
-        fotos: ''
+        fotos: '',
+        valorReal:items.valor,
+        priceReal: items.price
     });
     }else{
       this.produtos.push({
@@ -436,10 +451,13 @@ export class ProcurarPage implements OnInit {
         email: items.email,
         itemId: items.id,
         especi: items.especi,
-        lojaUID: this.que,
+        lojaUID: items.lojaUID,
         itemNumber: this.qtd,
         emailLoja: this.loja.email,
         fotos: items.fotos[0].link,
+        valorReal:items.valor,
+        priceReal: items.price,
+        
     });
   }
     
@@ -484,7 +502,7 @@ export class ProcurarPage implements OnInit {
     var valorTudo = Number(this.visu.toFixed(2)) + Number(this.valorDelivery)
     console.log(valorTudo.toFixed(2))
     this.storage.set('loja', this.loja);
-    this.storage.set('valorFinal', valorTudo.toFixed(2));
+    //this.storage.set('valorFinal', valorTudo.toFixed(2));
     this.storage.set('valorFrete', this.valorDelivery)
     this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(() =>{
         this.navCtrl.navigateForward('/carrinho');

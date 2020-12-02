@@ -53,6 +53,9 @@ export interface Produtos {
     tipoPrd?:any;
     descrito?:any;
     especi?:any;
+    valorReal?:any;
+    priceReal?:any;
+
 
 }
 
@@ -341,7 +344,10 @@ export class ItemPage implements OnInit {
           lojaUID: this.que,
           itemNumber: this.qtd,
           emailLoja: this.loja.email,
-          fotos: ''
+          fotos: '',
+          valorReal:items.valor,
+          priceReal:items.price
+
       });
       }else{
         this.produtos.push({
@@ -358,6 +364,9 @@ export class ItemPage implements OnInit {
           itemNumber: this.qtd,
           emailLoja: this.loja.email,
           fotos: items.fotos[0].link,
+          valorReal:items.valor,
+          priceReal:items.price
+
       });
     }
       

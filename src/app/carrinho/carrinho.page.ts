@@ -24,6 +24,12 @@ export interface Produtos {
   emailLoja?:string;
   price?:number;
   CPFComprador?:any;
+  especi?:any;
+  fotos?:any;
+  product?:any;
+  quantity?:number;
+  valorReal?:any;
+  priceReal?:any;
 }
 
 @Component({
@@ -45,6 +51,7 @@ export class CarrinhoPage implements OnInit {
   pubKey: any;
   hash: string;
   produtos: Array<Produtos> = [];
+  carrinhoDes: Array<Produtos> = [];
   nome;
   endereco;
   cidade;
@@ -94,6 +101,7 @@ export class CarrinhoPage implements OnInit {
     cupom =''
     esconde = false
     descontin
+    porcentagemDes
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -104,29 +112,27 @@ export class CarrinhoPage implements OnInit {
                 const user = firebase.auth().currentUser;
                 this.uid = user.uid;
                 console.log(this.uid)            
-    this.storage.get('carrinhoUser').then((data) => {
-      this.carrinho =  JSON.parse(data);
-      console.log(this.carrinho);
-    });
-    this.storage.get('loja').then((data) => {
-      this.loja =  data;
-      console.log(this.loja);
-    });
+
+
      this.storage.get('valorFrete').then((data) => {
       this.valorDelivery =  data;
       var y = this.valorDelivery.replace('.','') 
       this.valorFrete = Number(y)
       console.log(this.valorFrete);
     });
-    this.storage.get('valorFinal').then((data) => {
-      var x =  Number(data);
-      console.log(x)
-      this.valor = x.toFixed(2)
-      console.log(this.valor);
-      
-     
-
+    this.storage.get('carrinhoUser').then((data) => {
+      this.carrinho =  JSON.parse(data);
+      this.carrinho.forEach(element => {
+        this.carrinhoDes.push(element)
+        var y = this.carrinhoDes.map(i => i.valor);
+        var result = y.reduce((acc, val) => acc += val);
+        console.log(result);
+        var resposta = Number(result) + Number(this.valorDelivery);
+        this.valor = Number(resposta.toFixed(2))
+      });
+      console.log(this.carrinhoDes);
     });
+
     this.storage.get('contagem').then((data) =>{
       var z = data
       this.count = z;
@@ -154,11 +160,12 @@ export class CarrinhoPage implements OnInit {
       this.porcentagemLoja =  event.porcentagemLoja;
       this.porcentagemAxe = event.porcentagemAxe;
     });
+
     console.log(this.moip);
     this.hash = 'Gerando hash...';
 
 
-    this.pubKey = `-----BEGIN PUBLIC KEY-----
+   /* this.pubKey = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4QUZH3Y8mQaCqYtOT9g
     +yQTtmtGkESK1AnQ66roMlsJRyZ8xiCsmO0OC2hckKKA7h7KQNBTMMWCAhXr0jRB
     SqeFhD9QOqQGh5NcLgf6DZ2WhalwozfnCaYmjwWCPfTaWARem+8k/7VhctpoEM7B
@@ -168,10 +175,10 @@ export class CarrinhoPage implements OnInit {
     xwIDAQAB
     -----END PUBLIC KEY-----
     `;
-    /*
+ */
     
     
-    `-----BEGIN PUBLIC KEY-----
+   this.pubKey = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodkPNhEFaP90CU2z6zKZ
     kyPb98kI3NA4C/j9lJnzUNsqgPzfx0xdHxk0rvQvqH/shJIm76EXGBtsWuUjyO8n
     UMrq9l/8lWPY5OsOmpHiiBZ7oLjfPN1tSs3CgNMqMyWay8F82zowXOdwZk4hY+aa
@@ -182,26 +189,31 @@ export class CarrinhoPage implements OnInit {
     -----END PUBLIC KEY-----`
     
     
-    */
+    
   this.moip = moipSdk({
-    /*
+    
     token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
     key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
     production: false
-         idmoip account "MPA-CC3641B4B904"
-    */
-
+         //idmoip account "MPA-CC3641B4B904"
+    
+/*
     accessToken: '292bed0bd3244409b835986edca4119f_v2',
     secret:'cf87986f39c342caa5d9a49c6c166a2a',
     key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
     channelId:"APP-16HIIBI5HPS8",
     production: true,
-    "Accept" : "*/*"
+   // "Accept" : 
+   */ 
     //token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
     //id moip account prod "MPA-888C5307676A"
 
   })
   setTimeout(() => {
+    this.services.getProc(this.carrinhoDes[0].lojaUID).subscribe(res =>{
+      this.loja = res
+      console.log(this.loja)
+    })
     console.log(this.loja.accessToken)
 
     this.moip2 = moipSdk({
@@ -221,11 +233,70 @@ export class CarrinhoPage implements OnInit {
       if(x.length != 0 ){
         console.log(x)
         alert('Não é uma oferenda, mas o cupom foi aceito com sucesso!')
-        this.descontin = x[0].desconto
-        console.log(this.descontin)
-        this.esconde = true
+        this.porcentagemDes = x[0].desconto
+        console.log(this.porcentagemDes)
+        var mapa = this.carrinho.map(i => i.price * Number(i.quantity))
+        console.log(mapa)
 
-        var y = Number(this.valorFrete)
+        var calculo =  mapa.reduce((acc, val) => acc += val);
+        console.log(calculo)
+
+        var percentage = x[0].desconto
+        console.log(percentage)
+
+        var valor = (percentage / 100) * calculo;
+        console.log(valor)
+
+        var mapaQTD = this.carrinho.map(i => Number(i.quantity))
+        console.log(mapaQTD)
+
+        var qtd = mapaQTD.reduce((acc, val) => acc += val);
+        console.log(qtd)
+
+        //valor do desconto para ficar aparente
+        var mapa2 = this.carrinho.map(i => i.valor)
+        console.log(mapa2)
+
+        var calculo2 =  mapa2.reduce((acc, val) => acc += val);
+        console.log(calculo2)
+
+        var valor2 = (percentage / 100) * calculo2;
+        console.log(valor2)
+        
+        var calculodesconto2 = calculo2 - valor2 + Number(this.valorDelivery)
+        console.log(calculodesconto2.toFixed(2));
+        this.valor = Number(calculodesconto2.toFixed(2))
+        // calculo da
+        var valorFinal = valor / qtd
+        console.log(valorFinal.toFixed(0))
+        this.carrinhoDes = [];
+        this.carrinho.forEach(e => {
+          var quantidade = e.quantity
+          var valor = Number(valorFinal.toFixed(0)) * Number(quantidade)
+          var valorx = valor / quantidade
+          console.log(valorx)
+
+          this.descontin = e.price - valorx
+          console.log(this.descontin)
+          this.carrinhoDes.push({
+            email: e.email,
+            emailLoja: e.emailLoja,
+            especi: e.especi,
+            fotos: e.fotos,
+            itemNumber: e.itemNumber,
+            lojaUID: e.lojaUID,
+            nome: e.nome,
+            price: Number(e.price) - Number(valorx),
+            product: e.product,
+            quantity: e.quantity,
+            valor: Number(this.valor),
+            valorReal:e.valorReal
+          })
+
+        });
+        console.log(this.carrinhoDes)
+        console.log(this.carrinho)
+        this.esconde = true;
         
 
       }else{
@@ -275,7 +346,7 @@ teste(){
                     shipping: Number(this.valorFrete)
                 }
             },
-            items: this.carrinho,
+            items: this.carrinhoDes,
             customer: {
                 ownId: this.cpfCartao,
                 fullname: this.nomeCartao,
@@ -301,7 +372,7 @@ teste(){
                     zipCode: this.CEP
                 },
             },
-            receivers: [
+            /*receivers: [
               {
                 moipAccount: {
                     id: "MPA-888C5307676A"
@@ -309,7 +380,7 @@ teste(){
                 type: "PRIMARY",
                 feePayor: true,
                 amount: {
-                  percentual: this.loja.porcentagemAxe
+                  percentual: Number(this.loja.porcentagemAxe) - Number(this.porcentagemDes)
                   }
               },
               {
@@ -319,10 +390,10 @@ teste(){
                 type: "SECONDARY",
                 feePayor: false,
                 amount: {
-                  percentual: this.loja.porcentagemLoja,
+                  percentual: Number(this.loja.porcentagemLoja) - Number(this.porcentagemDes),
                   }
               }
-            ]
+            ]*/
         }).then((response) => {
             console.log(response.body)
             this.moip.payment.create(response.body.id, {
@@ -616,7 +687,7 @@ teste(){
           this.value = Number(value)
           console.log(this.value)
 
-          this.transferirDin(this.value)
+          this.transferirDin(this.value.toFixed(0))
 
         }
       });
@@ -734,7 +805,7 @@ teste(){
           this.value = Number(value)
           console.log(this.value)
 
-          this.transferirDeb(this.value)
+          this.transferirDeb(this.value.toFixed(0))
 
         }
       });
@@ -789,18 +860,55 @@ teste(){
   voltar(){
   	this.navCtrl.pop();
   }
-  deletaItem(items) {
-    console.log(items);
-    console.log(this.carrinho);
+  adicionarQTD(index:number){
+    console.log(index)
+    this.carrinhoDes[index].quantity += 1;
+    console.log(this.carrinhoDes[index])
+    //var result = this.carrinhoDes[index].price * this.carrinhoDes[index].quantity; 
+    //this.valor = result
+    var resultString = this.carrinhoDes[index].valorReal * this.carrinhoDes[index].quantity 
+    this.carrinhoDes[index].valor = Number(resultString)
+    var y = this.carrinhoDes.map(i => Number(i.valor));
+    var result = y.reduce((acc, val) => acc += val);
+    console.log(result);
+    this.valor = Number(result) + Number(this.valorDelivery);
+  }
+  retirarQTD(index:number){
+    if(this.carrinhoDes[index].quantity === 0 ){
+      _.remove(this.carrinhoDes[index])
+      console.log(this.carrinhoDes)
+    }else{
+      console.log(index)
+      this.carrinhoDes[index].quantity -= 1;
+      console.log(this.carrinhoDes[index])
+      //var result = this.carrinhoDes[index].price * this.carrinhoDes[index].quantity; 
+      var resultString = this.carrinhoDes[index].valorReal * this.carrinhoDes[index].quantity;
+      this.carrinhoDes[index].valor = Number(resultString)
+      var y = this.carrinhoDes.map(i => Number(i.valor));
+      var result = y.reduce((acc, val) => acc += val);
+      console.log(result);
+      this.valor = Number(result) + Number(this.valorDelivery);
+    }
+  }
 
-    _.remove(this.carrinho, n => n.itemNumber === items.itemNumber);
-    console.log(this.carrinho);
+
+
+  deletaItem(items, index:number) {
+    console.log(items);
+    console.log(this.carrinhoDes);
+
+    _.remove(this.carrinhoDes[index]);
+    console.log(this.carrinhoDes);
     this.storage.remove('carrinhoUser').then(() => {
-        this.storage.set('carrinhoUser', JSON.stringify(this.carrinho)).then((data) => {
+        this.storage.set('carrinhoUser', JSON.stringify(this.carrinhoDes)).then((data) => {
           this.carrinho = JSON.parse(data);
+          this.carrinho.forEach(element => {
+            this.carrinhoDes.push(element)
+
+          });
         });
       });
-    this.valores = this.carrinho.map(res => res.valor);
+    this.valores = this.carrinhoDes.map(res => res.valor);
     this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
     this.storage.remove('valorFinal').then(() => {
         this.storage.set('valorFinal', this.valorCompra).then((data) => {
