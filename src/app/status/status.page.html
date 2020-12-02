@@ -103,7 +103,7 @@ font-weight: bold;" (click)="mojuba()">Seus Ganhos</ion-button>
         <div *ngIf="items.statusEnt === 'Loja informada'" >
             <ion-button fill="solid" expand="block" (click)="save(items)" color="danger">Cancelar Compra</ion-button>
         </div>
-        <div *ngIf="items.statusEnt != 'Loja informada' && items.statusEnt != 'Entregue'">
+        <div *ngIf="items.statusEnt != 'Loja informada' && items.statusEnt != 'Entregue' && items.statusEnt !='Cancelado'">
             <ion-button fill="solid" expand="block" color="success" [routerLink]="['/chat/' + items.id]">Chat</ion-button>
         </div>
       </ion-card-content>

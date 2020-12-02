@@ -129,9 +129,16 @@ export class CarrinhoPage implements OnInit {
         console.log(result);
         var resposta = Number(result) + Number(this.valorDelivery);
         this.valor = Number(resposta.toFixed(2))
+
+        this.services.getProc(this.carrinhoDes[0].lojaUID).subscribe(res =>{
+          this.loja = res
+          console.log(this.loja)
+        })
       });
       console.log(this.carrinhoDes);
     });
+     
+    
 
     this.storage.get('contagem').then((data) =>{
       var z = data
@@ -165,7 +172,7 @@ export class CarrinhoPage implements OnInit {
     this.hash = 'Gerando hash...';
 
 
-   /* this.pubKey = `-----BEGIN PUBLIC KEY-----
+  this.pubKey = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4QUZH3Y8mQaCqYtOT9g
     +yQTtmtGkESK1AnQ66roMlsJRyZ8xiCsmO0OC2hckKKA7h7KQNBTMMWCAhXr0jRB
     SqeFhD9QOqQGh5NcLgf6DZ2WhalwozfnCaYmjwWCPfTaWARem+8k/7VhctpoEM7B
@@ -175,9 +182,9 @@ export class CarrinhoPage implements OnInit {
     xwIDAQAB
     -----END PUBLIC KEY-----
     `;
- */
+
     
-    
+     /* 
    this.pubKey = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodkPNhEFaP90CU2z6zKZ
     kyPb98kI3NA4C/j9lJnzUNsqgPzfx0xdHxk0rvQvqH/shJIm76EXGBtsWuUjyO8n
@@ -188,41 +195,38 @@ export class CarrinhoPage implements OnInit {
     DQIDAQAB
     -----END PUBLIC KEY-----`
     
-    
+    */ 
     
   this.moip = moipSdk({
-    
+  /*  
     token: 'C5LQHXVYGJLN0XYSTRZCQY6LRQZVV6AR',
     key: 'LNRERY9ULDQSPBXYR2BTJLNKRKLWTPEIUKAV9E1Z',
     production: false
          //idmoip account "MPA-CC3641B4B904"
     
-/*
+*/
     accessToken: '292bed0bd3244409b835986edca4119f_v2',
     secret:'cf87986f39c342caa5d9a49c6c166a2a',
     key: 'Y4UDSTTB0JSJC6UPCQPGLMGPHQT7MEHCDM1FERDI',
     channelId:"APP-16HIIBI5HPS8",
     production: true,
-   // "Accept" : 
-   */ 
+   "Accept" : "*/*" 
+   
     //token: 'Z9KP0SCKJ2UZGWSGYXUJCZOU0BVMB1QN',
     //id moip account prod "MPA-888C5307676A"
 
   })
   setTimeout(() => {
-    this.services.getProc(this.carrinhoDes[0].lojaUID).subscribe(res =>{
-      this.loja = res
-      console.log(this.loja)
-    })
-    console.log(this.loja.accessToken)
 
+  
+    console.log(this.loja.accessToken)
     this.moip2 = moipSdk({
       accessToken: this.loja.accessToken,
 
       production: true,
       //"Accept" : "*/*"
     })
-  }, 1000);
+  }, 2000);
   }
   ngOnInit() {
 
@@ -279,8 +283,8 @@ export class CarrinhoPage implements OnInit {
           this.descontin = e.price - valorx
           console.log(this.descontin)
           this.carrinhoDes.push({
-            email: e.email,
-            emailLoja: e.emailLoja,
+            email: this.email,
+            emailLoja: this.loja.email,
             especi: e.especi,
             fotos: e.fotos,
             itemNumber: e.itemNumber,
@@ -372,7 +376,7 @@ teste(){
                     zipCode: this.CEP
                 },
             },
-            /*receivers: [
+            receivers: [
               {
                 moipAccount: {
                     id: "MPA-888C5307676A"
@@ -390,10 +394,10 @@ teste(){
                 type: "SECONDARY",
                 feePayor: false,
                 amount: {
-                  percentual: Number(this.loja.porcentagemLoja) - Number(this.porcentagemDes),
+                  percentual: Number(this.loja.porcentagemLoja) + Number(this.porcentagemDes),
                   }
               }
-            ]*/
+            ]
         }).then((response) => {
             console.log(response.body)
             this.moip.payment.create(response.body.id, {
@@ -445,13 +449,7 @@ teste(){
                 const mes = date.getMonth();
                 this.valores = this.carrinho.map(res => res.valor);
                 this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-                this.storage.get('valorFinal').then((data) => {
-                  var y = Number(data);
 
-          //Math.floor(Number(data) + 8) 
-                  this.valor = y.toFixed(2)
-                  console.log(this.valor);
-                });
 
                 this.storage.get('carrinhoUser').then((data) => {
                   this.produtos =  JSON.parse(data);
@@ -471,7 +469,7 @@ teste(){
                     produtos: this.produtos,
                     emailComprador: this.email,
                     lojaUID: this.produtos[0].lojaUID,
-                    emailLoja: this.produtos[0].emailLoja,
+                    emailLoja: this.loja.email,
                     statusPag: 'Aprovado Cartão',
                     statusEnt: 'Loja informada',
                     telefoneComprador: this.telefoneComprador,
@@ -505,13 +503,7 @@ teste(){
               const mes = date.getMonth();
               this.valores = this.carrinho.map(res => res.valor);
               this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-              this.storage.get('valorFinal').then((data) => {
-                var y = Number(data);
 
-        //Math.floor(Number(data) + 8) 
-                this.valor = y.toFixed(2)
-                console.log(this.valor);
-              });
 
               this.storage.get('carrinhoUser').then((data) => {
                 this.produtos =  JSON.parse(data);
@@ -531,7 +523,7 @@ teste(){
                   produtos: this.produtos,
                   emailComprador: this.email,
                   lojaUID: this.produtos[0].lojaUID,
-                  emailLoja: this.produtos[0].emailLoja,
+                  emailLoja: this.loja.email,
                   statusPag: 'Em análise',
                   statusEnt: 'Loja informada',
                   telefoneComprador: this.telefoneComprador,
@@ -565,13 +557,7 @@ teste(){
               const mes = date.getMonth();
               this.valores = this.carrinho.map(res => res.valor);
               this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-              this.storage.get('valorFinal').then((data) => {
-                var y = Number(data);
 
-        //Math.floor(Number(data) + 8) 
-                this.valor = y.toFixed(2)
-                console.log(this.valor);
-              });
 
               this.storage.get('carrinhoUser').then((data) => {
                 this.produtos =  JSON.parse(data);
@@ -591,7 +577,7 @@ teste(){
                   produtos: this.produtos,
                   emailComprador: this.email,
                   lojaUID: this.produtos[0].lojaUID,
-                  emailLoja: this.produtos[0].emailLoja,
+                  emailLoja: this.loja.email,
                   statusPag: 'Cancelado pelo banco',
                   statusEnt: 'Cancelado pelo banco',
                   telefoneComprador: this.telefoneComprador,
@@ -661,18 +647,13 @@ teste(){
       console.log(mes)
       this.valores = this.carrinho.map(res => res.valor);
       this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-      this.storage.get('valorFinal').then((data) => {
-        var y = Number(data);
 
-        // Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
-        this.valor = y.toFixed(2)
-        console.log(this.valor);
         var porcentagemDinheiro = this.loja.porcentagemAxe - 2
         console.log(porcentagemDinheiro)
         var count = Number(porcentagemDinheiro) * Number(this.valor)
         console.log(count)
         console.log('porcentagem do axé vai ser: ' + count/100)  
-        this.porcentagemAxeDIN = Number(count/100)
+        this.porcentagemAxeDIN = Number(count/100).toFixed(2)
         console.log(this.porcentagemAxeDIN)
         var value = String(this.porcentagemAxeDIN).replace('.','')
         console.log(value)
@@ -690,9 +671,6 @@ teste(){
           this.transferirDin(this.value.toFixed(0))
 
         }
-      });
-
-
     });
 
   }
@@ -700,6 +678,8 @@ teste(){
   transferirDin(value){
     console.log(value)
     console.log(Number(value))
+
+ 
     const date = new Date();
     date.setMonth(date.getMonth() + 1);
     const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
@@ -724,7 +704,7 @@ teste(){
         produtos: this.produtos,
         emailComprador: this.email,
         lojaUID: this.produtos[0].lojaUID,
-        emailLoja: this.produtos[0].emailLoja,
+        emailLoja: this.loja.email,
         statusPag: 'Em dinheiro',
         statusEnt: 'Loja informada',
         telefoneComprador: this.telefoneComprador,
@@ -778,19 +758,12 @@ teste(){
       console.log(mes)
       this.valores = this.carrinho.map(res => res.valor);
       this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-      this.storage.get('valorFinal').then((data) => {
-        var y = Number(data);
-
-// Math.floor(Number(data) + 8) //Math.floor(Number(data) + Number(this.valorDelivery));
-        this.valor = y.toFixed(2)
-        console.log(this.valor);
-
-        var porcentagemDinheiro = this.loja.porcentagemAxe - 2
+      var porcentagemDinheiro = this.loja.porcentagemAxe - 2
         console.log(porcentagemDinheiro)
         var count = Number(porcentagemDinheiro) * Number(this.valor)
         console.log(count)
         console.log('porcentagem do axé vai ser: ' + count/100)  
-        this.porcentagemAxeDIN = Number(count/100)
+        this.porcentagemAxeDIN = Number(count/100).toFixed(2)
         console.log(this.porcentagemAxeDIN)
         var value = String(this.porcentagemAxeDIN).replace('.','')
         console.log(value)
@@ -805,10 +778,9 @@ teste(){
           this.value = Number(value)
           console.log(this.value)
 
-          this.transferirDeb(this.value.toFixed(0))
+          this.transferirDeb(this.value)
 
         }
-      });
 
     });
 
@@ -842,7 +814,7 @@ teste(){
         produtos: this.produtos,
         emailComprador: this.email,
         lojaUID: this.produtos[0].lojaUID,
-        emailLoja: this.produtos[0].emailLoja,
+        emailLoja: this.loja.email,
         statusPag: 'Débito presencial',
         statusEnt: 'Loja informada',
         telefoneComprador: this.telefoneComprador,
@@ -871,7 +843,8 @@ teste(){
     var y = this.carrinhoDes.map(i => Number(i.valor));
     var result = y.reduce((acc, val) => acc += val);
     console.log(result);
-    this.valor = Number(result) + Number(this.valorDelivery);
+    var z = Number(result) + Number(this.valorDelivery);
+    this.valor = z.toFixed(2)
   }
   retirarQTD(index:number){
     if(this.carrinhoDes[index].quantity === 0 ){
@@ -887,37 +860,14 @@ teste(){
       var y = this.carrinhoDes.map(i => Number(i.valor));
       var result = y.reduce((acc, val) => acc += val);
       console.log(result);
-      this.valor = Number(result) + Number(this.valorDelivery);
+      var z = Number(result) + Number(this.valorDelivery);
+      this.valor = z.toFixed(2)
     }
   }
 
 
 
-  deletaItem(items, index:number) {
-    console.log(items);
-    console.log(this.carrinhoDes);
 
-    _.remove(this.carrinhoDes[index]);
-    console.log(this.carrinhoDes);
-    this.storage.remove('carrinhoUser').then(() => {
-        this.storage.set('carrinhoUser', JSON.stringify(this.carrinhoDes)).then((data) => {
-          this.carrinho = JSON.parse(data);
-          this.carrinho.forEach(element => {
-            this.carrinhoDes.push(element)
-
-          });
-        });
-      });
-    this.valores = this.carrinhoDes.map(res => res.valor);
-    this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
-    this.storage.remove('valorFinal').then(() => {
-        this.storage.set('valorFinal', this.valorCompra).then((data) => {
-          this.valor =  data + Number(this.valorDelivery);
-          this.valor = this.valor.toFixed(2)
-          console.log(this.valor.toFixed(2));
-        });
-      });
-  }
   home() {
 
     //this.showalert('Atenção', 'Ao sair dessa pagina');

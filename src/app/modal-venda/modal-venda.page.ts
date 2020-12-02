@@ -22,6 +22,7 @@ export interface Especi {
   itemNumber: number
   fotos: any
   tipoPrd:string
+  emailLoja:string
 
 }
 @Component({
@@ -32,6 +33,9 @@ export interface Especi {
 
 export class ModalVendaPage implements OnInit {
   @Input() id ;
+  @Input() idLoja ;
+  @Input()  emailUser;
+
   produto
   qtd = 0;
   especi: Array<Especi> = [];
@@ -41,6 +45,7 @@ export class ModalVendaPage implements OnInit {
 
   checked = false;
   price = 0;
+  lojaUID
   constructor(public navCtrl: NavController, public storage: Storage,public loadingController: LoadingController,
     public afAuth: AngularFireAuth, public router: Router, public actRouter: ActivatedRoute,
     public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
@@ -48,6 +53,8 @@ export class ModalVendaPage implements OnInit {
 
   ngOnInit() {
     console.log(this.id)
+    console.log(this.idLoja)
+    console.log(this.emailUser)
     this.services.getProdutos(this.id).subscribe(data =>{
       console.log(data)
       this.produto = data
@@ -61,11 +68,12 @@ export class ModalVendaPage implements OnInit {
           product:this.produto.nome,
           quantity: 0,
           detail: this.produto.resumo,
-          email: this.produto.email,
+          email: this.emailUser,
+          emailLoja:this.produto.email,
           itemId: this.id,
           especi: element.value,
           tipoPrd:this.produto.tipoPrd,
-          lojaUID: this.produto.lojaUID,
+          lojaUID: this.idLoja,
           itemNumber: this.qtd,
           fotos: '',
           qtd: 0
@@ -80,11 +88,12 @@ export class ModalVendaPage implements OnInit {
           product:this.produto.nome,
           quantity: 0,
           detail: this.produto.resumo,
-          email: this.produto.email,
+          email: this.emailUser,
+          emailLoja:this.produto.email,
           itemId: this.id,
           especi: data,
           tipoPrd:this.produto.tipoPrd,
-          lojaUID: this.produto.lojaUID,
+          lojaUID: this.idLoja,
           itemNumber: this.qtd,
           fotos: '',
           qtd: 0
@@ -159,10 +168,11 @@ export class ModalVendaPage implements OnInit {
             product:this.produto.nome,
             quantity: element.qtd,
             detail: this.produto.resumo,
-            email: this.produto.email,
+            email: this.emailUser,
+            emailLoja:this.produto.email,
             itemId: this.id,
             especi: element.especi,
-            lojaUID: this.produto.lojaUID,
+            lojaUID: this.idLoja,
             itemNumber: this.qtd,
             fotos: this.produto.fotos,
             qtd: element.qtd,
@@ -177,23 +187,27 @@ export class ModalVendaPage implements OnInit {
       var quant = this.produtoEspeci.map(i => i.qtd)
       var sum = quant.reduce((acc, val) => acc += val)
       this.qtd = sum
-      this.price = this.produto.valor * this.qtd
+      var x = this.produto.valor * this.qtd
+      var zota = x.toFixed(2)
+      this.price = Number(zota)
       console.log(this.price)
       console.log(this.especi)
     }else if(this.produto.especi.length === 0 && this.price === 0){
       var x = this.produto.valor * this.qtd
-      this.price = x
+      var zota = x.toFixed(2)
+      this.price = Number(zota)
       this.especi.push({
         nome: this.produto.nome,
         valor: this.produto.valor,
         price: this.produto.price,
         product:this.produto.nome,
         quantity: this.qtd,
-        detail: this.produto.resumo,
-        email: this.produto.email,
+        detail: this.produto.resumo.slice(0,200),
+        email: this.emailUser,
+        emailLoja:this.produto.email,
         itemId: this.id,
         especi: '',
-        lojaUID: this.produto.lojaUID,
+        lojaUID: this.idLoja,
         itemNumber: this.qtd,
         fotos: this.produto.fotos,
         qtd: this.qtd,
@@ -215,11 +229,12 @@ export class ModalVendaPage implements OnInit {
             price: this.produto.price,
             product:this.produto.nome,
             quantity: element.qtd,
-            detail: this.produto.resumo,
-            email: this.produto.email,
+            detail: this.produto.resumo.slice(0,200),
+            email: this.emailUser,
+            emailLoja:this.produto.email,
             itemId: this.id,
             especi: element.especi,
-            lojaUID: this.produto.lojaUID,
+            lojaUID: this.idLoja,
             itemNumber: this.qtd,
             fotos: this.produto.fotos,
             qtd: element.qtd,
@@ -234,25 +249,29 @@ export class ModalVendaPage implements OnInit {
       var quant = this.produtoEspeci.map(i => i.qtd)
       var sum = quant.reduce((acc, val) => acc += val)
       this.qtd = sum
-      this.price = this.produto.valor * this.qtd
+      var x = this.produto.valor * this.qtd
+      var zota = x.toFixed(2)
+      this.price = Number(zota)
       console.log(this.price)
       console.log(this.especi)
     }else if(this.produto.especi.length === 0 && this.price > 0){
       this.especi = []
 
       var x = this.produto.valor * this.qtd
-      this.price = x
+      var zota = x.toFixed(2)
+      this.price = Number(zota)
       this.especi.push({
         nome: this.produto.nome,
         valor: this.produto.valor,
         price: this.produto.price,
         product:this.produto.nome,
         quantity: this.qtd,
-        detail: this.produto.resumo,
-        email: this.produto.email,
+        detail: this.produto.resumo.slice(0,200),
+        email: this.emailUser,
+        emailLoja:this.produto.email,
         itemId: this.id,
         especi: '',
-        lojaUID: this.produto.lojaUID,
+        lojaUID: this.idLoja,
         itemNumber: this.qtd,
         fotos: this.produto.fotos,
         qtd: this.qtd,

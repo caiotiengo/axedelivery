@@ -210,7 +210,7 @@ export class StatusPage implements OnInit {
                     console.log(this.typeUser)
 
         }
-        this.loadedGoalListST = res.filter(i => i.emailLoja  === this.emailUsr && i.statusEnt != 'Cancelado pelo usuário' && i.statusEnt != 'Entregue'); 
+        this.loadedGoalListST = res.filter(i => i.emailLoja  === this.emailUsr && i.statusEnt != 'Cancelado' && i.statusEnt != 'Entregue'); 
              this.commentsSubscription = this.services.getComments().subscribe(data =>{
                 console.log(data)
                 this.comentariando = data
@@ -422,7 +422,7 @@ export class StatusPage implements OnInit {
         handler: () => {
           console.log('sim clicked');
           //this.atualiza();
-          this.services.vendasCollection.doc<Vendas>(items.id).update({statusEnt: 'Cancelado pelo usuário:' +' '+ this.usuarioLogado.nome });
+          this.services.vendasCollection.doc<Vendas>(items.id).update({statusEnt: 'Cancelado' });
         }
       }]
     });

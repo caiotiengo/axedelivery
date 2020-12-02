@@ -7,7 +7,7 @@
  		 <p style="text-align: center;">{{venda?.nPedido}}</p>
 
 	</div>
-  <ion-card style="text-align: center; width: 93%; top:20%; position: absolute;" >
+  <ion-card style="text-align: center;" >
     <ion-card-header>
 
     </ion-card-header>
@@ -42,9 +42,7 @@
 
   </ion-card>
 
-      <ion-list style="    position: absolute;
-    top: 105%;
-    width: 95%;" *ngFor="let items of venda?.produtos">
+      <ion-list style="" *ngFor="let items of venda?.produtos">
       <ion-item>
          <ion-avatar slot="start">
           <img  *ngIf="items.fotos.length != 0" src="{{items.fotos}}">

@@ -199,6 +199,7 @@ export class ProcurarPage implements OnInit {
         var fotoLoja = element.FotoPerfil
         var estado = element.estado
         var UID = element.id
+        console.log(UID)
         console.log(estado)
         this.emails = this.goalList.filter(i => i.email === element.email && estado === this.estado)
         //console.log(this.emails)
@@ -207,6 +208,7 @@ export class ProcurarPage implements OnInit {
           this.lista.push({
             nome: element.nome,
             email: element.email,
+            emailLoja: element.email,
             valor: element.valor,
             tipoPrd: element.tipoPrd,
             product: element.nome,
@@ -224,6 +226,7 @@ export class ProcurarPage implements OnInit {
           this.lista2.push({
             nome: element.nome,
             email: element.email,
+            emailLoja: element.email,
             valor: element.valor,
             tipoPrd: element.tipoPrd,
             product: element.nome,
@@ -255,16 +258,18 @@ export class ProcurarPage implements OnInit {
     });
     
   }
-  async presentModal(id, email) {
+  async presentModal(id, idLoja, email) {
     if(this.produtos.length > 0 ){
       console.log(id)
+      console.log(idLoja)
       console.log(this.produtos[0].email)
       if(email === this.produtos[0].email){
         const modal = await this.modalController.create({
           component: ModalVendaPage,
           cssClass: 'my-custom-modal-css',
           componentProps: {
-            'id': id
+            'id': id,
+            'idLoja': idLoja
           }
         });
          await modal.present();
@@ -285,7 +290,9 @@ export class ProcurarPage implements OnInit {
         component: ModalVendaPage,
         cssClass: 'my-custom-modal-css',
         componentProps: {
-          'id': id
+          'id': id,
+          'idLoja': idLoja
+
         }
       });
        await modal.present();
@@ -435,7 +442,7 @@ export class ProcurarPage implements OnInit {
         especi: items.especi,
         lojaUID: items.lojaUID,
         itemNumber: this.qtd,
-        emailLoja: this.loja.email,
+        emailLoja: items.email,
         fotos: '',
         valorReal:items.valor,
         priceReal: items.price
@@ -453,7 +460,7 @@ export class ProcurarPage implements OnInit {
         especi: items.especi,
         lojaUID: items.lojaUID,
         itemNumber: this.qtd,
-        emailLoja: this.loja.email,
+        emailLoja: items.email,
         fotos: items.fotos[0].link,
         valorReal:items.valor,
         priceReal: items.price,

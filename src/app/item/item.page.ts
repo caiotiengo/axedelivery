@@ -178,8 +178,9 @@ export class ItemPage implements OnInit {
       component: ModalVendaPage,
       cssClass: 'my-custom-modal-css',
       componentProps: {
-        'id': id
-      }
+        'id': id,
+        'idLoja': this.que
+    }
     });
      await modal.present();
 
