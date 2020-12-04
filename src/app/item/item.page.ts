@@ -240,14 +240,14 @@ export class ItemPage implements OnInit {
    loadProduct() {
     this.lojaSubscription = this.services.getProc(this.que).subscribe(data => {
       this.loja = data;
-      this.likes = data.LikeValue;
-      this.dislikes = data.LikeValue;
+      //this.likes = data.LikeValue;
+      //this.dislikes = data.LikeValue;
       this.emailLoja = data.email;
       this.lojaLat = data.lat;
       this.lojaLng = data.lng;
-      console.log(this.loja);
-      console.log(this.likes);
-      console.log(this.dislikes);
+      //console.log(this.loja);
+     // console.log(this.likes);
+     // console.log(this.dislikes);
       let Usuario: GeoCoord = {
                    latitude: Number(this.lat),
                    longitude: Number(this.lng)
@@ -331,6 +331,7 @@ export class ItemPage implements OnInit {
     addCarrinho(items) {
       console.log(items.valor * items.qtd );
       console.log(this.qtd);
+      console.log(items.detail)
       if(items.fotos[0] === undefined){
         this.produtos.push({
           nome: items.nome,
@@ -338,7 +339,7 @@ export class ItemPage implements OnInit {
           price: items.price,
           product:items.nome,
           quantity: Number(items.qtd),
-          detail: items.resumo,
+          detail: items.detail,
           email: items.email,
           itemId: items.id,
           especi: items.especi,
@@ -351,13 +352,15 @@ export class ItemPage implements OnInit {
 
       });
       }else{
+        console.log(items.detail)
+
         this.produtos.push({
           nome: items.nome,
           valor: items.valor * Number(items.qtd),
           price: items.price,
           product:items.nome,
           quantity: Number(items.qtd),
-          detail: items.resumo,
+          detail: items.detail,
           email: items.email,
           itemId: items.id,
           especi: items.especi,
@@ -414,8 +417,9 @@ export class ItemPage implements OnInit {
         this.storage.set('loja', this.loja);
         this.storage.set('valorFinal', valorTudo.toFixed(2));
         this.storage.set('valorFrete', this.valorDelivery)
-        this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(() =>{
+        this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
             this.navCtrl.navigateForward('/carrinho');
+            console.log(res)
         });
 
     }

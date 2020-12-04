@@ -1,5 +1,5 @@
 import {Component, NgZone, OnInit} from '@angular/core';
-import {AlertController, NavController, Platform} from '@ionic/angular';
+import {AlertController, NavController, Platform, LoadingController} from '@ionic/angular';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { Storage } from '@ionic/storage';
 import { ModalController } from '@ionic/angular';
@@ -113,26 +113,21 @@ export class RootPage implements OnInit {
     public afStore: AngularFirestore,
     public services: ServiceService,
     private _haversineService: HaversineService,
-    private nativeGeocoder: NativeGeocoder) {
+    private nativeGeocoder: NativeGeocoder,
+    public loadingController: LoadingController) {
 
 
      }
 
   ngOnInit() {
     //
- 
+    this.loadings()
     this.proccessSubscription = this.services.getUsers().subscribe(data => {
       this.goalList = data;
       this.loadedGoalList = data;
       this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
       this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
     })  
-    this.services.getProccessos().subscribe(res => {
-        this.storage.set('produtos', res).then(res =>{
-          console.log(res)
-        })
-
-    });
   }
   perfilPage() {
     const user = firebase.auth().currentUser;
@@ -146,6 +141,18 @@ this.storage.get('usuario').then(event =>{
 
     
 }
+async loadings() {
+  const loading = await this.loadingController.create({
+    cssClass: 'my-custom-class',
+    message: 'Afinando os atabaques...',
+    duration: 6000
+  });
+  await loading.present();
+
+  const { role, data } = await loading.onDidDismiss();
+  console.log('Loading dismissed!');
+}
+
 registro(){
   this.navCtrl.navigateForward('/register')
 }

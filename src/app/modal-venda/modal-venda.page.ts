@@ -23,6 +23,8 @@ export interface Especi {
   fotos: any
   tipoPrd:string
   emailLoja:string
+  lat:number
+  lng:number
 
 }
 @Component({
@@ -46,6 +48,8 @@ export class ModalVendaPage implements OnInit {
   checked = false;
   price = 0;
   lojaUID
+  lojaLat
+  lojaLng
   constructor(public navCtrl: NavController, public storage: Storage,public loadingController: LoadingController,
     public afAuth: AngularFireAuth, public router: Router, public actRouter: ActivatedRoute,
     public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
@@ -55,6 +59,10 @@ export class ModalVendaPage implements OnInit {
     console.log(this.id)
     console.log(this.idLoja)
     console.log(this.emailUser)
+    this.services.getProc(this.idLoja).subscribe(res =>{
+      this.lojaLat = res.lat
+      this.lojaLng = res.lng
+    })
     this.services.getProdutos(this.id).subscribe(data =>{
       console.log(data)
       this.produto = data
@@ -67,7 +75,7 @@ export class ModalVendaPage implements OnInit {
           price: this.produto.price,
           product:this.produto.nome,
           quantity: 0,
-          detail: this.produto.resumo,
+          detail: this.produto.resumo.slice(0,200),
           email: this.emailUser,
           emailLoja:this.produto.email,
           itemId: this.id,
@@ -76,7 +84,9 @@ export class ModalVendaPage implements OnInit {
           lojaUID: this.idLoja,
           itemNumber: this.qtd,
           fotos: '',
-          qtd: 0
+          qtd: 0,
+          lat: this.lojaLat,
+          lng: this.lojaLng
         })
       });
       console.log(this.produtoEspeci)
@@ -87,7 +97,7 @@ export class ModalVendaPage implements OnInit {
           price: this.produto.price,
           product:this.produto.nome,
           quantity: 0,
-          detail: this.produto.resumo,
+          detail: this.produto.resumo.slice(0,200),
           email: this.emailUser,
           emailLoja:this.produto.email,
           itemId: this.id,
@@ -96,7 +106,9 @@ export class ModalVendaPage implements OnInit {
           lojaUID: this.idLoja,
           itemNumber: this.qtd,
           fotos: '',
-          qtd: 0
+          qtd: 0,
+          lat: this.lojaLat,
+          lng: this.lojaLng
         })
       }
       console.log(this.produtoNada)
@@ -167,7 +179,7 @@ export class ModalVendaPage implements OnInit {
             price: this.produto.price,
             product:this.produto.nome,
             quantity: element.qtd,
-            detail: this.produto.resumo,
+            detail: this.produto.resumo.slice(0,200),
             email: this.emailUser,
             emailLoja:this.produto.email,
             itemId: this.id,
@@ -177,7 +189,8 @@ export class ModalVendaPage implements OnInit {
             fotos: this.produto.fotos,
             qtd: element.qtd,
             tipoPrd:this.produto.tipoPrd,
-  
+            lat: this.lojaLat,
+            lng: this.lojaLng
           })
 
         }else{
@@ -212,7 +225,8 @@ export class ModalVendaPage implements OnInit {
         fotos: this.produto.fotos,
         qtd: this.qtd,
         tipoPrd:this.produto.tipoPrd,
-
+        lat: this.lojaLat,
+        lng: this.lojaLng
       })
       console.log(this.especi) 
      
@@ -239,7 +253,8 @@ export class ModalVendaPage implements OnInit {
             fotos: this.produto.fotos,
             qtd: element.qtd,
             tipoPrd:this.produto.tipoPrd,
-  
+            lat: this.lojaLat,
+            lng: this.lojaLng
           })
 
         }else{
@@ -276,7 +291,8 @@ export class ModalVendaPage implements OnInit {
         fotos: this.produto.fotos,
         qtd: this.qtd,
         tipoPrd:this.produto.tipoPrd,
-
+        lat: this.lojaLat,
+        lng: this.lojaLng
       })
       console.log(this.especi) 
      

@@ -168,7 +168,6 @@ export class CarrinhoPage implements OnInit {
       this.porcentagemAxe = event.porcentagemAxe;
     });
 
-    console.log(this.moip);
     this.hash = 'Gerando hash...';
 
 
@@ -216,6 +215,8 @@ export class CarrinhoPage implements OnInit {
     //id moip account prod "MPA-888C5307676A"
 
   })
+  console.log(this.moip);
+
   setTimeout(() => {
 
   

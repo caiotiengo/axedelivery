@@ -54,6 +54,8 @@ export interface Produtos {
     fotoPerfil?:any;
     valorReal?:any;
     priceReal?:any;
+    lng?:any;
+    lat?:any;
 
 }
 @Component({
@@ -307,12 +309,12 @@ export class ProcurarPage implements OnInit {
       //console.log(this.loja);
 
       this.emailLoja = data.email;
-      this.lojaLat = data.lat;
-      this.lojaLng = data.lng;
+     // this.lojaLat = data.lat;
+    //  this.lojaLng = data.lng;
      // console.log(this.loja);
       //console.log(this.likes);
      // console.log(this.dislikes);
-      let Usuario: GeoCoord = {
+     /* let Usuario: GeoCoord = {
                    latitude: Number(this.lat),
                    longitude: Number(this.lng)
               };
@@ -336,7 +338,7 @@ export class ProcurarPage implements OnInit {
               // console.log('menor')
                this.valorDelivery = this.valorFrete.toFixed(2)
 
-             }
+             }*/
 
     });
 
@@ -397,6 +399,8 @@ export class ProcurarPage implements OnInit {
   addCarrinho(items) {
     console.log(items.valor * items.qtd );
     console.log(this.qtd);
+    console.log(this.lojaLng)
+    console.log(items.detail)
     if(items.fotos[0] === undefined){
       this.produtos.push({
         nome: items.nome,
@@ -413,7 +417,9 @@ export class ProcurarPage implements OnInit {
         emailLoja: items.email,
         fotos: '',
         valorReal:items.valor,
-        priceReal: items.price
+        priceReal: items.price,
+        lat:items.lat,
+        lng:items.lng
     });
     }else{
       this.produtos.push({
@@ -432,6 +438,8 @@ export class ProcurarPage implements OnInit {
         fotos: items.fotos[0].link,
         valorReal:items.valor,
         priceReal: items.price,
+        lat:items.lat,
+        lng:items.lng
         
     });
   }
@@ -465,6 +473,32 @@ export class ProcurarPage implements OnInit {
     this.storage.set('contagem', count)
   }
   finalizarCompra() {
+
+      let Usuario: GeoCoord = {
+                   latitude: Number(this.lat),
+                   longitude: Number(this.lng)
+              };
+              console.log(Usuario)
+              let Loja: GeoCoord = {
+                  latitude: Number(this.produtos[0].lat),
+                  longitude:Number(this.produtos[0].lng)
+              };
+              
+              
+             let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+            // console.log("A distancia entre as lojas é de:" + Number(kilometers));
+             
+             this.valorFrete = Math.floor(1.20)*Number(kilometers) + 5;
+             if(this.valorFrete > 30.00){
+              // console.log('maior')
+               var y = 35.00
+               this.valorDelivery = y.toFixed(2)
+
+             }else{
+              // console.log('menor')
+               this.valorDelivery = this.valorFrete.toFixed(2)
+
+             }
     this.valores = this.produtos.map(res => res.valor);
     this.valorCompra = this.valores.reduce((acc, val) => acc += val);
 
@@ -479,9 +513,10 @@ export class ProcurarPage implements OnInit {
     this.storage.set('loja', this.loja);
     //this.storage.set('valorFinal', valorTudo.toFixed(2));
     this.storage.set('valorFrete', this.valorDelivery)
-    this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(() =>{
-        this.navCtrl.navigateForward('/carrinho');
-    });
+    this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
+            this.navCtrl.navigateForward('/carrinho');
+            console.log(res)
+        });
 
   }
   voltar(){
