@@ -13,14 +13,7 @@ import { HaversineService, GeoCoord } from "ng2-haversine";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ModalVendaPage } from '../modal-venda/modal-venda.page';
 
-export interface User {
-    name: string;
-    role: string;
-    boss: string;
-    company: string;
-    email: string;
-    comments:string
-}
+
 export interface Loja {
     nome?: string;
     zona?: string;
@@ -86,7 +79,7 @@ export class ProcurarPage implements OnInit {
     DislikeValue: number;
     likes: number;
     dislikes: number;
-    public  loja: Loja = {};
+    public loja :  any = {};
     public que: string = null;
     public loading: any;
     public lojaSubscription: Subscription;
@@ -140,6 +133,8 @@ export class ProcurarPage implements OnInit {
        estado
        datou
        user
+       nomeLoja
+       moremo =0
   constructor(public navCtrl: NavController,private platform: Platform, public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,public loadingController: LoadingController,
     public afStore: AngularFirestore,  public services: ServiceService,
@@ -160,103 +155,75 @@ export class ProcurarPage implements OnInit {
         this.estado = event.estado;
 
     });
-    }
+    this.services.getProccessos().subscribe(res => {
+      this.goalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
+      this.loadedGoalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
+
+      //this.lista = this.lista.concat(this.goalList)
+      this.categorias = Array.from(new Set(this.goalList.map((item: any) => item.tipoPrd)))
+
+      this.semLoja = this.goalList.length
+      this.semLoja = this.goalList.length
+      //console.log(this.goalList)
+      this.goalList.slice(0,10).forEach(i =>{
+       //console.log(i.id)
+       this.loadProduct(i.lojaUID)
+       this.lista.push(i)
+      })
+    });    
+  }
 
   ngOnInit() {
-    this.services.getUsers().subscribe(data =>{
-      this.presentLoading();
-      if (this.user) {
-        this.datou = data
-        console.log(this.datou)
-        this.plataforma = this.datou.filter(i => i.aprovado ==='Sim' )
-        console.log(this.plataforma)
 
-        console.log(this.estado)
-        this.plataforma.forEach(element => {
-          this.loadProduct(element.id)
-  
-        });
-      } else {
-        this.geolocation.getCurrentPosition().then((resp) => {
-          // resp.coords.latitude
-          // resp.coords.longitude
-          console.log(resp.coords.latitude)
-          this.lat = Number(resp.coords.latitude);
-          this.lng = Number(resp.coords.longitude);
+  }
+  more(){
+    this.moremo++
+    console.log(this.moremo)
 
-         }).catch((error) => {
-           console.log('Error getting location', error);
-         });
-         
+    if(this.moremo === 1){
+      this.lista =[]
+
+      this.goalList.slice(0,50).forEach(i =>{
+        //console.log(i.id)
+        this.loadProduct(i.lojaUID)
+        this.lista.push(i)
+
+       })
+
+    }else if(this.moremo === 2){
+      this.lista =[]
+
+      this.goalList.slice(0,100).forEach(i =>{
+       // console.log(i.id)
+        this.loadProduct(i.lojaUID)
+        this.lista.push(i)
+
+       })
+
+    }else if(this.moremo === 3){
+      this.lista =[]
+
+      this.goalList.forEach(i =>{
+        //console.log(i.id)
+        this.loadProduct(i.lojaUID)
+        this.lista.push(i)
+
+       })
+    }else{
+      alert('Ops, a lista inteira de produtos já foi carregada!')
+    }
+  }
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+      this.more()
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+      if (this.goalList.length == 1000) {
+        event.target.disabled = true;
       }
-
-
-    })
-    this.services.getProccessos().subscribe(res => {
-      this.goalList = Array.from(new Set(res.map((item: any) => item)))
-      this.plataforma.forEach(element => {
-        var nomeLoja = element.nome
-        var fotoLoja = element.FotoPerfil
-        var estado = element.estado
-        var UID = element.id
-        console.log(UID)
-        console.log(estado)
-        this.emails = this.goalList.filter(i => i.email === element.email && estado === this.estado)
-        //console.log(this.emails)
-
-        this.emails.forEach(element => {
-          this.lista.push({
-            nome: element.nome,
-            email: element.email,
-            emailLoja: element.email,
-            valor: element.valor,
-            tipoPrd: element.tipoPrd,
-            product: element.nome,
-            quantity: element.quantity,
-            detail:  element.detail,
-            price: element.price,
-            fotos: element.fotos,
-            especi: element.especi,
-            noApp: element.noApp,
-            id:element.id,
-            nomeLoja: nomeLoja,
-            fotoPerfil:fotoLoja,
-            lojaUID: UID
-          })
-          this.lista2.push({
-            nome: element.nome,
-            email: element.email,
-            emailLoja: element.email,
-            valor: element.valor,
-            tipoPrd: element.tipoPrd,
-            product: element.nome,
-            quantity: element.quantity,
-            detail:  element.detail,
-            price: element.price,
-            fotos: element.fotos,
-            especi: element.especi,
-            noApp: element.noApp,
-            id:element.id,
-            nomeLoja: nomeLoja,
-            fotoPerfil:fotoLoja,
-            lojaUID: UID
-
-
-          })
-
-        });
-      console.log(this.lista)
-      this.semLoja = this.lista.length
-      this.semLoja = this.lista2.length
-      this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
-
-      });
-      //this.goalList = res.filter(i => i.email === this.emails && i.noApp ==='Sim');
-      //console.log(this.goalList)
-      //console.log(this.emails)
-      
-    });
-    
+    }, 500);
   }
   async presentModal(id, idLoja, email) {
     if(this.produtos.length > 0 ){
@@ -333,17 +300,18 @@ export class ProcurarPage implements OnInit {
 
     await alert.present();
   }
+
   loadProduct(id) {
     this.lojaSubscription = this.services.getProc(id).subscribe(data => {
       this.loja = data;
-      this.likes = data.LikeValue;
-      this.dislikes = data.LikeValue;
+      //console.log(this.loja);
+
       this.emailLoja = data.email;
       this.lojaLat = data.lat;
       this.lojaLng = data.lng;
-      console.log(this.loja);
-      console.log(this.likes);
-      console.log(this.dislikes);
+     // console.log(this.loja);
+      //console.log(this.likes);
+     // console.log(this.dislikes);
       let Usuario: GeoCoord = {
                    latitude: Number(this.lat),
                    longitude: Number(this.lng)
@@ -356,16 +324,16 @@ export class ProcurarPage implements OnInit {
               
               
              let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-             console.log("A distancia entre as lojas é de:" + Number(kilometers));
+            // console.log("A distancia entre as lojas é de:" + Number(kilometers));
              
              this.valorFrete = Math.floor(1.20)*Number(kilometers) + 5;
              if(this.valorFrete > 30.00){
-               console.log('maior')
+              // console.log('maior')
                var y = 35.00
                this.valorDelivery = y.toFixed(2)
 
              }else{
-               console.log('menor')
+              // console.log('menor')
                this.valorDelivery = this.valorFrete.toFixed(2)
 
              }
@@ -377,8 +345,8 @@ export class ProcurarPage implements OnInit {
     this.initializeItems();
 
     console.log(items.detail.value)
-    console.log(items.value)
-    console.log(items)
+    //console.log(items.value)
+    //console.log(items)
 
 
     //this.segumentacao = items.detail.value
@@ -402,7 +370,7 @@ export class ProcurarPage implements OnInit {
   }
 
   initializeItems(): void {
-    this.lista = this.lista2;
+    this.lista = this.loadedGoalList;
 
   }
   filterList(evt) {

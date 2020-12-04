@@ -54,20 +54,20 @@
             <ion-select-option value="Velas">Velas</ion-select-option>
             <ion-select-option value="Vestuario">Vestuário</ion-select-option>
           </ion-select>
-          <form [formGroup]="formulario" (ngSubmit)="logForm()">
   
           <ion-item>
             <ion-label position="floating">Nome do produto</ion-label>
-            <ion-input formControlName="nomePrd" value="{{produto?.nome}}"></ion-input>
+            <ion-input [(ngModel)]="nomePrd" value="{{produto?.nome}}"></ion-input>
           </ion-item>
   
           <ion-item>
             <ion-label position="floating">Descrição</ion-label>
-            <ion-input maxLenght="40" formControlName="resumo" value="{{produto?.resumo}}" type="text"></ion-input>
+            <ion-input maxLenght="40" [(ngModel)]="resumo" value="{{produto?.resumo}}" type="text"></ion-input>
           </ion-item>	
           <ion-item>
             <ion-label position="floating">Quantidade</ion-label>
-            <ion-input maxLenght="40" formControlName="qtd" type="text" value="{{produto?.quantity}}"></ion-input>
+
+            <ion-input type="number" inputmode="numeric" pattern="[0-9]*"  [(ngModel)]="qtd" value="{{produto?.quantity}}"></ion-input>
           </ion-item>					
           <ion-item>
             <ion-label position="floating">Nome da Loja</ion-label>
@@ -75,7 +75,7 @@
           </ion-item>
           <ion-item>
             <ion-label position="floating">Valor</ion-label>
-            <ion-input name="valor" value="{{produto?.price}}" [(ngModel)]="valor" formControlName="valor"
+            <ion-input name="valor" value="{{produto?.price}}" [(ngModel)]="valor" [(ngModel)]="valor"
             [brmasker]="{money: true}" type="text"></ion-input>
           </ion-item>
         
@@ -97,7 +97,6 @@
           <ion-button shape="outline" (click)="abrirGaleria4()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
           <<img src="{{img.src}}"> -->
   
-          </form>
           <h4 style="text-align: center;">Variedades</h4>
           <ion-list>
             <ion-item *ngFor="let itens of produto?.especi">

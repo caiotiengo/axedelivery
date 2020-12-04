@@ -22,10 +22,60 @@
       <p value="{{items}}">{{items}}</p>
     </ion-segment-button>
   </ion-segment>  
-  <ion-grid>
 
+
+
+  <ion-list>
+    <ion-item *ngFor="let items of lista">
+      <ion-label>
+        <h2>{{items.nome}}</h2>
+        <p>R${{items.valor}}</p>
+        <p style="font-weight: bold;" *ngIf="items.nomeLoja">Loja: {{items.nomeLoja}}</p>
+        <p style="background: #ffc409;
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: black;">{{items.tipoPrd}}</p>
+      </ion-label>
+      <ion-button (click)="presentModal(items.id, items.lojaUID, items.email)"  fill="solid" color="warning" style="color:#ffcb02 !important">
+          Veja
+      </ion-button>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Carregando...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+
+  <!--ion-list>
+    <ion-item *ngFor="let items of goalList">
+      <ion-thumbnail slot="start">
+        <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
+        <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{items.nome}}</h2>
+        <p>R${{items.valor}}</p>
+        <p style="background: #ffc409;
+        padding: 5px;
+        text-align: center;
+        border-radius: 25px;
+        color: black;">{{items.tipoPrd}}</p>
+      </ion-label>
+      <ion-button  (click)="presentModal(items.id, items.email)"  fill="solid" color="warning" style="color:#ffcb02 !important">
+          Veja
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  <!--ion-grid>
   <ion-row >
-    <ion-col class="extra-2" *ngFor="let items of lista">
+    <ion-col class="extra-2" *ngFor="let items of goalList">
       <ion-card class="extra" >
         <img style="margin:auto; max-height: 15vh;"  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png" alt="" />
   
@@ -49,7 +99,7 @@
   </ion-button>
     </ion-col>
   </ion-row>
-</ion-grid>
+</ion-grid-->
 
 <div style="text-align: center;" *ngIf="semLoja === 0">
   <img src="/assets/Picture1.png" alt="" />
@@ -57,7 +107,6 @@
   <p>Parece que no momento não temos produtos na sua região...</p>
   <p>Mas não se preocupe, em breve teremos! 
  Compartilhe o app com pessoas e comerciantes da área e venha às compras!</p>
- <!--on-button expand="block" color="warning" (click)="share()">Compartilhar</ion-button-->
 
 </div>
 

@@ -124,9 +124,15 @@ export class RootPage implements OnInit {
     this.proccessSubscription = this.services.getUsers().subscribe(data => {
       this.goalList = data;
       this.loadedGoalList = data;
-      this.goalListFiltrei = this.goalList.filter(i =>  i.zona === this.zona  && i.tipo === 'Loja' && i.aprovado === 'Sim');
+      this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
       this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
     })  
+    this.services.getProccessos().subscribe(res => {
+        this.storage.set('produtos', res).then(res =>{
+          console.log(res)
+        })
+
+    });
   }
   perfilPage() {
     const user = firebase.auth().currentUser;

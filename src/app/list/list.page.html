@@ -15,7 +15,7 @@
 
 </div>
 	
-<ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
+<ion-fab *ngIf="tipo ==='Loja' && aprovado === 'Sim'" vertical="bottom" horizontal="start" slot="fixed">
   <ion-fab-button color="success" (click)="add()">
     <ion-icon style="color:white" name="add"></ion-icon>
   </ion-fab-button>
@@ -37,11 +37,12 @@
 <ion-slides style="margin-top: 25%;" pager #mySlider class="slides" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
   <ion-slide>
     <ion-card class="img-back" >
-
+      <img src="/assets/Ervas.png">
     </ion-card>
   </ion-slide>
   <ion-slide>
     <ion-card class="img-back2" >
+      <img src="/assets/CUPOM.png">
 
     </ion-card>
   </ion-slide>

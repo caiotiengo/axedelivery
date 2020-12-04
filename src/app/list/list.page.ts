@@ -106,6 +106,7 @@ export class ListPage implements OnInit {
     valorDelivery
     lojaLat
     lojaLng
+    aprovado
     lojaperto : Array<User> = []
   constructor(public navCtrl: NavController,public Platform:Platform,
               public router: Router, 
@@ -167,6 +168,7 @@ status(){
                         this.nomeUser = event.nome
                         this.DOB = event.DOB
                         this.tipo = event.tipo
+                        this.aprovado = event.aprovado
                         //let birthdate = this.DOB
                        // format(new Date(birthdate), "yyyy-MM-dd");
                         this.filtroLoja = this.zona
@@ -178,7 +180,7 @@ status(){
                         this.loadedGoalListFiltrado = this.loadedGoalList.filter(i => i.estado === this.estado && i.tipo === 'Loja' && i.aprovado === 'Sim' );
                         this.lojinha = this.goalListFiltrado
                         console.log(this.lojinha)
-                        
+                        //this.storage.set('lojas', this.goalListFiltrado)
                         this.geolocation.getCurrentPosition().then((resp) => {
                           // resp.coords.latitude
                           // resp.coords.longitude

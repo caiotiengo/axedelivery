@@ -46,6 +46,10 @@ export interface User {
 }
 export interface Processo {
     // tslint:disable-next-line:indent
+    aprovado?:string;
+    nomeLoja?:string;
+    lojaUID?:string;
+    estado?:string;
     nome?: string;
     LikeValue?: number;
     DislikeValue?: number;
@@ -306,10 +310,11 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
     this.userCollection.doc<User>(id).update({entrega: entrega, seNao:seNao});
 
   }
-  updateProduto(id: string, nomeNovo:string, priceNovo:number, productNovo:string,quantityNovo:number,
-    tipoPrdNovo:string, valorNovo:number, detailNovo:string, resumoNovo:string,especiNovo:Array<CheckBox>,photos:Array<Foto>){
+  updateProduto(id: string, nomeNovo:string,nomeLoja:string, priceNovo:number, productNovo:string,quantityNovo:number,
+    tipoPrdNovo:string, valorNovo:number, detailNovo:string, resumoNovo:string,especiNovo:Array<CheckBox>,photos:Array<Foto>, estado: string, aprovado:string,lojaUID:string){
     this.processoCollection.doc<Processo>(id).update({
       nome: nomeNovo,
+      nomeLoja:nomeLoja,
       price: priceNovo,
       product: nomeNovo,
       quantity: quantityNovo,
@@ -319,7 +324,10 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
       detail: detailNovo,
       resumo:resumoNovo,
       especi:especiNovo,
-      fotos:photos
+      fotos:photos,
+      estado: estado,
+      aprovado: aprovado,
+      lojaUID: lojaUID
     })
   }
   updateStatus(id:string, opc: string){

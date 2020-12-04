@@ -61,9 +61,10 @@ export class AddProcPage implements OnInit {
     photos: Array<Foto> = [];
     check: Array<CheckBox> = [];
     tipoPrd
-    qtd
+    qtd: number
     hide = true;
-
+    lojaUID
+    estado
   constructor(public navCtrl: NavController, public afStore: AngularFirestore,
               public alertCtrl: AlertController,
               public services: ServiceService,
@@ -85,6 +86,8 @@ export class AddProcPage implements OnInit {
       this.email = event.email;
       this.nome = event.nome;
       this.boss = event.boss;
+      this.lojaUID = user.uid
+      this.estado = event.estado
     });
 
     
@@ -246,7 +249,7 @@ export class AddProcPage implements OnInit {
     if(this.type != ''){
       if(this.nomePrd != ''){
        if(this.resumo != ''){
-         if(this.qtd != ''){
+         if(this.qtd != null){
            if(this.valor != ''){
             this.create();
             }else{
@@ -292,7 +295,11 @@ export class AddProcPage implements OnInit {
          price: Number(valorN),
          fotos: this.photos,
          especi: this.check,
-         noApp: "Sim"
+         noApp: "Sim",
+         estado: this.estado,
+         lojaUID: this.lojaUID,
+         aprovado: "Sim",
+         nomeLoja: this.nome
       });
     }
     this.showalert('Obrigado!', 'Seu produto estará disponível em breve!');

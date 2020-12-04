@@ -62,9 +62,12 @@ export class EditarPage implements OnInit {
   public formulario : FormGroup;
   photos: Array<Foto> = [];
   check: Array<CheckBox> = [];
-
+  qtd:number
   hide = true;
   produto
+  lojaUID
+  estado
+  aprovado
   constructor(public navCtrl: NavController, public afStore: AngularFirestore,
     public alertCtrl: AlertController,
     public services: ServiceService,
@@ -82,17 +85,14 @@ export class EditarPage implements OnInit {
     // No user is signed in.
       }
       this.sub = this.mainuser.valueChanges().subscribe(event => {
-      this.email = event.email;
-      this.nome = event.nome;
-      this.boss = event.boss;
+        this.email = event.email;
+        this.nome = event.nome;
+        this.boss = event.boss;
+        this.lojaUID = user.uid
+        this.estado = event.estado
+        this.aprovado = "Sim"
     });
-     this.formulario = this.formBuilder.group({
-      valor: ['', Validators.required],
-      nomePrd: ['', Validators.required],
-      resumo: ['', Validators.required],
-      qtd:['', Validators.required]      
 
-    });
     this.que = this.route.snapshot.paramMap.get('id');
 
       console.log(this.que);
@@ -117,7 +117,7 @@ export class EditarPage implements OnInit {
         }
           console.log(this.produto)
           //this.type = this.produto.type
-         // this.formulario.value.nomePrd = this.produto.nome
+         // this.nomePrd = this.produto.nome
         })
         
     }
@@ -283,12 +283,13 @@ export class EditarPage implements OnInit {
      
      var valorN
      var valorS
-     valorN = this.formulario.value.valor.replace(',','')
-     valorS = this.formulario.value.valor.replace(',','.')
-     this.services.updateProduto(this.que,this.formulario.value.nomePrd, Number(valorN), 
-     this.formulario.value.nome,
-     Number(this.formulario.value.qtd),
-      this.type, Number(valorS), this.resumo, this.formulario.value.resumo,this.check, this.photos)
+     valorN = String(this.valor).replace(',','')
+     valorS = String(this.valor).replace(',','.')
+     this.services.updateProduto(this.que,this.nomePrd,this.nome, Number(valorN), 
+     this.nome,
+     Number(this.qtd),
+      this.type, Number(valorS), this.resumo, this.resumo,this.check, this.photos, 
+      this.estado, this.aprovado, this.lojaUID)
     }
     this.showalert('Obrigado!', 'Seu produto foi atualizado!');
     this.navCtrl.navigateForward('/user');
