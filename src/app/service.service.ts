@@ -24,15 +24,16 @@ export interface User {
     lastEdit?: string;
     comments?:any;
     CEP?:any;
-    CPFconta?:any
+    CPFconta?:any;
+    complemento?:string;
     numeroEND?:any;
-    pontoREF?:any
-    estado?:any
-    lat?:any
-    lng?:any
-    banco?:any
-    agencia?:any
-    conta?:any
+    pontoREF?:any;
+    estado?:any;
+    lat?:any;
+    lng?:any;
+    banco?:any;
+    agencia?:any;
+    conta?:any;
     correnteoupou?:any
     nomeNaConta?:any
     aprovado?:string
@@ -271,10 +272,11 @@ addUser(user: User) {
   deletarItem(id){
       return this.processoCollection.doc<Processo>(id).delete();
   }
-updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numero:string, cidade:string, estado:string, lat:string,lng:string) {
+updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string,comple:string, numero:string, cidade:string, estado:string, lat:string,lng:string) {
     this.userCollection.doc<User>(id).update({endereco: end,zona:tipo,
                                               CEP:cep,
                                               bairro:bairro,
+                                              complemento:comple,
                                               numeroEND: numero,           
                                               cidade: cidade,
                                               estado: estado,
@@ -340,6 +342,9 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string, numer
   }
   updateDivida(id:string,divida:number){
     this.vendasCollection.doc<Vendas>(id).update({valorDevedor: divida})
+  }
+  updateComplemento(id:string, complemento:string){
+    this.userCollection.doc<User>(id).update({complemento: complemento})
   }
 /*
 

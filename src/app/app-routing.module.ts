@@ -74,6 +74,10 @@ const routes: Routes = [
   {
     path: 'procurar',
     loadChildren: () => import('./procurar/procurar.module').then( m => m.ProcurarPageModule)
+  },
+  {
+    path: 'register-prod',
+    loadChildren: () => import('./register-prod/register-prod.module').then( m => m.RegisterProdPageModule)
   }
 ];
 @NgModule({

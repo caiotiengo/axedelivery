@@ -1652,6 +1652,7 @@ export class UserPage implements OnInit {
     hider = true
     numeroBank =''
     nomeBanco = ''
+    complemento
   constructor(public navCtrl: NavController, private storage: Storage,
               public afStore: AngularFirestore, 
               public modalController: ModalController,
@@ -1670,6 +1671,7 @@ export class UserPage implements OnInit {
                   enderecoNew: ['', Validators.required],
                   numeroENDNew: ['', Validators.required],
                   CEPNew: ['', Validators.required],
+                  complemento: ['', Validators.required],
                   bairroNew: ['', Validators.required],
                   cidadeNew: ['', Validators.required],
                   estadoNew: ['', Validators.required],
@@ -1750,6 +1752,7 @@ export class UserPage implements OnInit {
       this.entrega = event.entrega
       this.seNao = event.seNao
       this.status = event.status
+      this.complemento = event.complemento
     });
 
    }
@@ -1848,10 +1851,7 @@ export class UserPage implements OnInit {
     var opc = "Offline"
     this.services.updateStatus(this.userID,opc)
   }
-  private iniciarPush(){
-    
 
-  }
   updateEnd(){
       this.hideMe = false;
   }
@@ -1941,7 +1941,7 @@ export class UserPage implements OnInit {
   update(){
     this.services.updateEnd(this.userID,this.type,this.newCadastro.value.enderecoNew, 
       this.newCadastro.value.CEPNew,
-                       this.bairroNew, this.newCadastro.value.numeroENDNew, 
+                       this.bairroNew,this.newCadastro.value.complemento, this.newCadastro.value.numeroENDNew, 
                        this.cidadeNew,
                        this.newCadastro.value.estadoNew, this.latitudeGoogle, this.longitudeGoogle)
                        this.hideMe = true

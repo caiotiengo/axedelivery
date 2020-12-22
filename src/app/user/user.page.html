@@ -18,7 +18,7 @@
       <p>Endereço: {{endereco}}</p>
       <p>Bairro: {{bairro}}</p>
       <p>Cidade: {{cidade}}</p>
-      <p>Zona: {{zona}}</p>
+      <p>Local: {{zona}}</p>
       <br/>
       <ion-button style="height: 4vh;" color="warning" (click)="sair()">Logout</ion-button>
       <ion-button style="height: 4vh;" color="warning" (click)="habilitar()"> Habilitar Notificações</ion-button>
@@ -33,7 +33,7 @@
   </ion-card>
 <ion-card style="background-color: white !important; ">
     <ion-card-content>  
-     <h4 style="color: gray"> <ion-icon name="paper-plane"></ion-icon> - {{endereco}}</h4>
+     <h4 style="color: gray"> <ion-icon name="paper-plane"></ion-icon> - {{endereco}},{{complemento}}</h4>
      <p><i>{{bairro}}, CEP:{{CEP}}</i></p>
      <p><i>{{cidade}} - {{estado}}</i></p>
       <ion-button style="height: 4vh;" (click)="updateEnd()" color="warning">  
@@ -51,7 +51,6 @@
             </ion-select>
             <form [formGroup]="newCadastro" >
               <br/>
-           
            
                <ion-item>
                          <ion-label position="floating">Endereço</ion-label>
@@ -83,7 +82,11 @@
                            </ion-row>
                          </ion-grid>
                        
-           
+                         <ion-item>
+                          <ion-label position="floating">Complemento</ion-label>
+                          <ion-input formControlName="complemento" placeholder="Bloco, Apartamento ou Casa"
+                            type="text"></ion-input>
+                        </ion-item>
                        <ion-item>
                          <ion-label position="floating">Bairro</ion-label>
                          <ion-input formControlName="bairroNew" placeholder="{{bairroNew}}"value="{{bairroNew}"
@@ -111,7 +114,7 @@
                            </ion-row>
                          </ion-grid>
            
-                 <ion-button style="height: 4vh;" expand="block" *ngIf="type" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
+                 <ion-button expand="block" *ngIf="type" (click)="update()" color="success" slot="end">Atualizar</ion-button><br/>
            
            
              </form>

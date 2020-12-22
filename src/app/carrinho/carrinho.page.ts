@@ -102,6 +102,7 @@ export class CarrinhoPage implements OnInit {
     esconde = false
     descontin
     porcentagemDes
+    cuponNome
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -238,6 +239,7 @@ export class CarrinhoPage implements OnInit {
       if(x.length != 0 ){
         console.log(x)
         alert('Não é uma oferenda, mas o cupom foi aceito com sucesso!')
+        this.cuponNome = x[0].cupom
         this.porcentagemDes = x[0].desconto
         console.log(this.porcentagemDes)
         var mapa = this.carrinho.map(i => i.price * Number(i.quantity))
@@ -385,7 +387,7 @@ teste(){
                 type: "PRIMARY",
                 feePayor: true,
                 amount: {
-                  percentual: Number(this.loja.porcentagemAxe) - Number(this.porcentagemDes)
+                  percentual: Number(this.loja.porcentagemAxe)
                   }
               },
               {
@@ -395,7 +397,7 @@ teste(){
                 type: "SECONDARY",
                 feePayor: false,
                 amount: {
-                  percentual: Number(this.loja.porcentagemLoja) + Number(this.porcentagemDes),
+                  percentual: Number(this.loja.porcentagemLoja)
                   }
               }
             ]
@@ -476,7 +478,8 @@ teste(){
                     telefoneComprador: this.telefoneComprador,
                     CPFComprador: this.userCPF,
                     idPagamento: response.body.id,
-                    compradorUID: this.uid
+                    compradorUID: this.uid,
+                    cupom: this.cuponNome
                   }).then(() => {
                     this.storage.remove('carrinhoUser').then(() => {
                       this.navCtrl.navigateRoot('/status');
@@ -530,7 +533,9 @@ teste(){
                   telefoneComprador: this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
-                  compradorUID: this.uid
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
@@ -584,7 +589,9 @@ teste(){
                   telefoneComprador: this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
-                  compradorUID: this.uid
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
@@ -711,7 +718,9 @@ teste(){
         telefoneComprador: this.telefoneComprador,
         CPFComprador: this.userCPF,
         compradorUID: this.uid,
-        valorDevedor: Number(value)
+        valorDevedor: Number(value),
+        cupom: this.cuponNome
+
 
       }).then(() => {
         this.storage.remove('carrinhoUser').then(() => {
@@ -821,7 +830,9 @@ teste(){
         telefoneComprador: this.telefoneComprador,
         CPFComprador: this.userCPF,
         compradorUID: this.uid,
-        valorDevedor: Number(value)
+        valorDevedor: Number(value),
+        cupom: this.cuponNome
+
         
       }).then(() => {
         this.storage.remove('carrinhoUser').then(() => {
@@ -849,7 +860,9 @@ teste(){
   }
   retirarQTD(index:number){
     if(this.carrinhoDes[index].quantity === 0 ){
-      _.remove(this.carrinhoDes[index])
+
+      alert('O será retirado do seu carrinho!')
+      _.remove(this.carrinhoDes[index],)
       console.log(this.carrinhoDes)
     }else{
       console.log(index)

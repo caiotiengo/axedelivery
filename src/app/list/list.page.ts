@@ -14,6 +14,7 @@ import {HttpClient} from '@angular/common/http';
 import { google } from "google-maps";
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import {format} from "date-fns";
+import { PushOptions, Push, PushObject } from '@ionic-native/push/ngx';
 
 declare var google: any;
 
@@ -108,8 +109,12 @@ export class ListPage implements OnInit {
     lojaLng
     aprovado
     lojaperto : Array<User> = []
+    complemento
+    userId
+    FCM
+    fcmzin
   constructor(public navCtrl: NavController,public Platform:Platform,
-              public router: Router, 
+              public router: Router, public alerti: AlertController,
               private geolocation: Geolocation,
               public modalController: ModalController,  
               public alertCtrl: AlertController,
@@ -117,16 +122,9 @@ export class ListPage implements OnInit {
               public afStore: AngularFirestore,
               public services: ServiceService,
               private _haversineService: HaversineService,
-              private nativeGeocoder: NativeGeocoder
-              ) {
-
-
-          /*
-          */
-      
-            
-      
-  }
+              private nativeGeocoder: NativeGeocoder,
+              private push:Push
+              ) {}
 
 
  
@@ -149,6 +147,7 @@ status(){
     let user = firebase.auth().currentUser;
           console.log(user);
           if (user) {
+            this.userId = user.uid
               this.mainuser = this.afStore.doc(`users/${user.uid}`);
 
               this.proccessSubscription = this.services.getUsers().subscribe(data => {
@@ -169,6 +168,9 @@ status(){
                         this.DOB = event.DOB
                         this.tipo = event.tipo
                         this.aprovado = event.aprovado
+                        this.complemento = event.complemento
+                        this.fcmzin = event.FCM
+
                         //let birthdate = this.DOB
                        // format(new Date(birthdate), "yyyy-MM-dd");
                         this.filtroLoja = this.zona
@@ -225,7 +227,14 @@ status(){
                           this.semLoja = this.lojaperto.length
 
                         console.log(this.semLoja)
- 
+                        console.log(this.complemento)
+                        if(this.complemento === undefined){
+                            this.alerta()
+                        }
+                        if(this.fcmzin === '1'){
+                          this.alerta2()
+                        }
+
                     
                })
             
@@ -238,6 +247,88 @@ status(){
 
 
      this.produtos();
+  }
+
+  async alerta2(){
+    const alert = await this.alerti.create({
+      cssClass:'my-custom-class',
+      header: 'Habilite as notificações!',
+      message:'Deixe as notificações habilitadas para poder melhorar a sua experiencia no nosso app!',
+      buttons:[
+      {
+        text:'Ok!',
+        handler: () =>{
+          this.habilitar()
+        }
+      }
+    ],
+    backdropDismiss:false
+    });
+    await alert.present();
+  }
+
+  habilitar(){
+    const options: PushOptions = {
+      android: {
+        senderID:'612729787094'
+      },
+      ios: {
+       alert: 'true',
+       badge: true,
+       sound: 'true'
+     }
+   }
+ 
+   const pushObject: PushObject = this.push.init(options);
+ 
+     pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+ 
+     pushObject.on('registration').subscribe((registration: any) => {
+ 
+     console.log('Device registered', registration.registrationId)
+     this.FCM = registration.registrationId
+     this.services.updateFCM(this.userId, this.FCM);
+      this.showalert('Opa!', 'Notificação habilitada.')
+         console.log('Device registered', registration)
+   /*  this.afStore.collection('devices').add({
+          idDevice: registration[0].registrationId,
+ 
+       });
+   */
+   } );
+   pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+ 
+ 
+
+  }
+
+  async alerta(){
+    const alert = await this.alerti.create({
+      cssClass:'my-custom-class',
+      header: 'Não esqueça!',
+      message:'Coloque aqui o complemento do seu endereço(ex: Bloco,AP ou Casa 10, Fundos), para não ter problemas na suas futuras compras!',
+      inputs: [{
+        name:'name1',
+        type: 'text',
+        placeholder: 'Complemento'
+      }],
+      buttons:[
+      {
+        text:'Pronto!',
+        handler: data =>{
+          console.log(data.name1)
+          if(data.name1 === ""){
+            return false;
+          }else{
+            this.services.updateComplemento(this.userId, data.name1)
+            console.log('ók')
+          }
+        }
+      }
+    ],
+    backdropDismiss:false
+    });
+    await alert.present();
   }
   produtos(){
     this.produtosSubscription = this.services.getProccessos().subscribe(data =>{
