@@ -78,6 +78,10 @@ const routes: Routes = [
   {
     path: 'register-prod',
     loadChildren: () => import('./register-prod/register-prod.module').then( m => m.RegisterProdPageModule)
+  },
+  {
+    path: 'comentario',
+    loadChildren: () => import('./comentario/comentario.module').then( m => m.ComentarioPageModule)
   }
 ];
 @NgModule({

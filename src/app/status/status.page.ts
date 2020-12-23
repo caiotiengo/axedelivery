@@ -10,6 +10,7 @@ import {Loja} from '../item/item.page';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { MoipCreditCard } from 'moip-sdk-js';
 import moipSdk from 'moip-sdk-node'
+import { ComentarioPage } from '../comentario/comentario.page';
 export interface Vendas {
   nomeComprador: string;
   endereco: string;
@@ -72,6 +73,8 @@ export class StatusPage implements OnInit {
   mapVal
   nPedidoStr
   usuarioLogado
+  categorias
+  categoriasLoja
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -125,9 +128,11 @@ export class StatusPage implements OnInit {
            
         this.mainuser = this.afStore.doc(`users/${user.uid}`);
         this.emailUsr = user.email;
-        this.goalListUs = res.filter(i => i.emailComprador === this.emailUsr && i.statusEnt != 'Cancelada'  );  
-        this.loadedGoalListUs = res.filter(i => i.emailComprador  === this.emailUsr && i.statusEnt != 'Cancelada' );
-        this.goalListST = res.filter(i => i.emailLoja === this.emailUsr && i.statusEnt != 'Cancelada' && i.statusEnt != 'Entregue');
+        this.goalListUs = res.filter(i => i.emailComprador === this.emailUsr );  
+        this.loadedGoalListUs = res.filter(i => i.emailComprador  === this.emailUsr);
+        this.goalListST = res.filter(i => i.emailLoja === this.emailUsr);
+        this.categorias = Array.from(new Set(this.goalListUs.map((item: any) => item.statusEnt)))
+        this.categoriasLoja = Array.from(new Set(this.goalListST.map((item: any) => item.statusEnt)))
 
         this.goalListST.forEach( i =>{
           if(i.idPagamento){
@@ -279,53 +284,27 @@ export class StatusPage implements OnInit {
   lista(){
     this.navCtrl.pop();
   }
-  tomaComment(items, rating){
-    console.log(items)
-         console.log("changed rating: ", this.formulario.value.starRating2);
-       if(this.formulario.value.comentario != '' ){
 
-     this.afStore.collection('comments').add({
-         comments: this.formulario.value.comentario,
-         loja: items.nomeLoja,
-         nomeComprador: items.nomeComprador,
-         lojaUID: items.lojaUID,
-         emailLoja: items.emailLoja,
-         emailComprador: items.emailComprador,
-         nPedido: Number(items.nPedido),
-         rating: Number(this.formulario.value.starRating2)
-
-      }).then(()=>{
-           this.showalert('Obrigado pelo feedback!', 'Isso ajuda a todos nós!');
-
-          
-          
-      })
-    }else{
-            rating = 0;
-            this.showalert('Falta Pouco!', 'Agora é só adicionar um comentário');
-    } 
-  
-   
+  novoComment(items){
     
+    this.storage.remove('comentario').then(() =>{
+      this.storage.set('comentario', items).then(() =>{
+          this.presentModal()
+      })
+    })
   }
 
-  async handleLike(items) {
-    this.likes++;
-    try {
-      await this.services.like(items.lojaUID, this.loja);
-      this.showalert('Obrigado pelo feedback!', 'Isso ajuda a todos nós!');
-    } catch (e) {
-      console.log('Erro' + e);
-    }
-  }
-  async handleDislike(items) {
-    this.dislikes++;
-    try {
-      await this.services.dislike(items.lojaUID, this.loja);
-      this.showalert('Obrigado pelo feedback!', 'Entraremos em contato com o anunciante');
-    } catch (e) {
-      console.log('Erro' + e);
-    }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ComentarioPage,
+      cssClass: 'my-custom-modal-css'
+    });
+     await modal.present();
+
+    await modal.onDidDismiss().then((r) => {
+      var x = r.data.data;
+
+    })
   }
 
   veritem(items) {
@@ -380,7 +359,7 @@ export class StatusPage implements OnInit {
       return;
     }
     this.goalListUs = this.goalListUs.filter(currentGoal => {
-      if (currentGoal.nomeLoja && searchTerm) {
+      if (currentGoal.statusEnt && searchTerm) {
         if (currentGoal.nomeLoja.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
 
           return true;
@@ -395,6 +374,36 @@ export class StatusPage implements OnInit {
       this.nPedidoStr = String(x)
       if (this.nPedidoStr && searchTerm) {
         if (this.nPedidoStr.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  }
+  filterList2(evt) {
+    this.initializeItems();
+
+    const searchTerm = evt.srcElement.value;
+
+    if (!searchTerm) {
+      return;
+    }
+    this.goalListUs = this.goalListUs.filter(currentGoal => {
+      if (currentGoal.statusEnt && searchTerm) {
+        if (currentGoal.statusEnt.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+
+    this.goalListST = this.goalListST.filter(currentGoal => {
+      if (currentGoal.statusEnt && searchTerm) {
+        if (currentGoal.statusEnt.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
 
           return true;
         } else {
@@ -445,6 +454,49 @@ export class StatusPage implements OnInit {
       this.navCtrl.navigateRoot('/list');
     });
 
+  }
+  novoChat(items){
+    var mensagens = []
+    if(items.chat){
+      this.storage.remove('idVenda').then(() =>{
+        this.storage.remove('idChat').then(() =>{
+          this.services.getStatusProd(items.id).subscribe(data =>{
+            var x = data.chat
+            var y = items.id
+            console.log(x);
+            this.storage.set('idVenda', y).then(()=>{
+              this.storage.set('idChat', x).then(() =>{
+                this.navCtrl.navigateForward('/chat/' + x);
+              });
+            })   
+          })
+        })
+      })
+    }else{
+      this.afStore.collection('chats').add({
+        mensagens: mensagens,
+        nomeLoja: items.nomeLoja,
+        nomeComprador: items.nomeComprador,
+        idVenda: items.id,
+        idLoja:items.lojaUID,
+        idComprador:items.idComprador
+      }).then(data =>{
+        var x = data.id
+        var y = items.id
+        console.log(x);
+        this.storage.remove('idVenda').then(() =>{
+          this.storage.remove('idChat').then(() =>{
+            this.storage.set('idVenda', y).then(()=>{
+              this.storage.set('idChat', x).then(() =>{
+                this.services.updateVendas(items.id, x);
+                this.navCtrl.navigateForward('/chat/' + x);
+              });
+            })
+          })
+        })
+      });
+    }
+    
   }
 
  doRefresh(event) {

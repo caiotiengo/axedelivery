@@ -1831,11 +1831,7 @@ export class UserPage implements OnInit {
      this.services.updateFCM(this.userID, this.FCM);
       this.showalert('Opa!', 'Notificação habilitada.')
          console.log('Device registered', registration)
-   /*  this.afStore.collection('devices').add({
-          idDevice: registration[0].registrationId,
- 
-       });
-   */
+
    } );
    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
  

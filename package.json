@@ -72,6 +72,7 @@
     "ionic-plugin-deeplinks": "^1.0.20",
     "ionic-selectable": "^4.7.1",
     "ionic4-star-rating": "^1.1.1",
+    "ionic5-star-rating": "https://github.com/JeongJun-Lee/ionic5-star-rating/tarball/master",
     "jsencrypt": "^3.0.0-rc.1",
     "lalamove-js": "^1.0.0",
     "leaflet": "^1.6.0",

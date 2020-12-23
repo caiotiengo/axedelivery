@@ -383,7 +383,7 @@ export class LoginPage implements OnInit {
     if (user) {
             this.mainuser = this.afStore.doc(`users/${user.uid}`);
             this.userID = user.uid
-              this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
+              //this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
               this.mainuser.valueChanges().subscribe(event => {
                   console.log(event)
                   this.storage.set('usuario', event)
@@ -479,7 +479,7 @@ async presentLoading() {
 
             }
             this.storage.set('usuario', event).then(() =>{
-              this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
+              //this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
               this.navCtrl.navigateRoot('/list');
                
             })

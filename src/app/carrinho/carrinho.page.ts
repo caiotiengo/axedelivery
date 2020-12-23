@@ -113,6 +113,7 @@ export class CarrinhoPage implements OnInit {
                 const user = firebase.auth().currentUser;
                 this.uid = user.uid;
                 console.log(this.uid)            
+                this.cuponNome = 'Sem cupom'
 
 
      this.storage.get('valorFrete').then((data) => {
@@ -308,6 +309,7 @@ export class CarrinhoPage implements OnInit {
 
       }else{
         console.log(x)
+        this.cuponNome = 'Sem cupom'
         alert('Cupom inválido!')
 
       }

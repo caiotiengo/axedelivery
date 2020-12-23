@@ -83,6 +83,8 @@ export interface Vendas {
     nPedido?:Number;
     mensagens?:any;
     valorDevedor?: number;
+    chat?:any;
+    comentario?:any;
 }
 export interface Comentario{
         comments?: string;
@@ -97,7 +99,13 @@ export interface Cupom{
   cupom?:string;
   desconto?:number
 }
-
+export interface Chat{
+  mensagens?:any;
+  conteudo?:string;
+  criadoEm?: Date;
+  id?: string;
+  uid?: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -109,10 +117,11 @@ export class ServiceService {
   public vendasCollection: AngularFirestoreCollection<Vendas>;
   public commentsCollection: AngularFirestoreCollection<Comentario>;
   public cuponsCollection: AngularFirestoreCollection<Cupom>;
+  public chatCollection: AngularFirestoreCollection<Chat>;
 
   users: Observable<User[]>;
   cupom: Observable<Cupom[]>;
-
+  chat: Observable<Chat[]>;
   processos: Observable<Processo[]>;
   vendas: Observable<Vendas[]>;
   comentario: Observable<Comentario[]>;
@@ -134,6 +143,7 @@ export class ServiceService {
     this.vendasCollection = afs.collection<Vendas>('vendas');
     this.commentsCollection = afs.collection<Comentario>('comments');
     this.cuponsCollection = afs.collection<Cupom>('cupons')
+    this.chatCollection = afs.collection<Chat>('chats')
     this.getUsers();
       // tslint:disable-next-line:indent
     this.getProccessos();
@@ -161,6 +171,16 @@ export class ServiceService {
 
      );
  }
+ getChats() {
+  return this.chat = this.chatCollection.snapshotChanges().pipe(
+       map(actions => actions.map(a => {
+           const data = a.payload.doc.data() as Chat;
+           const id = a.payload.doc.id;
+           return { id, ...data };
+       }))
+
+   );
+}
   getProccessos() {
    return this.processos = this.processoCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -189,44 +209,7 @@ export class ServiceService {
             }))
         );
     }
-
- /* async getToken(){
-    let token;
-
-    if(this.platform.is('android')){
-      token = await this.firebaseNative.getToken().then(token => console.log('PUSH_TOKEN: GET_TOKEN: ', token)).catch(err => console.log(err));
-    }
-    if(this.platform.is('ios')){
-      token = await this.firebaseNative.getToken();
-      await this.firebaseNative.grantPermission().then(hasPermission => console.log(hasPermission ? 'granted' : 'denied'));;
-    }
-    if(this.platform.is('pwa')){
-      token = this.firebaseNative.getToken().then(token => console.log('PUSH_TOKEN: GET_TOKEN: ', token))
-.catch(err => console.log(err))
-    }
-    return this.saveToFirestore(token)
-  }
-
-  saveToFirestore(token){
-    //if(!token) {return}
-    //const {uid} = firebase.auth().currentUser;
-
-    const devicesRef = this.afs.collection('devices')
-    const data = {
-      token,
-      userId: 'Caio'
-
-    }
-    return devicesRef.doc(token).set(data)
-  }
-
-  listenToNotifications(){
-    return this.firebaseNative.onMessageReceived()
-  }*/
-  addCarrinho(){
-    
-  }
-addUser(user: User) {
+  addUser(user: User) {
     this.userCollection.add(user);
   }
   addProc(processo: Processo) {
@@ -298,6 +281,10 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string,comple
   updateFCM(id:string,FCM:string) {
     this.userCollection.doc<User>(id).update({fcm: FCM});
   }
+
+  addChat(){
+
+  }  
   updateChat(id:string,conteudo:string){
       const {uid} = firebase.auth().currentUser;
       const data = {
@@ -306,7 +293,20 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string,comple
          conteudo,
          criadoEm: Date.now()
      }
-      this.vendasCollection.doc<Vendas>(id).update({mensagens: firebase.firestore.FieldValue.arrayUnion(data)})  
+      this.chatCollection.doc<Chat>(id).update({mensagens: firebase.firestore.FieldValue.arrayUnion(data)})  
+  }
+  updateVendas(id:string, chatId:string){
+    this.vendasCollection.doc<Vendas>(id).update({chat: chatId})
+  }
+  updateVComentario(id:string, comentario:string){
+    this.vendasCollection.doc<Vendas>(id).update({comentario: comentario})
+  }
+
+  updateComentario(id:string, comentario:string){
+    this.commentsCollection.doc<Comentario>(id).update({comments: comentario})
+  }
+  getChat(id:string){
+    return this.chatCollection.doc<Chat>(id).valueChanges();
   }
   updateEntrega(id: string, entrega:string, seNao:string){
     this.userCollection.doc<User>(id).update({entrega: entrega, seNao:seNao});

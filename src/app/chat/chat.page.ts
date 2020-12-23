@@ -26,6 +26,7 @@ export class ChatPage implements OnInit {
   chat$:Observable<any>;
   novaMsg:string
   userUID
+  chatou
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               private route: ActivatedRoute, public alertCtrl: AlertController, public afAuth: AngularFireAuth,
               public services: ServiceService,  public modalController: ModalController,public afStore: AngularFirestore) { 
@@ -42,24 +43,22 @@ export class ChatPage implements OnInit {
   
   }
   loadAll(){
-    const chatId = this.route.snapshot.paramMap.get('id');
-    //const sourceId = this.chatServices.getChatId(chatId)
-    //console.log(sourceId)
-
-    this.storage.get('usuario').then(data =>{
-      this.usuario = data;
-      console.log(this.usuario)
+    this.storage.get('idVenda').then(res =>{
+      this.que = res;
+      const user = firebase.auth().currentUser;
+      console.log(user.uid);
+      this.userUID = user.uid;
+      console.log(this.que);
+      console.log(this.userUID)
+      this.services.getStatusProd(this.que).subscribe(data => {
+        this.loja = data;
+        this.services.getChat(this.loja.chat).subscribe(res =>{
+          console.log(res)
+          this.chatou = res
+        })
+        console.log(this.loja)
+      })
     })
-    this.que = this.route.snapshot.paramMap.get('id');
-    const user = firebase.auth().currentUser;
-    console.log(user.uid);
-    this.userUID = user.uid;
-    console.log(this.que);
-    console.log(this.userUID)
-  	this.services.getStatusProd(this.que).subscribe(data => {
-  		this.loja = data;
-  		console.log(this.loja)
-  	})
   }
 
 
@@ -68,7 +67,7 @@ export class ChatPage implements OnInit {
     if(!this.novaMsg){
 
     }
-    this.services.updateChat(this.que,this.novaMsg)
+    this.services.updateChat(this.loja.chat,this.novaMsg)
     this.novaMsg = '';
   	// aqui eu farei o envio da mensagem, mas eu não consigo achar um PUSH para o firebase. só consigo atualizar um item
   }

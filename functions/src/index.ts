@@ -6,7 +6,7 @@ admin.initializeApp(functions.config().firebase);
 
 exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}').onWrite(async (event) => {
     const uid = event.after.get('lojaUID');
-    const title = 'Você tem um novo pedido!';
+    const title = 'Você tem um novo pedido!🎉💰';
     const content = 'Abra a página de pedidos para mais informações.';
     let userDoc = await admin.firestore().doc(`users/${uid}`).get();
     let fcmToken = userDoc.get('fcm');
@@ -22,12 +22,11 @@ exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}
     let response = await admin.messaging().send(message);
     console.log(response);
 });
-exports.sendNotificationToFCMTokenMSG = functions.firestore.document('vendas/{mUid}/chat').onWrite(async (event) => {
+exports.chatParaLoja = functions.firestore.document('chats/{mUid}').onUpdate(async (event) => {
     //pegar o sender id e o receiver id
-
-    const uid = event.after.get('lojaUID');
-    const title = 'Você tem uma nova mensagem!';
-    const content = 'Abra a página de status para mais informações.';
+    const uid = event.after.get('idLoja');
+    const title = 'Você tem uma nova mensagem!🗣📩';
+    const content = 'Abra a página de pedidos e entre no chat para mais informações.';
     let userDoc = await admin.firestore().doc(`users/${uid}`).get();
     let fcmToken = userDoc.get('fcm');
 
@@ -42,82 +41,45 @@ exports.sendNotificationToFCMTokenMSG = functions.firestore.document('vendas/{mU
     let response = await admin.messaging().send(message);
     console.log(response);
 });
- /*
-exports.sendNotificationUSER = functions.firestore.document('messages/{mUid}').onWrite(async (event) => {
-    const uid = event.after.get('compradorUID');
-    const statusEnt = event.after.get('statusEnt');
-
-    var conditionOne = 'Preparando Entrega' in statusEnt;
+exports.chatParaUsuario = functions.firestore.document('chats/{mUid}').onWrite(async (event) => {
+    //pegar o sender id e o receiver id
+    const uid = event.after.get('idComprador');
+    const title = 'Você tem uma nova mensagem!🗣📩';
+    const content = 'Abra a página de pedidos e entre no chat para mais informações.';
     let userDoc = await admin.firestore().doc(`users/${uid}`).get();
     let fcmToken = userDoc.get('fcm');
-		 var message = {
-        		notification: {
-            		title: 'Preparando seu pedido!',
-            		body: 'A loja ja está preparando o seu pedido...',
-        	},
-        	token: fcmToken,
-		    condition: conditionOne
 
-    	}
+    var message = {
+        notification: {
+            title: title,
+            body: content
+        },
+        token: fcmToken,
+    }
 
     let response = await admin.messaging().send(message);
     console.log(response);
-   if(status == 'Preparando Entrega'){
-    	 
-    }
-     if(status == 'Saiu para Entrega'){
-    	 const title = 'Seu pedido saiu!';
-    	 const content = 'Fique atento a sua porta, já já deve chegar!';
-    	 let userDoc = await admin.firestore().doc(`users/${uid}`).get();
-    	 let fcmToken = userDoc.get('fcm');
-
-    	 var message = {
-        		notification: {
-            		title: title,
-            		body: content,
-        	},
-        	token: fcmToken,
-    	}
-
-    	let response = await admin.messaging().send(message);
-    	console.log(response);
-    }
-     if(status == 'Entregue'){
-    	 const title = 'Seu pedido foi entregue!';
-    	 const content = 'Obrigado por comprar pelo Axé Delivery! Muito axé para você!';
-    	 let userDoc = await admin.firestore().doc(`users/${uid}`).get();
-    	 let fcmToken = userDoc.get('fcm');
-
-    	 var message = {
-        		notification: {
-            		title: title,
-            		body: content,
-        	},
-        	token: fcmToken,
-    	}
-
-    	let response = await admin.messaging().send(message);
-    	console.log(response);
-    }else {
-    	 const title = 'Erro';
-    	 const content = 'Vixi, moio';
-    	 let userDoc = await admin.firestore().doc(`users/${uid}`).get();
-    	 let fcmToken = userDoc.get('fcm');
-
-    	 var message = {
-        		notification: {
-            		title: title,
-            		body: content,
-        	},
-        	token: fcmToken,
-    	}
-
-    	let response = await admin.messaging().send(message);
-    	console.log(response);
-    }
 });
-*/
-    
+
+exports.comentarioLoja = functions.firestore.document('comments/{mUid}').onWrite(async (event) => {
+    //pegar o sender id e o receiver id
+    const uid = event.after.get('lojaUID');
+    const title = 'Você tem um novo comentário!😍';
+    const content = 'Tem gente dando feedback! corre lá pra ver!';
+    let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+    let fcmToken = userDoc.get('fcm');
+
+    var message = {
+        notification: {
+            title: title,
+            body: content
+        },
+        token: fcmToken,
+    }
+
+    let response = await admin.messaging().send(message);
+    console.log(response);
+});
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript

@@ -1,17 +1,13 @@
-<ion-header class="ion-no-border">
-  <ion-navbar>
-  <img style="width:28%"src="/assets/Picture1.png">
+
+<ion-content [fullscreen]="true" class="">
+  
+<div class="background-div1">
+  <img style="width:auto; height:85%"src="/assets/Picture1.png">
   <ion-fab vertical="top" horizontal="end" slot="fixed">
   <ion-fab-button (click)="perfilPage()" color="dark">
     <ion-icon style="color:#ffc409" name="person-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
- 
-</ion-navbar>
-</ion-header>
-<ion-content [fullscreen]="true" class="">
-  
-<div class="background-div1">
 
 </div>
 	
@@ -21,18 +17,31 @@
   </ion-fab-button>
 </ion-fab>
 
-	 <ion-card class="card-1">
-  		<ion-card-header>
-    		<ion-card-subtitle>Seu endereço</ion-card-subtitle>
-        <ion-card-title style="width: 80%;">{{endereco}}</ion-card-title>
-        <p>{{complemento}}, {{numero}} - {{bairro}} - {{estado}}</p>
-  		</ion-card-header>
-  		<ion-button color="dark" expand="block" style="margin-top: -5%; color:#ffc409" (click)="status()">
-        <p style="color:#ffc409">Seus Pedidos</p>
-  		</ion-button>
-  </ion-card>
+<ion-card class="card-1">
+  <ion-card-header>
+    <ion-card-subtitle>Seu endereço</ion-card-subtitle>
+    <ion-card-title style="width: 80%;">{{endereco}}</ion-card-title>
+    <p>{{complemento}}, {{numero}} - {{bairro}} - {{estado}}</p>
+  </ion-card-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="dark" expand="block" style="margin-top: -5%; color:#ffc409" (click)="status()">
+          <p style="color:#ffc409">Seus Pedidos</p>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button  href="https://wa.me/5521997955586" color="success" expand="block" style="margin-top: -5%">
+          <p>Fale Conosco</p>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-card>
    
-<ion-slides style="margin-top: 25%;" pager #mySlider class="slides" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
+<ion-slides pager #mySlider class="slides" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
   <ion-slide>
     <ion-card class="img-back" >
       <img src="/assets/Ervas.png">

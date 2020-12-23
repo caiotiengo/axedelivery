@@ -169,7 +169,7 @@ status(){
                         this.tipo = event.tipo
                         this.aprovado = event.aprovado
                         this.complemento = event.complemento
-                        this.fcmzin = event.FCM
+                        this.fcmzin = event.fcm
 
                         //let birthdate = this.DOB
                        // format(new Date(birthdate), "yyyy-MM-dd");
@@ -288,13 +288,9 @@ status(){
      console.log('Device registered', registration.registrationId)
      this.FCM = registration.registrationId
      this.services.updateFCM(this.userId, this.FCM);
-      this.showalert('Opa!', 'Notificação habilitada.')
+     // this.showalert('Opa!', 'Notificação habilitada.')
          console.log('Device registered', registration)
-   /*  this.afStore.collection('devices').add({
-          idDevice: registration[0].registrationId,
- 
-       });
-   */
+
    } );
    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
  

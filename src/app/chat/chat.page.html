@@ -15,7 +15,7 @@
 
 
 <div class="chat">
-  <ion-list style="background: transparent;"*ngFor="let msgs of loja?.mensagens">
+  <ion-list style="background: transparent;"*ngFor="let msgs of chatou?.mensagens">
     <div class="ms-right"  *ngIf="userUID === msgs.uid">
   
         <p>{{msgs.conteudo}}</p>

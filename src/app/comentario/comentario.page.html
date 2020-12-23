@@ -1,0 +1,34 @@
+
+
+<ion-content>
+  <div style="margin:auto; text-align: center;">
+    <ion-button style="
+    margin-top: 5%;--background: gray;" (click)="dismiss()">
+    Voltar
+  
+    </ion-button>
+  </div>
+  <img src="/assets/jupira.png">
+  <ionic5-star-rating #rating
+    activeIcon = "heart"
+    defaultIcon = "heart"
+    activeColor = "#ff0a0a" 
+    defaultColor = "#989aa2"
+    readonly="false"
+    fontSize = "50px"
+    rating="0"
+    name="starRating2"
+    ngDefaultControl
+    (ratingChanged)="criar()"
+    [(ngModel)]="starRating2" style="text-align: center;"></ionic5-star-rating>
+    <h2 style="text-align: center;font-size: xx-large;">Avalie a sua compra!</h2>
+    <div style="text-align: center;">
+      <p>Curtiu o serviço da {{venda?.nomeLoja}}?</p>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Escreva aqui</ion-label>
+      <ion-input [(ngModel)]="comentario"></ion-input>
+    </ion-item>
+    <ion-button fill="solid" expand="block" (click)="criar()" color="warning">Enviar</ion-button>
+
+</ion-content>
