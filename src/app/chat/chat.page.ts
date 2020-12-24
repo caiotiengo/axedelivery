@@ -66,9 +66,18 @@ export class ChatPage implements OnInit {
   enviar(){
     if(!this.novaMsg){
 
+    }else{
+      var message = this.novaMsg;
+      var emailExp = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/img;
+     // var linksExp = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm
+      var phoneExp = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/img;
+      console.log(message.replace(phoneExp, '************'))
+      var messageE = message.replace(phoneExp,'***********').replace(emailExp,'**************')
+      this.services.updateChat(this.loja.chat,messageE)
+      this.novaMsg = '';
     }
-    this.services.updateChat(this.loja.chat,this.novaMsg)
-    this.novaMsg = '';
+
+
   	// aqui eu farei o envio da mensagem, mas eu não consigo achar um PUSH para o firebase. só consigo atualizar um item
   }
  

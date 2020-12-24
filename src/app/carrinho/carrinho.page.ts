@@ -237,11 +237,12 @@ export class CarrinhoPage implements OnInit {
 
   }
   cupo(){
-    this.cuponzada.forEach(element => {
-      if(element.cupom != this.cupom){
+      var y = this.cuponzada.filter(i => i.cupom === this.cupom)
+      console.log(y)
+      if(y.length === 0 ){
         this.services.getCupom().subscribe((data) =>{
           var x = data.filter(i => i.cupom === this.cupom)
-          if(x.length != 0 ){
+          if(x.length != 0){
             console.log(x)
             alert('Não é uma oferenda, mas o cupom foi aceito com sucesso!')
             this.cuponNome = x[0].cupom
@@ -316,12 +317,11 @@ export class CarrinhoPage implements OnInit {
             alert('Cupom inválido!')
     
           }
-        })        
+        })      
       }else{
-        alert('Macumba dupla não vale! Esse cupom já foi usado por você!')
+        alert('Macumba dobrada não vale né? você já usou esse cupom!')
       }
-    })
-
+  
   }
 
    async presentLoading() {
@@ -892,7 +892,8 @@ teste(){
     this.valor = z.toFixed(2)
     if(this.carrinhoDes[index].quantity === 0 ){
       alert('O item será retirado do seu carrinho!')
-      _.remove(this.carrinhoDes[index], this.carrinhoDes)
+      this.carrinhoDes.splice(index, 1)
+      this.produtos.splice(index,1)
       console.log(this.carrinhoDes)
     }else{
     }

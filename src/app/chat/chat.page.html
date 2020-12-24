@@ -15,9 +15,9 @@
 
 
 <div class="chat">
-
-
-  <ion-grid>
+<p style="text-align: center;">Lembre-se, as conversas através do chat do Axé Delivery são monitoradas para a sua segurança.</p>
+<p style="text-align: center;"> O compartilhamento de números ou qualquer outro dado para contato está sujeito a punições.</p> 
+<ion-grid>
     <ion-row *ngFor="let msgs of chatou?.mensagens">
       <ion-col size="9"  *ngIf="userUID != msgs.uid" class="message other-message">
         <b>{{msgs.conteudo}}</b><br>
