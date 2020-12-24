@@ -103,6 +103,7 @@ export class CarrinhoPage implements OnInit {
     descontin
     porcentagemDes
     cuponNome
+    cuponzada
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -168,6 +169,7 @@ export class CarrinhoPage implements OnInit {
       this.idmoip = event.idmoip;
       this.porcentagemLoja =  event.porcentagemLoja;
       this.porcentagemAxe = event.porcentagemAxe;
+      this.cuponzada = event.cupons;
     });
 
     this.hash = 'Gerando hash...';
@@ -235,85 +237,91 @@ export class CarrinhoPage implements OnInit {
 
   }
   cupo(){
-    this.services.getCupom().subscribe((data) =>{
-      var x = data.filter(i => i.cupom === this.cupom)
-      if(x.length != 0 ){
-        console.log(x)
-        alert('Não é uma oferenda, mas o cupom foi aceito com sucesso!')
-        this.cuponNome = x[0].cupom
-        this.porcentagemDes = x[0].desconto
-        console.log(this.porcentagemDes)
-        var mapa = this.carrinho.map(i => i.price * Number(i.quantity))
-        console.log(mapa)
-
-        var calculo =  mapa.reduce((acc, val) => acc += val);
-        console.log(calculo)
-
-        var percentage = x[0].desconto
-        console.log(percentage)
-
-        var valor = (percentage / 100) * calculo;
-        console.log(valor)
-
-        var mapaQTD = this.carrinho.map(i => Number(i.quantity))
-        console.log(mapaQTD)
-
-        var qtd = mapaQTD.reduce((acc, val) => acc += val);
-        console.log(qtd)
-
-        //valor do desconto para ficar aparente
-        var mapa2 = this.carrinho.map(i => i.valor)
-        console.log(mapa2)
-
-        var calculo2 =  mapa2.reduce((acc, val) => acc += val);
-        console.log(calculo2)
-
-        var valor2 = (percentage / 100) * calculo2;
-        console.log(valor2)
-        
-        var calculodesconto2 = calculo2 - valor2 + Number(this.valorDelivery)
-        console.log(calculodesconto2.toFixed(2));
-        this.valor = Number(calculodesconto2.toFixed(2))
-        // calculo da
-        var valorFinal = valor / qtd
-        console.log(valorFinal.toFixed(0))
-        this.carrinhoDes = [];
-        this.carrinho.forEach(e => {
-          var quantidade = e.quantity
-          var valor = Number(valorFinal.toFixed(0)) * Number(quantidade)
-          var valorx = valor / quantidade
-          console.log(valorx)
-
-          this.descontin = e.price - valorx
-          console.log(this.descontin)
-          this.carrinhoDes.push({
-            email: this.email,
-            emailLoja: this.loja.email,
-            especi: e.especi,
-            fotos: e.fotos,
-            itemNumber: e.itemNumber,
-            lojaUID: e.lojaUID,
-            nome: e.nome,
-            price: Number(e.price) - Number(valorx),
-            product: e.product,
-            quantity: e.quantity,
-            valor: Number(this.valor),
-            valorReal:e.valorReal
-          })
-
-        });
-        console.log(this.carrinhoDes)
-        console.log(this.carrinho)
-        this.esconde = true;
-        
-
+    this.cuponzada.forEach(element => {
+      if(element.cupom != this.cupom){
+        this.services.getCupom().subscribe((data) =>{
+          var x = data.filter(i => i.cupom === this.cupom)
+          if(x.length != 0 ){
+            console.log(x)
+            alert('Não é uma oferenda, mas o cupom foi aceito com sucesso!')
+            this.cuponNome = x[0].cupom
+            this.porcentagemDes = x[0].desconto
+            console.log(this.porcentagemDes)
+            var mapa = this.carrinho.map(i => i.price * Number(i.quantity))
+            console.log(mapa)
+    
+            var calculo =  mapa.reduce((acc, val) => acc += val);
+            console.log(calculo)
+    
+            var percentage = x[0].desconto
+            console.log(percentage)
+    
+            var valor = (percentage / 100) * calculo;
+            console.log(valor)
+    
+            var mapaQTD = this.carrinho.map(i => Number(i.quantity))
+            console.log(mapaQTD)
+    
+            var qtd = mapaQTD.reduce((acc, val) => acc += val);
+            console.log(qtd)
+    
+            //valor do desconto para ficar aparente
+            var mapa2 = this.carrinho.map(i => i.valor)
+            console.log(mapa2)
+    
+            var calculo2 =  mapa2.reduce((acc, val) => acc += val);
+            console.log(calculo2)
+    
+            var valor2 = (percentage / 100) * calculo2;
+            console.log(valor2)
+            
+            var calculodesconto2 = calculo2 - valor2 + Number(this.valorDelivery)
+            console.log(calculodesconto2.toFixed(2));
+            this.valor = Number(calculodesconto2.toFixed(2))
+            // calculo da
+            var valorFinal = valor / qtd
+            console.log(valorFinal.toFixed(0))
+            this.carrinhoDes = [];
+            this.carrinho.forEach(e => {
+              var quantidade = e.quantity
+              var valor = Number(valorFinal.toFixed(0)) * Number(quantidade)
+              var valorx = valor / quantidade
+              console.log(valorx)
+              this.descontin = e.price - valorx
+              console.log(this.descontin)
+              this.carrinhoDes.push({
+                email: this.email,
+                emailLoja: this.loja.email,
+                especi: e.especi,
+                fotos: e.fotos,
+                itemNumber: e.itemNumber,
+                lojaUID: e.lojaUID,
+                nome: e.nome,
+                price: Number(e.price) - Number(valorx),
+                product: e.product,
+                quantity: e.quantity,
+                valor: Number(this.valor),
+                valorReal:e.valorReal
+              })
+    
+            });
+            console.log(this.carrinhoDes)
+            console.log(this.carrinho)
+            this.esconde = true;
+            
+    
+          }else{
+            console.log(x)
+            this.cuponNome = 'Sem cupom'
+            alert('Cupom inválido!')
+    
+          }
+        })        
       }else{
-        console.log(x)
-        this.cuponNome = 'Sem cupom'
-        alert('Cupom inválido!')
-
+        alert('Macumba dupla não vale! Esse cupom já foi usado por você!')
       }
     })
+
   }
 
    async presentLoading() {
@@ -463,10 +471,12 @@ teste(){
                   console.log(this.produtos);
                   var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
                   console.log(seq);
+                  this.services.updateCupom(this.uid, this.cuponNome)
+
                   this.afStore.collection('vendas').add({
                     nPedido:Number(seq),
                     nomeComprador: this.nome,
-                    endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                    endereco: this.endereco + ', '+ this.numeroEND +', ' + this.complemento +', '+ this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                     nomeLoja: this.loja.nome,
                     valor: Number(this.valor),
                     dia,
@@ -518,10 +528,12 @@ teste(){
                 console.log(this.produtos);
                 var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
                 console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
                 this.afStore.collection('vendas').add({
                   nPedido:Number(seq),
                   nomeComprador: this.nome,
-                  endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                   nomeLoja: this.loja.nome,
                   valor: Number(this.valor),
                   dia,
@@ -574,10 +586,12 @@ teste(){
                 console.log(this.produtos);
                 var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
                 console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
                 this.afStore.collection('vendas').add({
                   nPedido:Number(seq),
                   nomeComprador: this.nome,
-                  endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                   nomeLoja: this.loja.nome,
                   valor: Number(this.valor),
                   dia,
@@ -704,10 +718,12 @@ teste(){
       console.log(this.produtos);
       var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
       console.log(seq);
+      this.services.updateCupom(this.uid, this.cuponNome)
+
       this.afStore.collection('vendas').add({
         nPedido:Number(seq),
         nomeComprador: this.nome,
-        endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+        endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
         valor: Number(this.valor),
         dia,
         mes,
@@ -816,10 +832,12 @@ teste(){
       console.log(this.produtos);
       var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
       console.log(seq);
+      this.services.updateCupom(this.uid, this.cuponNome)
+
       this.afStore.collection('vendas').add({
         nPedido:Number(seq),
         nomeComprador: this.nome,
-        endereco: this.endereco + ', '+ this.numeroEND +',' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+        endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
         valor: Number(this.valor),
         dia,
         mes,
@@ -861,23 +879,22 @@ teste(){
     this.valor = z.toFixed(2)
   }
   retirarQTD(index:number){
+    console.log(index)
+    this.carrinhoDes[index].quantity -= 1;
+    console.log(this.carrinhoDes[index])
+    //var result = this.carrinhoDes[index].price * this.carrinhoDes[index].quantity; 
+    var resultString = this.carrinhoDes[index].valorReal * this.carrinhoDes[index].quantity;
+    this.carrinhoDes[index].valor = Number(resultString)
+    var y = this.carrinhoDes.map(i => Number(i.valor));
+    var result = y.reduce((acc, val) => acc += val);
+    console.log(result);
+    var z = Number(result) + Number(this.valorDelivery);
+    this.valor = z.toFixed(2)
     if(this.carrinhoDes[index].quantity === 0 ){
-
-      alert('O será retirado do seu carrinho!')
-      _.remove(this.carrinhoDes[index],)
+      alert('O item será retirado do seu carrinho!')
+      _.remove(this.carrinhoDes[index], this.carrinhoDes)
       console.log(this.carrinhoDes)
     }else{
-      console.log(index)
-      this.carrinhoDes[index].quantity -= 1;
-      console.log(this.carrinhoDes[index])
-      //var result = this.carrinhoDes[index].price * this.carrinhoDes[index].quantity; 
-      var resultString = this.carrinhoDes[index].valorReal * this.carrinhoDes[index].quantity;
-      this.carrinhoDes[index].valor = Number(resultString)
-      var y = this.carrinhoDes.map(i => Number(i.valor));
-      var result = y.reduce((acc, val) => acc += val);
-      console.log(result);
-      var z = Number(result) + Number(this.valorDelivery);
-      this.valor = z.toFixed(2)
     }
   }
 

@@ -15,28 +15,22 @@
 
 
 <div class="chat">
-  <ion-list style="background: transparent;"*ngFor="let msgs of chatou?.mensagens">
-    <div class="ms-right"  *ngIf="userUID === msgs.uid">
-  
-        <p>{{msgs.conteudo}}</p>
-     </div> 
-    <div class="ms-left"  *ngIf="userUID != msgs.uid">
-         <p>{{msgs.conteudo}}</p>
-    </div>
-  </ion-list>
+
+
+  <ion-grid>
+    <ion-row *ngFor="let msgs of chatou?.mensagens">
+      <ion-col size="9"  *ngIf="userUID != msgs.uid" class="message other-message">
+        <b>{{msgs.conteudo}}</b><br>
+        <div class="time" text-right><br>{{msgs.criadoEm | date: 'short'}}</div>
+      </ion-col>
+      <ion-col offset="3" size="9"  *ngIf="userUID === msgs.uid" class="message my-message">
+        <b>{{msgs.conteudo}}</b><br>  
+        <div class="time" text-right><br>{{msgs.criadoEm | date: 'short'}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </div>
-
-
-
-
-  
-
-
-
-
-
-
-
 
 </ion-content >
 

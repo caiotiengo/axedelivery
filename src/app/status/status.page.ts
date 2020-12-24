@@ -75,6 +75,7 @@ export class StatusPage implements OnInit {
   usuarioLogado
   categorias
   categoriasLoja
+  descr = true;
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
               private route: ActivatedRoute, private storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -284,7 +285,6 @@ export class StatusPage implements OnInit {
   lista(){
     this.navCtrl.pop();
   }
-
   novoComment(items){
     
     this.storage.remove('comentario').then(() =>{
@@ -479,7 +479,7 @@ export class StatusPage implements OnInit {
         nomeComprador: items.nomeComprador,
         idVenda: items.id,
         idLoja:items.lojaUID,
-        idComprador:items.idComprador
+        idComprador:items.compradorUID
       }).then(data =>{
         var x = data.id
         var y = items.id

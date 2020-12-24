@@ -44,6 +44,7 @@ export interface User {
     status?:any;
     digitoConta?:any;
     numeroBank?:any;
+    cupons?:any;
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -289,12 +290,20 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string,comple
       const {uid} = firebase.auth().currentUser;
       const data = {
          uid,
-         id,
          conteudo,
          criadoEm: Date.now()
      }
       this.chatCollection.doc<Chat>(id).update({mensagens: firebase.firestore.FieldValue.arrayUnion(data)})  
   }
+  updateCupom(id:string,cupom:string){
+    const {uid} = firebase.auth().currentUser;
+    const data = {
+       uid,
+       cupom,
+       usadoEm: Date.now()
+   }
+    this.userCollection.doc<User>(id).update({cupons: firebase.firestore.FieldValue.arrayUnion(data)})  
+}
   updateVendas(id:string, chatId:string){
     this.vendasCollection.doc<Vendas>(id).update({chat: chatId})
   }

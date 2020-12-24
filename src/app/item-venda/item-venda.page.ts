@@ -51,6 +51,8 @@ export class ItemVendaPage implements OnInit {
   }
   save() {
     this.que = this.route.snapshot.paramMap.get('id');
+    alert('Status atualizado! O cliente já foi informado!')
+
     return this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt });
   }
   load() {

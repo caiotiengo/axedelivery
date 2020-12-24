@@ -40,6 +40,24 @@
     }
 
 }
+
+.message{
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:5px;
+    white-space: pre-wrap;
+}
+.other-message{
+    background: var(--ion-color-tertiary);
+    color:#fff;
+}
+.my-message{
+    background: var(--ion-color-warning);
+    color:black;
+}
+.time{
+
+}
 ion-content{
   //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
 
