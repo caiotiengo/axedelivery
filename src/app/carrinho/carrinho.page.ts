@@ -475,10 +475,14 @@ teste(){
 
                   this.afStore.collection('vendas').add({
                     nPedido:Number(seq),
+                    valorFrete: this.valorDelivery,
                     nomeComprador: this.nome,
+                    bairroEnt: this.bairro,
+                    entregador:"Não Solicitado",
                     endereco: this.endereco + ', '+ this.numeroEND +', ' + this.complemento +', '+ this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                     nomeLoja: this.loja.nome,
                     valor: Number(this.valor),
+                    enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
                     dia,
                     mes,
                     produtos: this.produtos,
@@ -532,10 +536,15 @@ teste(){
 
                 this.afStore.collection('vendas').add({
                   nPedido:Number(seq),
+                  valorFrete: this.valorDelivery,
                   nomeComprador: this.nome,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+
                   endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                   nomeLoja: this.loja.nome,
                   valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
                   dia,
                   mes,
                   produtos: this.produtos,
@@ -591,9 +600,14 @@ teste(){
                 this.afStore.collection('vendas').add({
                   nPedido:Number(seq),
                   nomeComprador: this.nome,
+                  valorFrete: this.valorDelivery,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+
                   endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                   nomeLoja: this.loja.nome,
                   valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
                   dia,
                   mes,
                   produtos: this.produtos,
@@ -723,8 +737,14 @@ teste(){
       this.afStore.collection('vendas').add({
         nPedido:Number(seq),
         nomeComprador: this.nome,
-        endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+        valorFrete: this.valorDelivery,
+        bairroEnt: this.bairro,
+        entregador:"Não Solicitado",
+
+        endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+        nomeLoja: this.loja.nome,
         valor: Number(this.valor),
+        enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
         dia,
         mes,
         produtos: this.produtos,
@@ -837,8 +857,14 @@ teste(){
       this.afStore.collection('vendas').add({
         nPedido:Number(seq),
         nomeComprador: this.nome,
-        endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,          nomeLoja: this.loja.nome,
+        valorFrete: this.valorDelivery,
+        bairroEnt: this.bairro,
+        entregador:"Não Solicitado",
+
+        endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,      
+        nomeLoja: this.loja.nome,
         valor: Number(this.valor),
+        enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
         dia,
         mes,
         produtos: this.produtos,

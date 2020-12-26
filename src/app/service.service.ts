@@ -86,6 +86,8 @@ export interface Vendas {
     valorDevedor?: number;
     chat?:any;
     comentario?:any;
+    enderecoLoja?:any;
+    valorFrete?:any;
 }
 export interface Comentario{
         comments?: string;
