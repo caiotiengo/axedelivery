@@ -1,9 +1,108 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>entregar</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
-<ion-button (click)="entregar()">entregar</ion-button>
+  <div *ngIf="tipo === 'Loja'">
+    <div style="margin:auto; text-align: center;">
+      <ion-button style="
+      margin-top: 5%;--background: gray;" (click)="dismiss2()">
+      Fechar
+    
+      </ion-button>
+    </div>
+  <div style="text-align: center; padding: 15px;">
+    <img src="assets/juntos.png">
+
+    <h1 style="font-size: 20px;">Não se esqueça de atualizar o pedido!</h1>
+
+    <p style="color: gray;
+    font-style: italic;">Esse pedido se encontra em andamento! Se já foi entregue ou finalizado, atualize o status.</p>
+  <p>Olha o pedido aqui! 😉</p>
+  </div>
+    <div>
+    
+
+      <div>
+        <h4 style="text-align: center;">{{venda.nPedido}}</h4>
+
+      </div>
+      
+      <ion-item>
+        
+        <ion-label style="font-size: larger;
+        font-weight: 400;
+        color: black;"> {{venda.statusEnt}}</ion-label>
+
+      </ion-item>
+
+      <p *ngIf="venda.statusEnt != 'Entregue' && venda.statusEnt !='Cancelado'" style="padding:10px;margin-bottom: 3%;
+      color: black;">Fale com seus clientes o mais rápido possível! 😉</p>
+      <div *ngIf="venda.statusEnt === 'Loja informada'" >
+        <ion-button fill="solid" expand="block" style="font-weight: 400;" (click)="save(venda)" color="danger">Cancelar Compra</ion-button>
+      </div>
+      <div *ngIf="venda.statusEnt != 'Entregue' && venda.statusEnt !='Cancelado'">
+        <ion-button fill="solid" expand="block" style="font-weight: 400;" color="success" (click)="novoChat(venda)">Fale com o cliente</ion-button>
+      </div>
+      <div *ngIf="venda.statusEnt === 'Preparando Entrega'">
+        <ion-button fill="solid" expand="block" style="font-weight: 400;" color="dark" (click)="entregador(venda)">Solicite um entregador</ion-button>
+      </div>
+      <ion-button color="light" expand="block" (click)="dismiss2()" [routerLink]="['/item-venda/' + venda.id]">Mais informações</ion-button>
+
+      <div style="    padding: 15px;
+      color: gray;">
+        <p> Valor • R${{venda.valor}}</p>
+        <p> Data da compra • {{venda.dia}}</p>
+        <p> Status de pagamento • {{venda.statusPag}}</p>
+        <p slot="end">Endereço • {{venda.endereco}} </p><br/>
+      </div>
+
+    </div>
+  </div>   
+  
+  <div  *ngIf="tipo === 'User'">
+
+
+    <div style="margin:auto; text-align: center;">
+      <ion-button style="
+      margin-top: 5%;--background: gray;" (click)="dismiss2()">
+      Fechar
+    
+      </ion-button>
+    </div>
+    <div style="text-align: center; padding: 15px;">
+      <img src="assets/juntos.png">
+  
+      <h1 style="font-size: 20px;">Não se esqueça do seu pedido!</h1>
+  
+      <p style="color: gray;
+      font-style: italic;">Esse pedido se encontra em andamento! Se já foi entregue ou finalizado, informe a loja para atualizar o status</p>
+    <p>Olha o pedido aqui! 😉</p>
+    </div>
+  
+    <div style="padding: 10px;">
+      <h4 style="text-align: center;">{{venda.nomeLoja}}</h4>
+      <ion-item>
+        <ion-label style="font-size: larger;
+        font-weight: 400;
+        color: black;"> {{venda.statusEnt}}</ion-label>
+        <p slot="end">Ped: {{venda.nPedido}}</p>
+  
+  
+      </ion-item>
+  
+      <ion-progress-bar *ngIf="venda.statusEnt != 'Entregue' && venda.statusEnt !='Cancelado'" color="warning" type="indeterminate"></ion-progress-bar>
+        <p *ngIf="venda.statusEnt != 'Entregue' && venda.statusEnt !='Cancelado'" style="padding:10px;margin-bottom: 3%;
+        color: black;">Normalmente as lojas demoram 30 minutos para responder😉</p>
+      <div *ngIf="venda.statusEnt === 'Entregue'">
+        <ion-button fill="solid" expand="block" style="font-weight: 400;" *ngIf="!venda.comentario"  color="warning" (click)="novoComment(venda)">Como foi a sua compra?</ion-button>
+      </div>
+      <div *ngIf="venda.statusEnt === 'Loja informada'" >
+        <ion-button fill="solid" expand="block" style="font-weight: 400;"  (click)="save(venda)" color="danger">Cancelar Compra</ion-button>
+      </div>
+      <div *ngIf="venda.statusEnt != 'Entregue' && venda.statusEnt !='Cancelado'">
+        <ion-button fill="solid" expand="block" style="font-weight: 400;" color="success" (click)="novoChat(venda)">Fale com a loja</ion-button>
+      </div>
+      <ion-button color="light" expand="block" (click)="dismiss2()" [routerLink]="['/item-venda/' + venda.id]">Mais informações</ion-button>
+  
+    </div>
+  </div>
 </ion-content>

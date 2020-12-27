@@ -27,6 +27,7 @@ export class ChatPage implements OnInit {
   novaMsg:string
   userUID
   chatou
+  semChat
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               private route: ActivatedRoute, public alertCtrl: AlertController, public afAuth: AngularFireAuth,
               public services: ServiceService,  public modalController: ModalController,public afStore: AngularFirestore) { 
@@ -55,6 +56,8 @@ export class ChatPage implements OnInit {
         this.services.getChat(this.loja.chat).subscribe(res =>{
           console.log(res)
           this.chatou = res
+          this.semChat = this.chatou.mensagens.length;
+          console.log(this.semChat)
         })
         console.log(this.loja)
       })

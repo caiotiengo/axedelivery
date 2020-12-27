@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertController, NavController} from '@ionic/angular';
+import {AlertController, NavController, ModalController} from '@ionic/angular';
 import {Storage} from '@ionic/storage';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {ServiceService} from '../service.service';
@@ -25,7 +25,7 @@ export class ItemVendaPage implements OnInit {
   private goalList: any[];
   private loadedGoalList: any[];
   constructor( public navCtrl: NavController, private route: ActivatedRoute,  public afStore: AngularFirestore,
-               public services: ServiceService,
+               public services: ServiceService,public modalController: ModalController,
                public alertCtrl: AlertController, private storage: Storage) {
     this.load();
     this.que = this.route.snapshot.paramMap.get('id');
@@ -51,9 +51,24 @@ export class ItemVendaPage implements OnInit {
   }
   save() {
     this.que = this.route.snapshot.paramMap.get('id');
-    alert('Status atualizado! O cliente já foi informado!')
 
-    return this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt });
+    this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt }).then(() =>{
+      this.dismiss2()
+
+      this.navCtrl.navigateRoot('/status').then(() =>{
+        this.dismiss2()
+        alert('Status atualizado! O cliente já foi informado!')
+
+      })
+
+    });
+  }
+  dismiss2(){
+    // using the injected ModalController this page
+    // can "dismiss" itself and optionally pass back data
+    this.modalController.dismiss({
+      'dismissed': true
+    });
   }
   load() {
     this.que = this.route.snapshot.paramMap.get('id');

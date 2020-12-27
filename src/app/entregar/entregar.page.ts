@@ -1,73 +1,95 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { HTTP } from '@ionic-native/http/ngx';
 import Lalamove from 'lalamove-js'
+import { NavController, AlertController, ModalController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { ServiceService, Vendas } from '../service.service';
+import { FormBuilder } from '@angular/forms';
+import {Storage} from '@ionic/storage';
+
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.page.html',
   styleUrls: ['./entregar.page.scss'],
 })
 export class EntregarPage implements OnInit {
-  lala
-  body = {
-    'serviceType': 'MOTORCYCLE',
-    'scheduleAt': '2018-06-13T12:00:00:00Z', // Note: This is in UTC Timezone
-    'specialRequests': [],
-    'requesterContact': {
-        'name': 'Draco Yam',
-        'phone': '+6592344758'
-    },
-    'stops': [
-        {
-            'location': {'lat': '1.284318', 'lng': '103.851335'},
-            'addresses': {
-                'en_SG': {
-                    'displayString': '1 Raffles Place #04-00, One Raffles Place Shopping Mall, Singapore',
-                    'country': 'SG'
-                }
-            }
-        },
-        {
-            'location': {'lat': '1.278578', 'lng': '103.851860'},
-            'addresses': {
-                'en_SG': {
-                    'displayString': 'Asia Square Tower 1, 8 Marina View, Singapore',
-                    'country': 'SG'
-                }
-            }
-        }
-    ],
-    'deliveries': [
-        {
-            'toStop': 1,
-            'toContact': {
-                'name': 'Brian Garcia',
-                'phone': '+6592344837'
-            },
-            'remarks': 'ORDER #: 1234, ITEM 1 x 1, ITEM 2 x 2'
-        }
-    ]
-  }
-  constructor(public http: HTTP) { 
+  @Input() venda ;
+  @Input() tipo ;
+  statusEnt = '';
+
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController,
+    private route: ActivatedRoute, private storage: Storage,
+    public afStore: AngularFirestore,  public services: ServiceService,
+    public modalController: ModalController,private formBuilder: FormBuilder) { 
 
 
-   /* this.lala = require('lalamove-js') ({
-      host: 'https://sandbox-rest.lalamove.com',
-      key: '201751069b814964a2585b9a299426e1',      // Obtained from Lalamove Sales Team
-      secret: 'MC4CAQACBQDn1/a/AgMBAAECBQDD0/8RAgMA9psCAwDwrQIDAJiNAgMAzAEC',   // Obtained from Lalamove Sales Team
-      country: 'BR'
-    })
-    console.log(this.lala)*/
+
   }
 
   ngOnInit() {
+    console.log(this.tipo)
+    console.log(this.venda)
   }
-  entregar(){
-    /*this.lala.quotation(this.body)
-    .then(function (response) {
-      return response
-    })*/
+  save() {
+   this.services.vendasCollection.doc<Vendas>(this.venda.id).update({statusEnt: this.statusEnt }).then(() =>{
+     this.navCtrl.navigateRoot('/status')
+   });
   }
-  
+  novoChat(items){
+    var mensagens = []
+    if(items.chat){
+      this.storage.remove('idVenda').then(() =>{
+        this.storage.remove('idChat').then(() =>{
+          this.services.getStatusProd(items.id).subscribe(data =>{
+            var x = data.chat
+            var y = items.id
+            console.log(x);
+            this.storage.set('idVenda', y).then(()=>{
+              this.storage.set('idChat', x).then(() =>{
+                this.dismiss2()
+
+                this.navCtrl.navigateForward('/chat/' + x);
+              });
+            })   
+          })
+        })
+      })
+    }else{
+      this.afStore.collection('chats').add({
+        mensagens: mensagens,
+        nomeLoja: items.nomeLoja,
+        nomeComprador: items.nomeComprador,
+        idVenda: items.id,
+        idLoja:items.lojaUID,
+        idComprador:items.compradorUID
+      }).then(data =>{
+        var x = data.id
+        var y = items.id
+        console.log(x);
+        this.storage.remove('idVenda').then(() =>{
+          this.storage.remove('idChat').then(() =>{
+            this.storage.set('idVenda', y).then(()=>{
+              this.storage.set('idChat', x).then(() =>{
+                this.dismiss2()
+                this.services.updateVendas(items.id, x);
+                this.navCtrl.navigateForward('/chat/' + x);
+              });
+            })
+          })
+        })
+      });
+    }
+    
+  }
+  dismiss2(){
+    // using the injected ModalController this page
+    // can "dismiss" itself and optionally pass back data
+    this.modalController.dismiss({
+      'dismissed': true
+    });
+  }
+
  
 }

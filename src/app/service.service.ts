@@ -88,6 +88,9 @@ export interface Vendas {
     comentario?:any;
     enderecoLoja?:any;
     valorFrete?:any;
+    entregador?:string;
+    bairroEnt?:string;
+
 }
 export interface Comentario{
         comments?: string;
@@ -96,7 +99,34 @@ export interface Comentario{
         emailLoja?: string;
         nomeComprador?: any;
         nPedido?:Number;
+}
 
+export interface Comentario{
+  comments?: string;
+  loja?: string;
+  lojaUID?: any;
+  emailLoja?: string;
+  nomeComprador?: any;
+  nPedido?:Number;
+
+}
+export interface Entregador{
+      idVenda?:string;
+      loja?:string;
+      lojaUID?:string;
+      emailLoja?:string;
+      nomeComprador?:string;
+      idComprador?:string;
+      enderecoLoja?:string;
+      enderecoEnt?:string;
+      nPedido?:number;
+      nomeEntregador?:string;
+      idEntregador?:string;
+      placa?:string;
+      tipo?:string;
+      produtos?:string;
+      bairro?:string;
+      valorEntrega?:string;
 }
 export interface Cupom{
   cupom?:string;
@@ -121,6 +151,7 @@ export class ServiceService {
   public commentsCollection: AngularFirestoreCollection<Comentario>;
   public cuponsCollection: AngularFirestoreCollection<Cupom>;
   public chatCollection: AngularFirestoreCollection<Chat>;
+  public entregadorCollection: AngularFirestoreCollection<Entregador>;
 
   users: Observable<User[]>;
   cupom: Observable<Cupom[]>;
@@ -128,6 +159,7 @@ export class ServiceService {
   processos: Observable<Processo[]>;
   vendas: Observable<Vendas[]>;
   comentario: Observable<Comentario[]>;
+  entregador: Observable<Entregador[]>;
 
   private user: User;
     likes: number;
@@ -147,6 +179,8 @@ export class ServiceService {
     this.commentsCollection = afs.collection<Comentario>('comments');
     this.cuponsCollection = afs.collection<Cupom>('cupons')
     this.chatCollection = afs.collection<Chat>('chats')
+    this.entregadorCollection = afs.collection<Entregador>('entregas')
+
     this.getUsers();
       // tslint:disable-next-line:indent
     this.getProccessos();
@@ -202,7 +236,7 @@ export class ServiceService {
       }))
     );
   }
-    getVendas() {
+  getVendas() {
         return this.vendas = this.vendasCollection.snapshotChanges().pipe(
             map(actions => actions.map(a => {
                 const data = a.payload.doc.data() as Vendas;
@@ -211,10 +245,11 @@ export class ServiceService {
                 return { id, ...data };
             }))
         );
-    }
+  }
   addUser(user: User) {
     this.userCollection.add(user);
   }
+
   addProc(processo: Processo) {
     this.processoCollection.add(processo);
   }
@@ -240,7 +275,9 @@ export class ServiceService {
       console.log(this.likes);
     });
  }
-
+  updateEntregas(id:string, identregador:string, status:string){
+    this.vendasCollection.doc<Vendas>(id).update({entregador:identregador, statusEnt: status})
+  }
 
   like(id: string , loja: Processo) {
       this.likes++;

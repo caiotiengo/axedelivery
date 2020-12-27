@@ -11,6 +11,8 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { MoipCreditCard } from 'moip-sdk-js';
 import moipSdk from 'moip-sdk-node'
 import { ComentarioPage } from '../comentario/comentario.page';
+import { ItemVendaPage } from '../item-venda/item-venda.page';
+import { EntregarPage } from '../entregar/entregar.page';
 export interface Vendas {
   nomeComprador: string;
   endereco: string;
@@ -136,6 +138,13 @@ export class StatusPage implements OnInit {
         this.categoriasLoja = Array.from(new Set(this.goalListST.map((item: any) => item.statusEnt)))
 
         this.goalListST.forEach( i =>{
+          if(i.statusEnt != 'Entregue' && i.statusEnt != 'Cancelado' && !i.idPagamento){
+            this.typeUser = 'Loja'
+
+            this.presentItem(i, this.typeUser);
+          }else{
+
+          }
           if(i.idPagamento){
             this.moip.payment.getOne(i.idPagamento)
             .then((response) => {
@@ -171,6 +180,13 @@ export class StatusPage implements OnInit {
 
         })
         this.goalListUs.forEach( i =>{
+          if(i.statusEnt != 'Entregue' && i.statusEnt != 'Cancelado' && !i.idPagamento){
+            this.typeUser = 'User'
+
+            this.presentItem(i, this.typeUser);
+          }else{
+
+          }
           if(i.idPagamento){
             this.moip.payment.getOne(i.idPagamento)
             .then((response) => {
@@ -294,6 +310,7 @@ export class StatusPage implements OnInit {
     })
   }
 
+ 
   async presentModal() {
     const modal = await this.modalController.create({
       component: ComentarioPage,
@@ -306,7 +323,48 @@ export class StatusPage implements OnInit {
 
     })
   }
+  async presentItem(i, tipo){
+    const modal = await this.modalController.create({
+      component: EntregarPage,
+      cssClass: 'my-custom-modal-css',
+      componentProps: {
+        'id': i.id,
+        'venda': i,
+        'tipo': tipo
+       // 'idLoja': idLoja
+      }
+    });
+     await modal.present();
 
+    await modal.onDidDismiss().then((r) => {
+      var x = r.data.data;
+
+    })
+  }
+  entregador(items){
+    this.afStore.collection('entregas').add({
+      idVenda:items.id,
+      loja: items.nomeLoja,
+      lojaUID:items.lojaUID,
+      emailLoja:items.emailLoja,
+      nomeComprador:items.nomeComprador,
+      idComprador:items.compradorUID,
+      enderecoLoja:items.enderecoLoja,
+      enderecoEnt:items.endereco,
+      nPedido:items.nPedido,
+      nomeEntregador:"",
+      idEntregador:"",
+      placa:"",
+      tipo:"",
+      produtos:items.produtos,
+      bairro: items.bairroEnt,
+      valorEntrega:items.valorFrete
+    }).then(res =>{
+      var x = res.id
+      var y = "Aguardando o Motorista"
+      this.services.updateEntregas(items.id, x, y)
+    })
+   }
   veritem(items) {
     console.log(items);
     this.storage.set('itemAberto', JSON.stringify(items)).then(() => {
