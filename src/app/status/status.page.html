@@ -139,9 +139,9 @@
       <div *ngIf="items.statusEnt != 'Entregue' && items.statusEnt !='Cancelado'">
         <ion-button fill="solid" expand="block" style="font-weight: 400;" color="success" (click)="novoChat(items)">Fale com o cliente</ion-button>
       </div>
-      <div *ngIf="items.statusEnt === 'Preparando Entrega'">
+      <!--div *ngIf="items.statusEnt === 'Preparando Entrega'">
         <ion-button fill="solid" expand="block" style="font-weight: 400;" color="dark" (click)="entregador(items)">Solicite um entregador</ion-button>
-      </div>
+      </div-->
       <ion-button color="light" expand="block" [routerLink]="['/item-venda/' + items.id]">Mais informações</ion-button>
 
       <ion-card-content>

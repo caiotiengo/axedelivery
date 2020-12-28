@@ -141,7 +141,7 @@ export class StatusPage implements OnInit {
           if(i.statusEnt != 'Entregue' && i.statusEnt != 'Cancelado' && !i.idPagamento){
             this.typeUser = 'Loja'
 
-            this.presentItem(i, this.typeUser);
+            //this.presentItem(i, this.typeUser);
           }else{
 
           }

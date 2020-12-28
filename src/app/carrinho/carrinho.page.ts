@@ -603,7 +603,6 @@ teste(){
                   valorFrete: this.valorDelivery,
                   bairroEnt: this.bairro,
                   entregador:"Não Solicitado",
-
                   endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
                   nomeLoja: this.loja.nome,
                   valor: Number(this.valor),
@@ -615,7 +614,7 @@ teste(){
                   lojaUID: this.produtos[0].lojaUID,
                   emailLoja: this.loja.email,
                   statusPag: 'Cancelado pelo banco',
-                  statusEnt: 'Cancelado pelo banco',
+                  statusEnt: 'Cancelado',
                   telefoneComprador: this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
@@ -740,7 +739,6 @@ teste(){
         valorFrete: this.valorDelivery,
         bairroEnt: this.bairro,
         entregador:"Não Solicitado",
-
         endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
         nomeLoja: this.loja.nome,
         valor: Number(this.valor),
@@ -860,7 +858,6 @@ teste(){
         valorFrete: this.valorDelivery,
         bairroEnt: this.bairro,
         entregador:"Não Solicitado",
-
         endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,      
         nomeLoja: this.loja.nome,
         valor: Number(this.valor),
