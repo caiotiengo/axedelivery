@@ -1,0 +1,57 @@
+<ion-content [fullscreen]="true">
+  <div style="margin:auto; text-align: center;">
+    <ion-button style="
+    margin-top: 5%;--background: gray;" (click)="voltar()">
+    Voltar
+  
+    </ion-button>
+  </div>
+<div style="text-align: center;">
+  <p>Inicie agora o seu orçamento!</p>
+  <h4>
+    Adicione os produtos desejados
+  </h4>
+</div>
+<ion-list [hidden]="hide">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Produto</ion-label>
+          <ion-input [(ngModel)]="produto"></ion-input>
+          </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-button style="margin-top: 20%;" [hidden]="hide" expand="full" (click)="addItem()" color="success">
+          Adicionar  
+         </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <ion-item *ngFor="let items of produtos;  let i=index">
+
+    <ion-label>
+      <h2 style="    font-size: larger;
+      padding: 5px;
+      font-weight: bold;">{{items.nome}}</h2>
+
+      <ion-button *ngIf="quantity !== 0" color="warning" style="margin-right: 5%;" (click)="retirar(i)">
+        <ion-icon name="remove-outline"></ion-icon>
+      </ion-button>
+      
+        {{items.quantity}}
+      
+      <ion-button style="margin-left: 5%;" color="warning" (click)="adicionar(i)">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-label>
+
+    
+
+
+    <ion-button color="danger" slot="end" (click)="deletaItem(i)">Excluir</ion-button>
+  </ion-item>
+  </ion-list>
+<ion-button expand="block" color="success" (click)="enviar()">Enviar para a loja</ion-button>
+</ion-content>

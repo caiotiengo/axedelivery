@@ -12,6 +12,7 @@ import {AlertController} from '@ionic/angular';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ModalVendaPage } from '../modal-venda/modal-venda.page';
+import { OrcamentoPage } from '../orcamento/orcamento.page';
 
 export interface User {
     name: string;
@@ -216,9 +217,21 @@ export class ItemPage implements OnInit {
     }
     ngOnInit(){}
 
+ async orcamento(){
+          const modal = await this.modalController.create({
+            component: OrcamentoPage,
+            cssClass: 'my-custom-modal-css',
+            componentProps: {
+              //'id': id,
+              'idLoja': this.que
+            }
+          });
+          await modal.present();
 
-
-
+          await modal.onDidDismiss().then((r) => {
+            
+          })
+    }
 
   voltar(){
     this.navCtrl.pop()

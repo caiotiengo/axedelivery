@@ -82,6 +82,22 @@ const routes: Routes = [
   {
     path: 'comentario',
     loadChildren: () => import('./comentario/comentario.module').then( m => m.ComentarioPageModule)
+  },
+  {
+    path: 'orcamento',
+    loadChildren: () => import('./orcamento/orcamento.module').then( m => m.OrcamentoPageModule)
+  },
+  {
+    path: 'politica-orcamento',
+    loadChildren: () => import('./politica-orcamento/politica-orcamento.module').then( m => m.PoliticaOrcamentoPageModule)
+  },
+  {
+    path: 'modal-orcamento',
+    loadChildren: () => import('./modal-orcamento/modal-orcamento.module').then( m => m.ModalOrcamentoPageModule)
+  },
+  {
+    path: 'lista-orcamento',
+    loadChildren: () => import('./lista-orcamento/lista-orcamento.module').then( m => m.ListaOrcamentoPageModule)
   }
 ];
 @NgModule({
