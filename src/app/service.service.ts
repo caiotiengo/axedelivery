@@ -139,6 +139,16 @@ export interface Chat{
   id?: string;
   uid?: string;
 }
+export interface Orcamento{
+  orcamento?:any;
+  valor?:any;
+  price?:number;
+  idComprador?:any;
+  idLoja?:any;
+  nomeComprador?:string;
+  nomeLoja?:string;
+  chat?:any;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -152,6 +162,7 @@ export class ServiceService {
   public cuponsCollection: AngularFirestoreCollection<Cupom>;
   public chatCollection: AngularFirestoreCollection<Chat>;
   public entregadorCollection: AngularFirestoreCollection<Entregador>;
+  public orcamentoCollection: AngularFirestoreCollection<Orcamento>;
 
   users: Observable<User[]>;
   cupom: Observable<Cupom[]>;
@@ -160,6 +171,7 @@ export class ServiceService {
   vendas: Observable<Vendas[]>;
   comentario: Observable<Comentario[]>;
   entregador: Observable<Entregador[]>;
+  orcamento: Observable<Orcamento[]>;
 
   private user: User;
     likes: number;
@@ -181,6 +193,7 @@ export class ServiceService {
     this.chatCollection = afs.collection<Chat>('chats')
     this.entregadorCollection = afs.collection<Entregador>('entregas')
 
+    this.orcamentoCollection = afs.collection<Orcamento>('orcamento')
     this.getUsers();
       // tslint:disable-next-line:indent
     this.getProccessos();
@@ -197,6 +210,16 @@ export class ServiceService {
           }))
 
       );
+  }
+  getOrcamentos(){
+    return this.orcamento = this.orcamentoCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Orcamento;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+      }))
+
+  );  
   }
   getCupom() {
     return this.cupom = this.cuponsCollection.snapshotChanges().pipe(
@@ -322,9 +345,17 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string,comple
     this.userCollection.doc<User>(id).update({fcm: FCM});
   }
 
-  addChat(){
+  updateOrcamento(id:string, idChat:any){
+    this.orcamentoCollection.doc<Orcamento>(id).update({chat:idChat})
+  }
+  updateOrcamentoVal(id:string, price:number, valor:string){
+    this.orcamentoCollection.doc<Orcamento>(id).update({price:price, valor:valor})
 
   }  
+  getOrcamento(id:string){
+   return this.orcamentoCollection.doc<Orcamento>(id).valueChanges();
+
+  }
   updateChat(id:string,conteudo:string){
       const {uid} = firebase.auth().currentUser;
       const data = {

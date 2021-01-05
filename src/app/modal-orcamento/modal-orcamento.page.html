@@ -1,9 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>modal-orcamento</ion-title>
+    <ion-title>{{orcamento.nomeComprador}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div style="margin:auto; text-align: center;">
+    <ion-button style="
+    margin-top: 5%;--background: gray;" (click)="voltar()">
+    Voltar
+  
+    </ion-button>
+  </div>
+  <div>
+    <h2 style="text-align: center;">Produtos</h2>
+      <ion-list *ngFor="let items of orcamento.orcamento">
+        <ion-item>
+          {{items.nome}}
+        </ion-item>
+      </ion-list>
+  </div>
+  <br/>
+  <br/>
+  <p style="text-align: center;">Envie agora o valor da sua proposta! Ela ficará disponível para o cliente comprar logo em seguida!</p>
+  <ion-item>
+    <ion-label position="floating">Valor</ion-label>
+    <ion-input name="valor" [(ngModel)]="valor"
+    [brmasker]="{money: true}" type="text"></ion-input>
+  </ion-item>
+<ion-button color="warning" expand="block" (click)="enviarPro()">Enviar Valores</ion-button>
 </ion-content>

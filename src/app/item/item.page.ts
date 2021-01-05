@@ -127,6 +127,7 @@ export class ItemPage implements OnInit {
     segumentacao = ''
     plataforma
     valorinicial
+    idUser
     constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -144,6 +145,7 @@ export class ItemPage implements OnInit {
       console.log(user);
       if (user) {
           this.mainuser = this.afStore.doc(`users/${user.uid}`);
+          this.idUser = user.uid
           this.sub = this.mainuser.valueChanges().subscribe(event => {
             this.nome = event.nome;
             this.endereco = event.endereco;
@@ -222,8 +224,9 @@ export class ItemPage implements OnInit {
             component: OrcamentoPage,
             cssClass: 'my-custom-modal-css',
             componentProps: {
-              //'id': id,
-              'idLoja': this.que
+              'id': this.idUser,
+              'idLoja': this.que,
+              'nome': this.nome
             }
           });
           await modal.present();

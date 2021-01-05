@@ -20,6 +20,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class OrcamentoPage implements OnInit {
   @Input() id ;
   @Input() idLoja ;
+  @Input() nome ;
   
   loja
   produtos: Array<Processo> = [];
@@ -35,6 +36,24 @@ export class OrcamentoPage implements OnInit {
     this.services.getProc(this.idLoja).subscribe(res =>{
       this.loja = res;
       console.log(this.loja)
+    })
+  }
+  enviar(){
+    this.afStore.collection('orcamento').add({
+      orcamento:this.produtos,
+      valor:0,
+      idComprador: this.id,
+      idLoja:this.idLoja,
+      nomeComprador: this.nome,
+      nomeLoja: this.loja.nome,
+    }).then(res =>{
+      console.log(res.id)
+      this.storage.set('idOrcamento', res.id).then(()=>{
+        alert('Seu orçamento foi enviado, em alguns minutos terá um retorno da loja!')
+        this.navCtrl.navigateForward('/lista-orcamento').then(()=>{
+          this.voltar();
+        })
+      })
     })
   }
   voltar(){

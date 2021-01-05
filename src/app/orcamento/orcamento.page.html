@@ -35,8 +35,8 @@
       <h2 style="    font-size: larger;
       padding: 5px;
       font-weight: bold;">{{items.nome}}</h2>
-
-      <ion-button *ngIf="quantity !== 0" color="warning" style="margin-right: 5%;" (click)="retirar(i)">
+      <p>Quantidade</p>
+      <ion-button *ngIf="items.quantity !== 0 && items.quantity !== 1" color="warning" style="margin-right: 5%;" (click)="retirar(i)">
         <ion-icon name="remove-outline"></ion-icon>
       </ion-button>
       
@@ -53,5 +53,5 @@
     <ion-button color="danger" slot="end" (click)="deletaItem(i)">Excluir</ion-button>
   </ion-item>
   </ion-list>
-<ion-button expand="block" color="success" (click)="enviar()">Enviar para a loja</ion-button>
+<ion-button *ngIf="produtos.length != 0" expand="block" color="success" (click)="enviar()">Enviar para a loja</ion-button>
 </ion-content>

@@ -131,6 +131,9 @@ export class ListPage implements OnInit {
 add(){
   this.navCtrl.navigateForward('/add-proc')
 }
+listaOrc(){
+  this.navCtrl.navigateForward('/lista-orcamento')
+}
 /*share(){
   if(this.Platform.is("ios")){
     this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://apps.apple.com/us/app/ax%C3%A9-delivery/id1528911749')

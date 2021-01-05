@@ -1,9 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>lista-orcamento</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Lista de Orçamentos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-card *ngFor="let items of listaOrcamento">
+      <ion-card-header>
+        <h2 style="text-align: center;">{{items.nomeComprador}}</h2>
+        <p  style="text-align: center;" *ngIf="items.valor != 0">R${{items.valor}}</p>
+        <p  style="text-align: center;" *ngIf="items.valor === 0">Aguardando retorno</p>
+        <p>Normalmente as lojas levam 30 minutos para responder!</p>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button color="warning" expand="block" (click)="chat(items)">Chat</ion-button>
 
+        <ion-button color="light" expand="block"  (click)="modal(items.id)">Mais informações</ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
 </ion-content>
