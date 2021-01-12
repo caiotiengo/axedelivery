@@ -131,6 +131,13 @@
         color: black;"> {{items.statusEnt}}</ion-label>
 
       </ion-item>
+      <ion-item>
+        
+        <ion-label style="font-size: larger;
+        font-weight: 200;text-align: center;
+        color: black;"> Pagamento: {{items.statusPag}}</ion-label>
+
+      </ion-item>
       <p *ngIf="items.statusEnt != 'Entregue' && items.statusEnt !='Cancelado'" style="padding:10px;margin-bottom: 3%;
       color: black;">Fale com seus clientes o mais rápido possível! 😉</p>
       <div *ngIf="items.statusEnt === 'Loja informada'" >
@@ -147,7 +154,7 @@
       <ion-card-content>
         <p> Valor • R${{items.valor}}</p>
         <p> Data da compra • {{items.dia}}</p>
-        <p> Status de pagamento • {{items.statusPag}}</p>
+        <!--p> Status de pagamento • {{items.statusPag}}</p-->
         <p slot="end">Endereço • {{items.endereco}} </p><br/>
       </ion-card-content>
 

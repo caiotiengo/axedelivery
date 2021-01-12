@@ -27,8 +27,15 @@
         <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
         <p slot="end">{{venda?.statusPag}}</p>
       </ion-item>
-      <ion-label  *ngIf="typeUser === 'Loja' ">
-        <ion-select style="border: 1px solid black; margin-top: 5% !important; border-radius: 25px; padding: 10px;"
+
+     
+      <ion-label  *ngIf="typeUser === 'Loja'">
+        <h2 style="    margin-top: 10%;">Altere o status do pedido</h2>
+        <ion-select style="border: 1px solid black;
+        margin-top: 5% !important;
+        border-radius: 10px;
+        padding: 10px;
+        color: black;"
                     placeholder="Altere o status da entrega" [(ngModel)]="statusEnt">
           <ion-select-option value="Preparando Entrega">Preparando Entrega</ion-select-option>
           <ion-select-option value="Saiu para Entrega">Saiu para Entrega</ion-select-option>
@@ -42,8 +49,8 @@
 
   </ion-card>
 
-      <ion-list style="" *ngFor="let items of venda?.produtos">
-      <ion-item>
+      <ion-list>
+      <ion-item  *ngFor="let items of venda?.produtos">
          <ion-avatar slot="start">
           <img  *ngIf="items.fotos.length != 0" src="{{items.fotos}}">
           <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">

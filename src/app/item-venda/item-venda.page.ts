@@ -50,18 +50,49 @@ export class ItemVendaPage implements OnInit {
   ngOnInit() {
   }
   save() {
-    this.que = this.route.snapshot.paramMap.get('id');
+    if(this.venda.statusPag === 'Em dinheiro'){
+      this.que = this.route.snapshot.paramMap.get('id');
 
-    this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt }).then(() =>{
-      this.dismiss2()
-
-      this.navCtrl.navigateRoot('/status').then(() =>{
+      this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt }).then(() =>{
         this.dismiss2()
-        alert('Status atualizado! O cliente já foi informado!')
+  
+        this.navCtrl.navigateRoot('/status').then(() =>{
+          this.dismiss2()
+          alert('Status atualizado! O cliente já foi informado!')
+  
+        })
+  
+      });
+    }else if(this.venda.statusPag === 'Aprovado' ){
+      this.que = this.route.snapshot.paramMap.get('id');
 
-      })
+      this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt }).then(() =>{
+        this.dismiss2()
+  
+        this.navCtrl.navigateRoot('/status').then(() =>{
+          this.dismiss2()
+          alert('Status atualizado! O cliente já foi informado!')
+  
+        })
+  
+      });
+    }else if(this.venda.statusPag === 'Débito presencial' ){
+      this.que = this.route.snapshot.paramMap.get('id');
 
-    });
+      this.services.vendasCollection.doc<Vendas>(this.que).update({statusEnt: this.statusEnt }).then(() =>{
+        this.dismiss2()
+  
+        this.navCtrl.navigateRoot('/status').then(() =>{
+          this.dismiss2()
+          alert('Status atualizado! O cliente já foi informado!')
+  
+        })
+  
+      });
+    }else{
+      alert('Você não pode atualizar o status de um pedido ainda não aprovado.')
+    }
+
   }
   dismiss2(){
     // using the injected ModalController this page

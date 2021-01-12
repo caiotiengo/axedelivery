@@ -489,7 +489,7 @@ teste(){
                     emailComprador: this.email,
                     lojaUID: this.produtos[0].lojaUID,
                     emailLoja: this.loja.email,
-                    statusPag: 'Aprovado Cartão',
+                    statusPag: 'Aprovado',
                     statusEnt: 'Loja informada',
                     telefoneComprador: this.telefoneComprador,
                     CPFComprador: this.userCPF,
