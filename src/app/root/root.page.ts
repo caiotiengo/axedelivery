@@ -124,6 +124,9 @@ export class RootPage implements OnInit {
     this.loadings()
     this.proccessSubscription = this.services.getUsers().subscribe(data => {
       this.goalList = data;
+      this.entrar()
+      this.storage.remove('carrinhoUser')
+
       this.loadedGoalList = data;
       this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
       this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
@@ -140,6 +143,14 @@ this.storage.get('usuario').then(event =>{
 })
 
     
+}
+ionViewWillEnter(){
+}
+entrar(){
+  const user = firebase.auth().currentUser;
+  if (user){
+    this.navCtrl.navigateRoot('/list');
+  }
 }
 async loadings() {
   const loading = await this.loadingController.create({

@@ -885,7 +885,12 @@ teste(){
     });
   }
   voltar(){
-  	this.navCtrl.pop();
+    this.storage.remove('carrinhoUser').then(() =>{
+      this.storage.set('carrinhoUser', this.carrinhoDes).then(() =>{
+        this.navCtrl.pop();
+
+      })
+    })
   }
   adicionarQTD(index:number){
     console.log(index)
@@ -918,6 +923,9 @@ teste(){
       this.carrinhoDes.splice(index, 1)
       this.produtos.splice(index,1)
       console.log(this.carrinhoDes)
+      this.storage.remove('carrinhoUser').then(() =>{
+        this.storage.set('carrinhoUser', this.carrinhoDes)
+      })
     }else{
     }
   }

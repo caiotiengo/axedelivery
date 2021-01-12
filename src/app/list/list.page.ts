@@ -147,6 +147,7 @@ status(){
 }
 
   ngOnInit() {
+    this.storage.remove('carrinhoUser')
     let user = firebase.auth().currentUser;
           console.log(user);
           if (user) {

@@ -141,6 +141,7 @@ export class ItemPage implements OnInit {
         this.plataforma = "Web"
       }
 
+
       const user = firebase.auth().currentUser;
       console.log(user);
       if (user) {
@@ -203,6 +204,17 @@ export class ItemPage implements OnInit {
         console.log(this.categoria);
     }
     ionViewWillEnter(){
+      this.storage.get('carrinhoUser').then(data =>{
+        console.log(data)
+        if(data.length != 0){
+          this.produtos = [];
+          data.forEach(element => {
+            this.produtos.push(element)
+          });
+        }else{
+
+        }
+      })
       this.que = this.route.snapshot.paramMap.get('id');
 
       console.log(this.que);
@@ -217,7 +229,10 @@ export class ItemPage implements OnInit {
 
       
     }
-    ngOnInit(){}
+    ngOnInit() {
+  
+    }
+
 
  async orcamento(){
           const modal = await this.modalController.create({
@@ -237,7 +252,11 @@ export class ItemPage implements OnInit {
     }
 
   voltar(){
-    this.navCtrl.pop()
+    this.storage.remove('carrinhoUser').then(() =>{
+      //alert('Estamos esvaziando o seu carrinho!');
+      this.navCtrl.pop()
+
+    })
   }
 
     loadData(event) {
@@ -474,7 +493,11 @@ export class ItemPage implements OnInit {
          }
   }
  back() {
+    this.storage.remove('carrinhoUser').then(() =>{
+      alert('Estamos esvaziando o seu carrinho!');
       this.navCtrl.navigateRoot('/list');
+
+    })
    }
 
   home() {
@@ -513,8 +536,5 @@ export class ItemPage implements OnInit {
     }
   }
 
- like() {
 
-
-  }
 }

@@ -231,6 +231,7 @@ export class ProcurarPage implements OnInit {
     if(this.produtos.length > 0 ){
       console.log(id)
       console.log(idLoja)
+      console.log(email)
       console.log(this.produtos[0].email)
       if(email === this.produtos[0].email){
         const modal = await this.modalController.create({
@@ -370,7 +371,19 @@ export class ProcurarPage implements OnInit {
   //  this.goalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
    // this.loadedGoalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
   }
+  ionViewWillEnter(){
+    this.storage.get('carrinhoUser').then(data =>{
+      console.log(data)
+      if(data.length != 0){
+        this.produtos = [];
+        data.forEach(element => {
+          this.produtos.push(element)
+        });
+      }else{
 
+      }
+    })
+  }
   initializeItems(): void {
     this.lista = this.loadedGoalList;
 
@@ -399,6 +412,7 @@ export class ProcurarPage implements OnInit {
   addCarrinho(items) {
     console.log(items.valor * items.qtd );
     console.log(this.qtd);
+    console.log(items)
     console.log(this.lojaLng)
     console.log(items.detail)
     if(items.fotos[0] === undefined){
@@ -409,12 +423,12 @@ export class ProcurarPage implements OnInit {
         product:items.nome,
         quantity: Number(items.qtd),
         detail: items.resumo,
-        email: items.email,
+        email: items.emailLoja,
         itemId: items.id,
         especi: items.especi,
         lojaUID: items.lojaUID,
         itemNumber: this.qtd,
-        emailLoja: items.email,
+        emailLoja: items.emailLoja,
         fotos: '',
         valorReal:items.valor,
         priceReal: items.price,
@@ -429,12 +443,12 @@ export class ProcurarPage implements OnInit {
         product:items.nome,
         quantity: Number(items.qtd),
         detail: items.resumo,
-        email: items.email,
+        email: items.emailLoja,
         itemId: items.id,
         especi: items.especi,
         lojaUID: items.lojaUID,
         itemNumber: this.qtd,
-        emailLoja: items.email,
+        emailLoja: items.emailLoja,
         fotos: items.fotos[0].link,
         valorReal:items.valor,
         priceReal: items.price,
@@ -520,7 +534,11 @@ export class ProcurarPage implements OnInit {
 
   }
   voltar(){
-  	this.navCtrl.navigateBack('/list');
+    this.storage.remove('carrinhoUser').then(() =>{
+      //alert('Estamos esvaziando o seu carrinho!');
+      this.navCtrl.pop()
+
+    })
   }
   async presentLoading() {
     const loading = await this.loadingController.create({

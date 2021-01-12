@@ -23,6 +23,7 @@
     <p style="text-align: center;"> O compartilhamento de números ou qualquer outro dado para contato está sujeito a punições.</p> 
     
   </div>
+</ion-grid>
 
     <ion-row *ngFor="let msgs of chatou?.mensagens">
       <ion-col size="9"  *ngIf="userUID != msgs.uid" class="message other-message">
@@ -34,7 +35,6 @@
         <div class="time" text-right><br>{{msgs.criadoEm | date: 'short'}}</div>
       </ion-col>
     </ion-row>
-  </ion-grid>
 
 </div>
 
