@@ -138,6 +138,7 @@
         color: black;"> Pagamento: {{items.statusPag}}</ion-label>
 
       </ion-item>
+      <ion-item><ion-label style="text-align: center;">Frete: R${{items.valorFrete}}</ion-label></ion-item>
       <p *ngIf="items.statusEnt != 'Entregue' && items.statusEnt !='Cancelado'" style="padding:10px;margin-bottom: 3%;
       color: black;">Fale com seus clientes o mais rápido possível! 😉</p>
       <div *ngIf="items.statusEnt === 'Loja informada'" >

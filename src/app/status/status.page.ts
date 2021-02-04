@@ -197,7 +197,7 @@ export class StatusPage implements OnInit {
                 var y = "Cancelado pelo banco"
                 this.services.updatePagamento(i.id,y)
               }else if(response.body.status === 'IN_ANALYSIS'){
-                var z = "Em Análise"
+                var z = "Em análise"
                 this.services.updatePagamento(i.id,z)
   
               }else if(response.body.status === 'REFUNDED'){

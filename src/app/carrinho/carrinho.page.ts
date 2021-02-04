@@ -104,6 +104,7 @@ export class CarrinhoPage implements OnInit {
     porcentagemDes
     cuponNome
     cuponzada
+    payID
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -435,6 +436,7 @@ teste(){
                 }
             }
         }).then((response) => {
+          this.payID = response.body.id
           if(response.body.status === 'AUTHORIZED'){
               console.log(response.body.id)
               const user = firebase.auth().currentUser;
@@ -634,12 +636,133 @@ teste(){
         }).catch((err) => {
             console.log(err)
             alert("Pagamento não concluido:"+" "+ err)
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  valorFrete: this.valorDelivery,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.loja.email,
+                  statusPag:"Problema com pagamento " + err,
+                  statusEnt: 'Loja informada',
+                  telefoneComprador: this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: response.body.id,
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
 
         })
         }).catch((err) => {
             console.log(err)
             alert("Pagamento não concluido:"+" "+ err)
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
 
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  valorFrete: this.valorDelivery,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.loja.email,
+                  statusPag:"Problema com pagamento " + err,
+                  statusEnt: 'Loja informada',
+                  telefoneComprador: this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: this.payID ,
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+
+        
         })
 
   });

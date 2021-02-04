@@ -98,6 +98,10 @@ const routes: Routes = [
   {
     path: 'lista-orcamento',
     loadChildren: () => import('./lista-orcamento/lista-orcamento.module').then( m => m.ListaOrcamentoPageModule)
+  },
+  {
+    path: 'lista-produtos',
+    loadChildren: () => import('./lista-produtos/lista-produtos.module').then( m => m.ListaProdutosPageModule)
   }
 ];
 @NgModule({

@@ -44,6 +44,8 @@ export class GanhosPage implements OnInit {
   conta
   CPFCNPJ
   nome
+  CPFconta
+  nomeNaConta
   constructor(public afStore: AngularFirestore,
     public loadingController: LoadingController,
     public navCtrl: NavController,
@@ -63,6 +65,8 @@ export class GanhosPage implements OnInit {
       this.nome = event.nome;
       this.CPFCNPJ = event.CPFconta;
       this.numeroBanco = event.numeroBank
+      this.CPFconta = event.CPFconta;
+      this.nomeNaConta = event.nomeNaConta
 
     })
     
@@ -185,10 +189,10 @@ export class GanhosPage implements OnInit {
               accountNumber: Number(this.conta),
               accountCheckNumber: Number(this.digitoConta),
               holder: {
-                  fullname: this.nome,
+                  fullname: this.nomeNaConta,
                   taxDocument: {
                       type: "CNPJ",
-                      number: this.CPFCNPJ
+                      number: this.CPFconta
                   }
                 }
             }
@@ -196,7 +200,7 @@ export class GanhosPage implements OnInit {
     }).then((response) => {
         console.log(response.body)
         this.afStore.collection('transferencias').add(response.body).then(()=>{
-          alert('Seu saldo foi transferido para a sua conta, estará disponível em breve')
+          alert('Seu saldo foi transferido para a sua conta, estará disponível em até 4 dias.')
 
           this.hideMe2 = true;
         }).catch((err) =>{
