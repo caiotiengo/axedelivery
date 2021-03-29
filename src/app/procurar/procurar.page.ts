@@ -158,20 +158,25 @@ export class ProcurarPage implements OnInit {
 
     });
     this.services.getProccessos().subscribe(res => {
-      this.goalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
-      this.loadedGoalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
+      this.storage.get('lojas').then(data =>{
+          let lojas = data
+          console.log(lojas)
+          this.goalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
+          this.loadedGoalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
 
-      //this.lista = this.lista.concat(this.goalList)
-      this.categorias = Array.from(new Set(this.goalList.map((item: any) => item.tipoPrd)))
+          //this.lista = this.lista.concat(this.goalList)
+          this.categorias = Array.from(new Set(this.goalList.map((item: any) => item.tipoPrd)))
 
-      this.semLoja = this.goalList.length
-      this.semLoja = this.goalList.length
-      //console.log(this.goalList)
-      this.goalList.slice(0,10).forEach(i =>{
-       //console.log(i.id)
-       this.loadProduct(i.lojaUID)
-       this.lista.push(i)
+          this.semLoja = this.goalList.length
+          this.semLoja = this.goalList.length
+          //console.log(this.goalList)
+          this.goalList.slice(0,10).forEach(i =>{
+          
+            this.loadProduct(i.lojaUID)
+            this.lista.push(i)
+          })
       })
+      
     });    
   }
 
@@ -269,6 +274,7 @@ export class ProcurarPage implements OnInit {
   
       await modal.onDidDismiss().then((r) => {
         this.testy = r.data.data;
+        
         this.testy.forEach(element => {
           this.addCarrinho(element)
         });

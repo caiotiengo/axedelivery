@@ -28,7 +28,7 @@ const routes: Routes = [
     loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
   },
   {
-    path: 'item/:id',
+    path: 'item/:id/bairro/:bairro',
     loadChildren: () => import('./item/item.module').then( m => m.ItemPageModule)
   },
   {
@@ -102,6 +102,10 @@ const routes: Routes = [
   {
     path: 'lista-produtos',
     loadChildren: () => import('./lista-produtos/lista-produtos.module').then( m => m.ListaProdutosPageModule)
+  },
+  {
+    path: 'lala-move',
+    loadChildren: () => import('./lala-move/lala-move.module').then( m => m.LalaMovePageModule)
   }
 ];
 @NgModule({

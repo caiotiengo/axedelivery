@@ -18,25 +18,36 @@
       <p>Endereço: {{endereco}}</p>
       <p>Bairro: {{bairro}}</p>
       <p>Cidade: {{cidade}}</p>
-      <p>Local: {{zona}}</p>
+      <p *ngIf="typeUser === 'user'">Local: {{zona}}</p>
       <br/>
-      <ion-button style="height: 4vh;" color="warning" (click)="sair()">Logout</ion-button>
-      <ion-button style="height: 4vh;" color="warning" (click)="habilitar()"> Habilitar Notificações</ion-button>
       <br/>
       <ion-label *ngIf="typeUser === 'Loja'&& status === 'Online'">Loja Aberta!</ion-label>
-
       <ion-label *ngIf="typeUser === 'Loja' && status === 'Offline'">Loja Fechada!</ion-label>
       <ion-button color="success" *ngIf=" typeUser === 'Loja' && status === 'Offline'" expand="block" (click)="abrirLoja()">Abrir Loja</ion-button>
       <ion-button color="danger" *ngIf=" typeUser === 'Loja' && status === 'Online'" expand="block" (click)="fecharLoja()">Fechar Loja</ion-button>
+      <ion-button  expand="block"  color="success" (click)="habilitar()"> Habilitar Notificações</ion-button>
+      <ion-button  expand="block"   color="warning" *ngIf="typeUser === 'Loja'" (click)="vaiProdutos()">Seus produtos</ion-button>
+      <ion-button  expand="block"  color="dark" (click)="sair()">Sair do App</ion-button>
 
     </ion-card-content>
   </ion-card>
-<ion-card style="background-color: white !important; ">
+  <ion-card *ngIf="typeUser === 'Loja'" style="background-color: white !important; ">
+    <h2>Filiais</h2>
+    <ion-list>
+      <ion-item *ngFor="let itens of unidadez">
+        {{itens.endereco}},{{itens.estado}}
+          <ion-button slot="end" (click)="pedirDele(itens)">Deletar</ion-button>
+      </ion-item>
+    </ion-list>
+    <ion-button  expand="block" color="warning" (click)="addUni()" >Adicionar Filial</ion-button>
+
+  </ion-card>
+<ion-card  *ngIf="typeUser === 'user'" style="background-color: white !important; ">
     <ion-card-content>  
      <h4 style="color: gray"> <ion-icon name="paper-plane"></ion-icon> - {{endereco}},{{complemento}}</h4>
      <p><i>{{bairro}}, CEP:{{CEP}}</i></p>
      <p><i>{{cidade}} - {{estado}}</i></p>
-      <ion-button style="height: 4vh;" (click)="updateEnd()" color="warning">  
+      <ion-button expand="block" (click)="updateEnd()" color="warning">  
         alterar
       </ion-button>
 
@@ -89,7 +100,7 @@
                         </ion-item>
                        <ion-item>
                          <ion-label position="floating">Bairro</ion-label>
-                         <ion-input formControlName="bairroNew" placeholder="{{bairroNew}}"value="{{bairroNew}"
+                         <ion-input formControlName="bairroNew" placeholder="{{bairroNew}}"value="{{bairroNew}}"
                            type="text"></ion-input>
                        </ion-item>
                        
@@ -128,7 +139,7 @@
      <p><i>Agência:{{agencia}} - Conta:{{conta}}</i></p>
      <p><i>Corrente ou Poupança? {{tipoConta}}</i></p>
      <p><i>CNPJ Conta: {{CPFconta}}</i></p>
-      <ion-button style="height: 4vh;" (click)="updateBank()" color="warning">  
+      <ion-button expand="block" (click)="updateBank()" color="warning">  
         alterar
       </ion-button>
   <form [formGroup]="newBanco" [hidden]="hideMe2">
@@ -194,7 +205,7 @@
 
 
            
-      <ion-button   style="height: 4vh;" (click)="updateBanco()" color="success" slot="end">Atualizar</ion-button><br/>
+      <ion-button expand="block" (click)="updateBanco()" color="success" slot="end">Atualizar</ion-button><br/>
 
 
   </form>
@@ -206,7 +217,7 @@
   <ion-card-content>  
    <p><i>Horário de Entrega:{{entrega}}</i></p>
    <p><i>Se ultrapassar esse horário: {{seNao}}</i></p>
-    <ion-button style="height: 4vh;" (click)="updateEntrega()" color="warning">  
+    <ion-button expand="block" (click)="updateEntrega()" color="warning">  
       alterar
     </ion-button>
 <form [formGroup]="newEntrega" [hidden]="hideMe3">
@@ -234,32 +245,11 @@
             </ion-grid>
           
          
-    <ion-button  style="height: 4vh;" (click)="entregaz()" color="success" slot="end">Atualizar</ion-button><br/>
+    <ion-button expand="block" (click)="entregaz()" color="success" slot="end">Atualizar</ion-button><br/>
 
 
 </form>
 </ion-card-content>
 </ion-card>
 
-  <ion-list *ngIf="typeUser === 'Loja'" >
-    <h3 text center>Seus produtos no App!</h3>
-    <ion-item *ngFor="let items of goalListFiltrado"  >
-      <ion-thumbnail slot="start">
-        <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
-        <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{items.nome}}</h2>
-        <p>R${{items.valor}}</p>
-        <p>Quantidade:{{items.quantity}}</p>
-        <p [routerLink]="['/editar/' + items.id]" style="background: #ffc409;
-        padding: 5px;
-        text-align: center;
-        border-radius: 25px;
-        color: black;">Editar</p>
-      </ion-label>
-      <ion-button (click)="presentAlertConfirm(items)" color="danger" slot="end">Deletar</ion-button><br/>
-      </ion-item>
-
-</ion-list>
 </ion-content>

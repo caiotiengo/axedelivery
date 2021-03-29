@@ -10,14 +10,16 @@ import { ServiceService } from '../service.service';
 import * as firebase from 'firebase/app';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import {HttpClient} from '@angular/common/http';
 import { google } from "google-maps";
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import {format} from "date-fns";
+import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { File, FileEntry } from '@ionic-native/File/ngx';
 
 declare var google: any;
 
 export interface Processo {
+    unidades?: any;
     zona: string;
     role: string;
     boss: string ;
@@ -104,6 +106,10 @@ export class RootPage implements OnInit {
     filtroLoja = '';
     valorFrete
     valorDelivery
+    produtos:Array<any> = [];
+    unidades:Array<any> = [];
+    unit
+    lojas
   constructor(public navCtrl: NavController, public Platform:Platform,
     public router: Router, 
     private geolocation: Geolocation,
@@ -114,7 +120,7 @@ export class RootPage implements OnInit {
     public services: ServiceService,
     private _haversineService: HaversineService,
     private nativeGeocoder: NativeGeocoder,
-    public loadingController: LoadingController) {
+    public loadingController: LoadingController,public file:File, public http: HttpClient) {
 
 
      }
@@ -122,15 +128,20 @@ export class RootPage implements OnInit {
   ngOnInit() {
     //
     this.loadings()
-    this.proccessSubscription = this.services.getUsers().subscribe(data => {
+    this.proccessSubscription = this.services.getLojas().subscribe(data => {
       this.goalList = data;
-      this.entrar()
       this.storage.remove('carrinhoUser')
-
       this.loadedGoalList = data;
       this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
       this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+
     })  
+    this.services.getProccessos().subscribe(res => {
+      this.storage.set('produtos', res).then(data =>{
+        console.log(data)
+        this.entrar()
+      })
+    })
   }
   perfilPage() {
     const user = firebase.auth().currentUser;
@@ -156,7 +167,7 @@ async loadings() {
   const loading = await this.loadingController.create({
     cssClass: 'my-custom-class',
     message: 'Afinando os atabaques...',
-    duration: 6000
+    duration: 10000
   });
   await loading.present();
 

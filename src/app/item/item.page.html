@@ -1,3 +1,4 @@
+
 <ion-content [fullscreen]="true">
 <div class="background-div1">
     <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
@@ -24,25 +25,19 @@
 </ion-fab>
 
 
-      <ion-item style=" margin-top: 15%;
-      margin-bottom: 5%; border-radius: 25px;">
-          <ion-icon name="pin" style="color: #3eab3e" slot="start"></ion-icon>
-          <ion-label>{{loja.bairro}}</ion-label>
+
+      <ion-select okText="Ok" cancelText="Cancelar" *ngIf="qtdUnidades > 1" placeholder="{{bairroSelecionado}} - {{lojaCity}}" (ionChange)="buscando($event)">
+        <ion-select-option *ngFor="let itens of lojaEstado" value="{{itens.bairro}}">{{itens.bairro}} - {{itens.cidade}}</ion-select-option>
+      </ion-select>
+
+     <ion-item style="border-radius: 25px; margin-bottom: 5%">
+         <ion-icon slot="start"  style="color: black" name="car"></ion-icon>
+        <p>Entrega</p>
+        <p *ngIf="email != undefined && bairroSelecionado === undefined" slot="end">Loja não selecionada</p>
+
+        <p *ngIf="email != undefined && bairroSelecionado != undefined" slot="end">R${{valorDelivery}}</p>
+        <p *ngIf="email === undefined"  slot="end">Faça o login para calcular</p>
       </ion-item>
-
-
-
-   <!--ion-item >
-     <ion-button fill="clear" expand="block" style=" margin-right: auto; margin-left: auto; " (click)="slidePrev(mySlider)"> <ion-icon color="findme" style="" name="arrow-round-back"></ion-icon> Prev </ion-button>
-     <ion-button fill="clear" expand="block" style=" margin-right: auto; margin-left: auto; "  (click)="nextSlide(mySlider)"> Next <ion-icon color="findme" style="" name="arrow-round-forward"></ion-icon></ion-button>
-    </ion-item-->
-
-         <ion-item style="border-radius: 25px; margin-bottom: 5%">
-                <ion-icon slot="start"  style="color: black" name="car"></ion-icon>
-                <p>Entrega</p>
-                <p *ngIf="email != undefined" slot="end">R${{valorDelivery}}</p>
-                <p *ngIf="email === undefined"  slot="end">Faça o login para calcular</p>
-            </ion-item>
         <ion-item *ngIf="valorCompra > 0" style="border-radius: 25px;
     border: 2px solid rgba(0, 0, 0, 0.21);
     box-shadow: 3px 3px rgba(128, 128, 128, 0.4);">
@@ -57,7 +52,8 @@
         font-weight: bold;
         width: 55%;
         padding: 5px;
-        margin: auto;"> Pedido mínimo: R$15,00</p>
+        margin: auto;
+        margin-top: 5%;"> Pedido mínimo: R$15,00</p>
 
 
           <h3 style="text-align: center;font-weight: bold;">Comentários</h3>
@@ -111,11 +107,11 @@
 
     </ion-searchbar>
 
-    <ion-list *ngFor="let items of goalList" >
+    <ion-list *ngFor="let items of lista" >
       <ion-item>
-        <ion-thumbnail slot="start">
-          <img  *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
-          <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
+        <ion-thumbnail  slot="start">
+          <img *ngIf="items.fotos.length != 0" style="width:50px; height:50px;" src="{{items.fotos[0].link}}">
+          <img  *ngIf="items.fotos.length === 0" style="width:50px; height:50px;"  src="/assets/Picture1.png">
         </ion-thumbnail>
         <ion-label>
           <h2>{{items.nome}}</h2>
@@ -138,7 +134,13 @@
 
     </ion-list>
 
-
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Carregando...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  
 
 
 

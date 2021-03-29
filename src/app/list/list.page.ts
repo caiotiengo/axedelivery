@@ -79,8 +79,9 @@ export class ListPage implements OnInit {
     boss;
     zona;
     listaProdutos
-    goalListFiltrado = new Array<Processo>();
-    loadedGoalListFiltrado;
+    goalListFiltrado: Array<any> = []
+    offlines: Array<any> = []
+    loadedGoalListFiltrado: Array<any> = [];
     pois:any[];
     data
     existe
@@ -101,7 +102,7 @@ export class ListPage implements OnInit {
     nomeUser
     datou
     DOB
-    goalListFiltrei = new Array<User>();
+    goalListFiltrei:  Array<any> = [];
     filtroLoja = '';
     valorFrete
     valorDelivery
@@ -113,6 +114,7 @@ export class ListPage implements OnInit {
     userId
     FCM
     fcmzin
+    elementos
   constructor(public navCtrl: NavController,public Platform:Platform,
               public router: Router, public alerti: AlertController,
               private geolocation: Geolocation,
@@ -137,7 +139,7 @@ listaOrc(){
 /*share(){
   if(this.Platform.is("ios")){
     this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://apps.apple.com/us/app/ax%C3%A9-delivery/id1528911749')
-
+[routerLink]="['/item/' + items.id]"
   }else{
     this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://play.google.com/store/apps/details?id=io.ionic.axeDelivery')
   }
@@ -153,10 +155,14 @@ status(){
           if (user) {
             this.userId = user.uid
               this.mainuser = this.afStore.doc(`users/${user.uid}`);
+              this.services.getLojas().subscribe(data =>{
+                console.log(data)
+              })
 
-              this.proccessSubscription = this.services.getUsers().subscribe(data => {
+              this.services.getLojas().subscribe(data => {
                 this.goalList = data;
                 this.loadedGoalList = data;
+                console.log(this.goalList)
                   this.mainuser.valueChanges().subscribe(event => {
                       console.log(event)
                         this.zona = event.zona;
@@ -180,13 +186,55 @@ status(){
                         this.filtroLoja = this.zona
                         //console.log(birthdate);
                         //console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                        this.goalListFiltrado = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
+                        this.goalListFiltrado = []
+                        this.goalListFiltrei = [];
+                        this.loadedGoalListFiltrado = [];
+                        this.offlines = [];
+                        let off = this.goalList.filter(i => i.estado === this.estado && i.status === "Offline" );
+                        let filtrado = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
+                        let filtrei = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.status === "Online" && i.aprovado === 'Sim');//
+                        let loadedFiltrado = this.loadedGoalList.filter(i => i.estado === this.estado && i.tipo === 'Loja' && i.aprovado === 'Sim' );
+                        off.forEach(x =>{
+                          this.offlines.push(x)
+                          console.log(this.offlines)
+                        })
+                        filtrado.forEach(v =>{
+                          let unidades = v.unidades
+                          if(unidades != undefined && v.estado === this.estado && v.status === 'Online' ){
+                            unidades.forEach(element => {
+                              this.goalListFiltrado.push(element)
+                            console.log(this.goalListFiltrado)
+                            this.lojinha = this.goalListFiltrado
 
-                        this.goalListFiltrei = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.status === "Online" && i.aprovado === 'Sim');//
-                        this.loadedGoalListFiltrado = this.loadedGoalList.filter(i => i.estado === this.estado && i.tipo === 'Loja' && i.aprovado === 'Sim' );
-                        this.lojinha = this.goalListFiltrado
+                            });
+                          }
+                        })
+                        filtrei.forEach(v =>{
+                          let unidades = v.unidades
+                          if(unidades != undefined  && v.estado === this.estado   && v.status === 'Online'){
+                            unidades.forEach(element => {
+                              this.goalListFiltrei.push(element)
+                            console.log(this.goalListFiltrei)
+                            this.lojinha = this.goalListFiltrei.length
+
+                            });
+                          }
+                        })
+                        loadedFiltrado.forEach(v =>{
+                          let unidades = v.unidades
+                          if(unidades != undefined  && v.estado === this.estado && v.status === 'Online' ){
+                            unidades.forEach(element => {
+                              this.loadedGoalListFiltrado.push(element)
+                            console.log(this.loadedGoalListFiltrado)
+                            });
+                          }
+                        })
+
+                        console.log(this.goalList)
+                        console.log(this.goalListFiltrei)
+                        console.log(this.loadedGoalListFiltrado)
                         console.log(this.lojinha)
-                        //this.storage.set('lojas', this.goalListFiltrado)
+
                         this.geolocation.getCurrentPosition().then((resp) => {
                           // resp.coords.latitude
                           // resp.coords.longitude
@@ -197,12 +245,14 @@ status(){
                          }).catch((error) => {
                            console.log('Error getting location', error);
                          });
-                         this.lojaperto = []
+
+                         setTimeout(() => {
+                          this.lojaperto = []
 
                           this.goalListFiltrei.forEach(element => {
                             this.lojaLat = element.lat
                             this.lojaLng = element.lng
-
+                            console.log(this.lojaLat)
                             let Usuario: GeoCoord = {
                               latitude: Number(this.lat),
                               longitude: Number(this.lng)
@@ -212,15 +262,18 @@ status(){
                              latitude: Number(this.lojaLat),
                              longitude:Number(this.lojaLng)
                          };
-                         
+                         console.log(Loja)
                          
                         let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
                         console.log("A distancia entre as lojas é de:" + Number(kilometers));
 
-                        if(Number(kilometers) < 8.0){
+                        if(Number(kilometers) < 9.0){
                           console.log('maior')
-                          this.lojaperto.push(element)
-                          console.log(this.lojaperto)
+                          if(element.estado === this.estado ){
+                            this.lojaperto.push(element)
+                            console.log(this.lojaperto)
+                          }
+
                           
                         }else{
 
@@ -229,7 +282,7 @@ status(){
                         }
                           });                
                           this.semLoja = this.lojaperto.length
-
+                          
                         console.log(this.semLoja)
                         console.log(this.complemento)
                         if(this.complemento === undefined){
@@ -239,6 +292,8 @@ status(){
                           this.alerta2()
                         }
 
+                         }, 2000);
+                        
                     
                })
             

@@ -23,6 +23,7 @@ export interface User {
     comments:string
 }
 export interface Loja {
+    unidades?: any;
     nome?: string;
     zona?: string;
     bairro?: string;
@@ -35,6 +36,9 @@ export interface Loja {
     comments?:string;
     entrega?:string;
     seNao?:string;
+    lat?:any;
+    lng?:any;
+    
 }
 export interface Produtos {
     nome?: string;
@@ -95,6 +99,9 @@ export class ItemPage implements OnInit {
     emailLoja;
     qualquer;
     produtos: Array<Produtos> = [];
+    lista: Array<any> = [];
+    lista2: Array<any> = [];
+
     slideOpts = {
        initialSlide: 1,
        speed: 400
@@ -119,6 +126,7 @@ export class ItemPage implements OnInit {
     valorDelivery
     lat 
     lng
+    moremo =0
     lojaLng
     type = '';
     lojaLat
@@ -128,20 +136,19 @@ export class ItemPage implements OnInit {
     plataforma
     valorinicial
     idUser
+    busca
+    estado
+    qtdUnidades
+    lojaEstado
+    bairroSelecionado
+    bairroNome
+    lojaCity
     constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
               public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
 ) {
-      if(this.platform.is("ios")){
-        this.plataforma = "Ios"
-      }else if(this.platform.is("android")){
-        this.plataforma = "Android"
-      }else if(this.platform.is("pwa")){
-        this.plataforma = "Web"
-      }
-
-
+   
       const user = firebase.auth().currentUser;
       console.log(user);
       if (user) {
@@ -157,6 +164,7 @@ export class ItemPage implements OnInit {
             this.zona = event.zona;
             this.lat = event.lat;
             this.lng = event.lng
+            this.estado = event.estado
   
         });
       } else {
@@ -178,6 +186,7 @@ export class ItemPage implements OnInit {
 
 
   async presentModal(id) {
+    
     const modal = await this.modalController.create({
       component: ModalVendaPage,
       cssClass: 'my-custom-modal-css',
@@ -190,11 +199,16 @@ export class ItemPage implements OnInit {
 
     await modal.onDidDismiss().then((r) => {
       this.testy = r.data.data;
-      this.testy.forEach(element => {
-        this.addCarrinho(element)
-      });
-      console.log("the result:", r , 'test'+ this.testy);
-      
+      if(this.testy === undefined){
+        console.log("indefinido")
+      }else{
+        this.testy.forEach(element => {
+          this.addCarrinho(element)
+        });
+        console.log("the result:", r , 'test'+ this.testy);
+        
+      }
+
     })
   }
 
@@ -206,26 +220,62 @@ export class ItemPage implements OnInit {
     ionViewWillEnter(){
       this.storage.get('carrinhoUser').then(data =>{
         console.log(data)
-        if(data.length != 0){
-          this.produtos = [];
-          data.forEach(element => {
-            this.produtos.push(element)
-          });
+        if(data){
+          if(data.length != 0){
+            this.produtos = [];
+            data.forEach(element => {
+              this.produtos.push(element)
+            });
+          }else{
+  
+          }
         }else{
-
+          console.log('nada')
         }
+        
+        //this.bairroSelecionado = this.bairroNome
       })
       this.que = this.route.snapshot.paramMap.get('id');
-
+      this.bairroSelecionado = this.route.snapshot.paramMap.get('bairro');
+      console.log(this.bairroSelecionado)
       console.log(this.que);
       this.procUser = this.services.getProc(this.que);
       //this.comments = this.services.comment(this.que);
       console.log(this.services.getProc(this.que));
       if (this.que) {
+        this.services.getTodosProdutos().subscribe(data =>{
+          console.log(data)
+          this.goalList = data.filter(i => i.lojaUID === this.que  && i.noApp === 'Sim');
+          this.loadedGoalList = data.filter(i => i.lojaUID === this.que && i.noApp === 'Sim')
+    
+          this.goalList.slice(0,10).forEach(i =>{
+            //console.log(i.id)
+            this.lista.push(i)
+            this.lista2.push(i)
+            console.log(this.lista)
+           
+           })
+           this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
+           this.valorinicial = this.categorias[0]
+           console.log(this.valorinicial)
+    
+          /*this.goalList.forEach(element =>{
+            var x = element.fotos[0].link
+            let foto = x
+            this.novosProdutos.push({
+              nome:element.nome,
+              id:element.id,
+              foto: foto,
+              valor: element.valor,
+              quantity: element.quantity,
+              tipoPrd: element.tipoPrd
+            })
+          })*/
+              this.categorias = Array.from(new Set(this.lista2.map((item: any) => item.tipoPrd)))
+               console.log(this.categorias)
+          });
             this.loadProduct();
-            //this.loadComments();
-        }
-      //console.log(this.services.getLikes(this.que));
+      }
 
       
     }
@@ -259,7 +309,7 @@ export class ItemPage implements OnInit {
     })
   }
 
-    loadData(event) {
+    loadData1(event) {
         setTimeout(() => {
             console.log('Done');
             event.target.complete();
@@ -272,53 +322,75 @@ export class ItemPage implements OnInit {
     toggleInfiniteScroll() {
         this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
     }
+    buscando(evt){
+      this.bairroNome = evt.target.value
+      this.mudeOpc(this.bairroNome)
+    }
+    mudeOpc(evt){
+      this.bairroSelecionado = evt
+      console.log(this.bairroSelecionado)
+
+      let ba = this.lojaEstado.find(y => y.bairro === this.bairroSelecionado)
+      console.log(ba)
+      this.lojaLat = ba.lat
+      this.lojaLng = ba.lng
+      let Usuario: GeoCoord = {
+          latitude: Number(this.lat),
+          longitude: Number(this.lng)
+      };
+      console.log(Usuario)
+      let Loja: GeoCoord = {
+          latitude: Number(this.lojaLat),
+          longitude:Number(this.lojaLng)
+      };
+      
+      
+      let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+      console.log("A distancia entre as lojas é de:" + Number(kilometers));
+  
+
+      this.valorFrete = Math.floor(2.10) * Number(kilometers) + 5;
+      if(this.valorFrete > 50.00){
+        console.log('maior')
+        var y = 55.00
+        this.valorDelivery = y.toFixed(2)
+
+      }else{
+        console.log('menor')
+        this.valorDelivery = this.valorFrete.toFixed(2)
+      }
+    }
    loadProduct() {
-    this.lojaSubscription = this.services.getProc(this.que).subscribe(data => {
-      this.loja = data;
+    this.services.getProc(this.que).subscribe(data => {
+      this.loja = data
+      console.log(this.loja)
+      console.log(this.estado)
+      console.log(this.loja.unidades.length)
+      console.log(this.loja.unidades)
+      this.qtdUnidades = this.loja.unidades.length
       //this.likes = data.LikeValue;
       //this.dislikes = data.LikeValue;
-      this.emailLoja = data.email;
-      this.lojaLat = data.lat;
-      this.lojaLng = data.lng;
+      this.emailLoja = this.loja.email;
+      if(this.loja.unidades.length > 1){
+        this.lojaEstado = this.loja.unidades.filter(i => i.estado === this.estado);
+        this.lojaCity = this.loja.cidade;
+        this.mudeOpc(this.bairroSelecionado)
+
+      }
+      /*
+       });
+      }else{
+        this.lojaLat = this.loja.unidades[0].lat
+        this.lojaLng = this.loja.unidades[0].lng
+      }
+      */ 
       //console.log(this.loja);
      // console.log(this.likes);
      // console.log(this.dislikes);
-      let Usuario: GeoCoord = {
-                   latitude: Number(this.lat),
-                   longitude: Number(this.lng)
-              };
-              console.log(Usuario)
-              let Loja: GeoCoord = {
-                  latitude: Number(this.lojaLat),
-                  longitude:Number(this.lojaLng)
-              };
-              
-              
-             let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-             console.log("A distancia entre as lojas é de:" + Number(kilometers));
-             
-             this.valorFrete = Math.floor(1.20)*Number(kilometers) + 5;
-             if(this.valorFrete > 30.00){
-               console.log('maior')
-               var y = 35.00
-               this.valorDelivery = y.toFixed(2)
-
-             }else{
-               console.log('menor')
-               this.valorDelivery = this.valorFrete.toFixed(2)
-
-             }
-
+      
     });
-    this.productSubscription = this.services.getProccessos().subscribe(res => {
-      this.goalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
-      this.loadedGoalList = res.filter(i => i.email === this.emailLoja && i.noApp ==='Sim');
-      this.categorias = Array.from(new Set(this.goalList.map((item: any) => item.tipoPrd)))
-      this.valorinicial = this.categorias[0]
-      console.log(this.valorinicial)
-           //this.categorias = Array.from(new Set(this.loadedGoalList.map((item: any) => item.tipoPrd)))
-           console.log(this.categorias)
-       });
+
+
     this.commentsSubscription = this.services.getComments().subscribe(res =>{
            this.lojaID = res.filter(i => i.emailLoja === this.emailLoja)
            this.commentsLen = Number(this.lojaID.length)
@@ -335,7 +407,7 @@ export class ItemPage implements OnInit {
       }
 
     initializeItems(): void {
-        this.goalList = this.loadedGoalList;
+        this.lista = this.lista2;
     }
     
 
@@ -344,12 +416,14 @@ export class ItemPage implements OnInit {
 
       console.log(items.detail.value)
       //this.segumentacao = items.detail.value
+      this.moremo = 0
       const searchTerm = items.detail.value;
-
+      this.categoria = items.detail.value
+      this.more()
       if (!searchTerm) {
           return;
       }
-      this.goalList = this.goalList.filter(currentGoal => {
+      this.lista = this.lista2.filter(currentGoal => {
           if (currentGoal.tipoPrd && searchTerm) {
               if (currentGoal.tipoPrd.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
 
@@ -361,6 +435,117 @@ export class ItemPage implements OnInit {
       });
     //  this.goalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
      // this.loadedGoalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
+    }
+    more(){
+      this.moremo++
+      if(this.busca != undefined){
+        this.filterList(this.busca)
+
+      }else{
+        console.log('sem busca')
+      }
+      console.log(this.moremo)
+      if(this.categoria != this.valorinicial){
+
+        if(this.moremo === 1){
+          this.lista =[]
+          this.lista2 =[]
+  
+          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,25).forEach(x =>{
+           
+            //console.log(i.id)
+            //this.loadProduct()
+            this.lista.push(x)
+            this.lista2.push(x)
+  
+    
+           })
+    
+        }else if(this.moremo === 2){
+          this.lista =[]
+          this.lista2 =[]
+    
+          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,50).forEach(x =>{
+           
+            //console.log(i.id)
+            //this.loadProduct()
+            this.lista.push(x)
+            this.lista2.push(x)
+  
+           })
+    
+        }else if(this.moremo >= 3){
+          this.lista =[]
+          this.lista2 =[]
+          
+          this.goalList.filter(i => i.tipoPrd === this.categoria).forEach(x =>{
+           
+            //console.log(i.id)
+            //this.loadProduct()
+            this.lista.push(x)
+            this.lista2.push(x)
+  
+    
+           })
+        }
+      }else{
+        if(this.moremo === 1){
+          this.lista =[]
+          this.lista2 =[]
+  
+          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,25).forEach(x =>{
+            console.log(x)
+
+            //console.log(i.id)
+            //this.loadProduct()
+            this.lista.push(x)
+            this.lista2.push(x)
+  
+    
+           })
+    
+        }else if(this.moremo === 2){
+          this.lista =[]
+          this.lista2 =[]
+    
+          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,50).forEach(x =>{
+            console.log(x)
+            //console.log(i.id)
+            //this.loadProduct()
+            this.lista.push(x)
+            this.lista2.push(x)
+  
+           })
+    
+        }else if(this.moremo >= 3){
+          this.lista =[]
+          this.lista2 =[]
+          
+          this.goalList.filter(i => i.tipoPrd === this.categoria).forEach(x =>{
+            console.log(x)
+
+            //console.log(i.id)
+            //this.loadProduct()
+            this.lista.push(x)
+            this.lista2.push(x)
+  
+    
+           })
+        }
+      }
+
+    }
+    loadData(event) {
+      setTimeout(() => {
+        console.log('Done');
+        event.target.complete();
+        this.more()
+        // App logic to determine if all data is loaded
+        // and disable the infinite scroll
+        if (this.goalList.length == 1000) {
+          event.target.disabled = true;
+        }
+      }, 500);
     }
 
     addCarrinho(items) {
@@ -470,23 +655,42 @@ export class ItemPage implements OnInit {
       });
     }
     filterList(evt) {
-        this.initializeItems();
+      this.initializeItems();
+      console.log(evt)
+      const searchTerm =  evt.srcElement;
+      if(searchTerm != undefined){
+        console.log('nao undefined')
+        this.busca = searchTerm.value
+        if (!this.busca) {
+          return;
+       }
+       this.lista = this.lista2.filter(currentGoal => {
+           if (currentGoal.nome && this.busca) {
+               if (currentGoal.nome.toLowerCase().indexOf(this.busca.toLowerCase()) > -1) {
+                   return true;
+                 } else {
+                   return false;
+                 }
+             }
+         });
 
-        const searchTerm = evt.srcElement.value;
+      }else{
+        console.log('undefined')
+        this.busca = evt;
+        if (!this.busca) {
+          return;
+       }
+       this.lista = this.lista2.filter(currentGoal => {
+           if (currentGoal.nome && this.busca) {
+               if (currentGoal.nome.toLowerCase().indexOf(this.busca.toLowerCase()) > -1) {
+                   return true;
+                 } else {
+                   return false;
+                 }
+             }
+         });
 
-        if (!searchTerm) {
-            return;
-        }
-        this.goalList = this.goalList.filter(currentGoal => {
-            if (currentGoal.nome && searchTerm) {
-                if (currentGoal.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
-
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
+      }  
     }
  async handleDislike() {
        this.dislikes++;

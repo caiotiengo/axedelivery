@@ -87,7 +87,7 @@
       margin: auto;
       min-height: 40vh;
       max-height: 40vh;
-      width: 30vh; margin:15px; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.id]"  >
+      width: 30vh; margin:15px; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]"  >
         <ion-card-header style="min-height: 20vh;
         max-height: 20vh;">
           <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
@@ -97,12 +97,13 @@
           max-height: 15vh;max-width: 22vh;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />
         </ion-card-header> 
         <ion-label style="background: linear-gradient(45deg, #ffc40933,#ffc409);
-        border-radius: 25px;
         color: black;
         padding: 3px;
     "> 	
     <ion-icon  style="color:black" name="bicycle-outline"></ion-icon>
     {{items.bairro}}
+    <br/>
+    {{items.cidade}}
   </ion-label>
         <ion-card-content>
           <ion-label text-wrap>
@@ -160,16 +161,17 @@
   <div>
     <p class="label-lojas">Lojas</p>
   </div>
-          <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
-            <ion-item *ngIf="items.status ==='Offline'" disabled [routerLink]="['/item/' + items.id]">
+          <ion-list style="background: transparent" *ngFor="let items of offlines">
+            <ion-item *ngIf="items.estado === estado" disabled>
 
               <ion-thumbnail slot="start">
                 <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
                 <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
               <ion-label>
                 <h2>{{items.nome}}</h2>
-                <p>Entrega:{{items.entrega}}</p>
-                <p>Ou: {{items.seNao}}</p>
+                <!--p>Entrega:{{items.entrega}}</p>
+                <p>Ou: {{items.seNao}}</p-->
+                <p>Cidade: {{items.cidade}}</p>
                 <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
                 padding: 5px;
                 text-align: center;
@@ -179,7 +181,9 @@
               <ion-button  *ngIf="items.status ==='Offline'" color="danger" disabled>Fechada</ion-button>
               <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
             </ion-item>
-            <ion-item *ngIf="items.status ==='Online'"  [routerLink]="['/item/' + items.id]">
+          </ion-list>
+          <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
+            <ion-item *ngIf="items.status ==='Online' && items.estado === estado"  [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]">
 
               <ion-thumbnail slot="start">
                 <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
@@ -187,7 +191,8 @@
               <ion-label>
                 <h2>{{items.nome}}</h2>
                 <p>Entrega:{{items.entrega}}</p>
-                <p>Ou: {{items.seNao}}</p>
+                <!--p>Ou: {{items.seNao}}</p-->
+                <p>Cidade: {{items.cidade}}</p>
                 <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
                 padding: 5px;
                 text-align: center;
@@ -203,7 +208,7 @@
 </div>
 
 </div>
-<div style="text-align: center;" *ngIf="semLoja === 0">
+<div style="text-align: center;" *ngIf="lojinha === 0">
   <img src="/assets/Picture1.png" alt="" />
   <h2>Ops... :(</h2>
   <p>Parece que no momento não temos loja na sua região...</p>

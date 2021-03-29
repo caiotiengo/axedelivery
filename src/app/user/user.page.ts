@@ -1653,6 +1653,16 @@ export class UserPage implements OnInit {
     numeroBank =''
     nomeBanco = ''
     complemento
+    unidadeEnd 
+    unidadeNum
+    unidadeEstado
+    unidadeCEP
+    abrirUnidade
+    unidadeBairro
+    unidadeComple
+    unidadeNumero
+    unidadeCidade
+    unidadez
   constructor(public navCtrl: NavController, private storage: Storage,
               public afStore: AngularFirestore, 
               public modalController: ModalController,
@@ -1718,8 +1728,8 @@ export class UserPage implements OnInit {
     if (user) {
             this.mainuser = this.afStore.doc(`users/${user.uid}`);
                this.userID = user.uid
-               console.log(this.userID)
-      } else {
+                this.storage.set('usuarioUID', this.userID)
+              } else {
 
       }
     this.proccessSubscription = this.services.getProccessos().subscribe(data => {
@@ -1753,6 +1763,7 @@ export class UserPage implements OnInit {
       this.seNao = event.seNao
       this.status = event.status
       this.complemento = event.complemento
+      this.unidadez = event.unidades
     });
 
    }
@@ -1842,10 +1853,12 @@ export class UserPage implements OnInit {
   abrirLoja(){
     var opc = "Online"
     this.services.updateStatus(this.userID,opc)
+
   }
   fecharLoja(){
     var opc = "Offline"
     this.services.updateStatus(this.userID,opc)
+    
   }
 
   updateEnd(){
@@ -1959,7 +1972,12 @@ export class UserPage implements OnInit {
                 
           });
   }
-
+    addUni(){
+      this.navCtrl.navigateForward('/lala-move')
+    }
+    unidades(id){
+      //this.services.updateUnidade(id, this.unidadeEnd, this.unidadeCEP, this.unidadeBairro,this.unidadeComple, this.unidadeNumero, this.unidadeCidade, this.unidadeEstado, this.latitudeGoogle, this.longitudeGoogle)
+    }
   async presentAlertConfirm(items) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
@@ -2020,11 +2038,21 @@ perfilPage() {
   // Deletar quando tiver conexão com o firebase.
 
   }
-
+  vaiProdutos(){
+    this.navCtrl.navigateForward('/lista-produtos')
+  }
   addProc() {
   	this.navCtrl.navigateForward('/add-proc');
   	console.log('Fine');
   // Deletar quando tiver conexão com o firebase.
 
+  }
+  pedirDele(item){
+    this.services.deleteUnidade(item.uid,item)
+    /*
+    this.afStore.collection('produto').add(item).then(()=>{
+      alert('Seu pedido para excluir a loja foi enviado e será processado em até 48 horas!')
+    });
+    */
   }
 }

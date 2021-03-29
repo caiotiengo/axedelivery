@@ -16,6 +16,7 @@ export interface User {
     bairro: string ;
     telefone: string ;
     LikeValue?: number;
+    unidades?:any;
     DislikeValue?: number;
     tellme: string;
     email: string;
@@ -45,6 +46,7 @@ export interface User {
     digitoConta?:any;
     numeroBank?:any;
     cupons?:any;
+    uid?:any;
 }
 export interface Processo {
     // tslint:disable-next-line:indent
@@ -68,6 +70,8 @@ export interface Processo {
     detail?: string;
     especi?:Array<CheckBox>
     fotos?:Array<Foto>
+    unidades?:any
+
 }
 export interface Vendas {
     nomeComprador?: string;
@@ -264,11 +268,60 @@ export class ServiceService {
             map(actions => actions.map(a => {
                 const data = a.payload.doc.data() as Vendas;
                 const id = a.payload.doc.id;
-                console.log('nova venda!')
+                //console.log('nova venda!')
                 return { id, ...data };
             }))
         );
   }
+  getLojas(){
+    let lojasMapeadas = this.afs.collection('users',ref => ref.where('tipo' , '==' , 'Loja') && ref.where('aprovado' , '==' , 'Sim') );
+     return lojasMapeadas.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+      const data = a.payload.doc.data() as User;
+      const id = a.payload.doc.id;
+      return { id, ...data };
+    })))
+  }
+  getTodosProdutos(){
+    let produtos = this.afs.collection<any>('produto');
+    return produtos.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Processo;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      })))
+
+  }
+
+  deleteUnidade(id:string,item:any){
+   this.userCollection.doc<User>(id).update({unidades: firebase.firestore.FieldValue.arrayRemove(item)})  
+  }
+  updateUnidade(id:string, endereco: string, cep:string, bairro:string,complemento:string, numero:any, cidade:string, estado:string, lat:string,lng:string,nome:string,FotoPerfil:string,entrega:string,seNao:string){
+    const {uid} = firebase.auth().currentUser;
+    var aprovado = 'Sim'
+    var tipo = 'Loja'
+    var status = 'Online'
+    const data = {
+       uid,
+       endereco,
+       cep,
+       bairro,
+       complemento,
+       numero,
+       cidade,
+       estado,
+       lat,
+       lng,
+       tipo,
+       aprovado,
+       status,
+       nome,
+       FotoPerfil,
+       entrega,
+       seNao
+   }
+    this.userCollection.doc<User>(id).update({unidades: firebase.firestore.FieldValue.arrayUnion(data)})  
+}
   addUser(user: User) {
     this.userCollection.add(user);
   }

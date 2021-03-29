@@ -119,7 +119,7 @@ export class AddProcPage implements OnInit {
   }
   async abrirGaleria1(){
       const options: CameraOptions = {
-        quality: 100,
+        quality: 60,
         destinationType: this.camera.DestinationType.FILE_URI,
         sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
         correctOrientation: true,
@@ -145,7 +145,7 @@ export class AddProcPage implements OnInit {
   }
   async abrirGaleria2(){
       const options: CameraOptions = {
-        quality: 100,
+        quality: 60,
         destinationType: this.camera.DestinationType.FILE_URI,
         sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
         correctOrientation: true,
@@ -172,7 +172,7 @@ export class AddProcPage implements OnInit {
   }
     async abrirGaleria3(){
       const options: CameraOptions = {
-        quality: 100,
+        quality: 60,
         destinationType: this.camera.DestinationType.FILE_URI,
         sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
         correctOrientation: true,
@@ -198,7 +198,7 @@ export class AddProcPage implements OnInit {
   }
     async abrirGaleria4(){
       const options: CameraOptions = {
-        quality: 100,
+        quality: 60,
         destinationType: this.camera.DestinationType.FILE_URI,
         sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
         correctOrientation: true,
