@@ -161,27 +161,7 @@
   <div>
     <p class="label-lojas">Lojas</p>
   </div>
-          <ion-list style="background: transparent" *ngFor="let items of offlines">
-            <ion-item *ngIf="items.estado === estado" disabled>
 
-              <ion-thumbnail slot="start">
-                <img style="margin:auto;" *ngIf="items.FotoPerfil === 'undefined'" src="/assets/Picture1.png" alt="" />
-                <img style="margin:auto;" *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
-              <ion-label>
-                <h2>{{items.nome}}</h2>
-                <!--p>Entrega:{{items.entrega}}</p>
-                <p>Ou: {{items.seNao}}</p-->
-                <p>Cidade: {{items.cidade}}</p>
-                <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
-                padding: 5px;
-                text-align: center;
-                border-radius: 25px;
-                color: black;">{{items.bairro}}</p>
-              </ion-label>
-              <ion-button  *ngIf="items.status ==='Offline'" color="danger" disabled>Fechada</ion-button>
-              <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
-            </ion-item>
-          </ion-list>
           <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
             <ion-item *ngIf="items.status ==='Online' && items.estado === estado"  [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]">
 
@@ -203,7 +183,27 @@
               <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
             </ion-item>             
           </ion-list>
+          <ion-list style="background: transparent" *ngFor="let items of offlines">
+            <ion-item *ngIf="items.estado === estado" disabled>
 
+              <ion-thumbnail slot="start">
+                <img style="margin:auto;" *ngIf="items.FotoPerfil === 'undefined'" src="/assets/Picture1.png" alt="" />
+                <img style="margin:auto;" *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
+              <ion-label>
+                <h2>{{items.nome}}</h2>
+                <!--p>Entrega:{{items.entrega}}</p>
+                <p>Ou: {{items.seNao}}</p-->
+                <p>Cidade: {{items.cidade}}</p>
+                <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
+                padding: 5px;
+                text-align: center;
+                border-radius: 25px;
+                color: black;">{{items.bairro}}</p>
+              </ion-label>
+              <ion-button  *ngIf="items.status ==='Offline'" color="danger" disabled>Fechada</ion-button>
+              <ion-button *ngIf="items.status ==='Online'" color="warning" slot="end">VEJA</ion-button>
+            </ion-item>
+          </ion-list>
 
 </div>
 
