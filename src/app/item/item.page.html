@@ -26,7 +26,7 @@
 
 
 
-      <ion-select okText="Ok" cancelText="Cancelar" *ngIf="qtdUnidades > 1" placeholder="{{bairroSelecionado}} - {{lojaCity}}" (ionChange)="buscando($event)">
+      <ion-select okText="Ok" cancelText="Cancelar" *ngIf="qtdUnidades >= 1" placeholder="{{bairroSelecionado}} - {{lojaCity}}" (ionChange)="buscando($event)">
         <ion-select-option *ngFor="let itens of lojaEstado" value="{{itens.bairro}}">{{itens.bairro}} - {{itens.cidade}}</ion-select-option>
       </ion-select>
 

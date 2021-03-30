@@ -90,7 +90,7 @@
       width: 30vh; margin:15px; border: 1px solid #ffc40938;" [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]"  >
         <ion-card-header style="min-height: 20vh;
         max-height: 20vh;">
-          <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
+          <img style="margin:auto;" *ngIf="items.FotoPerfil === 'undefined'" src="/assets/Picture1.png" alt="" />
   
           <img style=" margin: auto;
         
@@ -165,8 +165,8 @@
             <ion-item *ngIf="items.estado === estado" disabled>
 
               <ion-thumbnail slot="start">
-                <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
-                <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
+                <img style="margin:auto;" *ngIf="items.FotoPerfil === 'undefined'" src="/assets/Picture1.png" alt="" />
+                <img style="margin:auto;" *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
               <ion-label>
                 <h2>{{items.nome}}</h2>
                 <!--p>Entrega:{{items.entrega}}</p>
@@ -186,8 +186,8 @@
             <ion-item *ngIf="items.status ==='Online' && items.estado === estado"  [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]">
 
               <ion-thumbnail slot="start">
-                <img style="margin:auto;" *ngIf="!items.FotoPerfil" src="/assets/Picture1.png" alt="" />
-                <img style="margin:auto;" *ngIf="items.FotoPerfil" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
+                <img style="margin:auto;" *ngIf="items.FotoPerfil === 'undefined'" src="/assets/Picture1.png" alt="" />
+                <img style="margin:auto;" *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}" alt="" />              </ion-thumbnail>
               <ion-label>
                 <h2>{{items.nome}}</h2>
                 <p>Entrega:{{items.entrega}}</p>

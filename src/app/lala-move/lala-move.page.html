@@ -10,7 +10,7 @@
 <ion-content>
   <ion-item>
     <ion-label position="floating">Endereço</ion-label>
-    <ion-input [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" (ionClear)="ClearAutocomplete()" value="{{enderecoNew}}"></ion-input>
+    <ion-input [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Preencha aqui o endereço da filial..." (ionClear)="ClearAutocomplete()" value="{{unidadeEnd}}"></ion-input>
   </ion-item>
   <ion-list [hidden]="autocompleteItems.length == 0 || hide">
    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
@@ -19,27 +19,31 @@
    </ion-list>
   <ion-item>
     <ion-label position="floating">Número</ion-label>
-    <ion-input [(ngModel)]="unidadeNum"></ion-input>
+    <ion-input placeholder="Preencha aqui o número da filial..." [(ngModel)]="unidadeNum"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Complemento</ion-label>
-    <ion-input [(ngModel)]="unidadeComple"></ion-input>
+    <ion-input placeholder="Preencha aqui o complemento da filial..." [(ngModel)]="unidadeComple"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Bairro</ion-label>
-    <ion-input placeholder="{{unidadeBairro}}"value="{{unidadeBairro}}" [(ngModel)]="unidadeBairro"></ion-input>
+    <ion-input placeholder="Preencha aqui o bairro da filial..." value="{{unidadeBairro}}" [(ngModel)]="unidadeBairro"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">CEP</ion-label>
-    <ion-input [(ngModel)]="unidadeCEP"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Cidade</ion-label>
-    <ion-input [(ngModel)]="unidadeCidade"></ion-input>
+    <ion-input placeholder="Preencha aqui o CEP da filial..." [(ngModel)]="unidadeCEP"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Estado</ion-label>
-    <ion-input [(ngModel)]="unidadeEstado"></ion-input>
+    <ion-select placeholder="Clique aqui para escolher o estado" [(ngModel)]="unidadeEstado" (ionChange)="city($event)" >
+      <ion-select-option *ngFor="let items of states?.estados" value="{{items.sigla}}"  >{{items.sigla}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Cidade</ion-label>
+    <ion-select placeholder="Clique aqui para escolher a cidade" [(ngModel)]="unidadeCidade" >
+      <ion-select-option *ngFor="let items of cidades" value="{{items.nome}}"  >{{items.nome}}</ion-select-option>
+    </ion-select>
   </ion-item>
   <ion-button expand="block" (click)="salvar()">
     Salvar

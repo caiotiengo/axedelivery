@@ -33,6 +33,8 @@ export class LalaMovePage implements OnInit {
   unidadez
   id
   loja
+  states
+  cidades: Array<any> = [];
   constructor(public services: ServiceService,private storage: Storage,public navCtrl: NavController,
     public zone: NgZone) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -49,6 +51,23 @@ export class LalaMovePage implements OnInit {
         this.loja = resp
       })
     })
+    this.services.data().then(x =>{
+      this.states = x;
+    })
+  }
+  city(evt){
+    console.log(evt.srcElement.value)
+    this.unidadeEstado = evt.srcElement.value;
+  let estado =  this.states.estados.filter(i => i.sigla === this.unidadeEstado)
+      console.log(estado[0].cidades)
+      this.cidades =[];
+      estado[0].cidades.forEach(element => {
+
+        this.cidades.push({
+          nome:element,
+          estado:this.unidadeEstado
+        })
+      });
   }
   UpdateSearchResults(){
 
@@ -83,8 +102,8 @@ export class LalaMovePage implements OnInit {
     
     this.unidadeEnd = String(item.terms[0].value)
     this.unidadeBairro = String(item.terms[1].value)
-    this.unidadeCidade = String(item.terms[2].value)
-    this.unidadeEstado = String(item.terms[3].value)
+    //this.unidadeCidade = String(item.terms[2].value)
+    //this.unidadeEstado = String(item.terms[3].value)
 
     console.log(this.unidadeBairro)
     console.log(this.unidadeCidade)

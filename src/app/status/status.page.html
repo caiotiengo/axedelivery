@@ -97,6 +97,9 @@
 
 
 </div>
+<ion-button expand="block" *ngIf="typeUser === 'Loja'" style="--background: #002946;
+margin-top: 15px;
+font-weight: bold;" (click)="mojuba()">Seus Ganhos</ion-button>
 <div *ngIf="typeUser === 'Loja' && valorreST > 0" class="background-traco">
   <h2 style="text-align: center; padding-top: 22px;">Seus Pedidos</h2>
 
@@ -110,9 +113,7 @@
       </ion-segment-button>
   
     </ion-segment>  
-    <ion-button expand="block" *ngIf="typeUser === 'Loja'" style="--background: #002946;
-  margin-top: 15px;
-  font-weight: bold;" (click)="mojuba()">Seus Ganhos</ion-button>
+
   <ion-list *ngFor="let items of goalListST" >
     <ion-card style="padding: 10px;
     box-shadow: 0.5px 0.5px 5px 5px #80808047; margin-bottom: 10%; background:white;">

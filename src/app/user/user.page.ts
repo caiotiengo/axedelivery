@@ -1732,13 +1732,7 @@ export class UserPage implements OnInit {
               } else {
 
       }
-    this.proccessSubscription = this.services.getProccessos().subscribe(data => {
-          this.goalListFiltrado = data.filter(i => i.email === user.email && i.noApp === "Sim");
-          this.loadedGoalListFiltrado = data.filter(i => i.email === user.email && i.noApp === "Sim");
-          console.log(this.goalList);
 
-
-    });
 
 
     this.sub = this.mainuser.valueChanges().subscribe(event => {

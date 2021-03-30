@@ -371,7 +371,7 @@ export class ItemPage implements OnInit {
       //this.likes = data.LikeValue;
       //this.dislikes = data.LikeValue;
       this.emailLoja = this.loja.email;
-      if(this.loja.unidades.length > 1){
+      if(this.loja.unidades.length >= 1){
         this.lojaEstado = this.loja.unidades.filter(i => i.estado === this.estado);
         this.lojaCity = this.loja.cidade;
         this.mudeOpc(this.bairroSelecionado)

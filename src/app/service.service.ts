@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import { Platform } from '@ionic/angular';
 import { Foto, CheckBox } from './add-proc/add-proc.page';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 
@@ -183,7 +184,7 @@ export class ServiceService {
     proccesso;
     arrey: Array<Comentario> = [];
 
-  constructor(private afs: AngularFirestore, public platform: Platform) {
+  constructor(private afs: AngularFirestore,private http: HttpClient, public platform: Platform) {
 
       // tslint:disable-next-line:indent
   	 this.userCollection = afs.collection<User>('users');
@@ -292,7 +293,16 @@ export class ServiceService {
       })))
 
   }
-
+ data(){
+   return new Promise(resolve => {
+        this.http.get<any[]>('/assets/estados-cidades.json').subscribe(data => {
+          resolve(data);
+          console.log(data);
+        }, err => {
+          console.log(err);
+        });
+      });
+  }
   deleteUnidade(id:string,item:any){
    this.userCollection.doc<User>(id).update({unidades: firebase.firestore.FieldValue.arrayRemove(item)})  
   }

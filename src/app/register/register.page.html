@@ -32,14 +32,14 @@
 					<ion-item>
 		 
 					  <ion-label position="floating">E-mail</ion-label>
-					  <ion-input type="text" [(ngModel)]="email" required ></ion-input>
+					  <ion-input  placeholder="Preencha aqui o seu E-mail..."  type="text" [(ngModel)]="email" required ></ion-input>
 					</ion-item>
 
 					<ion-item>
 					  <ion-label position="floating"> 
 					  	Senha
 					  </ion-label>
-					  <ion-input [(ngModel)]="password" type="password" required ></ion-input>
+					  <ion-input placeholder="Preencha aqui a sua Senha..."  [(ngModel)]="password" type="password" required ></ion-input>
 					</ion-item>
 					<ion-grid *ngIf="typeUser === 'Loja'">
 						<h4>Sobre o responsável</h4>
@@ -47,31 +47,31 @@
 							<ion-col>
 								<ion-item *ngIf="typeUser === 'Loja'">
 									<ion-label position="floating">Nome</ion-label>
-									<ion-input [(ngModel)]="Prinome" ></ion-input>
+									<ion-input placeholder="Preencha aqui o nome do responsável..."  [(ngModel)]="Prinome" ></ion-input>
 								</ion-item>
 							</ion-col>
 							<ion-col>
 								<ion-item *ngIf="typeUser === 'Loja'">
 									<ion-label position="floating">Sobrenome</ion-label>
-									<ion-input [(ngModel)]="Segnome" ></ion-input>
+									<ion-input placeholder="Preencha aqui o sobrenome do responsável..." [(ngModel)]="Segnome" ></ion-input>
 								</ion-item>
 							</ion-col>
 						</ion-row>
 					</ion-grid>	
 					<ion-item *ngIf="typeUser === 'Loja'">
 						<ion-label position="floating">CPF do responsável</ion-label>
-						<ion-input maxLenght="40" [brmasker]="{person: true}" [(ngModel)]="CPFRES" ></ion-input>
+						<ion-input placeholder="Preencha aqui o CPF do responsável..."  maxLenght="40" [brmasker]="{person: true}" [(ngModel)]="CPFRES" ></ion-input>
 					</ion-item>		
 					<h4 style="text-align: center;" *ngIf="typeUser === 'Loja'">Sobre a loja</h4>		
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">Nome da sua Loja</ion-label>
-							<ion-input [(ngModel)]="nome" ></ion-input>
+							<ion-input placeholder="Preencha aqui o nome da sua Loja..."  [(ngModel)]="nome" ></ion-input>
 						</ion-item>
 
 						
 						<ion-item *ngIf="typeUser === 'user'" >
 						  <ion-label position="floating">Seu nome completo</ion-label>
-						  <ion-input [(ngModel)]="nome" required ></ion-input>
+						  <ion-input placeholder="Preencha aqui o seu nome completo..."  [(ngModel)]="nome" required ></ion-input>
 						</ion-item>
 						<!--ion-item *ngIf="typeUser === 'user'" >
 							<ion-label position="floating"> Data de Nascimento</ion-label>
@@ -93,26 +93,26 @@
 						</ion-item-->
 						<ion-item *ngIf="typeUser === 'Loja'" >
 							<ion-label position="floating">Entrega de:</ion-label>
-						  <ion-input [(ngModel)]="entregaDe" ></ion-input>
+						  <ion-input placeholder="Preencha aqui o horário de entrega..."  [(ngModel)]="entregaDe" ></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'" >
 							<ion-label position="floating">Se ultrapassar o horário, entrega quando?</ion-label>
-						  <ion-input [(ngModel)]="seNEntrega" ></ion-input>
+						  <ion-input placeholder="Preencha aqui um horario alternativo..."  [(ngModel)]="seNEntrega" ></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">CNPJ</ion-label>
 							<ion-input maxLenght="40" [brmasker]="{person: true}"
-							 [(ngModel)]="CPF"  type="text"></ion-input>
+							 [(ngModel)]="CPF"  placeholder="Preencha aqui o seu CNPJ..."  type="text"></ion-input>
 						</ion-item>
 						<ion-item *ngIf="typeUser === 'user'" >
 						  <ion-label position="floating">CPF</ion-label>
-						  <ion-input [(ngModel)]="CPF" maxLenght="40" [brmasker]="{person: true}"></ion-input>
+						  <ion-input [(ngModel)]="CPF" maxLenght="40" placeholder="Preencha aqui o seu CPF..."  [brmasker]="{person: true}"></ion-input>
 						</ion-item>
 						<ion-item>
 						  <ion-label position="floating">Endereço</ion-label>
 						  <ion-input [(ngModel)]="endereco" 
 						  [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" 
-						  (ionClear)="ClearAutocomplete()" value="{{endereco}}"></ion-input>
+						  (ionClear)="ClearAutocomplete()" placeholder="Preencha aqui o seu endereço..."  value="{{endereco}}"></ion-input>
 						  <!--ion-input [(ngModel)]="endereco" type="text" required></ion-input-->
 						</ion-item>
 						<ion-list [hidden]="autocompleteItems.length == 0 || hide">
@@ -139,26 +139,27 @@
 					    </ion-grid>
 						<ion-item>
 							<ion-label position="floating">Complemento(Bloco, Apartamento)</ion-label>
-							<ion-input [(ngModel)]="complemento"  type="text"></ion-input>
+							<ion-input placeholder="Preencha aqui o complemento..."  [(ngModel)]="complemento"  type="text"></ion-input>
 						  </ion-item>
 						<ion-item>
 						  <ion-label position="floating">Bairro</ion-label>
-						  <ion-input [(ngModel)]="bairro" placeholder="{{bairro}}" value="{{bairro}}"  type="text"></ion-input>
+						  <ion-input [(ngModel)]="bairro" placeholder="Preencha aqui o bairro..."  value="{{bairro}}"  type="text"></ion-input>
 						</ion-item>
 						<ion-grid>
 					      <ion-row>
 					          <ion-col>
-					             	<ion-item>
-									  <ion-label position="floating">Cidade</ion-label>
-									  <ion-input required [(ngModel)]="cidade" placeholder="{{cidade}}" value="{{cidade}}"  type="text"></ion-input>
-									</ion-item>
+								<ion-label position="floating">Estado</ion-label>
+								<ion-select placeholder="Clique aqui para escolher o estado" [(ngModel)]="estado" (ionChange)="city($event)" >
+								  <ion-select-option *ngFor="let items of states?.estados" value="{{items.sigla}}"  >{{items.sigla}}</ion-select-option>
+								</ion-select>
 
 					          </ion-col>
 					          <ion-col>
-									<ion-item>
-									  <ion-label position="floating">Estado(Exemplo: RJ, SP, MG)</ion-label>
-									  <ion-input placeholder="{{Es}}" [(ngModel)]="estado" value="{{Es}}"  type="text"></ion-input>
-									</ion-item>
+								<ion-label position="floating">Cidade</ion-label>
+								<ion-select placeholder="Clique aqui para escolher a cidade" [(ngModel)]="cidade" >
+								  <ion-select-option *ngFor="let items of cidades" value="{{items.nome}}"  >{{items.nome}}</ion-select-option>
+								</ion-select>
+									
 					          </ion-col>
 					      </ion-row>
 					    </ion-grid>
@@ -180,7 +181,7 @@
 					    </ion-grid>
 						<ion-item *ngIf="typeUser === 'Loja'">
 							<ion-label position="floating">Descrição da sua Loja</ion-label>
-							<ion-input maxLenght="40" [(ngModel)]="resumo"  type="text"></ion-input>
+							<ion-input placeholder="Descreva a sua loja..." maxLenght="40" [(ngModel)]="resumo"  type="text"></ion-input>
 						</ion-item>
 <div *ngIf="typeUser === 'Loja'">						
 		<h3 style="text-align-last: center ">Informações bancárias</h3>

@@ -1998,6 +1998,8 @@ export class RegisterPage implements OnInit {
   pubKey: any;
   hash: string;
   Es
+  states
+  cidades: Array<any> = [];
   constructor(public navCtrl: NavController, private storage: Storage,public loadingController: LoadingController,
               public afAuth: AngularFireAuth, private geolocation: Geolocation, public router: Router, public actRouter: ActivatedRoute,
               public services: ServiceService, public afStore: AngularFirestore, public alertCtrl: AlertController,
@@ -2083,6 +2085,24 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.services.data().then(x =>{
+      this.states = x;
+      console.log(this.states)
+    })
+  }
+  city(evt){
+    console.log(evt.srcElement.value)
+    this.estado = evt.srcElement.value;
+  let estado =  this.states.estados.filter(i => i.sigla === this.estado)
+      console.log(estado[0].cidades)
+      this.cidades =[];
+      estado[0].cidades.forEach(element => {
+
+        this.cidades.push({
+          nome:element,
+          estado:this.estado
+        })
+      });
   }
 /**
  Registro wirecard
@@ -2213,8 +2233,8 @@ Autocomplete
     this.bairro = String(item.terms[1].value)
     this.endereco = String(item.terms[0].value)
     this.bairro = String(item.terms[1].value)
-    this.cidade = String(item.terms[2].value)
-    this.Es = String(item.terms[3].value)
+    //this.cidade = String(item.terms[2].value)
+    //this.Es = String(item.terms[3].value)
 
     console.log(this.endereco)
     this.placeid = item.place_id
@@ -2296,11 +2316,30 @@ async registrarLoja(idmoip, accessToken) {
              fcm: '1',
              FotoPerfil: String(this.url),
              idmoip: idmoip,
-             porcentagemLoja: 84,
-             porcentagemAxe: 16,
+             porcentagemLoja: 87,
+             porcentagemAxe: 13,
              numeroBank: Number(this.numeroBank),
              digitoConta: Number(this.digitoConta),
-             accessToken: accessToken
+             accessToken: accessToken,
+             unidades:[{
+              FotoPerfil: String(this.url),
+              aprovado: "Sim",
+              bairro: this.bairro,
+              cep: this.CEP,
+              cidade: this.cidade,
+              complemento: this.complemento,
+              endereco: this.endereco,
+              entrega: this.entregaDe,
+              estado: this.estado,
+              lat: this.latitudeGoogle,
+              lng: this.longitudeGoogle,
+              nome: this.nome,
+              numero: this.numeroEND,
+              seNao: this.seNEntrega,
+              status: 'Online',
+              tipo: this.type,
+              uid: res.user.uid
+             }]
 
         }).then(() => {
            const user = firebase.auth().currentUser;
