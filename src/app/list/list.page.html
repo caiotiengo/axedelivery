@@ -1,5 +1,160 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-avatar slot="start">
+      <img style="padding: 7px;" src="https://media-exp1.licdn.com/dms/image/C4E0BAQEQlAHYHJmy3w/company-logo_200_200/0/1598197905782?e=2159024400&v=beta&t=0VgjH8MCOyIXS-4kvzE1wb6J9sPgHpGpdlVoVgE6MS0">
 
-<ion-content [fullscreen]="true" class="">
+    </ion-avatar>
+    <ion-buttons slot="end">
+      <ion-button class="bordered" (click)="perfilPage()" fill="solid" color="light">
+        <ion-icon color="primary" name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-item lines="none">
+
+    <ion-label>
+        <p>Seu endereço,</p>
+        <h3>{{endereco}}</h3>
+        <p>{{numero}}, {{complemento}}, {{bairro}} - {{estado}}</p>
+        
+    </ion-label>
+
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="dark" expand="block" style="margin-top: -5%; color:#ffc409" (click)="status()">
+          <p style="color:#ffc409">Seus Pedidos</p>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button  href="https://wa.me/5521997955586" color="success" expand="block" style="margin-top: -5%">
+          <p>Fale Conosco</p>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+
+<ion-content>
+ <div class="slides ion-margin-bottom">
+   <h6 style="margin: 0; text-align: center;">Próximas a você</h6>
+   <ion-slides [options]="slidesOptions">
+     <ion-slide *ngFor="let items of lojaperto">
+      <ion-card style="height: 250px;" >
+        <ion-card-header>
+          <div class="main">
+            <img src="{{items.FotoPerfil}}">
+          </div>
+        </ion-card-header>
+      
+        <ion-card-content class="ion-text-left">
+          <ion-card-title  style="font-size: large;"class="ion-margin-bottom">{{items.nome}}</ion-card-title>
+
+          <ion-card-subtitle style=" bottom: -5px;" class="ion-text-right">
+            <h4>{{items.bairro}},</h4>
+            <p>{{items.cidade}}</p>
+          </ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
+      
+     </ion-slide>
+   </ion-slides>
+
+ </div>
+
+ <div class="main">
+  <ion-button expand="block" color="dark" (click)="listaOrc()">Veja seus Orçamentos</ion-button>
+
+ </div>
+ <div class="container">
+  <h6 style="text-align: center;">Lojas no seu estado</h6>
+  <ion-list style="background: transparent; padding: 10px;">
+
+        <!-- Lista de lojas Fechadas #goalListFiltrado -->
+
+    <ion-item  detail='false' [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]"  *ngFor="let items of goalListFiltrado" lines="none">
+      <ion-badge style="    position: absolute;
+      right: 40px;
+      top: 60px;" color="success">Aberta</ion-badge>
+
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="3">
+            <ion-avatar>
+              <img *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}">
+            </ion-avatar>
+    
+          </ion-col>
+          <ion-col size="7">
+            <ion-label>
+              <h4>
+                {{items.nome}}
+              </h4>
+              <h6>
+               {{items.bairro}},
+              </h6>
+              <p> {{items.cidade}}.</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button color="dark" fill="clear">
+              <ion-icon slot="icon-only"  name="chevron-forward-outline"></ion-icon>
+            </ion-button> 
+          </ion-col>
+        </ion-row>
+        
+      </ion-grid>
+    </ion-item>
+
+    <!-- Lista de lojas Fechadas #offlines -->
+
+
+    <ion-item disabled style="--background: lightgray;"  *ngFor="let items of offlines" lines="none">
+      <ion-badge style="    position: absolute;
+      right: 30px;
+      top: 60px;" color="danger">Fechada</ion-badge>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="3">
+            <ion-avatar>
+              <img *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}">
+            </ion-avatar>
+    
+          </ion-col>
+          <ion-col size="7">
+            <ion-label>
+              <h4>
+                {{items.nome}}
+              </h4>
+              <h6>
+               {{items.bairro}},
+              </h6>
+              <p> {{items.cidade}}.</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button color="dark" fill="clear">
+              <ion-icon slot="icon-only"  name="chevron-forward-outline"></ion-icon>
+            </ion-button> 
+          </ion-col>
+        </ion-row>
+        
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+ </div>
+ </ion-content>
+
+
+<!--
+  
+-->
+
+<!--ion-content [fullscreen]="true" class="">
   
 <div class="background-div1">
   <img style="width:auto; height:85%"src="/assets/Picture1.png">
@@ -40,7 +195,6 @@
 
 
 </ion-card>
-   <!--ion-button expand="block" color="dark" (click)="listaOrc()">Orçamentos</ion-button-->
 <ion-slides pager #mySlider class="slides" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
   <ion-slide>
     <ion-card class="img-back" >
@@ -133,7 +287,7 @@
           Já imaginou você comprando por aqui na sua loja favorita?<br/><br/>
               Indique o Axé Delivery!
               <!--ion-button color="warning" (click)="share()">Compartilhar</ion-button-->
-      </ion-label>
+      <!--/ion-label>
       </ion-card-content>
 
 
@@ -157,7 +311,7 @@
 
 
 
-<div class="background-traco">
+<!--div class="background-traco">
   <div>
     <p class="label-lojas">Lojas</p>
   </div>
@@ -172,7 +326,7 @@
                 <h2>{{items.nome}}</h2>
                 <p>Entrega:{{items.entrega}}</p>
                 <!--p>Ou: {{items.seNao}}</p-->
-                <p>Cidade: {{items.cidade}}</p>
+                <!--p>Cidade: {{items.cidade}}</p>
                 <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
                 padding: 5px;
                 text-align: center;
@@ -193,7 +347,7 @@
                 <h2>{{items.nome}}</h2>
                 <!--p>Entrega:{{items.entrega}}</p>
                 <p>Ou: {{items.seNao}}</p-->
-                <p>Cidade: {{items.cidade}}</p>
+                <!--p>Cidade: {{items.cidade}}</p>
                 <p style="background: linear-gradient(45deg, #ffc40933,#ffc409);
                 padding: 5px;
                 text-align: center;
@@ -216,5 +370,5 @@
  Compartilhe o app com pessoas e comerciantes da área e venha às compras!</p>
  <!--on-button expand="block" color="warning" (click)="share()">Compartilhar</ion-button-->
 
-</div>
-</ion-content>
+  <!--/div>
+</ion-content-->

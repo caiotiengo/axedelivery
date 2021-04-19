@@ -128,7 +128,7 @@ export class RootPage implements OnInit {
   ngOnInit() {
     //
     this.loadings()
-    this.proccessSubscription = this.services.getLojas().subscribe(data => {
+    this.proccessSubscription = this.services.getLojasOnline().subscribe(data => {
       this.goalList = data;
       this.storage.remove('carrinhoUser')
       this.loadedGoalList = data;

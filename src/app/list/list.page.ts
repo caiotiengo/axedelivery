@@ -126,10 +126,14 @@ export class ListPage implements OnInit {
               private _haversineService: HaversineService,
               private nativeGeocoder: NativeGeocoder,
               private push:Push
-              ) {}
+              ) {
+
+              }
 
 
- 
+              slidesOptions = {
+                slidesPerView: 1.2
+              }
 add(){
   this.navCtrl.navigateForward('/add-proc')
 }
@@ -150,8 +154,37 @@ status(){
 
   ngOnInit() {
     this.storage.remove('carrinhoUser')
-    let user = firebase.auth().currentUser;
-          console.log(user);
+    this.storage.get('usuario').then(event =>{
+      console.log(event)
+      this.lat = event.lat;
+      this.lng = event.lng
+      this.endereco = event.endereco;
+      this.cidade = event.cidade;
+      this.bairro = event.bairro;
+      this.numero = event.numeroEND;
+      this.estado = event.estado;
+      this.nomeUser = event.nome
+      this.DOB = event.DOB
+      this.complemento = event.complemento
+      this.fcmzin = event.fcm
+    })
+          this.services.getLojasOnline().subscribe(data =>{
+            let Onlines = data.filter(i => i.estado === this.estado)
+            Onlines.forEach(dado =>{
+              let unidades = dado.unidades
+              unidades.forEach(element => {
+                this.goalListFiltrado.push(element)
+                console.log(this.goalListFiltrado)
+                this.lojinha = this.goalListFiltrado
+
+              });
+            })
+          });
+          this.services.getLojasOffline().subscribe(data =>{
+            this.offlines = data.filter(i => i.estado === this.estado && i.status === 'Offline')
+            console.log(this.offlines)
+          })
+          /*
           if (user) {
             this.userId = user.uid
               this.mainuser = this.afStore.doc(`users/${user.uid}`);
@@ -165,19 +198,15 @@ status(){
                 console.log(this.goalList)
                   this.mainuser.valueChanges().subscribe(event => {
                       console.log(event)
-                        this.zona = event.zona;
                         this.lat = event.lat;
                         this.lng = event.lng
                         this.endereco = event.endereco;
                         this.cidade = event.cidade;
-                        this.cep = event.CEP;
                         this.bairro = event.bairro;
                         this.numero = event.numeroEND;
                         this.estado = event.estado;
                         this.nomeUser = event.nome
                         this.DOB = event.DOB
-                        this.tipo = event.tipo
-                        this.aprovado = event.aprovado
                         this.complemento = event.complemento
                         this.fcmzin = event.fcm
 
@@ -303,7 +332,7 @@ status(){
           } else {
             this.navCtrl.navigateRoot('/')
           }
-
+          */
 
      this.produtos();
   }

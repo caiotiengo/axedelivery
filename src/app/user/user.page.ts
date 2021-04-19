@@ -1969,9 +1969,7 @@ export class UserPage implements OnInit {
     addUni(){
       this.navCtrl.navigateForward('/lala-move')
     }
-    unidades(id){
-      //this.services.updateUnidade(id, this.unidadeEnd, this.unidadeCEP, this.unidadeBairro,this.unidadeComple, this.unidadeNumero, this.unidadeCidade, this.unidadeEstado, this.latitudeGoogle, this.longitudeGoogle)
-    }
+ 
   async presentAlertConfirm(items) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
