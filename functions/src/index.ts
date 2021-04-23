@@ -6,7 +6,17 @@ import * as admin from 'firebase-admin';
 
 admin.initializeApp(functions.config().firebase);
 
-
+exports.clickEntregas= functions.https.onRequest(async(req,res) =>{
+    const writeResult = await admin.firestore().collection('messages').add(
+        {
+            original: req.body.order,
+            from:req.body.From,
+            to: req.body.To
+        }).then(data =>{
+            
+        });
+})
+/*
 exports.receiveTwilio = functions.https.onRequest( async(req,res) =>{
     const twilio = require('twilio');
     const authToken = '93973210e9958f84ef7bf14be1621a3c';
@@ -57,7 +67,7 @@ exports.receiveTwilio = functions.https.onRequest( async(req,res) =>{
    
 })
 
-
+*/
 /*
 exports.sendTwilio = functions.firestore.document('vendas/{mUid}').onCreate(async (event) =>{
     const uid = event.get('lojaUID');
