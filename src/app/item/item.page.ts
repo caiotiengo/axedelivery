@@ -143,46 +143,14 @@ export class ItemPage implements OnInit {
     bairroSelecionado
     bairroNome
     lojaCity
+    hide = true;
+    hide2 = false;
+    opcLoja
     constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
               public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
-) {
-   
-      const user = firebase.auth().currentUser;
-      console.log(user);
-      if (user) {
-          this.mainuser = this.afStore.doc(`users/${user.uid}`);
-          this.idUser = user.uid
-          this.sub = this.mainuser.valueChanges().subscribe(event => {
-            this.nome = event.nome;
-            this.endereco = event.endereco;
-            this.cidade = event.cidade;
-            this.email = event.email;
-            this.bairro = event.bairro;
-            this.telefone = event.telefone;
-            this.zona = event.zona;
-            this.lat = event.lat;
-            this.lng = event.lng
-            this.estado = event.estado
-  
-        });
-      } else {
-        this.geolocation.getCurrentPosition().then((resp) => {
-          // resp.coords.latitude
-          // resp.coords.longitude
-          console.log(resp.coords.latitude)
-          this.lat = Number(resp.coords.latitude);
-          this.lng = Number(resp.coords.longitude);
-
-         }).catch((error) => {
-           console.log('Error getting location', error);
-         });
-         
-      }
-
-
-   }
+) { }
 
 
   async presentModal(id) {
@@ -211,7 +179,14 @@ export class ItemPage implements OnInit {
 
     })
   }
-
+  searchBar(){
+    this.hide = false;
+    this.hide2 = true;
+  }
+  filtroCat(){
+    this.hide = true;
+    this.hide2 = false;
+  }
     optionsFn(value: any ) {
         this.segmento = value;
         this.categoria = this.segmento;
@@ -235,6 +210,27 @@ export class ItemPage implements OnInit {
         
         //this.bairroSelecionado = this.bairroNome
       })
+      this.storage.get('id').then((data) =>{
+        this.idUser = data;
+        console.log(this.idUser)
+      })
+         
+            
+      this.storage.get('usuario').then(event => {
+        console.log(event)
+
+        this.nome = event.nome;
+        this.endereco = event.endereco;
+        this.cidade = event.cidade;
+        this.email = event.email;
+        this.bairro = event.bairro;
+        this.telefone = event.telefone;
+        this.zona = event.zona;
+
+        this.estado = event.estado
+    });              
+
+    
       this.que = this.route.snapshot.paramMap.get('id');
       this.bairroSelecionado = this.route.snapshot.paramMap.get('bairro');
       console.log(this.bairroSelecionado)
@@ -243,12 +239,12 @@ export class ItemPage implements OnInit {
       //this.comments = this.services.comment(this.que);
       console.log(this.services.getProc(this.que));
       if (this.que) {
-        this.services.getTodosProdutos().subscribe(data =>{
+        this.storage.get('produtos').then((data) =>{
           console.log(data)
           this.goalList = data.filter(i => i.lojaUID === this.que  && i.noApp === 'Sim');
           this.loadedGoalList = data.filter(i => i.lojaUID === this.que && i.noApp === 'Sim')
     
-          this.goalList.slice(0,10).forEach(i =>{
+          this.goalList.forEach(i =>{
             //console.log(i.id)
             this.lista.push(i)
             this.lista2.push(i)
@@ -257,6 +253,7 @@ export class ItemPage implements OnInit {
            })
            this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
            this.valorinicial = this.categorias[0]
+           this.opcLoja = 'Produtos'
            console.log(this.valorinicial)
     
           /*this.goalList.forEach(element =>{
@@ -329,8 +326,11 @@ export class ItemPage implements OnInit {
     mudeOpc(evt){
       this.bairroSelecionado = evt
       console.log(this.bairroSelecionado)
-
-      let ba = this.lojaEstado.find(y => y.bairro === this.bairroSelecionado)
+      this.storage.get('usuario').then(data=>{
+        this.lat = data.lat;
+        this.lng = data.lng
+ 
+      let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
       console.log(ba)
       this.lojaLat = ba.lat
       this.lojaLng = ba.lng
@@ -343,22 +343,20 @@ export class ItemPage implements OnInit {
           latitude: Number(this.lojaLat),
           longitude:Number(this.lojaLng)
       };
-      
+      console.log(Usuario);
+      console.log(Loja)
       
       let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
       console.log("A distancia entre as lojas é de:" + Number(kilometers));
-  
-
-      this.valorFrete = Math.floor(2.10) * Number(kilometers) + 5;
-      if(this.valorFrete > 50.00){
-        console.log('maior')
-        var y = 55.00
-        this.valorDelivery = y.toFixed(2)
-
-      }else{
-        console.log('menor')
+        console.log(Number(kilometers))
+        let moto = Number(kilometers) - 3
+        console.log(moto)
+        this.valorFrete = Math.floor(1.70) * moto + 18.50;
         this.valorDelivery = this.valorFrete.toFixed(2)
-      }
+        if(moto <= 6.0){
+          this.valorDelivery = 18.00
+        }
+      });
     }
    loadProduct() {
     this.services.getProc(this.que).subscribe(data => {
@@ -433,8 +431,37 @@ export class ItemPage implements OnInit {
               }
           }
       });
-    //  this.goalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
-     // this.loadedGoalList.filter(i => i.email === this.emailLoja && i.noApp ==='Sim' && i.tipoPrd === items.detail.value);
+ 
+    }
+    segmentChanged3(items){
+      this.initializeItems();
+
+      console.log(items.detail.value)
+
+      const searchTerm = items.detail.value;
+      if (!searchTerm) {
+          return;
+      }
+      this.lista = this.lista2.filter(currentGoal => {
+          if (currentGoal.nome && searchTerm) {
+              if (currentGoal.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+
+                  return true;
+              } else {
+                  return false;
+              }
+          }
+      });
+ 
+    }
+    segmentChanged2(items){
+      this.initializeItems();
+
+      console.log(items.detail.value)
+      const searchTerm = items.detail.value;
+      this.opcLoja = items.detail.value
+
+     
     }
     more(){
       this.moremo++
@@ -443,13 +470,14 @@ export class ItemPage implements OnInit {
 
       }else{
         console.log('sem busca')
+        
       }
       console.log(this.moremo)
       if(this.categoria != this.valorinicial){
 
         if(this.moremo === 1){
-          this.lista =[]
-          this.lista2 =[]
+          //this.lista =[]
+          //this.lista2 =[]
   
           this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,25).forEach(x =>{
            
@@ -462,10 +490,10 @@ export class ItemPage implements OnInit {
            })
     
         }else if(this.moremo === 2){
-          this.lista =[]
-          this.lista2 =[]
+         // this.lista =[]
+         // this.lista2 =[]
     
-          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,50).forEach(x =>{
+          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(25,50).forEach(x =>{
            
             //console.log(i.id)
             //this.loadProduct()
@@ -475,8 +503,8 @@ export class ItemPage implements OnInit {
            })
     
         }else if(this.moremo >= 3){
-          this.lista =[]
-          this.lista2 =[]
+          //this.lista =[]
+          //this.lista2 =[]
           
           this.goalList.filter(i => i.tipoPrd === this.categoria).forEach(x =>{
            
@@ -490,8 +518,8 @@ export class ItemPage implements OnInit {
         }
       }else{
         if(this.moremo === 1){
-          this.lista =[]
-          this.lista2 =[]
+         // this.lista =[]
+          //this.lista2 =[]
   
           this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,25).forEach(x =>{
             console.log(x)
@@ -505,10 +533,10 @@ export class ItemPage implements OnInit {
            })
     
         }else if(this.moremo === 2){
-          this.lista =[]
-          this.lista2 =[]
+         // this.lista =[]
+         // this.lista2 =[]
     
-          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(0,50).forEach(x =>{
+          this.goalList.filter(i => i.tipoPrd === this.categoria).slice(25,50).forEach(x =>{
             console.log(x)
             //console.log(i.id)
             //this.loadProduct()
@@ -518,8 +546,8 @@ export class ItemPage implements OnInit {
            })
     
         }else if(this.moremo >= 3){
-          this.lista =[]
-          this.lista2 =[]
+         // this.lista =[]
+          //this.lista2 =[]
           
           this.goalList.filter(i => i.tipoPrd === this.categoria).forEach(x =>{
             console.log(x)

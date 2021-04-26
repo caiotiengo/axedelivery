@@ -1864,14 +1864,7 @@ export class UserPage implements OnInit {
   updateEntrega(){
     this.hideMe3 = false;
   }
-  updateBanco(){
-
-      this.services.updateBanco(this.userID, this.newBanco.value.bancoNew, this.newBanco.value.agenciaNew,
-         this.newBanco.value.contaNew,this.newBanco.value.tipoContaNew,this.newBanco.value.nomeContaNew,
-        this.newBanco.value.CPFcontaNew, this.newBanco.value.digitoNew, this.newBanco.value.numeroBank)
-      this.showalert('Opa!', 'Dados atualizados!')
-       this.hideMe2 = true;
-  }
+ 
   UpdateSearchResults(){
     this.hide = false
 
@@ -2011,10 +2004,12 @@ export class UserPage implements OnInit {
   }
   sair() {
     
-    this.storage.clear();
-    firebase.auth().signOut().then(() => {
-      this.navCtrl.navigateRoot('/');
+    this.storage.remove('usuario').then(() =>{
+      firebase.auth().signOut().then(() => {
+        this.navCtrl.navigateRoot('/');
+      });
     });
+
 
   }
   home() {

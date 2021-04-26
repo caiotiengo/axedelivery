@@ -1,5 +1,5 @@
 import {Component, NgZone, OnInit} from '@angular/core';
-import {AlertController, NavController, Platform} from '@ionic/angular';
+import {AlertController, NavController, Platform, LoadingController} from '@ionic/angular';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { Storage } from '@ionic/storage';
 import { ModalController } from '@ionic/angular';
@@ -35,7 +35,7 @@ export interface Processo {
   templateUrl: './list.page.html',
   styleUrls: ['./list.page.scss'],
 })
-export class ListPage implements OnInit {
+export class ListPage {
   @ViewChild('map',  {static: true}) mapRef: ElementRef;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions;
@@ -125,7 +125,7 @@ export class ListPage implements OnInit {
               public services: ServiceService,
               private _haversineService: HaversineService,
               private nativeGeocoder: NativeGeocoder,
-              private push:Push
+              private push:Push, public loadingController: LoadingController
               ) {
 
               }
@@ -140,19 +140,19 @@ add(){
 listaOrc(){
   this.navCtrl.navigateForward('/lista-orcamento')
 }
-/*share(){
-  if(this.Platform.is("ios")){
-    this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://apps.apple.com/us/app/ax%C3%A9-delivery/id1528911749')
-[routerLink]="['/item/' + items.id]"
-  }else{
-    this.socialSharing.shareViaWhatsApp('Cara, to conseguindo comprar tudo para a gira no Axé Delivery!','','https://play.google.com/store/apps/details?id=io.ionic.axeDelivery')
-  }
-}*/
+
 status(){
   this.navCtrl.navigateForward('/status')
 }
 
-  ngOnInit() {
+async ionViewDidEnter() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Afinando os atabaques...'
+    })
+    await loading.present()
+    this.goalListFiltrado = [];
+    this.offlines = [];
     this.storage.remove('carrinhoUser')
     this.storage.get('usuario').then(event =>{
       console.log(event)
@@ -168,7 +168,7 @@ status(){
       this.complemento = event.complemento
       this.fcmzin = event.fcm
     })
-          this.services.getLojasOnline().subscribe(data =>{
+          this.storage.get('lojas').then(data =>{
             let Onlines = data.filter(i => i.estado === this.estado)
             Onlines.forEach(dado =>{
               let unidades = dado.unidades
@@ -176,132 +176,34 @@ status(){
                 this.goalListFiltrado.push(element)
                 console.log(this.goalListFiltrado)
                 this.lojinha = this.goalListFiltrado
+                setTimeout(async () => {
+                  this.lojaperto = []
 
-              });
-            })
-          });
-          this.services.getLojasOffline().subscribe(data =>{
-            this.offlines = data.filter(i => i.estado === this.estado && i.status === 'Offline')
-            console.log(this.offlines)
-          })
-          /*
-          if (user) {
-            this.userId = user.uid
-              this.mainuser = this.afStore.doc(`users/${user.uid}`);
-              this.services.getLojas().subscribe(data =>{
-                console.log(data)
-              })
+                  this.goalListFiltrado.forEach(element => {
+                    this.lojaLat = element.lat
+                    this.lojaLng = element.lng
+                    console.log(this.lojaLat)
+                    let Usuario: GeoCoord = {
+                      latitude: Number(this.lat),
+                      longitude: Number(this.lng)
+                      };
+                      console.log(Usuario)
+                      let Loja: GeoCoord = {
+                          latitude: Number(this.lojaLat),
+                          longitude:Number(this.lojaLng)
+                      };
+                      console.log(Loja)
+                 
+                      let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+                      console.log("A distancia entre as lojas é de:" + Number(kilometers));
 
-              this.services.getLojas().subscribe(data => {
-                this.goalList = data;
-                this.loadedGoalList = data;
-                console.log(this.goalList)
-                  this.mainuser.valueChanges().subscribe(event => {
-                      console.log(event)
-                        this.lat = event.lat;
-                        this.lng = event.lng
-                        this.endereco = event.endereco;
-                        this.cidade = event.cidade;
-                        this.bairro = event.bairro;
-                        this.numero = event.numeroEND;
-                        this.estado = event.estado;
-                        this.nomeUser = event.nome
-                        this.DOB = event.DOB
-                        this.complemento = event.complemento
-                        this.fcmzin = event.fcm
+                      if(Number(kilometers) < 8.0){
+                        console.log('maior')
+                        if(element.estado === this.estado ){
+                          this.lojaperto.push(element)
+                          console.log(this.lojaperto)
 
-                        //let birthdate = this.DOB
-                       // format(new Date(birthdate), "yyyy-MM-dd");
-                        this.filtroLoja = this.zona
-                        //console.log(birthdate);
-                        //console.log(format(new Date(birthdate), "yyyy-MM-dd"))
-                        this.goalListFiltrado = []
-                        this.goalListFiltrei = [];
-                        this.loadedGoalListFiltrado = [];
-                        this.offlines = [];
-                        let off = this.goalList.filter(i => i.estado === this.estado && i.status === "Offline" );
-                        let filtrado = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.aprovado === 'Sim'); 
-                        let filtrei = this.goalList.filter(i => i.estado === this.estado &&  i.tipo === 'Loja' && i.status === "Online" && i.aprovado === 'Sim');//
-                        let loadedFiltrado = this.loadedGoalList.filter(i => i.estado === this.estado && i.tipo === 'Loja' && i.aprovado === 'Sim' );
-                        off.forEach(x =>{
-                          this.offlines.push(x)
-                          console.log(this.offlines)
-                        })
-                        filtrado.forEach(v =>{
-                          let unidades = v.unidades
-                          if(unidades != undefined && v.estado === this.estado && v.status === 'Online' ){
-                            unidades.forEach(element => {
-                              this.goalListFiltrado.push(element)
-                            console.log(this.goalListFiltrado)
-                            this.lojinha = this.goalListFiltrado
-
-                            });
-                          }
-                        })
-                        filtrei.forEach(v =>{
-                          let unidades = v.unidades
-                          if(unidades != undefined  && v.estado === this.estado   && v.status === 'Online'){
-                            unidades.forEach(element => {
-                              this.goalListFiltrei.push(element)
-                            console.log(this.goalListFiltrei)
-                            this.lojinha = this.goalListFiltrei.length
-
-                            });
-                          }
-                        })
-                        loadedFiltrado.forEach(v =>{
-                          let unidades = v.unidades
-                          if(unidades != undefined  && v.estado === this.estado && v.status === 'Online' ){
-                            unidades.forEach(element => {
-                              this.loadedGoalListFiltrado.push(element)
-                            console.log(this.loadedGoalListFiltrado)
-                            });
-                          }
-                        })
-
-                        console.log(this.goalList)
-                        console.log(this.goalListFiltrei)
-                        console.log(this.loadedGoalListFiltrado)
-                        console.log(this.lojinha)
-
-                        this.geolocation.getCurrentPosition().then((resp) => {
-                          // resp.coords.latitude
-                          // resp.coords.longitude
-                          console.log(resp.coords.latitude)
-                          this.lat = Number(resp.coords.latitude);
-                          this.lng = Number(resp.coords.longitude);
-                
-                         }).catch((error) => {
-                           console.log('Error getting location', error);
-                         });
-
-                         setTimeout(() => {
-                          this.lojaperto = []
-
-                          this.goalListFiltrei.forEach(element => {
-                            this.lojaLat = element.lat
-                            this.lojaLng = element.lng
-                            console.log(this.lojaLat)
-                            let Usuario: GeoCoord = {
-                              latitude: Number(this.lat),
-                              longitude: Number(this.lng)
-                         };
-                         console.log(Usuario)
-                         let Loja: GeoCoord = {
-                             latitude: Number(this.lojaLat),
-                             longitude:Number(this.lojaLng)
-                         };
-                         console.log(Loja)
-                         
-                        let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-                        console.log("A distancia entre as lojas é de:" + Number(kilometers));
-
-                        if(Number(kilometers) < 9.0){
-                          console.log('maior')
-                          if(element.estado === this.estado ){
-                            this.lojaperto.push(element)
-                            console.log(this.lojaperto)
-                          }
+                        }
 
                           
                         }else{
@@ -309,9 +211,9 @@ status(){
                           console.log('menor')
                           
                         }
-                          });                
-                          this.semLoja = this.lojaperto.length
-                          
+                        });                
+                        this.semLoja = this.lojaperto.length
+                        await loading.dismiss()
                         console.log(this.semLoja)
                         console.log(this.complemento)
                         if(this.complemento === undefined){
@@ -321,21 +223,16 @@ status(){
                           this.alerta2()
                         }
 
-                         }, 2000);
-                        
-                    
-               })
-            
-            
-            });            
+                      }, 1000);
 
-          } else {
-            this.navCtrl.navigateRoot('/')
-          }
-          */
-
-     this.produtos();
-  }
+              });
+            })
+          });
+          this.services.getLojasOffline().subscribe(data =>{
+            this.offlines = data.filter(i => i.estado === this.estado && i.status === 'Offline')
+            console.log(this.offlines)
+          })
+        }
 
   async alerta2(){
     const alert = await this.alerti.create({

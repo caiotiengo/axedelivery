@@ -125,23 +125,22 @@ export class RootPage implements OnInit {
 
      }
 
-  ngOnInit() {
-    //
-    this.loadings()
-    this.proccessSubscription = this.services.getLojasOnline().subscribe(data => {
+  async ngOnInit() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Afinando os atabaques...',
+    });
+    this.storage.get('lojas').then(async (data) => {
+
       this.goalList = data;
       this.storage.remove('carrinhoUser')
       this.loadedGoalList = data;
       this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
       this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+      await loading.dismiss();
 
     })  
-    this.services.getProccessos().subscribe(res => {
-      this.storage.set('produtos', res).then(data =>{
-        console.log(data)
-        this.entrar()
-      })
-    })
+
   }
   perfilPage() {
     const user = firebase.auth().currentUser;
@@ -155,54 +154,19 @@ this.storage.get('usuario').then(event =>{
 
     
 }
-ionViewWillEnter(){
-}
+
 entrar(){
   const user = firebase.auth().currentUser;
   if (user){
     this.navCtrl.navigateRoot('/list');
   }
 }
-async loadings() {
-  const loading = await this.loadingController.create({
-    cssClass: 'my-custom-class',
-    message: 'Afinando os atabaques...',
-    duration: 10000
-  });
-  await loading.present();
 
-  const { role, data } = await loading.onDidDismiss();
-  console.log('Loading dismissed!');
-}
-
-registro(){
-  this.navCtrl.navigateForward('/register')
-}
-login(){
-  this.navCtrl.navigateForward('/login')
-}
-initializeItems(): void {
-  this.goalListFiltrado = this.lojinha;
-}
-filterList(evt) {
-  this.initializeItems();
-
-  const searchTerm = evt.srcElement.value;
-
-  if (!searchTerm) {
-     return;
-   }
-  this.goalListFiltrado = this.lojinha.filter(currentGoal => {
-     if (currentGoal.nome && searchTerm) {
-         if (currentGoal.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
-
-           return true;
-         } else {
-
-           return false;
-         }
-     }
-   });
-}
+  registro(){
+    this.navCtrl.navigateForward('/register')
+  }
+  login(){
+    this.navCtrl.navigateForward('/login')
+  }
 
 }

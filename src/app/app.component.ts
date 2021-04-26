@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
+import { ServiceService } from './service.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +15,9 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
 export class AppComponent {
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,private push: Push
+    private splashScreen: SplashScreen,private storage: Storage, 
+    private statusBar: StatusBar,private push: Push, private services: ServiceService
+    
   ) {
     this.initializeApp();
     
@@ -22,7 +25,16 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-
+      this.services.getLojasOnline().subscribe(data =>{
+        this.storage.set('lojas', data).then(() =>{
+          console.log('lojas carregadas')
+        })
+      })
+      this.services.getProccessos().subscribe(data =>{
+        this.storage.set('produtos', data).then(() =>{
+          console.log('produtos carregados')
+        })
+      })
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.statusBar.overlaysWebView(false);

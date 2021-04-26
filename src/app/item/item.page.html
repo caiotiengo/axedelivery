@@ -1,5 +1,218 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" text="Voltar"></ion-back-button>
+    </ion-buttons>
+    <ion-avatar slot="start">
+      <img style="padding: 7px;" src="https://media-exp1.licdn.com/dms/image/C4E0BAQEQlAHYHJmy3w/company-logo_200_200/0/1598197905782?e=2159024400&v=beta&t=0VgjH8MCOyIXS-4kvzE1wb6J9sPgHpGpdlVoVgE6MS0">
 
-<ion-content [fullscreen]="true">
+    </ion-avatar>
+
+
+    </ion-toolbar>
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img src="{{loja.FotoPerfil}}">
+    </ion-avatar>
+    <ion-label>
+        <p>Loja,</p>
+        <h3>{{loja.nome}}</h3>
+    </ion-label>
+    <ion-label slot="end">
+      <p>Entrega de</p>
+      <h3>08:00 - 18:00</h3>
+      <p>Taxa de entrega</p>
+      <h3>R${{valorDelivery}}</h3>
+  </ion-label>
+  </ion-item>
+  <ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">
+    <ion-badge  style="position: absolute;
+    z-index: 1;
+    bottom: -5px;" *ngIf="produtos.length > 0" color="danger">{{produtos.length}}</ion-badge>
+      <ion-fab-button (click)="finalizarCompra()" color="dark">
+        <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
+     </ion-fab-button>
+ </ion-fab>
+ 
+</ion-header>
+<ion-select okText="Ok" cancelText="Cancelar" *ngIf="qtdUnidades >= 1" placeholder="{{bairroSelecionado}} - {{lojaCity}}" (ionChange)="buscando($event)">
+  <ion-select-option *ngFor="let itens of lojaEstado" value="{{itens.bairro}}">{{itens.bairro}} - {{itens.cidade}}</ion-select-option>
+</ion-select>
+
+<ion-content>
+
+  <div class="menu-loja">
+    <ion-segment [(ngModel)]="opcLoja" (ionChange)="segmentChanged2($event)">
+      <ion-segment-button value="Produtos" selected>
+        <ion-label>Produtos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Sobre">
+        <ion-label>Sobre a loja</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div *ngIf="opcLoja === 'Produtos'" class="container">
+    <p style="text-align: center;
+    border-radius: 10px;
+    background: red;
+    color: white;
+    font-weight: bold;
+    width: 55%;
+    padding: 5px;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 5%;"> Pedido mínimo: R$15,00</p>
+    <ion-item style="border-radius: 10px;" lines="none">
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="12">
+            <ion-label>
+              <h4>
+                Não achou seu produto?
+              </h4>
+              <h6>
+               Peça sua lista ou produto.
+              </h6>
+            </ion-label>
+          </ion-col>
+
+
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="orcamento()" color="warning">Clique aqui e peça já!</ion-button>
+
+          </ion-col>
+        </ion-row>
+        
+      </ion-grid>
+    </ion-item>
+    <ion-item *ngIf="valorCompra > 0" lines="none" style="    border-radius: 10px;
+      margin-top: 10px;">
+              <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
+              <p>Total em produtos</p>
+              <p slot="end">R${{visu}}</p>
+          </ion-item>
+    <div class="filtros">
+      <ion-grid>
+        <ion-row>
+          <ion-col [hidden]="hide" size="2">
+            <ion-button (click)="filtroCat()"color="warning">            
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col [hidden]="hide" size="10">
+            <ion-searchbar (ionChange)="segmentChanged3($event)" placeholder="Pesquise o produto..." animated></ion-searchbar>
+          </ion-col>
+
+          <ion-col [hidden]="hide2" size="10">
+            <ion-select (ionChange)="segmentChanged($event)" placeholder="Filtrar por categoria">
+              <ion-select-option *ngFor="let items of categorias" value="{{items}}" selected>
+                {{items}}
+              </ion-select-option>
+            </ion-select>     
+          </ion-col>
+
+          <ion-col [hidden]="hide2" size="2">
+              <ion-button color="warning" (click)="searchBar()">            
+                <ion-icon name="search-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          
+        </ion-row>
+      </ion-grid>
+ 
+    </div>
+
+    <ion-list>
+      <ion-item *ngFor="let items of lista" lines="none">
+
+        <ion-avatar slot="start">
+          <img *ngIf="items.fotos.length != 0" src="{{items.fotos[0].link}}">
+          <img  *ngIf="items.fotos.length === 0"src="/assets/Picture1.png">
+        </ion-avatar>
+        <ion-label>
+          <h4>
+            {{items.nome}}
+          </h4>
+          <p>Quantidade:{{items.quantity}}</p>
+          <h6>
+           R${{items.valor}}
+          </h6>
+        </ion-label>
+          <ion-button *ngIf="email != undefined" (click)="presentModal(items.id)"  fill="solid" color="warning" style="color:#ffcb02 !important">Veja</ion-button>
+          <ion-button fill="solid" *ngIf="email === undefined" color="warning" slot="end"(click)="veritem(items)">Veja</ion-button>
+        </ion-item>
+
+    </ion-list>
+
+    <!--ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Carregando...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll-->
+  
+  </div>
+  <div *ngIf="opcLoja === 'Sobre'" class="container">
+    <h3 style="text-align: center;font-weight: bold;">Formas de pagamento</h3>
+    <div>
+      <ion-item style="border-top-left-radius: 20px;
+      border-top-right-radius: 20px;" lines="none">
+        <ion-label slot="start">
+          <ion-icon name="card-outline"></ion-icon>
+        </ion-label>
+        <h6>Crédito pelo App</h6>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label slot="start">
+          <ion-icon name="card-outline"></ion-icon>
+        </ion-label>
+        <h6>Débito na entrega</h6>
+      </ion-item>
+      <ion-item style="border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;" lines="none">
+        <ion-label slot="start">
+          <ion-icon name="cash-outline"></ion-icon>
+        </ion-label>
+        <h6>Dinheiro na entrega</h6>
+      </ion-item>
+    </div>
+    <h3 style="text-align: center;font-weight: bold;">Comentários</h3>
+
+    <div *ngIf="commentsLen === 0">
+
+      <p style="text-align: center">Essa loja ainda não tem comentários</p>
+    </div>
+    <div *ngIf="commentsLen > 0">
+      
+      <ion-slides>
+        <ion-slide *ngFor="let items of lojaID">
+          <ion-item style="border-radius: 10px;"  lines="none">
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="12">
+                  <ion-label style=" white-space: break-spaces;border-radius: 10px; text-align:center;">
+                    <h4>
+                      {{items.comments}}
+                    </h4>
+                    <h6>
+                      {{items.nomeComprador}}
+                    </h6>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<!--ion-content [fullscreen]="true">
 <div class="background-div1">
     <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
        <img style="width:30%"src="/assets/Picture1.png"/>
@@ -134,14 +347,8 @@
 
     </ion-list>
 
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Carregando...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-  
 
 
 
-</ion-content>
+
+</ion-content-->

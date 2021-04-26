@@ -383,6 +383,9 @@ export class LoginPage implements OnInit {
     if (user) {
             this.mainuser = this.afStore.doc(`users/${user.uid}`);
             this.userID = user.uid
+            this.storage.set('id',this.userID).then((res) =>{
+                console.log(res)
+            });
               //this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
               this.mainuser.valueChanges().subscribe(event => {
                   console.log(event)
@@ -469,7 +472,9 @@ async presentLoading() {
          const user = firebase.auth().currentUser;
          this.mainuser = this.afStore.doc(`users/${user.uid}`);
          this.userID = user.uid
-
+         this.storage.set('id',this.userID).then((res) =>{
+            console.log(res)
+        });
          this.mainuser.valueChanges().subscribe(event => {
             console.log(event)
             if(this.FCM === undefined){
