@@ -50,7 +50,7 @@ firebase.initializeApp(firebaseConfig);
   BrowserModule,
   HttpClientModule,
   BrMaskerModule,
-  IonicModule.forRoot(),
+  IonicModule.forRoot({_forceStatusbarPadding: true}),
   IonicStorageModule.forRoot({
   name: '_myDb',
   driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']

@@ -11,19 +11,28 @@
   <h4>
     Adicione os produtos desejados
   </h4>
+  <p>Primeiro, o produto e observações. Depois de clicar em "Adicionar", escolha a quantidade!</p>
 </div>
 <ion-list [hidden]="hide">
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col size="6">
         <ion-item>
           <ion-label position="floating">Produto</ion-label>
           <ion-input [(ngModel)]="produto"></ion-input>
           </ion-item>
       </ion-col>
-      <ion-col>
-        <ion-button style="margin-top: 20%;" [hidden]="hide" expand="full" (click)="addItem()" color="success">
-          Adicionar  
+      <ion-col size="6">
+        <ion-item>
+          <ion-label position="floating">Observação</ion-label>
+          <ion-input [(ngModel)]="observacao"></ion-input>
+          </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="margin-top: -50px;">
+        <ion-button style="margin-top: 20%;" [hidden]="hide" expand="full" (click)="addItem()" fill="clear" color="dark">
+          <ion-icon name="add-circle-outline"></ion-icon>  Adicionar  
          </ion-button>
       </ion-col>
     </ion-row>

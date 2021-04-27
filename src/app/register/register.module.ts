@@ -9,7 +9,8 @@ import { RegisterPageRoutingModule } from './register-routing.module';
 import { RegisterPage } from './register.page';
 import { BrMaskerModule } from 'br-mask';
 import {ReactiveFormsModule } from '@angular/forms';
-
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 @NgModule({
   imports: [
     CommonModule,
@@ -17,9 +18,8 @@ import {ReactiveFormsModule } from '@angular/forms';
     IonicModule,
     RegisterPageRoutingModule,
     BrMaskerModule,
-            ReactiveFormsModule
-
-
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot()
   ],
   declarations: [RegisterPage]
 })

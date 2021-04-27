@@ -1,44 +1,108 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-avatar slot="start">
+      <img style="padding: 0px;
+      margin-left: 10%;" src="/assets/Picture1.png">
 
-<ion-content [fullscreen]="true">
-
-
-  <div class="background-div1">
-    <img style="width:auto; height:85%"src="/assets/Picture1.png"> 
-
+    </ion-avatar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="slides ion-margin-bottom">
+    <ion-slides [options]="slidesOptions">
+      <ion-slide>
+        <ion-card style="text-align: center;">
+          <ion-card-header>
+            <ion-card-subtitle>Quer comprar pelo nosso app?</ion-card-subtitle>
+            <ion-card-title>Use sua conta Axé Delivery!</ion-card-title>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" class="signup-button" (click)="login()">Entrar</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" class="signin-button"(click)="registro()">Cadastre-se</ion-button>
+                </ion-col>
+              </ion-row>
+              
+            </ion-grid>
+          </ion-card-header>
+      </ion-card>
+      </ion-slide>
+    </ion-slides>
+ 
   </div>
-    
-  <ion-fab *ngIf="tipo ==='Loja'" vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button color="success" (click)="add()">
-      <ion-icon style="color:white" name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-     <!--ion-searchbar style="position: absolute; margin-top: -35%" animated placeholder="Pesquise sua loja favorita" (ionInput)="filterList($event)"></ion-searchbar-->	
-  
-  
-    <ion-card style="text-align: center;" class="card-1">
-      <ion-card-header>
-        <ion-card-subtitle>Quer comprar pelo nosso app?</ion-card-subtitle>
-        <ion-card-title>Use sua conta Axé Delivery!</ion-card-title>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-button expand="block" class="signup-button" (click)="login()">Entrar</ion-button>
+  <ion-item (click)="clique()" style="margin-bottom: 10px;
+  border-radius: 15px !important;
+  --background: linear-gradient(290deg, #6094db, #3f51b561);
+  margin: 10px;" detail='false' lines="none">
+        <ion-grid style="height: 190px;">
+          <ion-row class="ion-align-items-center">
+            <ion-col size="5">
+                <img style="width: 95%;" src="/assets/entregador-transparente.png">
+      
             </ion-col>
-            <ion-col>
-              <ion-button expand="block" class="signin-button"(click)="registro()">Cadastre-se</ion-button>
+            <ion-col size="7">
+              <ion-label style="text-align: center;">
+                <h4 style="font-size: 25px;
+                font-weight: bold;
+                color: white;">
+                  Quer vender
+                </h4>
+                <h6 style="
+                font-weight: bold;
+                color: white;">
+                  no
+                </h6>
+                <h6 style="font-size: x-large;
+                font-weight: bold;color: #ffc107;">Axé Delivery?</h6>
+                <p style="background: red;
+                padding: 2px;
+                color: white;
+                font-weight: bold;
+                width: 60%;
+                border-radius: 6px;
+                margin: auto;
+                height: 25px;margin-top: 5%;">Clique Aqui!</p>
+              </ion-label>
             </ion-col>
           </ion-row>
-          
         </ion-grid>
-      </ion-card-header>
-  </ion-card>
-    <div >
-      <div>
-        
-      </div>
-      <div class="background-traco" >
-  
-        <ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
+      </ion-item>
+      <h6 style="text-align: center;">Nossas lojas</h6>
+    <ion-list style="background: transparent;
+    padding: 10px;">
+      <ion-item style="    margin-bottom: 10px;
+      border-radius: 15px;" detail='false' [routerLink]="['/item/' + items.id + '/bairro/'+ items.bairro]"  *ngFor="let items of goalListFiltrado" lines="none">
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="3">
+              <ion-avatar>
+                <img *ngIf="items.FotoPerfil  != 'undefined'" src="{{items.FotoPerfil}}">
+              </ion-avatar>
+      
+            </ion-col>
+            <ion-col size="7">
+              <ion-label>
+                <h4>
+                  {{items.nome}}
+                </h4>
+                <h6>
+                 {{items.bairro}},
+                </h6>
+                <p> {{items.cidade}} - {{items.estado}}.</p>
+              </ion-label>
+            </ion-col>
+            <ion-col size="2">
+              <ion-button color="dark" fill="clear">
+                <ion-icon slot="icon-only"  name="chevron-forward-outline"></ion-icon>
+              </ion-button> 
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+        <!--ion-list style="background: transparent" *ngFor="let items of goalListFiltrado">
           <ion-item [routerLink]="['/item/' + items.id]">
   
             <ion-thumbnail slot="start">
@@ -68,9 +132,6 @@
   
        
           
-        </ion-list>
-  </div>
-  
-    </div>
+        </ion-list-->  
   
   </ion-content>

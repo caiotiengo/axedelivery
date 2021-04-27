@@ -1,270 +1,191 @@
-<ion-content [fullscreen]="true"  >
-<div class="background-div1">
-    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
-		<div>	
+<ion-header class="ion-no-border">
+	<ion-toolbar>
+	  <!--ion-buttons slot="start">
+		<ion-back-button></ion-back-button>
+	  </ion-buttons-->
+  
+  
+	</ion-toolbar>
+  </ion-header>
+  <ion-fab vertical="top" horizontal="start" slot="fixed">
+	<ion-fab-button color="dark" (click)="voltar()"  [hidden]="started">
+	  <ion-icon  name="arrow-back-outline"></ion-icon>
+	</ion-fab-button>
+	<ion-fab-button color="dark" (click)="iniciar()"  [hidden]="primeiraDiv">
+	  <ion-icon  name="arrow-back-outline"></ion-icon> 
+	</ion-fab-button>
+	<ion-fab-button color="dark" (click)="primeiroPasso()"  [hidden]="segundaDiv">
+	  <ion-icon  name="arrow-back-outline"></ion-icon> 1
+	</ion-fab-button>
+	<ion-fab-button color="dark" (click)="segundoPasso()"  [hidden]="terceiraDiv">
+	  <ion-icon  name="arrow-back-outline"></ion-icon> 2
+	</ion-fab-button>
+	<ion-fab-button color="dark" (click)="terceiroPasso()"  [hidden]="quartaDiv">
+	  <ion-icon  name="arrow-back-outline"></ion-icon> 3
+	</ion-fab-button>
+  </ion-fab>
+  <ion-content>
+	<div [hidden]="started" class="header-page">
+	  <h4>Vamos iniciar o seu cadastro...</h4>
+	  <p>São 4 passos para finalizar o cadastro!</p>
+	  <ion-button expand="block" (click)="primeiroPasso()" color="warning">Começar</ion-button>
+	</div>
+	<div [hidden]="primeiraDiv" class="primeira-div">
+	  <div class="header-primeira">
+		<h4>
+		  Primeiro passo...
+		</h4>
+	  </div>
+	  <div class="email-div">
+		<label for="email" class="email">E-mail</label>
+		<input type="email" [(ngModel)]="email" placeholder="Digite aqui o seu e-mail..." class="emailInput">
+		<label *ngIf="email === undefined || email === ''" class="required">* E-mail é obrigatório </label>
+	  </div>
+	  <div class="senha-div">
+		<label for="password" class="password">Senha</label>
+		<input type="password" [(ngModel)]="password"  placeholder="Digite aqui a sua senha..." class="senhaInput">
+		<label *ngIf="password === undefined || password === ''" class="required">* Senha é obrigatório </label>
+	  </div>
+	  <ion-button expand="block" (click)="authenticacao()" color="warning">Próximo</ion-button>
+  
+	</div>
+	<div [hidden]="segundaDiv" class="segunda-div">
+	  <div class="header-segunda">
+		<h4>
+		  Segundo passo...
+		</h4>
+		<p>Seus dados</p>
+	  </div>
+   
+	  <div class="input-div">
+		<label for="nome" class="nome">Nome Completo</label>
+		<input type="text" [(ngModel)]="nome" placeholder="Digite aqui o seu Nome completo..." class="emailInput">
+		<label *ngIf="nome === undefined || nome === ''" class="required">* Nome do responsavél é obrigatório </label>
+	  </div>
+	  <div class="input-div">
+		<label for="nome" class="cpf">CPF</label>
+		<input  maxlength="40" [brmasker]="{person: true}" [(ngModel)]="CPF"  placeholder="Preencha aqui o CPF do responsável..." class="emailInput">
+		<label *ngIf="CPF === undefined || CPF === ''" class="required">* CPF é obrigatório </label>
+	  </div>
+  
+	  <ion-button expand="block" (click)="terceiroPasso()" color="warning">Próximo</ion-button>
+  
+	</div>
+	<div [hidden]="terceiraDiv" class="terceira-div">
+	  <div class="header-terceira">
+		<h4>
+		  Terceiro, quase lá...
+		</h4>
+	  </div>
+	  <ion-grid>
+		<ion-row>
+		  <ion-col>
+			<div class="input-div">
+			  <label for="ddd" class="ddd">DDD</label>
+			  <input type="text" [(ngModel)]="ddd" mask="00" maxlength="2"  placeholder="Digite aqui o ddd da loja..." class="senhaInput">
+			  <label *ngIf="ddd === undefined || ddd === ''" class="required">* DDD é obrigatório </label>
+			</div>
+		  </ion-col>
+		  <ion-col>
+			<div class="input-div">
+			  <label for="telefone" class="telefone">Whatsapp/Telefone</label>
+			  <input type="text" [(ngModel)]="telefone" mask="00000-0000"  placeholder="Digite aqui o telefone da loja..." class="senhaInput">
+			  <label *ngIf="telefone === undefined || telefone === ''" class="required">* Telefone é obrigatório </label>
+			</div>
+		  </ion-col>
+		</ion-row>
+	  </ion-grid>
+  
+	  <div class="input-div">
+		<label for="endereco" class="endereco">Endereço</label>
+		<input type="text"
+		[(ngModel)]="autocomplete.input" (keyup)="UpdateSearchResults($event)" 
+		placeholder="Digite aqui o endereço..." value="{{endereco}}" class="emailInput">
+		<label *ngIf="endereco === undefined || endereco === ''" class="required">* Endereço é obrigatório </label>
+		<ion-list [hidden]="autocompleteItems.length == 0 || hide">
+		  <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
+			{{ item.description }}
+		  </ion-item>
+		</ion-list>
+	  </div>
+	  <div class="input-div">
+		<label for="numeroEND" class="numeroEND">Número</label>
+		<input type="number" [(ngModel)]="numeroEND"  placeholder="Digite aqui o Número..." class="senhaInput">
+		<label *ngIf="numeroEND === undefined || numeroEND === ''" class="required">* Número é obrigatório </label>
+  
+	  </div>
+	  <div class="input-div">
+		<label for="complemento" class="complemento">Complemento</label>
+		<input type="text" [(ngModel)]="complemento" placeholder="Digite aqui o Complemento..." class="senhaInput">
+		<label *ngIf="complemento === undefined || complemento === ''" class="required">* Complemento é obrigatório </label>
+  
+	  </div>
+	  <ion-grid style="padding: 0 0 0 0;">
+		<ion-row>
+		  <ion-col>
+			<div class="input-div">
+			  <label for="bairro" class="bairro">Bairro</label>
+			  <input type="text" [(ngModel)]="bairro"   placeholder="Digite aqui o Bairro..." class="senhaInput">
+			  <label *ngIf="bairro === undefined || bairro === ''" class="required">* Bairro é obrigatório </label>
+  
+			</div>
+		  </ion-col>
+		  <ion-col>
+			<div class="input-div">
+			  <label for="CEP" class="CEP">CEP</label>
+			  <input type="text" [(ngModel)]="CEP" maxlength="9" mask="00000-000"  placeholder="Digite aqui o CEP..." id="CEP" class="senhaInput">
+			  <label *ngIf="CEP === undefined || CEP === ''" class="required">* CEP é obrigatório </label>
+  
+			</div>
+		  </ion-col>
+		</ion-row>
+	  </ion-grid>
+	  <ion-grid style="padding: 0 0 0 0;">
+		<ion-row>
+		  <ion-col>
+			<label for="estado" class="estado">Estado</label>
+			<ion-select okText="Ok" cancelText="Cancelar" placeholder="Escolha o estado" [(ngModel)]="estado" (ionChange)="city($event)" >
+			  <ion-select-option *ngFor="let items of states?.estados" value="{{items.sigla}}"  >{{items.sigla}}</ion-select-option>
+			</ion-select>
+			<label *ngIf="estado === undefined || estado === ''" class="required">* Estado é obrigatório </label>
+  
+		  </ion-col>
+		  <ion-col>
+			<label for="cidade" class="cidade">Cidade</label>
+			<ion-select   okText="Ok" cancelText="Cancelar" placeholder="Escolha a cidade" [(ngModel)]="cidade" >
+			  <ion-select-option *ngFor="let items of cidades" value="{{items.nome}}"  >{{items.nome}}</ion-select-option>
+			</ion-select>
+			<label *ngIf="cidade === undefined || cidade === ''" class="required">* Cidade é obrigatório </label>
+  
+		  </ion-col>
+		</ion-row>
+	  </ion-grid>
+  
+	  <ion-button expand="block" (click)="checklistUsuario()" color="warning">Próximo</ion-button>
+  
+	</div>
+	<div [hidden]="quartaDiv" class="quarta-div">
+	  <div class="header-quarta">
+		<h4>
+		  Finalizado! Antes de tudo, habilite as notificações!
+		</h4>
+	  </div>
+	  <ion-button expand="full" (click)="habilitar()">Habilitar notificações</ion-button>
+	  <ion-button color="white" fill="clear" style="text-align:center; color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
+		  <ion-item>
+			  <ion-label>Confirmo que li e concordo com os termos.</ion-label>
+			  <ion-checkbox [(ngModel)]="check"></ion-checkbox>
+		  </ion-item>
+		  
+	  <ion-button expand="block" (click)="finalizar()" [hidden]="aprovado" color="warning">Finalizar Cadastro</ion-button>
+  
+	</div>
 
-     	 <img style="width:30%"src="/assets/Picture1.png"/>
-    		<h1  style="text-align: center;">Compre e venda agora!</h1>
-    		<p  style="text-align: center;"><i>Com o processo de registro no nosso app, você consegue rapidamente ter seus produtos anunciados e aproveitar pra fazer aquela comprinha!</i></p>
+  </ion-content>
+  <ion-footer class="ion-no-border">
+  <ion-button expand="block" fill="outline" color="success"> 
+	<ion-icon name="logo-whatsapp"></ion-icon>
+	Dúvidas? Clique aqui!     
+  </ion-button>
 	
-				
-		</div>
-
-</div>
-
-<div class="background-traco"  style="text-align: center;    margin-top: 8%;">
-
-<p style="text-align-last: center;">Escolha o tipo de usuario:</p>
-				<ion-select placeholder="Clique aqui" style="color:black; border: 1px solid #d7d8da;
-				padding: 13px;" [(ngModel)]="typeUser" required>
-					<ion-select-option value="Loja">Loja</ion-select-option>
-					<ion-select-option value="user">Usúario</ion-select-option>
-				</ion-select>
-				<br/>
-				<p style="text-align-last: center;">Local de entrega</p>
-				<ion-select required 
-				style="color:black;border: 1px solid gainsboro;" placeholder="Clique aqui" [(ngModel)]="type">
-				 <ion-select-option value="Casa / Apartamento">Casa / Apartamento</ion-select-option>
-				 <ion-select-option value="Escritório">Escritório</ion-select-option>
-			   </ion-select>
-
-
-					<ion-item>
-		 
-					  <ion-label position="floating">E-mail</ion-label>
-					  <ion-input  placeholder="Preencha aqui o seu E-mail..."  type="text" [(ngModel)]="email" required ></ion-input>
-					</ion-item>
-
-					<ion-item>
-					  <ion-label position="floating"> 
-					  	Senha
-					  </ion-label>
-					  <ion-input placeholder="Preencha aqui a sua Senha..."  [(ngModel)]="password" type="password" required ></ion-input>
-					</ion-item>
-					<ion-grid *ngIf="typeUser === 'Loja'">
-						<h4>Sobre o responsável</h4>
-						<ion-row>
-							<ion-col>
-								<ion-item *ngIf="typeUser === 'Loja'">
-									<ion-label position="floating">Nome</ion-label>
-									<ion-input placeholder="Preencha aqui o nome do responsável..."  [(ngModel)]="Prinome" ></ion-input>
-								</ion-item>
-							</ion-col>
-							<ion-col>
-								<ion-item *ngIf="typeUser === 'Loja'">
-									<ion-label position="floating">Sobrenome</ion-label>
-									<ion-input placeholder="Preencha aqui o sobrenome do responsável..." [(ngModel)]="Segnome" ></ion-input>
-								</ion-item>
-							</ion-col>
-						</ion-row>
-					</ion-grid>	
-					<ion-item *ngIf="typeUser === 'Loja'">
-						<ion-label position="floating">CPF do responsável</ion-label>
-						<ion-input placeholder="Preencha aqui o CPF do responsável..."  maxLenght="40" [brmasker]="{person: true}" [(ngModel)]="CPFRES" ></ion-input>
-					</ion-item>		
-					<h4 style="text-align: center;" *ngIf="typeUser === 'Loja'">Sobre a loja</h4>		
-						<ion-item *ngIf="typeUser === 'Loja'">
-							<ion-label position="floating">Nome da sua Loja</ion-label>
-							<ion-input placeholder="Preencha aqui o nome da sua Loja..."  [(ngModel)]="nome" ></ion-input>
-						</ion-item>
-
-						
-						<ion-item *ngIf="typeUser === 'user'" >
-						  <ion-label position="floating">Seu nome completo</ion-label>
-						  <ion-input placeholder="Preencha aqui o seu nome completo..."  [(ngModel)]="nome" required ></ion-input>
-						</ion-item>
-						<!--ion-item *ngIf="typeUser === 'user'" >
-							<ion-label position="floating"> Data de Nascimento</ion-label>
-
-						   <ion-datetime
-		    						[dayShortNames]="customDayShortNames"
-		    						displayFormat="DD MMM, YYYY"
-		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" [(ngModel)]="DOB" placeholder="Clique aqui" required></ion-datetime>
-
-						</ion-item>
-						<ion-item *ngIf="typeUser === 'Loja'" >
-							<ion-label position="floating"> Data de criação</ion-label>
-
-						   <ion-datetime
-		    						[dayShortNames]="customDayShortNames"
-		    						displayFormat="DD MMM, YYYY"
-		    						monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" [(ngModel)]="DOB" placeholder="Clique aqui" required></ion-datetime>
-
-						</ion-item-->
-						<ion-item *ngIf="typeUser === 'Loja'" >
-							<ion-label position="floating">Entrega de:</ion-label>
-						  <ion-input placeholder="Preencha aqui o horário de entrega..."  [(ngModel)]="entregaDe" ></ion-input>
-						</ion-item>
-						<ion-item *ngIf="typeUser === 'Loja'" >
-							<ion-label position="floating">Se ultrapassar o horário, entrega quando?</ion-label>
-						  <ion-input placeholder="Preencha aqui um horario alternativo..."  [(ngModel)]="seNEntrega" ></ion-input>
-						</ion-item>
-						<ion-item *ngIf="typeUser === 'Loja'">
-							<ion-label position="floating">CNPJ</ion-label>
-							<ion-input maxLenght="40" [brmasker]="{person: true}"
-							 [(ngModel)]="CPF"  placeholder="Preencha aqui o seu CNPJ..."  type="text"></ion-input>
-						</ion-item>
-						<ion-item *ngIf="typeUser === 'user'" >
-						  <ion-label position="floating">CPF</ion-label>
-						  <ion-input [(ngModel)]="CPF" maxLenght="40" placeholder="Preencha aqui o seu CPF..."  [brmasker]="{person: true}"></ion-input>
-						</ion-item>
-						<ion-item>
-						  <ion-label position="floating">Endereço</ion-label>
-						  <ion-input [(ngModel)]="endereco" 
-						  [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" 
-						  (ionClear)="ClearAutocomplete()" placeholder="Preencha aqui o seu endereço..."  value="{{endereco}}"></ion-input>
-						  <!--ion-input [(ngModel)]="endereco" type="text" required></ion-input-->
-						</ion-item>
-						<ion-list [hidden]="autocompleteItems.length == 0 || hide">
-							<ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
-							  {{ item.description }}
-							</ion-item>
-						</ion-list>
-						<ion-grid>
-					      <ion-row>
-					          <ion-col>
-					             	<ion-item>
-						  				<ion-label position="floating">Número (Somente números)</ion-label>
-						  				<ion-input type="tel" pattern="[0-9]*" [(ngModel)]="numeroEND" ></ion-input>
-									</ion-item>
-
-					          </ion-col>
-					          <ion-col>
-									<ion-item>
-						 				<ion-label position="floating">CEP</ion-label>
-						  				<ion-input [(ngModel)]="CEP" ></ion-input>
-									</ion-item>
-					          </ion-col>
-					      </ion-row>
-					    </ion-grid>
-						<ion-item>
-							<ion-label position="floating">Complemento(Bloco, Apartamento)</ion-label>
-							<ion-input placeholder="Preencha aqui o complemento..."  [(ngModel)]="complemento"  type="text"></ion-input>
-						  </ion-item>
-						<ion-item>
-						  <ion-label position="floating">Bairro</ion-label>
-						  <ion-input [(ngModel)]="bairro" placeholder="Preencha aqui o bairro..."  value="{{bairro}}"  type="text"></ion-input>
-						</ion-item>
-						<ion-grid>
-					      <ion-row>
-					          <ion-col>
-								<ion-label position="floating">Estado</ion-label>
-								<ion-select placeholder="Clique aqui para escolher o estado" [(ngModel)]="estado" (ionChange)="city($event)" >
-								  <ion-select-option *ngFor="let items of states?.estados" value="{{items.sigla}}"  >{{items.sigla}}</ion-select-option>
-								</ion-select>
-
-					          </ion-col>
-					          <ion-col>
-								<ion-label position="floating">Cidade</ion-label>
-								<ion-select placeholder="Clique aqui para escolher a cidade" [(ngModel)]="cidade" >
-								  <ion-select-option *ngFor="let items of cidades" value="{{items.nome}}"  >{{items.nome}}</ion-select-option>
-								</ion-select>
-									
-					          </ion-col>
-					      </ion-row>
-					    </ion-grid>
-					    <ion-grid>
-					    	<ion-row>
-					    		<ion-col>
-									<ion-item>
-						  				<ion-label position="floating">DDD</ion-label>
-						  				<ion-input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="ddd"  type="text"></ion-input>
-									</ion-item>							    			
-					    		</ion-col>
-					    		<ion-col>
-									<ion-item>
-						  				<ion-label position="floating">Telefone</ion-label>
-						  				<ion-input [(ngModel)]="telefone"  type="text"></ion-input>
-									</ion-item>					    			
-					    		</ion-col>
-					    	</ion-row>
-					    </ion-grid>
-						<ion-item *ngIf="typeUser === 'Loja'">
-							<ion-label position="floating">Descrição da sua Loja</ion-label>
-							<ion-input placeholder="Descreva a sua loja..." maxLenght="40" [(ngModel)]="resumo"  type="text"></ion-input>
-						</ion-item>
-<div *ngIf="typeUser === 'Loja'">						
-		<h3 style="text-align-last: center ">Informações bancárias</h3>
-				<p style="text-align: center;">Conta Corrente ou Poupança?</p>
-				<ion-select placeholder="Clique aqui"  [(ngModel)]="correnteoupou">
-					<ion-select-option value="Corrente">Corrente</ion-select-option>
-					<ion-select-option value="Poupanca">Poupança</ion-select-option>
-				</ion-select>
-				<ion-item>
-					<ion-label position="floating">Banco</ion-label>
-					<ion-input [(ngModel)]="banco" value={{nomeBanco}} (ionInput)="buscaBanco($event)" type="text"></ion-input>
-				  </ion-item>
-						<!-- -->
-						
-						<ion-list [hidden]="hider">
-							<ion-item *ngFor="let item of bancos" tappable (click)="updateBusca(item)">
-							  <p>{{ item.value }} - {{item.label}}</p>
-							</ion-item>
-						</ion-list>
-
-						<!-- -->				  
-				  <ion-item>
-					<ion-label position="floating">Número do Banco</ion-label>
-					<ion-input disabled [(ngModel)]="numeroBank" value={{numeroBank}} type="text"></ion-input>
-				  </ion-item>
-
-
-
-						<ion-item>
-						  <ion-label position="floating">Nome na conta</ion-label>
-						  <ion-input [(ngModel)]="nomeNaConta"  type="text"></ion-input>
-						</ion-item>	
-						<ion-item>
-						  <ion-label position="floating">CNPJ da conta</ion-label>
-						  <ion-input [(ngModel)]="CPFconta" maxLenght="40" [brmasker]="{person: true}"  type="text"></ion-input>
-						</ion-item>	
-						<ion-item>
-							<ion-label position="floating">Agência</ion-label>
-							<ion-input [(ngModel)]="agencia" ></ion-input>
-					  </ion-item>							
-						<ion-grid>
-					      <ion-row>
-					          <ion-col>
-								<ion-item>
-									<ion-label position="floating">Conta</ion-label>
-									 <ion-input [(ngModel)]="conta" ></ion-input>
-							   </ion-item>
-					          </ion-col>
-					          <ion-col>
-									<ion-item>
-						 				<ion-label position="floating">Digito</ion-label>
-						  				<ion-input type="tel" pattern="[0-9]*" maxlength="1" [(ngModel)]="digitoConta" ></ion-input>
-									</ion-item>
-					          </ion-col>
-						  </ion-row>
-					    </ion-grid>
-		</div>
-			<div *ngIf="typeUser === 'Loja'">
-				<p> Escolha a foto do seu perfil!</p>
-				<p>Porcentagem da foto: {{uploadPercent | async}}% </p>
-				<ion-button shape="outline" (click)="photo()" color="findme" ><ion-icon name="camera"></ion-icon>	</ion-button>
-
-			</div>	
-				<!-- <img src="{{img.src}}"> -->
-<br/>
-<ion-button color="white" style="color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
-		<ion-item>
-			<ion-label>Confirmo que li e concordo com os termos.</ion-label>
-			<ion-checkbox [(ngModel)]="check"></ion-checkbox>
-
-		</ion-item>
-		
-
-		
-				<ion-label *ngIf="typeUser && type && check">
-					<ion-button (click)="checklistLoja()" *ngIf="typeUser === 'Loja'" expand="block" class="signin-button" style="color:white !important;" >
-						 Confirmar
-					</ion-button>
-					<ion-button (click)="checklistUsuario()" *ngIf="typeUser === 'user'" expand="block" style="color:white !important;" >
-						Confirmar
-				   </ion-button>
-				</ion-label>
-
-</div>
-
-</ion-content>
+  </ion-footer>

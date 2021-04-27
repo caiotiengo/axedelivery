@@ -23,9 +23,10 @@ export class OrcamentoPage implements OnInit {
   @Input() nome ;
   
   loja
-  produtos: Array<Processo> = [];
+  produtos: Array<any> = [];
   produto = '';
   qtd = 1;
+  observacao = '';
   constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,
     public afStore: AngularFirestore,  public services: ServiceService,
@@ -36,6 +37,8 @@ export class OrcamentoPage implements OnInit {
     this.services.getProc(this.idLoja).subscribe(res =>{
       this.loja = res;
       console.log(this.loja)
+      console.log(this.nome)
+      console.log("55"+ String(this.loja.ddd) + String(this.loja.telefone))
     })
   }
   enviar(){
@@ -46,6 +49,7 @@ export class OrcamentoPage implements OnInit {
       idLoja:this.idLoja,
       nomeComprador: this.nome,
       nomeLoja: this.loja.nome,
+      numeroLoja: "55"+ String(this.loja.ddd) + String(this.loja.telefone)
     }).then(res =>{
       console.log(res.id)
       this.storage.set('idOrcamento', res.id).then(()=>{
@@ -80,7 +84,11 @@ export class OrcamentoPage implements OnInit {
     if(this.produto != ''){
       this.produtos.push({
         nome:this.produto,
-        quantity:this.qtd
+        quantity:this.qtd,
+        obs: this.observacao,
+        foto: 'undefined',
+        valor:0,
+        disponivel: 'Não avaliado'
       })
     }else{
       alert('Escreva ao lado o nome do produto')

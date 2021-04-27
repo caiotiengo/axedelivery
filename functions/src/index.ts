@@ -5,17 +5,57 @@ import * as admin from 'firebase-admin';
 
 
 admin.initializeApp(functions.config().firebase);
-
+/*
 exports.clickEntregas= functions.https.onRequest(async(req,res) =>{
     const writeResult = await admin.firestore().collection('messages').add(
         {
+
+            *Novo pedido! Tem cliente esperando!*\n\nCorre lá no App Axé Delivery e verifique o seu novo pedido!🚙💨\n\nLembre-se de atualizar o status, dessa forma cliente conseguirá acompanhar e ficará mais satisfeito ainda!Não se esqueça de utilizar o Chat em nosso aplicativo para tirar dúvidas com o cliente.\n Verifique por exemplo se ele precisará de troco, caso seja pagamento em dinheiro.\n\n*[Essa é uma mensagem automática do melhor aplicativo do mundo, Axé!]*'
             original: req.body.order,
             from:req.body.From,
             to: req.body.To
         }).then(data =>{
             
         });
+})*/
+
+exports.sendTwilio = functions.firestore.document('orcamento/{mUid}').onCreate(async (event) =>{
+    const uid = event.get('idLoja');
+    const numero = event.get('numeroLoja');
+    const accountSid = 'AC70e5f4e0b458628e1fb7c2a14931317f';
+    const authToken = '93973210e9958f84ef7bf14be1621a3c';
+    const client = require('twilio')(accountSid, authToken);
+    var original = '*Novo Orçamento!*\n\nPintou um novo cliente, olha lá no Axé Delivery! 💰🥳💰\nTem orçamento aguardando sua resposta lojista, corre lá pra responder o mais rápido possível!\n\n_Não esqueça de enviar os valores para o cliente!_\n*[Mensagem Automática]*'
+    client.messages.create({
+        from: "whatsapp:" + '+551149507137',
+        body: original,
+        to: "whatsapp:+" + numero
+    })
+    .then((res: { sid: any; }) => {    console.log(uid)
+        console.log(res.sid)})
+            .done();  
+
+    
 })
+
+/*exports.sendTwilio = functions.firestore.document('vendas/{mUid}').onCreate(async (event) =>{
+    const uid = event.get('idLoja');
+    const numero = event.get('numeroLoja');
+    const accountSid = 'AC70e5f4e0b458628e1fb7c2a14931317f';
+    const authToken = '93973210e9958f84ef7bf14be1621a3c';
+    const client = require('twilio')(accountSid, authToken);
+    var original = '*Novo pedido! Tem cliente esperando!*\n\nCorre lá no App Axé Delivery e verifique o seu novo pedido!🚙💨\n\nLembre-se de atualizar o status, dessa forma cliente conseguirá acompanhar e ficará mais satisfeito ainda!Não se esqueça de utilizar o Chat em nosso aplicativo para tirar dúvidas com o cliente.\n Verifique por exemplo se ele precisará de troco, caso seja pagamento em dinheiro.\n\n*[Essa é uma mensagem automática do melhor aplicativo do mundo, Axé!]*'
+    client.messages.create({
+        from: "whatsapp:" + '+551149507137',
+        body: original,
+        to: "whatsapp:+" + numero
+    })
+    .then((res: { sid: any; }) => {    console.log(uid)
+        console.log(res.sid)})
+            .done();  
+
+    
+})*/
 /*
 exports.receiveTwilio = functions.https.onRequest( async(req,res) =>{
     const twilio = require('twilio');
@@ -91,6 +131,23 @@ console.log(res.sid)})
 exports.sendNotificationToFCMToken = functions.firestore.document('vendas/{mUid}').onCreate(async (event) => {
     const uid = event.get('lojaUID');
     const title = 'Você tem um novo pedido!🎉💰';
+    const content = 'Abra a página de pedidos para mais informações.';
+    let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+    let fcmToken = userDoc.get('fcm');
+    var message = {
+        notification: {
+            title: title,
+            body: content
+        },
+        token: fcmToken,
+    }
+
+    let response = await admin.messaging().send(message);
+    console.log(response);
+});
+exports.sendOrcamento = functions.firestore.document('orcamento/{mUid}').onCreate(async (event) => {
+    const uid = event.get('idLoja');
+    const title = 'Você tem um novo orçamento!🎉💰';
     const content = 'Abra a página de pedidos para mais informações.';
     let userDoc = await admin.firestore().doc(`users/${uid}`).get();
     let fcmToken = userDoc.get('fcm');

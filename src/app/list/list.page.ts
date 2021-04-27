@@ -168,70 +168,80 @@ async ionViewDidEnter() {
       this.complemento = event.complemento
       this.fcmzin = event.fcm
     })
-          this.storage.get('lojas').then(data =>{
+          this.storage.get('lojas').then(async data =>{
             let Onlines = data.filter(i => i.estado === this.estado)
-            Onlines.forEach(dado =>{
-              let unidades = dado.unidades
-              unidades.forEach(element => {
-                this.goalListFiltrado.push(element)
-                console.log(this.goalListFiltrado)
-                this.lojinha = this.goalListFiltrado
-                setTimeout(async () => {
-                  this.lojaperto = []
+            console.log(Onlines)
+            if(Onlines.length > 0){
 
-                  this.goalListFiltrado.forEach(element => {
-                    this.lojaLat = element.lat
-                    this.lojaLng = element.lng
-                    console.log(this.lojaLat)
-                    let Usuario: GeoCoord = {
-                      latitude: Number(this.lat),
-                      longitude: Number(this.lng)
-                      };
-                      console.log(Usuario)
-                      let Loja: GeoCoord = {
-                          latitude: Number(this.lojaLat),
-                          longitude:Number(this.lojaLng)
-                      };
-                      console.log(Loja)
-                 
-                      let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-                      console.log("A distancia entre as lojas é de:" + Number(kilometers));
+              Onlines.forEach(dado =>{
+                let unidades = dado.unidades
+                unidades.forEach(element => {
+                  this.goalListFiltrado.push(element)
+                  console.log(this.goalListFiltrado)
+                  this.lojinha = this.goalListFiltrado
+                  setTimeout(async () => {
+                    this.lojaperto = []
+  
+                    this.goalListFiltrado.forEach(element => {
+                      this.lojaLat = element.lat
+                      this.lojaLng = element.lng
+                      console.log(this.lojaLat)
+                      let Usuario: GeoCoord = {
+                        latitude: Number(this.lat),
+                        longitude: Number(this.lng)
+                        };
+                        console.log(Usuario)
+                        let Loja: GeoCoord = {
+                            latitude: Number(this.lojaLat),
+                            longitude:Number(this.lojaLng)
+                        };
+                        console.log(Loja)
+                   
+                        let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+                        console.log("A distancia entre as lojas é de:" + Number(kilometers));
+  
+                        if(Number(kilometers) < 8.0){
+                          console.log('maior')
+                          if(element.estado === this.estado ){
+                            this.lojaperto.push(element)
+                            console.log(this.lojaperto)
+  
+                          }
+  
+                            
+                          }else{
+  
+                            console.log('menor')
+                            
+                          }
+                          });                
+                          this.semLoja = this.lojaperto.length
+                          await loading.dismiss()
 
-                      if(Number(kilometers) < 8.0){
-                        console.log('maior')
-                        if(element.estado === this.estado ){
-                          this.lojaperto.push(element)
-                          console.log(this.lojaperto)
+                          console.log(this.semLoja)
+                          console.log(this.complemento)
+                          if(this.complemento === undefined){
+                              this.alerta()
+                          }
+                          if(this.fcmzin === '1'){
+                            this.alerta2()
+                          }
+  
+                        }, 1000);
+  
+                });
+              })
+              this.services.getLojasOffline().subscribe(data =>{
+                this.offlines = data.filter(i => i.estado === this.estado && i.status === 'Offline')
+                console.log(this.offlines)
+              })
+            }else{
+              await loading.dismiss()
+              alert('Na sua região ainda não temos lojistas! Indique o Axé Delivery para as lojas da sua região! ajude a nossa religião a crescer mais no mundo da tecnologia!')
+            }
 
-                        }
-
-                          
-                        }else{
-
-                          console.log('menor')
-                          
-                        }
-                        });                
-                        this.semLoja = this.lojaperto.length
-                        await loading.dismiss()
-                        console.log(this.semLoja)
-                        console.log(this.complemento)
-                        if(this.complemento === undefined){
-                            this.alerta()
-                        }
-                        if(this.fcmzin === '1'){
-                          this.alerta2()
-                        }
-
-                      }, 1000);
-
-              });
-            })
           });
-          this.services.getLojasOffline().subscribe(data =>{
-            this.offlines = data.filter(i => i.estado === this.estado && i.status === 'Offline')
-            console.log(this.offlines)
-          })
+
         }
 
   async alerta2(){
@@ -402,13 +412,12 @@ async ionViewDidEnter() {
       }
 
   perfilPage() {
-      const user = firebase.auth().currentUser;
-this.storage.get('usuario').then(event =>{
+  this.storage.get('usuario').then(event =>{
     if (event) {
         this.navCtrl.navigateForward('/user');
     } else {
         this.navCtrl.navigateForward('/');
-    }
+    } 
   })
 
       

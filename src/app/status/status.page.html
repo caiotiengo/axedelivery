@@ -21,17 +21,16 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div style="text-align: center;" *ngIf="typeUser === 'user' && valorre === 0">
+  <div style="text-align: center;" *ngIf="valorre === 0">
         <p>Parece que você não tem pedidos...</p>
         <p>Começe a comprar agora!</p>
         <ion-button fill="solid" color="warning" (click)="lista()" slot="end">Comprar</ion-button>
     </div> 
-<div class="background-traco" *ngIf=" typeUser === 'user' && valorre > 0 ">
+<div class="background-traco" *ngIf=" valorre > 0 ">
   <h2 style="text-align: center; padding-top: 22px;">Seus Pedidos</h2>
 
 
-    <ion-searchbar  *ngIf="typeUser === 'user'"  animated style="margin-top:3.5% !important;" placeholder="Pesquise pela loja" (ionInput)="filterList($event)"></ion-searchbar>
-		<ion-searchbar  *ngIf="typeUser === 'Loja'"  animated style="margin-top:3.5% !important;" placeholder="Pesquise o número do pedido" (ionInput)="filterList($event)"></ion-searchbar>
+    <ion-searchbar   animated style="margin-top:3.5% !important;" placeholder="Pesquise pela loja" (ionInput)="filterList($event)"></ion-searchbar>
   
   
     <ion-segment style="background: white;" scrollable (ionChange)="filterList2($event)" value="{{valorinicial}}">
@@ -68,100 +67,11 @@
         <ion-button fill="solid" expand="block" style="font-weight: 400;" color="success" (click)="novoChat(items)">Fale com a loja</ion-button>
       </div>
       <ion-button color="light" expand="block" [routerLink]="['/item-venda/' + items.id]">Mais informações</ion-button>
-      <!--ion-card-content >
-
-
-        <p> Valor • R${{items.valor}}</p>
-        <p> Data da compra • {{items.dia}}</p>
-        <p> Status de pagamento • {{items.statusPag}}</p>
-        <p> Número do pedido • {{items.nPedido}}</p>
-        <p slot="end">Endereço • {{items.endereco}} </p>
-
-       <br/> 
-       <ion-button fill="solid" expand="block" color="warning" >Veja mais</ion-button>
-
-      </ion-card-content-->
-
+   
     </ion-card>
 
   </ion-list>
   
 </div>
 
-
-
-
-<div style="text-align: center;" *ngIf="typeUser === 'Loja' && valorreST === 0">
-  <p>Parece que você não tem pedidos...</p>
-  <p>Começe a vender agora!</p>
-
-
-</div>
-<ion-button expand="block" *ngIf="typeUser === 'Loja'" style="--background: #002946;
-margin-top: 15px;
-font-weight: bold;" (click)="mojuba()">Seus Ganhos</ion-button>
-<div *ngIf="typeUser === 'Loja' && valorreST > 0" class="background-traco">
-  <h2 style="text-align: center; padding-top: 22px;">Seus Pedidos</h2>
-
-
-      <ion-searchbar  *ngIf="typeUser === 'Loja'"  animated style="margin-top:3.5% !important;" placeholder="Pesquise o número do pedido" (ionInput)="filterList($event)"></ion-searchbar>
-    
-    
-      <ion-segment *ngIf="typeUser === 'Loja'"  style="background: white;" scrollable (ionChange)="filterList2($event)" value="{{valorinicial}}">
-      <ion-segment-button style="width: auto !important; min-width: 160px;" *ngFor="let items of categoriasLoja" value="{{items}}">
-        <p value="{{items}}">{{items}}</p>
-      </ion-segment-button>
-  
-    </ion-segment>  
-
-  <ion-list *ngFor="let items of goalListST" >
-    <ion-card style="padding: 10px;
-    box-shadow: 0.5px 0.5px 5px 5px #80808047; margin-bottom: 10%; background:white;">
-      <ion-icon *ngIf="items.statusEnt === 'Loja informada'" class="sino" color="danger" name="notifications-sharp"></ion-icon>
-      <ion-badge *ngIf="items.statusEnt === 'Loja informada'"color="danger">Novo pedido</ion-badge>
-
-
-      <ion-card-header>
-        <h4 style="text-align: center;">{{items.nPedido}}</h4>
-
-      </ion-card-header>
-      <ion-item>
-        
-        <ion-label style="font-size: larger;
-        font-weight: 400;
-        color: black;"> {{items.statusEnt}}</ion-label>
-
-      </ion-item>
-      <ion-item>
-        
-        <ion-label style="font-size: larger;
-        font-weight: 200;text-align: center;
-        color: black;"> Pagamento: {{items.statusPag}}</ion-label>
-
-      </ion-item>
-      <ion-item><ion-label style="text-align: center;">Frete: R${{items.valorFrete}}</ion-label></ion-item>
-      <p *ngIf="items.statusEnt != 'Entregue' && items.statusEnt !='Cancelado'" style="padding:10px;margin-bottom: 3%;
-      color: black;">Fale com seus clientes o mais rápido possível! 😉</p>
-      <div *ngIf="items.statusEnt === 'Loja informada'" >
-        <ion-button fill="solid" expand="block" style="font-weight: 400;" (click)="save(items)" color="danger">Cancelar Compra</ion-button>
-      </div>
-      <div *ngIf="items.statusEnt != 'Entregue' && items.statusEnt !='Cancelado'">
-        <ion-button fill="solid" expand="block" style="font-weight: 400;" color="success" (click)="novoChat(items)">Fale com o cliente</ion-button>
-      </div>
-      <!--div *ngIf="items.statusEnt === 'Preparando Entrega'">
-        <ion-button fill="solid" expand="block" style="font-weight: 400;" color="dark" (click)="entregador(items)">Solicite um entregador</ion-button>
-      </div-->
-      <ion-button color="light" expand="block" [routerLink]="['/item-venda/' + items.id]">Mais informações</ion-button>
-
-      <ion-card-content>
-        <p> Valor • R${{items.valor}}</p>
-        <p> Data da compra • {{items.dia}}</p>
-        <!--p> Status de pagamento • {{items.statusPag}}</p-->
-        <p slot="end">Endereço • {{items.endereco}} </p><br/>
-      </ion-card-content>
-
-    </ion-card>
-
-  </ion-list>
-</div>
 </ion-content>

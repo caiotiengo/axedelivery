@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {IonInfiniteScroll, NavController, Platform} from '@ionic/angular';
+import {IonInfiniteScroll, NavController, Platform, LoadingController} from '@ionic/angular';
 import { ServiceService } from '../service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
@@ -146,7 +146,7 @@ export class ItemPage implements OnInit {
     hide = true;
     hide2 = false;
     opcLoja
-    constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
+    constructor(public navCtrl: NavController,  public loadingController: LoadingController,  private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
               public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
@@ -192,7 +192,12 @@ export class ItemPage implements OnInit {
         this.categoria = this.segmento;
         console.log(this.categoria);
     }
-    ionViewWillEnter(){
+    async ionViewWillEnter(){
+      const loading = await this.loadingController.create({
+        cssClass: 'my-custom-class',
+        message: 'Carregando dados da loja...'
+      })
+      await loading.present()
       this.storage.get('carrinhoUser').then(data =>{
         console.log(data)
         if(data){
@@ -239,7 +244,7 @@ export class ItemPage implements OnInit {
       //this.comments = this.services.comment(this.que);
       console.log(this.services.getProc(this.que));
       if (this.que) {
-        this.storage.get('produtos').then((data) =>{
+        this.storage.get('produtos').then(async (data) =>{
           console.log(data)
           this.goalList = data.filter(i => i.lojaUID === this.que  && i.noApp === 'Sim');
           this.loadedGoalList = data.filter(i => i.lojaUID === this.que && i.noApp === 'Sim')
@@ -268,6 +273,8 @@ export class ItemPage implements OnInit {
               tipoPrd: element.tipoPrd
             })
           })*/
+          await loading.dismiss()
+
               this.categorias = Array.from(new Set(this.lista2.map((item: any) => item.tipoPrd)))
                console.log(this.categorias)
           });
@@ -358,7 +365,8 @@ export class ItemPage implements OnInit {
         }
       });
     }
-   loadProduct() {
+  async loadProduct() {
+   
     this.services.getProc(this.que).subscribe(data => {
       this.loja = data
       console.log(this.loja)
@@ -375,17 +383,7 @@ export class ItemPage implements OnInit {
         this.mudeOpc(this.bairroSelecionado)
 
       }
-      /*
-       });
-      }else{
-        this.lojaLat = this.loja.unidades[0].lat
-        this.lojaLng = this.loja.unidades[0].lng
-      }
-      */ 
-      //console.log(this.loja);
-     // console.log(this.likes);
-     // console.log(this.dislikes);
-      
+
     });
 
 

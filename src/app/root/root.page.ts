@@ -124,7 +124,9 @@ export class RootPage implements OnInit {
 
 
      }
-
+     slidesOptions = {
+      slidesPerView: 1.0
+    }
   async ngOnInit() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
@@ -154,12 +156,24 @@ this.storage.get('usuario').then(event =>{
 
     
 }
-
-entrar(){
-  const user = firebase.auth().currentUser;
-  if (user){
-    this.navCtrl.navigateRoot('/list');
+clique(){
+  if(this.Platform.is("ios")){
+    console.log('ios')
+    window.location.href = 'https://apps.apple.com/us/app/id1528911749'
+  }else{
+    window.location.href = 'https://play.google.com/store/apps/details?id=io.ionic.axeDelivery'
   }
+}
+entrar(){
+  this.storage.get('usuario').then(data =>{
+    console.log(data)
+    if (data.lenght > 0){
+      this.navCtrl.navigateRoot('/list');
+    }else{
+      this.navCtrl.navigateForward('/login')
+    }
+  })
+
 }
 
   registro(){
