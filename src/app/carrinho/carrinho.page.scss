@@ -1,31 +1,33 @@
-*{
-	font-weight: 300;
+ion-header{
+    --background: linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #f7f3e1 100%);
+    white-space: break-spaces;
+    ion-toolbar, ion-item{
+      --background: linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #f7f3e1 100%);
+      //background:linear-gradient(90deg,rgb(255 193 7) 0%,rgb(255 193 7 / 52%) 35%, rgb(255 193 7 / 18%) 100%);;
+        //padding: 0 10px;
+    }
+    ion-toolbar{
+        .bordered{
+            --border-radius:10px;
+            --box-shadow:5px 5px 10px #d1d1d1, -5px -5px 10px #FFFFFF
+        }
+    }
+    ion-item{
+        h3{
+            font-weight: 700;
+            font-size: 14px;
+        }
+        p{
+            font-weight: 500;
+            font-size: 14px;
+        }
+        ion-avatar{
+           --border-radius:15%;
+           height: 70px;
+           width: 70px;
+        }
+    }
 }
-.background-div1{
-    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
-    height: 235px;
-    width: 100%;
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
-
-}
-.item1{
-	margin-bottom: 5%;
-    box-shadow: 3px 3px rgba(128, 128, 128, 0.4);
-    width: 90%;
-    //top: 48%;
-    //position: absolute;
-    left: 5%;
-}
-.card-pag{
-	//position: absolute;
-    //top: -10%;
-    width: 95%;
-}
-.arrow{
-	color: black;
-    width: 14%;
-    height: 12%;
-    margin-top: 5%;
-    float:left;
+ion-content{
+    --background: #f1f5f8 ;
 }

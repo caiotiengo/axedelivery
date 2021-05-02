@@ -111,13 +111,14 @@ export class CarrinhoPage implements OnInit {
               private _haversineService: HaversineService, 
               public alertCtrl: AlertController, 
               private storage: Storage, public services: ServiceService){
-
-                const user = firebase.auth().currentUser;
-                this.uid = user.uid;
-                console.log(this.uid)            
-                this.cuponNome = 'Sem cupom'
+              
 
 
+                this.storage.get('id').then(data =>{
+                  this.uid = data;
+                  console.log(this.uid)            
+                  this.cuponNome = 'Sem cupom'                  
+                })
      this.storage.get('valorFrete').then((data) => {
       this.valorDelivery =  data;
       var y = this.valorDelivery.replace('.','') 

@@ -1,62 +1,73 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" text="Voltar"></ion-back-button>
+    </ion-buttons>
+      <ion-avatar slot="start">
+        <img style="padding: 0px;
+        margin-left: 10%;" src="/assets/Picture1.png">
+      </ion-avatar>
+    </ion-toolbar>
+    <ion-fab  vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button class="findme" color="dark" (click)=" home()" >
+        <ion-icon style="color:#ffcb02 !important" name="home-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-header>
+
+<ion-content>
 
 
-<ion-content [fullscreen]="true">
-<div class="background-div1">
-  <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
+<ion-card class="card-pag">
+  <ion-card-header> 
+    <p style="text-align:center;">Escolha a forma de pagamento:</p>
+    <ion-select placeholder="Clique aqui" style="color:black;" [(ngModel)]="pagamento">
+      <ion-select-option value="credito">Crédito</ion-select-option>
+      <ion-select-option value="debito">Débito Presencial</ion-select-option>
+      <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
 
-  <img style="width:30%"src="/assets/Picture1.png"/>
-  <ion-item class="item1">
-    <ion-icon  slot="start" style="color:black" name="bicycle-outline"></ion-icon>
-    <p>Frete</p>
-    <p slot="end">R${{valorDelivery}}</p>
+    </ion-select>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+
+      <ion-fab-button color="dark">
+
+      </ion-fab-button>
+    </ion-fab>
+  </ion-card-header>
+
+ <ion-item  *ngIf="pagamento ==='dinheiro'">
+    <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
+    <ion-button color="success" style="margin: auto" (click)="pagarDin()"> Confirmar Pagamento </ion-button>
   </ion-item>
-  <ion-item class="item1">
-        <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
-        <p>Total</p>
-        <p slot="end">R${{valor}}</p>
-      </ion-item>
-</div>
-  
-<ion-fab  vertical="top" horizontal="end" slot="fixed">
-  <ion-fab-button class="findme" color="dark" (click)=" home()" >
-    <ion-icon style="color:#ffcb02 !important" name="home-outline"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
-<ion-card [hidden]="esconde" class="card-1">
-  <ion-item>
-    <ion-label position="stacked">Cupom</ion-label>
-    <ion-input  maxLenght="40" [(ngModel)]="cupom"></ion-input>
-  </ion-item>  
-  <ion-button color="warning" (click)="cupo()" fill="solid" expand="block" >Adicionar</ion-button>  
+  <ion-item  *ngIf="pagamento ==='debito'">
+    <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
+    <ion-button color="success" style="margin: auto" (click)="pagarDeb()"> Confirmar Pagamento </ion-button>
+  </ion-item>
 </ion-card>
-  <ion-card class="card-pag">
-    <ion-card-header> 
-      <p style="text-align:center;">Escolha a forma de pagamento:</p>
-      <ion-select placeholder="Clique aqui" style="color:black;" [(ngModel)]="pagamento">
-        <ion-select-option value="credito">Crédito</ion-select-option>
-        <ion-select-option value="debito">Débito Presencial</ion-select-option>
-        <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
-
-      </ion-select>
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-
-        <ion-fab-button color="dark">
-
-        </ion-fab-button>
-      </ion-fab>
-    </ion-card-header>
-
-   <ion-item  *ngIf="pagamento ==='dinheiro'">
-      <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
-      <ion-button color="success" style="margin: auto" (click)="pagarDin()"> Confirmar Pagamento </ion-button>
-    </ion-item>
-    <ion-item  *ngIf="pagamento ==='debito'">
-      <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
-      <ion-button color="success" style="margin: auto" (click)="pagarDeb()"> Confirmar Pagamento </ion-button>
-    </ion-item>
-  </ion-card>
-
-    <div *ngIf="pagamento ==='credito'">
+<ion-list>
+  <h4 style="margin: 0; text-align: center">Seu pedido</h4>
+<ion-item  *ngFor="let items of carrinhoDes; let i=index" >
+    <ion-avatar slot="start">
+      <img  *ngIf="items.fotos.length != 0" src="{{items.fotos}}">
+      <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
+    </ion-avatar>
+    <ion-label>
+      {{items.nome}}
+      <!--p>Total do produto: R${{items.valor}}</p-->
+      <p *ngIf="items.especi !=' ' "><b>Tipo:</b> {{items.especi}}</p>
+      <p><b>Quantidade:</b> {{items.quantity}}</p>
+    </ion-label>
+    <ion-button *ngIf="items.quantity !== 0" color="warning" style="margin-right: 5%;" (click)="retirarQTD(i)">
+      <ion-icon name="remove-outline"></ion-icon>
+    </ion-button>
+    {{items.quantity}}
+    <ion-button style="margin-left: 5%;" color="warning" (click)="adicionarQTD(i)">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+  
+</ion-item>
+</ion-list>  
+<div style="background: white;" *ngIf="pagamento ==='credito'">
       <h4 style="margin: 0; text-align: center">Informações do cartão</h4>
       <p style="text-align: center;
       margin-top:5px; margin-bottom: 5px;"> Em quantas vezes?</p>
@@ -137,32 +148,23 @@
           <p style="font-size: 12px; color:red;">Tudo certo? Clique para confirmar o pagamento!</p>
           <ion-button color="success" style="margin: auto" (click)="teste()"> Confirmar Pagamento </ion-button>
       </ion-item>
-    </div>
-
-
-    <ion-list>
-        <h4 style="margin: 0; text-align: center">Seu pedido</h4>
-      <ion-item  *ngFor="let items of carrinhoDes; let i=index" >
-        <ion-avatar slot="start">
-          <img  *ngIf="items.fotos.length != 0" src="{{items.fotos}}">
-          <img  *ngIf="items.fotos.length === 0" src="/assets/Picture1.png">
-        </ion-avatar>
-        <ion-label>
-          {{items.nome}}
-          <!--p>Total do produto: R${{items.valor}}</p-->
-          <p *ngIf="items.especi !=' ' "><b>Tipo:</b> {{items.especi}}</p>
-          <p><b>Quantidade:</b> {{items.quantity}}</p>
-        </ion-label>
-        <ion-button *ngIf="items.quantity !== 0" color="warning" style="margin-right: 5%;" (click)="retirarQTD(i)">
-          <ion-icon name="remove-outline"></ion-icon>
-        </ion-button>
-        {{items.quantity}}
-        <ion-button style="margin-left: 5%;" color="warning" (click)="adicionarQTD(i)">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-button>
-      
-      </ion-item>
-    </ion-list>
-
-
+</div>
 </ion-content>
+<ion-footer>
+  <ion-item  [hidden]="esconde" >
+    <ion-label position="stacked">Cupom</ion-label>
+    <ion-input  maxLenght="40" [(ngModel)]="cupom"></ion-input>
+    <ion-button color="warning" (click)="cupo()" slot="end" fill="solid" expand="block" >Adicionar</ion-button> 
+
+  </ion-item>  
+  <ion-item class="item1">
+    <ion-icon  slot="start" style="color:black" name="bicycle-outline"></ion-icon>
+    <p>Frete</p>
+    <p slot="end">R${{valorDelivery}}</p>
+  </ion-item>
+  <ion-item class="item1">
+        <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
+        <p>Total</p>
+        <p slot="end">R${{valor}}</p>
+  </ion-item>
+</ion-footer>
