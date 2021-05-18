@@ -40,6 +40,9 @@ export class OrcamentoPage implements OnInit {
       console.log(this.nome)
       console.log("55"+ String(this.loja.ddd) + String(this.loja.telefone))
     })
+    this.storage.get('id').then(y =>{
+      console.log(y)
+    })
   }
   enviar(){
     this.afStore.collection('orcamento').add({
@@ -68,6 +71,8 @@ export class OrcamentoPage implements OnInit {
     });
   }
   adicionar(index:number){
+
+  
     console.log(index)
 
     this.produtos[index].quantity += 1;
@@ -90,6 +95,8 @@ export class OrcamentoPage implements OnInit {
         valor:0,
         disponivel: 'Não avaliado'
       })
+      this.produto = '';
+      this.observacao = '';
     }else{
       alert('Escreva ao lado o nome do produto')
     }

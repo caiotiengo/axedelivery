@@ -472,6 +472,7 @@ async presentLoading() {
          const user = firebase.auth().currentUser;
          this.mainuser = this.afStore.doc(`users/${user.uid}`);
          this.userID = user.uid
+         console.log(this.userID)
          this.storage.set('id',this.userID).then((res) =>{
             console.log(res)
         });

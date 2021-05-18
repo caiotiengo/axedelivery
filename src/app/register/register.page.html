@@ -167,11 +167,11 @@
 	<div [hidden]="quartaDiv" class="quarta-div">
 	  <div class="header-quarta">
 		<h4>
-		  Finalizado! Antes de tudo, habilite as notificações!
+		  Finalizado! Antes de continuar, habilite as notificações!
 		</h4>
 	  </div>
-	  <ion-button expand="full" (click)="habilitar()">Habilitar notificações</ion-button>
-	  <ion-button color="white" fill="clear" style="text-align:center; color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
+	  <ion-button expand="block" (click)="habilitar()">Habilitar notificações</ion-button>
+	  <ion-button color="white" expand="block"  fill="clear" style="text-align:center; color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
 		  <ion-item>
 			  <ion-label>Confirmo que li e concordo com os termos.</ion-label>
 			  <ion-checkbox [(ngModel)]="check"></ion-checkbox>

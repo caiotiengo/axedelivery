@@ -30,4 +30,27 @@ ion-header{
 }
 ion-content{
     --background: #f1f5f8 ;
+    .email-div, .senha-div{
+        margin-top: 5px;
+    
+        label{
+            margin:0 0 0 4px;
+            font-size: 12px;
+        }
+        input{
+            width: 100%;
+            border: solid 2px #f1f5f8;
+            height: 43px;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        ::placeholder{
+            margin-left: 5px ;
+        }
+        ::-webkit-input-placeholder{
+            margin-left: 5px ;
+    
+        }
+    }
 }

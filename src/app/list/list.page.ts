@@ -166,8 +166,17 @@ async ionViewDidEnter() {
       this.nomeUser = event.nome
       this.DOB = event.DOB
       this.complemento = event.complemento
-      this.fcmzin = event.fcm
+      this.fcmzin = event.fcm;
+      console.log(this.semLoja)
+      console.log(this.complemento)
+      if(this.complemento === undefined){
+          this.alerta()
+      }
+      if(this.fcmzin === '1'){
+        this.alerta2()
+      }
     })
+     
           this.storage.get('lojas').then(async data =>{
             let Onlines = data.filter(i => i.estado === this.estado)
             console.log(Onlines)
@@ -218,14 +227,7 @@ async ionViewDidEnter() {
                           this.semLoja = this.lojaperto.length
                           await loading.dismiss()
 
-                          console.log(this.semLoja)
-                          console.log(this.complemento)
-                          if(this.complemento === undefined){
-                              this.alerta()
-                          }
-                          if(this.fcmzin === '1'){
-                            this.alerta2()
-                          }
+                       
   
                         }, 1000);
   

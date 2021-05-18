@@ -106,6 +106,10 @@ const routes: Routes = [
   {
     path: 'lala-move',
     loadChildren: () => import('./lala-move/lala-move.module').then( m => m.LalaMovePageModule)
+  },
+  {
+    path: 'modal-cartao',
+    loadChildren: () => import('./modal-cartao/modal-cartao.module').then( m => m.ModalCartaoPageModule)
   }
 ];
 @NgModule({

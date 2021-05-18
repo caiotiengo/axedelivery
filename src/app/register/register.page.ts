@@ -260,9 +260,10 @@ Autocomplete
       .then(async (res) => {
         console.log(res.user.uid)
         this.userID = res.user.uid
-        await loading.dismiss();
-
-        this.segundoPasso()
+        this.storage.set('id', this.userID).then(async () =>{
+          await loading.dismiss();
+          this.segundoPasso()
+        })
       }).catch(async (e) => {
         await loading.dismiss();
 
