@@ -166,6 +166,16 @@ ion-header{
 }
 ion-content{
   --background: #f1f5f8;
+  .ut-card{
+    background-image: url("../../assets/verdeservas.jpg") !important;
+    height: 160px;
+    background-size: cover;
+  }
+  .ut-card-2{
+    background-image: url("../../assets/produtinhos.jpg") !important;
+    height: 160px;
+    background-size: cover;
+  }
   ion-card{
       width: 100%;
       padding: 14px;

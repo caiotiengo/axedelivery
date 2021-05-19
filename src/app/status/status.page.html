@@ -1,20 +1,29 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" text="Voltar"></ion-back-button>
+    </ion-buttons>
+    <ion-avatar slot="start">
+      <img style="padding: 0px;
+      margin-left: 10%;" src="/assets/Picture1.png">
 
-<ion-fab  vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button color="dark" (click)="perfilPage()">
-      <ion-icon style="color:#ffcb02 !important" name="person-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    </ion-avatar>
+    <ion-buttons slot="end">
+      <ion-button class="bordered" (click)="perfilPage()" fill="solid" color="light">
+        <ion-icon color="dark" name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  </ion-header>
 
-<ion-content [fullscreen]="true">
-<div class="background-div1">
-    <img style="width:35%"src="/assets/Picture1.png">
-</div>
-  <ion-fab  vertical="bottom" horizontal="start" slot="fixed">
+<ion-content>
+
+ <ion-fab  vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button color="dark" (click)="home()">
       <ion-icon style="color:#ffcb02 !important" name="home-outline">
       </ion-icon>
     </ion-fab-button>
-  </ion-fab>
+</ion-fab>
 
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">

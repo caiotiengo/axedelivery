@@ -36,10 +36,16 @@
         <ion-select-option value="5">5</ion-select-option>
     </ion-select>
     </ion-card-header>
+    <ion-label style="    color: red;
+    font-size: small;
+    margin: 20px;" *ngIf="parcelamento ===''"> * Campo obrigatório</ion-label>
+
     <ion-card-content >
       <div class="email-div">
         <label>Nome no cartão</label>
         <input [(ngModel)]="nomeCartao"/>
+        <ion-label style="color: red; font-size: small;" *ngIf="nomeCartao ===''"> * Campo obrigatório</ion-label>
+
       </div>
       <ion-grid style="    padding: 0;
       margin: 0;">
@@ -48,6 +54,8 @@
               <div class="email-div">
                 <label>CPF</label>
                 <input  maxlenght="14" [brmasker]="{person: true}" [(ngModel)]="cpfCartao"/>
+                <ion-label style="color: red; font-size: small;" *ngIf="cpfCartao ===''"> * Campo obrigatório</ion-label>
+
               </div>            
           </ion-col>
           <ion-col>
@@ -61,6 +69,8 @@
                   [dayShortNames]="customDayShortNames"
                   displayFormat="DD MMM, YYYY"
                   monthShortNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro" [(ngModel)]="dataNCartao" placeholder="Clique aqui" required></ion-datetime> 
+                  <ion-label style="color: red; font-size: small;" *ngIf="dataNCartao ===''"> * Campo obrigatório</ion-label>
+
             </div>
  
           </ion-col>
@@ -73,12 +83,16 @@
                 <div class="email-div">
                     <label>DDD</label>
                     <input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="dddCartao"/>
+                    <ion-label style="color: red; font-size: small;" *ngIf="dddCartao ===''"> * Campo obrigatório</ion-label>
+
                 </div>
             </ion-col>
             <ion-col>
                 <div class="email-div">
                     <label>Telefone</label>
                     <input [(ngModel)]="telefoneCartao"/>
+                    <ion-label style="color: red; font-size: small;" *ngIf="telefoneCartao ===''"> * Campo obrigatório</ion-label>
+
                 </div>
             </ion-col>
         </ion-row>
@@ -86,6 +100,8 @@
         <div class="email-div">
           <label position="stacked">Número do cartão</label>
           <input [(ngModel)]="numeroCard"/>
+          <ion-label style="color: red; font-size: small;" *ngIf="numeroCard ===''"> * Campo obrigatório</ion-label>
+
         </div>
       <ion-grid  style="    padding: 0;
       margin: 0;">
@@ -94,12 +110,16 @@
               <div class="email-div">
                   <label position="stacked">Mês de validade</label>
                   <input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="mesValidade"/>
+                  <ion-label style="color: red; font-size: small;" *ngIf="mesValidade ===''"> * Campo obrigatório</ion-label>
+
               </div>
           </ion-col>
           <ion-col>
               <div class="email-div">
                   <label position="stacked">Ano de validade</label>
                   <input type="tel" pattern="[0-9]*" maxlength="2" [(ngModel)]="anoValidade"/>
+                  <ion-label style="color: red; font-size: small;" *ngIf="anoValidade ===''"> * Campo obrigatório</ion-label>
+
               </div>
           </ion-col>
       </ion-row>
@@ -107,6 +127,8 @@
       <div class="email-div">
           <label position="stacked">Código de Segurança</label>
           <input type="tel" pattern="[0-9]*" maxlength="3" [(ngModel)]="CVV"/>
+          <ion-label style="color: red; font-size: small;" *ngIf="CVV ===''"> * Campo obrigatório</ion-label>
+
       </div>
     </ion-card-content>
 

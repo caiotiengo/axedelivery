@@ -21,6 +21,7 @@ import { ModalOrcamentoPage } from '../modal-orcamento/modal-orcamento.page';
 export class ListaOrcamentoPage implements OnInit {
 
   listaOrcamento
+  userId
   constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,
     public afStore: AngularFirestore,  public services: ServiceService,
@@ -28,10 +29,14 @@ export class ListaOrcamentoPage implements OnInit {
 ) { }
 
   ngOnInit() {
-    this.services.getOrcamentos().subscribe(data =>{
-      this.listaOrcamento = data;
-      console.log(data)
+    this.storage.get('id').then(data =>{
+      this.userId = data
+      this.services.getOrcamentos().subscribe(data =>{
+        this.listaOrcamento = data //.filter(i => i.idComprador === this.userId);
+        console.log(this.listaOrcamento)
+      })
     })
+
   }
 
   chat(items){

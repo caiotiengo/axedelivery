@@ -1,32 +1,32 @@
-
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" text="Voltar"></ion-back-button>
+    </ion-buttons>
+      <ion-avatar slot="start">
+        <img style="padding: 0px;
+        margin-left: 10%;" src="/assets/Picture1.png">
+      </ion-avatar>
+    </ion-toolbar>
+</ion-header>
+<ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">
+  <ion-badge class="badge-produtos" style="position: absolute;
+  z-index: 1;
+  bottom: -5px;" *ngIf="produtos.length > 0" color="danger">{{produtos.length}}</ion-badge>
+    <ion-fab-button (click)="finalizarCompra()" color="dark">
+      <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
+   </ion-fab-button>
+</ion-fab>
 <ion-content>
   
-  <div class="background-div1">
-    <ion-icon class="arrow" (click)="voltar()"name="arrow-back"></ion-icon>
-       <img style="width:30%"src="/assets/Picture1.png"/>
-       <h1 style="text-align: center;font-weight: bold;
-       font-style: italic;"></h1>
-  </div>
-  <ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">
-    <ion-badge class="badge-produtos" *ngIf="produtos.length > 0" color="danger">{{produtos.length}}</ion-badge>
-      <ion-fab-button (click)="finalizarCompra()" color="dark">
-        <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
-     </ion-fab-button>
- </ion-fab>
-  <ion-searchbar style="position: absolute; margin-top: -25%" animated placeholder="Pesquise pelo produto" (ionInput)="filterList($event)"></ion-searchbar>	
-  <h4 style="text-align: center;
-  font-weight: bold;
-  padding: 10px;" >Categorias</h4>
-  <ion-segment style="background: white;" scrollable (ionChange)="segmentChanged($event)" value="{{valorinicial}}">
-    <ion-segment-button style="width: auto !important; min-width: 170px;" *ngFor="let items of categorias" value="{{items}}">
-      <p value="{{items}}">{{items}}</p>
-    </ion-segment-button>
-  </ion-segment>  
+
+  <ion-searchbar animated placeholder="Pesquise pelo produto" (ionInput)="filterList($event)"></ion-searchbar>	
 
 
-
-  <ion-list>
-    <ion-item *ngFor="let items of lista">
+  <ion-list style="background: #ffffff96;
+  padding: 10px;
+  border-radius: 10px;">
+    <ion-item lines="none" *ngFor="let items of lista">
       <ion-label>
         <h2>{{items.nome}}</h2>
         <p>R${{items.valor}}</p>

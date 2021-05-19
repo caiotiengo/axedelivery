@@ -14,56 +14,13 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ModalVendaPage } from '../modal-venda/modal-venda.page';
 
 
-export interface Loja {
-    nome?: string;
-    zona?: string;
-    bairro?: string;
-    endereco?: string;
-    LikeValue?: number;
-    DislikeValue?: number;
-    cidade?: string;
-    email?: string;
-    resumo?: string;
-    comments?:string;
-    entrega?:string;
-    aprovado?:string;
-    seNao?:string;
-    nomeLoja?:string;
-}
-export interface Produtos {
-    nome?: string;
-    valor?: number;
-    qtd?: number;
-    email?: string;
-    itemId?: any;
-    itemNumber?: any;
-    dia?: number;
-    lojaUID?: string;
-    emailLoja?: string;
-    price?:number;
-    product?:string;
-    quantity: number;
-    detail?: string;
-    fotos?: string
-    tipoPrd?:any;
-    descrito?:any;
-    especi?:any;
-    noApp?:any;
-    id?:any;
-    nomeLoja?:string;
-    fotoPerfil?:any;
-    valorReal?:any;
-    priceReal?:any;
-    lng?:any;
-    lat?:any;
 
-}
 @Component({
   selector: 'app-procurar',
   templateUrl: './procurar.page.html',
   styleUrls: ['./procurar.page.scss'],
 })
-export class ProcurarPage implements OnInit {
+export class ProcurarPage {
   @ViewChild('mySlider', {static: true})  slides: IonSlides;
   @ViewChild(IonInfiniteScroll, {static: true}) infiniteScroll: IonInfiniteScroll;
 
@@ -94,9 +51,9 @@ export class ProcurarPage implements OnInit {
 
     emailLoja;
     qualquer;
-    lista: Array<Produtos> = [];
-    lista2: Array<Produtos> = [];
-    produtos: Array<Produtos> = [];
+    lista: Array<any> = [];
+    lista2: Array<any> = [];
+    produtos: Array<any> = [];
 
     slideOpts = {
        initialSlide: 1,
@@ -141,47 +98,49 @@ export class ProcurarPage implements OnInit {
     private route: ActivatedRoute, public storage: Storage,public loadingController: LoadingController,
     public afStore: AngularFirestore,  public services: ServiceService,
     public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService) { 
-       this.user = firebase.auth().currentUser;
-      console.log(this.user);
-      this.mainuser = this.afStore.doc(`users/${this.user.uid}`);
-      this.sub = this.mainuser.valueChanges().subscribe(event => {
-        this.nome = event.nome;
-        this.endereco = event.endereco;
-        this.cidade = event.cidade;
-        this.email = event.email;
-        this.bairro = event.bairro;
-        this.telefone = event.telefone;
-        this.zona = event.zona;
-        this.lat = event.lat;
-        this.lng = event.lng
-        this.estado = event.estado;
-
-    });
-    this.services.getProccessos().subscribe(res => {
-      this.storage.get('lojas').then(data =>{
-          let lojas = data
-          console.log(lojas)
-          this.goalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
-          this.loadedGoalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
-
-          //this.lista = this.lista.concat(this.goalList)
-          this.categorias = Array.from(new Set(this.goalList.map((item: any) => item.tipoPrd)))
-
-          this.semLoja = this.goalList.length
-          this.semLoja = this.goalList.length
-          //console.log(this.goalList)
-          this.goalList.slice(0,10).forEach(i =>{
-          
-            this.loadProduct(i.lojaUID)
-            this.lista.push(i)
-          })
-      })
-      
-    });    
+       
   }
 
-  ngOnInit() {
+  async ionViewDidEnter() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Carregando produtos...'
+    })
+    await loading.present()
+  this.storage.get('usuario').then(event => {
+      this.nome = event.nome;
+      this.endereco = event.endereco;
+      this.cidade = event.cidade;
+      this.email = event.email;
+      this.bairro = event.bairro;
+      this.telefone = event.telefone;
+      this.zona = event.zona;
+      this.lat = event.lat;
+      this.lng = event.lng
+      this.estado = event.estado;
 
+  });
+  this.storage.get('produtos').then(async res => {
+    this.storage.get('lojas').then(data =>{
+        let lojas = data
+        console.log(lojas)
+        
+        this.goalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
+        this.loadedGoalList = res.filter(i => i.estado === this.estado && i.aprovado === 'Sim')
+
+        //this.lista = this.lista.concat(this.goalList)
+        this.semLoja = this.goalList.length
+        this.semLoja = this.goalList.length
+        //console.log(this.goalList)
+        this.goalList.slice(0,10).forEach(i =>{
+        
+          this.loadProduct(i.lojaUID)
+          this.lista.push(i)
+        })
+    })
+    await loading.dismiss()
+ 
+  });  
   }
   more(){
     this.moremo++

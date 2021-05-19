@@ -134,6 +134,9 @@ export class ListPage {
               slidesOptions = {
                 slidesPerView: 1.2
               }
+              slidesOptions2 = {
+                slidesPerView: 2.0
+              }
 add(){
   this.navCtrl.navigateForward('/add-proc')
 }
@@ -144,7 +147,9 @@ listaOrc(){
 status(){
   this.navCtrl.navigateForward('/status')
 }
-
+ervas(){
+  this.navCtrl.navigateForward('/ervas')
+}
 async ionViewDidEnter() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',

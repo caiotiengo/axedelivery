@@ -3,8 +3,6 @@ ion-header{
   --background: linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #f7f3e1 100%);
   ion-grid{
     background: linear-gradient(90deg,#ffc107 0%,#ffc10785 35%, #ffc1072e 100%);
-    margin: 0;
-  padding: 0;
   }
   ion-toolbar, ion-item{
       --background:linear-gradient(90deg,rgba(255 193 7) 0%,rgba(255 193 7 / 52%) 35%, rgba(255 193 7 / 18%) 100%);
@@ -32,30 +30,7 @@ ion-header{
   }
 }
 ion-content{
-  --background: #f1f5f8 ;
-  .email-div, .senha-div{
-      margin-top: 5px;
-  
-      label{
-          margin:0 0 0 4px;
-          font-size: 12px;
-      }
-      input{
-          width: 100%;
-          border: 1px solid #d7d8da;
-          height: 43px;
-          border-radius: 10px;
-          padding: 10px;
-          margin-top: 5px;
-      }
-      ::placeholder{
-          margin-left: 5px ;
-      }
-      ::-webkit-input-placeholder{
-          margin-left: 5px ;
-  
-      }
-  }
+  --background: #f1f5f8;
   .ut-card{
     background-image: url("../../assets/verdeservas.jpg") !important;
     height: 160px;
@@ -67,7 +42,7 @@ ion-content{
     background-size: cover;
   }
   ion-card{
-      //width: 100%;
+      width: 100%;
       padding: 14px;
       border-radius: 14px;
       box-shadow: none;

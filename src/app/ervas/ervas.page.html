@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" text="Voltar"></ion-back-button>
+    </ion-buttons>
+    <ion-avatar slot="start">
+      <img style="padding: 0px;
+      margin-left: 10%;" src="/assets/Picture1.png">
+
+    </ion-avatar>
+    <ion-title style="color: white;">Ervas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-searchbar animated placeholder="Pesquise pelo produto" (ionInput)="filterList($event)"></ion-searchbar>	
+
+
+  <ion-list style="background: #ffffff96;
+  padding: 10px;
+  border-radius: 10px;">
+    <ion-item lines="none" *ngFor="let items of lista">
+      <ion-label>
+        <h2>{{items.nome}}</h2>
+        <p>R${{items.valor}}</p>
+        <p style="font-weight: bold;" *ngIf="items.nomeLoja">Loja: {{items.nomeLoja}}</p>
+
+      </ion-label>
+      <ion-button (click)="presentModal(items.id, items.lojaUID, items.email)"  fill="solid" color="success" style="color:#24ad5b !important">
+          Veja
+      </ion-button>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Carregando...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+  <div style="text-align: center;" *ngIf="semLoja === 0">
+    <img src="/assets/Picture1.png" alt="" />
+    <h2>Ops... :(</h2>
+    <p>Parece que no momento não temos produtos na sua região...</p>
+    <p>Mas não se preocupe, em breve teremos! 
+   Compartilhe o app com pessoas e comerciantes da área e venha às compras!</p>
+  
+  </div>
+</ion-content>

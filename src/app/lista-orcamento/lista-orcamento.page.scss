@@ -1,0 +1,101 @@
+ion-header{
+    --background: linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #f7f3e1 100%);
+    ion-grid{
+      background: linear-gradient(90deg,#ffc107 0%,#ffc10785 35%, #ffc1072e 100%);
+    }
+    ion-toolbar, ion-item{
+        --background:linear-gradient(90deg,rgba(255 193 7) 0%,rgba(255 193 7 / 52%) 35%, rgba(255 193 7 / 18%) 100%);
+       // background:linear-gradient(90deg,#ffc107 0%,#ffc10785 35%, #ffc1072e 100%);
+        //padding: 0 10px;
+    }
+    ion-toolbar{
+        .bordered{
+            --border-radius:10px;
+            --box-shadow:5px 5px 10px #d1d1d1, -5px -5px 10px #FFFFFF
+        }
+    }
+    ion-item{
+        h3{
+            font-weight: 700;
+            font-size: 14px;
+        }
+        p{
+            font-weight: 500;
+            font-size: 14px;
+        }
+        ion-avatar{
+            --border-radius:40%
+        }
+    }
+  }
+  ion-list{
+    background: transparent;
+  }
+  ion-content{
+    --background: #f1f5f8;
+    .ut-card{
+      background-image: url("../../assets/verdeservas.jpg") !important;
+      height: 160px;
+      background-size: cover;
+    }
+    .ut-card-2{
+      background-image: url("../../assets/produtinhos.jpg") !important;
+      height: 160px;
+      background-size: cover;
+    }
+    ion-card{
+        /* width: 100%; */
+        padding: 14px;
+        border-radius: 14px;
+        /* box-shadow: none; */
+        background: rgba(255, 255, 255, 0.8);
+        .main{
+            width: 60px;
+            height: 60px;
+            border-radius: 50px;
+            background: #FFFFFF;
+            box-shadow: 7px 7px 20px #dbdfe2,
+                    -7px -7px -20px #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img{
+                width: 30px;
+            }
+        }
+    }
+    .slides{
+        background:linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #fef3ce 100%);
+        padding: 4px 10px 20px 10px;
+        border-radius: 0 0 28px 28px;
+    }
+  
+    .container{
+        //padding: 6px 20px;
+        color:black;
+        ion-item{
+            --background: rgb(255 255 255 / 67%);
+            padding: 0;
+            margin: 14px 0;
+            --border-radius:14px;
+            color: black;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            ion-label{
+                padding:6px 0;
+                h4{
+                    font-weight: 600;
+                    font-size:16px
+                }
+                h6{
+                    color:lightslategray;
+                }
+            }
+        }
+    }
+  }
+  
+  
+  

@@ -37,8 +37,26 @@ exports.sendTwilio = functions.firestore.document('orcamento/{mUid}').onCreate(a
 
     
 })
+exports.sendTwilioOrcamentoUpd = functions.firestore.document('orcamento/{mUid}').onUpdate(async (event) =>{
+    const uid = event.after.get('idLoja');
+    const numero = event.after.get('numeroComprador');
+    const accountSid = 'AC70e5f4e0b458628e1fb7c2a14931317f';
+    const authToken = '93973210e9958f84ef7bf14be1621a3c';
+    const client = require('twilio')(accountSid, authToken);
+    var original = '*Se liga no Orçamento!*\n\n Olha lá no Axé Delivery a resposta da Loja! 💰🥳💰\n_Não esqueça de aprovar os valores para o o lojista e concluir sua compra!_\n*[Mensagem Automática]*'
+    client.messages.create({
+        from: "whatsapp:" + '+551149507137',
+        body: original,
+        to: "whatsapp:+" + numero
+    })
+    .then((res: { sid: any; }) => {    console.log(uid)
+        console.log(res.sid)})
+            .done();  
 
-/*exports.sendTwilio = functions.firestore.document('vendas/{mUid}').onCreate(async (event) =>{
+    
+})
+
+exports.sendTwilioVenda = functions.firestore.document('vendas/{mUid}').onCreate(async (event) =>{
     const uid = event.get('idLoja');
     const numero = event.get('numeroLoja');
     const accountSid = 'AC70e5f4e0b458628e1fb7c2a14931317f';
@@ -55,7 +73,7 @@ exports.sendTwilio = functions.firestore.document('orcamento/{mUid}').onCreate(a
             .done();  
 
     
-})*/
+})
 /*
 exports.receiveTwilio = functions.https.onRequest( async(req,res) =>{
     const twilio = require('twilio');

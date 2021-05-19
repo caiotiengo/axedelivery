@@ -125,6 +125,7 @@ export class CarrinhoPage implements OnInit {
       this.valorFrete = Number(y)
       console.log(this.valorFrete);
     });
+
     this.storage.get('carrinhoUser').then((data) => {
       this.carrinho =  JSON.parse(data);
       this.carrinho.forEach(element => {
@@ -134,7 +135,7 @@ export class CarrinhoPage implements OnInit {
         console.log(result);
         var resposta = Number(result) + Number(this.valorDelivery);
         this.valor = Number(resposta.toFixed(2))
-
+        console.log(this.valor)
         this.services.getProc(this.carrinhoDes[0].lojaUID).subscribe(res =>{
           this.loja = res
           console.log(this.loja)
@@ -142,6 +143,10 @@ export class CarrinhoPage implements OnInit {
       });
       console.log(this.carrinhoDes);
     });
+    this.storage.get('valorFinal').then(data =>{
+      this.valor = data;
+      console.log(this.valor)
+    })
      
     
 
@@ -494,7 +499,8 @@ teste(){
                     emailLoja: this.loja.email,
                     statusPag: 'Aprovado',
                     statusEnt: 'Loja informada',
-                    telefoneComprador: this.telefoneComprador,
+                    telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                    telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
                     CPFComprador: this.userCPF,
                     idPagamento: response.body.id,
                     compradorUID: this.uid,
@@ -556,7 +562,8 @@ teste(){
                   emailLoja: this.loja.email,
                   statusPag: 'Em análise',
                   statusEnt: 'Loja informada',
-                  telefoneComprador: this.telefoneComprador,
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
                   compradorUID: this.uid,
@@ -618,7 +625,8 @@ teste(){
                   emailLoja: this.loja.email,
                   statusPag: 'Cancelado pelo banco',
                   statusEnt: 'Cancelado',
-                  telefoneComprador: this.telefoneComprador,
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
                   compradorUID: this.uid,
@@ -684,7 +692,8 @@ teste(){
                   emailLoja: this.loja.email,
                   statusPag:"Problema com pagamento " + err,
                   statusEnt: 'Loja informada',
-                  telefoneComprador: this.telefoneComprador,
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: response.body.id,
                   compradorUID: this.uid,
@@ -749,7 +758,8 @@ teste(){
                   emailLoja: this.loja.email,
                   statusPag:"Problema com pagamento " + err,
                   statusEnt: 'Loja informada',
-                  telefoneComprador: this.telefoneComprador,
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
                   CPFComprador: this.userCPF,
                   idPagamento: this.payID ,
                   compradorUID: this.uid,
@@ -875,7 +885,8 @@ teste(){
         emailLoja: this.loja.email,
         statusPag: 'Em dinheiro',
         statusEnt: 'Loja informada',
-        telefoneComprador: this.telefoneComprador,
+        telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+        telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
         CPFComprador: this.userCPF,
         compradorUID: this.uid,
         valorDevedor: Number(value),
@@ -994,7 +1005,8 @@ teste(){
         emailLoja: this.loja.email,
         statusPag: 'Débito presencial',
         statusEnt: 'Loja informada',
-        telefoneComprador: this.telefoneComprador,
+        telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+        telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
         CPFComprador: this.userCPF,
         compradorUID: this.uid,
         valorDevedor: Number(value),

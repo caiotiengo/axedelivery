@@ -1,48 +1,83 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>{{orcamento.nomeComprador}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon style="    font-size: 25px;
+      margin-right: 15px;" name="close-outline" (click)="voltar()"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div style="margin:auto; text-align: center;">
-    <ion-button style="
-    margin-top: 5%;--background: gray;" (click)="voltar()">
-    Voltar
-  
-    </ion-button>
-  </div>
+
   <div>
     <h2 style="text-align: center;">Produtos</h2>
       <ion-list *ngFor="let items of orcamento.orcamento">
-        <ion-grid>
-          <ion-row>
-            <ion-col size="6">
-              <ion-item lines="none">
-                {{items.nome}}
-              </ion-item>
-            </ion-col>
-            <ion-col size="2">
-              <ion-item lines="none">
-                {{items.quantity}}
-              </ion-item>
-            </ion-col>
-            <ion-col size="4">
-              <ion-item lines="none">
-                R$10,00
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <ion-item lines="none" (click)="modalAnswer(items, i)">
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="3">
+                <ion-button *ngIf="items.foto === 'undefined'" color="dark" fill="clear">
+                  <ion-icon slot="icon-only" name="camera-outline"></ion-icon>
+                </ion-button> 
+                <ion-avatar *ngIf="items.foto !== 'undefined'" >
+                  <img src="{{items.foto}}"/>
+                </ion-avatar>
+              </ion-col>
+              <ion-col size="8">
+                <ion-label>
+                  <h4>
+                   {{items.quantity}} {{items.nome}} - R${{items.valor}}
+                  </h4>
+                  <h6>
+                   {{items.obs}} 
+                  </h6>
+                  <p style="background: #ff0000d6;
+                  width: 70%;
+                  text-align: center;
+                  color: white;
+                  padding: 2px;
+                  border-radius: 4px;" *ngIf="items.qtdRes != items.quantity"> Quantidade:{{items.qtdRes}} </p>
+                   <p style="background: #2dd36f;
+                   width: 70%;
+                   text-align: center;
+                   color: white;
+                   padding: 2px;
+                   border-radius: 4px;" *ngIf="items.qtdRes === items.quantity"> Quantidade:{{items.qtdRes}} </p>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-icon name="close-outline" style="top: 0px;
+          right: 0;
+          position: absolute;
+          background: #ffc107;
+          border: 1px solid;
+          border-radius: 25px;" (click)="retirarItem(items)" ></ion-icon>
+        </ion-item>
       </ion-list>
   </div>
-  <br/>
-  <br/>
-  <p style="text-align: center;">Envie agora o valor da sua proposta! Ela ficará disponível para o cliente comprar logo em seguida!</p>
-  <ion-item>
-    <ion-label position="floating">Valor</ion-label>
-    <ion-input name="valor" [(ngModel)]="valor"
-    [brmasker]="{money: true}" type="text"></ion-input>
-  </ion-item>
-<ion-button color="warning" expand="block" (click)="enviarPro()">Enviar Valores</ion-button>
+
+
 </ion-content>
+<ion-footer *ngIf="valor != '0.00'">
+  <ion-item lines="none" class="item1">
+    <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
+    <p>Total</p>
+    <p slot="end">R${{valor}}</p>
+</ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" fill="outline" (click)="desistirOrc()" color="dark">Desistir</ion-button>
+
+
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" (click)="addCarrinho()" color="warning">Fechar Negócio</ion-button>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-footer>

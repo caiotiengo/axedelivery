@@ -1,0 +1,101 @@
+ion-header{
+    --background: linear-gradient(90deg, #24ad5b 0%, #0f883fb3 35%, #fdfdfd 100%);
+    white-space: break-spaces;
+    ion-toolbar, ion-item{
+      --background: linear-gradient(90deg, #24ad5b 0%, #0f883fb3 35%, #fdfdfd 100%);
+      //background:linear-gradient(90deg,rgb(255 193 7) 0%,rgb(255 193 7 / 52%) 35%, rgb(255 193 7 / 18%) 100%);;
+        //padding: 0 10px;
+    }
+    ion-toolbar{
+        .bordered{
+            --border-radius:10px;
+            --box-shadow:5px 5px 10px #d1d1d1, -5px -5px 10px #FFFFFF
+        }
+    }
+    ion-item{
+        h3{
+            font-weight: 700;
+            font-size: 14px;
+        }
+        p{
+            font-weight: 500;
+            font-size: 14px;
+        }
+        ion-avatar{
+           --border-radius:15%;
+           height: 70px;
+           width: 70px;
+        }
+    }
+  }
+  ion-content{
+    --background: #f1f5f8;
+  
+    .menu-loja{
+        ion-segment{
+            height: 50px;
+            --background: #f1f5f8;
+  
+        }
+    }
+    .container{
+          padding: 6px 6px;
+          color:black;
+        ion-list{
+            border-radius: 5px;
+            background: #ffffff63;
+            ion-item{
+                --background:#ffffffab;
+                padding: 0;
+                margin: 14px 0;
+                --border-radius:14px;
+                color: black;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                ion-label{
+                    padding:6px 0;
+                    h4{
+                        font-weight: 600;
+                        font-size:16px
+                    }
+                    h6{
+                        color: #ffffff;
+                        background: #32d36f;
+                        border-radius: 5px;
+                        padding: 2px 2px 3px 2px;
+                        width: 60%;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+  
+    }
+  
+    ion-select{
+        background: #ffffff;
+        border-radius: 5px;
+        padding: 12px;  
+    }
+  }
+  ion-searchbar{
+    padding: 0 0 0 5px;
+  }
+  .filtros{
+    margin-top: 5%;
+    background: rgba(255, 255, 255, 0.39);
+  }
+  ion-item{
+    ion-label{
+        padding:6px 0;
+        h4{
+            font-weight: 600;
+            font-size:16px
+        }
+        h6{
+            color:lightslategray;
+        }
+    }
+  }

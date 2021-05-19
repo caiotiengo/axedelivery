@@ -44,7 +44,7 @@
    <h6 style="margin: 0; text-align: center;">Próximas a você</h6>
    <ion-slides [options]="slidesOptions">
      <ion-slide *ngFor="let items of lojaperto">
-      <ion-card style="height: 250px;" >
+      <ion-card style="height: 220px;" >
         <ion-card-header>
           <div class="main">
             <img src="{{items.FotoPerfil}}">
@@ -67,6 +67,34 @@
  </div>
 
  <div class="main">
+  <ion-slides [options]="slidesOptions2">
+    <ion-slide>
+     <ion-card (click)="modal()" class="ut-card-2" >
+     
+       <ion-card-content style="top: 60%;
+        margin: -15px;" class="ion-text-left">
+          <ion-card-title  style="font-size: large;margin: 0; color: white;"class="ion-margin-bottom">Produtos</ion-card-title>
+          <ion-card-subtitle style=" bottom: -5px; color: lightgray;">
+            Veja...
+          </ion-card-subtitle>
+        </ion-card-content>
+     </ion-card>
+     
+    </ion-slide>
+    <ion-slide>
+      <ion-card (click)="ervas()"  class="ut-card" >
+    
+        <ion-card-content style="top: 60%;
+        margin: -15px;" class="ion-text-left">
+          <ion-card-title  style="font-size: large;margin: 0;"class="ion-margin-bottom">Ervas</ion-card-title>
+          <ion-card-subtitle style=" bottom: -5px;">
+            Veja...
+          </ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
+      
+     </ion-slide>
+  </ion-slides>
   <ion-button expand="block" color="dark" (click)="listaOrc()">Veja seus Orçamentos</ion-button>
 
  </div>

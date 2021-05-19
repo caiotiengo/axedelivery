@@ -110,6 +110,10 @@ const routes: Routes = [
   {
     path: 'modal-cartao',
     loadChildren: () => import('./modal-cartao/modal-cartao.module').then( m => m.ModalCartaoPageModule)
+  },
+  {
+    path: 'ervas',
+    loadChildren: () => import('./ervas/ervas.module').then( m => m.ErvasPageModule)
   }
 ];
 @NgModule({

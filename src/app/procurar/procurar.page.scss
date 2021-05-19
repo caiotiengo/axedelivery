@@ -1,70 +1,97 @@
-*{
-    font-weight: 300;
+ion-header{
+  --background: linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #f7f3e1 100%);
+  ion-grid{
+    background: linear-gradient(90deg,#ffc107 0%,#ffc10785 35%, #ffc1072e 100%);
   }
-  
-  .background-div1{
-    background: linear-gradient(145deg, #ffcb0254 40%, #ffc409 100%);
-    height: 190px;
+  ion-toolbar, ion-item{
+      --background:linear-gradient(90deg,rgba(255 193 7) 0%,rgba(255 193 7 / 52%) 35%, rgba(255 193 7 / 18%) 100%);
+     // background:linear-gradient(90deg,#ffc107 0%,#ffc10785 35%, #ffc1072e 100%);
+      //padding: 0 10px;
+  }
+  ion-toolbar{
+      .bordered{
+          --border-radius:10px;
+          --box-shadow:5px 5px 10px #d1d1d1, -5px -5px 10px #FFFFFF
+      }
+  }
+  ion-item{
+      h3{
+          font-weight: 700;
+          font-size: 14px;
+      }
+      p{
+          font-weight: 500;
+          font-size: 14px;
+      }
+      ion-avatar{
+          --border-radius:40%
+      }
+  }
+}
+ion-content{
+  --background: #f1f5f8;
+  .ut-card{
+    background-image: url("../../assets/verdeservas.jpg") !important;
+    height: 160px;
+    background-size: cover;
+  }
+  .ut-card-2{
+    background-image: url("../../assets/produtinhos.jpg") !important;
+    height: 160px;
+    background-size: cover;
+  }
+  ion-card{
       width: 100%;
-      border-bottom-left-radius: 50px;
-      border-bottom-right-radius: 50px;
-  
+      padding: 14px;
+      border-radius: 14px;
+      box-shadow: none;
+      background: rgba(255,255,255,.8);
+      .main{
+          width: 60px;
+          height: 60px;
+          border-radius: 50px;
+          background: #FFFFFF;
+          box-shadow: 7px 7px 20px #dbdfe2,
+                  -7px -7px -20px #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img{
+              width: 30px;
+          }
+      }
   }
-  .extra-2{
-    text-align: -webkit-center;
-    //border: 1px solid #dddd;
-    box-shadow: 5px 3px #dddddd57;
-    border-radius: 25px;
-    margin-bottom: 15px;
+  .slides{
+      background:linear-gradient(90deg, #ffc107 0%, #ffc10785 35%, #fef3ce 100%);
+      padding: 4px 10px 20px 10px;
+      border-radius: 0 0 28px 28px;
   }
-  .extra{
-    text-align: center;
-      height: 100%;
-      margin: auto;
-      min-height: 25vh;
-      max-height: 25vh;
-      width: 20vh;
-      margin:15px; 
-      //border: 1px solid #ffc40938;
+
+  .container{
+      //padding: 6px 20px;
+      color:black;
+      ion-item{
+          --background: rgb(255 255 255 / 67%);
+          padding: 0;
+          margin: 14px 0;
+          --border-radius:14px;
+          color: black;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          ion-label{
+              padding:6px 0;
+              h4{
+                  font-weight: 600;
+                  font-size:16px
+              }
+              h6{
+                  color:lightslategray;
+              }
+          }
+      }
   }
-  ion-content{
-    //--background: linear-gradient(rgb(255 255 255 / 92%), rgb(255 255 255)), url('../../assets/Picture1.png') no-repeat no-repeat center;
-  
-  }
-  .nada{
-    position: absolute;
-    color: black;
-    margin-left: 30%;
-    margin-top: 12%;
-    font-weight: bold;
-  }
-  ion-segment-button{
-    //width: auto !important;
-      color: black;
-      font: -webkit-control;
-  }
-  .arrow{
-      color: black;
-      width: 14%;
-      height: 12%;
-      margin-top: 5%;
-      float:left;
-  }
-  .cart-item-valor{
-    position: absolute;
-    right: 100%;
-    top: 33%;
-    width: 50%;
-    font-size: initial;
-    border: 2px solid;
-    border-radius: 25px;
-  }
-  .badge-produtos{
-    border-radius: 25px;
-    padding: 7px;
-    position: absolute;
-    bottom: 65%;
-    right: -5%;
-    z-index: 10;
-    width: 50%;
-  }
+}
+
+

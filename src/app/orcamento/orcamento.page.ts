@@ -21,12 +21,14 @@ export class OrcamentoPage implements OnInit {
   @Input() id ;
   @Input() idLoja ;
   @Input() nome ;
+  @Input() valorDelivery;
   
   loja
   produtos: Array<any> = [];
   produto = '';
   qtd = 1;
   observacao = '';
+  user
   constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,
     public afStore: AngularFirestore,  public services: ServiceService,
@@ -34,6 +36,10 @@ export class OrcamentoPage implements OnInit {
 ) { }
 
   ngOnInit() {
+    console.log(this.valorDelivery)
+    this.storage.get('usuario').then(data =>{
+      this.user = data;
+      console.log(this.user)
     this.services.getProc(this.idLoja).subscribe(res =>{
       this.loja = res;
       console.log(this.loja)
@@ -43,6 +49,8 @@ export class OrcamentoPage implements OnInit {
     this.storage.get('id').then(y =>{
       console.log(y)
     })
+  })
+
   }
   enviar(){
     this.afStore.collection('orcamento').add({
@@ -50,9 +58,11 @@ export class OrcamentoPage implements OnInit {
       valor:0,
       idComprador: this.id,
       idLoja:this.idLoja,
+      numeroComprador: "55"+ String(this.user.ddd) + String(this.user.telefone),
       nomeComprador: this.nome,
       nomeLoja: this.loja.nome,
-      numeroLoja: "55"+ String(this.loja.ddd) + String(this.loja.telefone)
+      numeroLoja: "55"+ String(this.loja.ddd) + String(this.loja.telefone),
+      valorFrete: this.valorDelivery
     }).then(res =>{
       console.log(res.id)
       this.storage.set('idOrcamento', res.id).then(()=>{

@@ -295,7 +295,8 @@ export class ItemPage implements OnInit {
             componentProps: {
               'id': this.idUser,
               'idLoja': this.que,
-              'nome': this.nome
+              'nome': this.nome,
+              'valorDelivery': this.valorDelivery
             }
           });
           await modal.present();

@@ -336,6 +336,13 @@ export class ServiceService {
   deleteUnidade(id:string,item:any){
    this.userCollection.doc<User>(id).update({unidades: firebase.firestore.FieldValue.arrayRemove(item)})  
   }
+  deleteItem(id:string, item:any){
+    this.orcamentoCollection.doc<Orcamento>(id).update({orcamento: firebase.firestore.FieldValue.arrayRemove(item)})  
+
+  }
+  deleteOrc(id:string){
+    this.orcamentoCollection.doc<Orcamento>(id).delete();
+  }
   updateUnidade(id:string, endereco: string, cep:string, bairro:string,complemento:string, numero:any, cidade:string, estado:string, lat:string,lng:string,nome:string,FotoPerfil:string,entrega:string,seNao:string){
     const {uid} = firebase.auth().currentUser;
     var aprovado = 'Sim'
