@@ -186,8 +186,8 @@
     padding-left: 0 !important;
     height: 50px;" [(ngModel)]="pagamento">
       <ion-select-option value="credito">Crédito</ion-select-option>
-      <ion-select-option value="debito">Débito Presencial</ion-select-option>
-      <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
+      <ion-select-option *ngIf="loja?.optEntregas === 'Não'" value="debito">Débito Presencial</ion-select-option>
+      <ion-select-option *ngIf="loja?.optEntregas === 'Não'" value="dinheiro">Dinheiro</ion-select-option>
 
     </ion-select>
   </ion-item>

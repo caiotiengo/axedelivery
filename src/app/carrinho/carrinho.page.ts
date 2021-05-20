@@ -105,6 +105,8 @@ export class CarrinhoPage implements OnInit {
     cuponNome
     cuponzada
     payID
+    percentageUP
+    valorTotalPrd
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -119,34 +121,47 @@ export class CarrinhoPage implements OnInit {
                   console.log(this.uid)            
                   this.cuponNome = 'Sem cupom'                  
                 })
-     this.storage.get('valorFrete').then((data) => {
-      this.valorDelivery =  data;
-      var y = this.valorDelivery.replace('.','') 
-      this.valorFrete = Number(y)
-      console.log(this.valorFrete);
-    });
 
-    this.storage.get('carrinhoUser').then((data) => {
-      this.carrinho =  JSON.parse(data);
-      this.carrinho.forEach(element => {
-        this.carrinhoDes.push(element)
-        var y = this.carrinhoDes.map(i => i.valor);
-        var result = y.reduce((acc, val) => acc += val);
-        console.log(result);
-        var resposta = Number(result) + Number(this.valorDelivery);
-        this.valor = Number(resposta.toFixed(2))
-        console.log(this.valor)
-        this.services.getProc(this.carrinhoDes[0].lojaUID).subscribe(res =>{
-          this.loja = res
-          console.log(this.loja)
-        })
-      });
-      console.log(this.carrinhoDes);
-    });
-    this.storage.get('valorFinal').then(data =>{
-      this.valor = data;
-      console.log(this.valor)
-    })
+                this.storage.get('carrinhoUser').then((data) => {
+                  this.carrinho =  JSON.parse(data);
+                  this.carrinho.forEach(element => {
+                    this.carrinhoDes.push(element)
+                    var y = this.carrinhoDes.map(i => i.valor);
+                    var result = y.reduce((acc, val) => acc += val);
+                    console.log(result);
+                    var resposta = Number(result) + Number(this.valorDelivery);
+                    this.valor = Number(resposta.toFixed(2))
+                    console.log(this.valor)
+                    this.services.getProc(this.carrinhoDes[0].lojaUID).subscribe(res =>{
+                      this.loja = res
+                      console.log(this.loja)
+
+                      this.storage.get('valorProdutos').then(data =>{
+                        this.valor = data;
+                        var x = this.valor.replace('.','')
+                        console.log(x)
+                        this.valorTotalPrd = Number(x)
+                        console.log(this.valorTotalPrd)
+                        var per = Number(this.loja.porcentagemAxe) / 100 * this.valor;
+                        this.percentageUP = String(per).replace('.','')
+                        console.log(this.percentageUP)
+                        console.log(this.valor)
+                        
+                      })
+                      this.storage.get('valorFrete').then((data) => {
+                        this.valorDelivery =  data.toFixed(2);
+                        console.log(this.valorDelivery)
+                        var y = this.valorDelivery.replace('.','')
+                        this.valorFrete = Number(y) + Number(this.percentageUP)
+                        console.log(this.valorFrete);
+                      });
+                    })
+
+                  });
+                  console.log(this.carrinhoDes);
+                });
+                
+
      
     
 
@@ -331,19 +346,16 @@ export class CarrinhoPage implements OnInit {
   
   }
 
-   async presentLoading() {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Aguarde...',
-      duration: 5000
-    });
-    await loading.present();
+  
+async teste(){
 
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
-  }
-teste(){
-  this.presentLoading() 
+  const loading = await this.loadingController.create({
+    cssClass: 'my-custom-class',
+    message: 'Aguarde...',
+    duration:6000
+  });
+  await loading.present();
+
   //let birthdate = this.DOB
   //var x = format(new Date(birthdate), "yyyy-MM-dd");
   let birthdateCard = this.dataNCartao
@@ -404,7 +416,7 @@ teste(){
                 type: "PRIMARY",
                 feePayor: true,
                 amount: {
-                  percentual: Number(this.loja.porcentagemAxe)
+                  fixed: Number(this.valorFrete)
                   }
               },
               {
@@ -414,7 +426,7 @@ teste(){
                 type: "SECONDARY",
                 feePayor: false,
                 amount: {
-                  percentual: Number(this.loja.porcentagemLoja)
+                  fixed: Number(this.valorTotalPrd)
                   }
               }
             ]
@@ -441,10 +453,12 @@ teste(){
                     }
                 }
             }
-        }).then((response) => {
+        }).then( (response) => {
           this.payID = response.body.id
+
           if(response.body.status === 'AUTHORIZED'){
               console.log(response.body.id)
+
               const user = firebase.auth().currentUser;
             if (user) {
               this.mainuser = this.afStore.doc(`users/${user.uid}`);
@@ -513,6 +527,7 @@ teste(){
                 });
               });
           }else if(response.body.status === 'IN_ANALYSIS'){
+
             this.showalert('Opa!', 'Seu pagamento está em análise, assim que for autorizado vamos liberar o produto para você!')
             this.sub = this.storage.get('usuario').then(event => {
               this.nome = event.nome;
@@ -642,8 +657,9 @@ teste(){
           }else {
             this.showalert('Ops...', 'Houve algum erro no seu pagamento.')
           }
-        }).catch((err) => {
+        }).catch( (err) => {
             console.log(err)
+
             alert("Pagamento não concluido:"+" "+ err)
             this.sub = this.storage.get('usuario').then(event => {
               this.nome = event.nome;
@@ -708,7 +724,8 @@ teste(){
             });
 
         })
-        }).catch((err) => {
+        }).catch( (err) => {
+
             console.log(err)
             alert("Pagamento não concluido:"+" "+ err)
             this.sub = this.storage.get('usuario').then(event => {

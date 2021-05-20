@@ -653,7 +653,7 @@ export class ItemPage implements OnInit {
         this.valores = this.produtos.map(res => res.valor);
         this.valorCompra = this.valores.reduce((acc, val) => acc += val);
         
-        if(this.valorCompra > 15.00){
+        if(this.valorCompra > 1.00){
           const date = new Date();
           date.setMonth(date.getMonth() + 1);
           const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
@@ -664,6 +664,7 @@ export class ItemPage implements OnInit {
           console.log(valorTudo.toFixed(2))
           this.storage.set('loja', this.loja);
           this.storage.set('valorFinal', valorTudo.toFixed(2));
+          this.storage.set('valorProdutos', this.visu.toFixed(2));
           this.storage.set('valorFrete', this.valorDelivery)
           this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
               this.navCtrl.navigateForward('/carrinho');

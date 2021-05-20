@@ -32,7 +32,7 @@ export class ListaOrcamentoPage implements OnInit {
     this.storage.get('id').then(data =>{
       this.userId = data
       this.services.getOrcamentos().subscribe(data =>{
-        this.listaOrcamento = data //.filter(i => i.idComprador === this.userId);
+        this.listaOrcamento = data.filter(i => i.idComprador === this.userId);
         console.log(this.listaOrcamento)
       })
     })

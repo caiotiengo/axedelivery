@@ -38,8 +38,12 @@ export class ModalOrcamentoPage implements OnInit {
       this.services.getProc(this.orcamento.idLoja).subscribe(res =>{
         this.loja = res
       })
-      var valor = this.orcamento.orcamento.map(i => i.valor  * i.qtdRes).reduce((a, b) =>   a + b, 0 )
+      var valor = this.orcamento.orcamento.map(i => i.valor * i.qtdRes).reduce((a, b) =>   a + b, 0 )
+      console.log(valor)
       this.valor = Number(valor.toFixed(2)) + Number(this.orcamento.valorFrete)
+      if(String(valor) === 'NaN'){
+        this.valor = '0.00'
+      }
       console.log(this.valor)
       console.log(this.id)
       

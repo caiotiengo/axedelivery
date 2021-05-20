@@ -38,7 +38,6 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.statusBar.overlaysWebView(true);
-      this.statusBar.backgroundColorByHexString('#33000000');
       this.iniciarPush();
     });
   }
