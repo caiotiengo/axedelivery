@@ -184,6 +184,8 @@ async ionViewDidEnter() {
      
           this.storage.get('lojas').then(async data =>{
             let Onlines = data.filter(i => i.estado === this.estado)
+            this.lojaperto = []
+
             console.log(Onlines)
             if(Onlines.length > 0){
 

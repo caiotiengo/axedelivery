@@ -342,14 +342,14 @@ export class UserPage implements OnInit {
     console.log(JSON.stringify(item))
     
     this.newCadastro.value.enderecoNew = String(item.terms[0].value)
-    this.newCadastro.value.bairroNew = String(item.terms[1].value)
-    this.newCadastro.value.cidadeNew = String(item.terms[2].value)
-    this.newCadastro.value.estadoNew = String(item.terms[3].value)
+    //this.newCadastro.value.bairroNew = String(item.terms[1].value)
+    //this.newCadastro.value.cidadeNew = String(item.terms[2].value)
+    //this.newCadastro.value.estadoNew = String(item.terms[3].value)
 
     this.enderecoNew = String(item.terms[0].value)
-    this.bairroNew = String(item.terms[1].value)
-    this.cidadeNew = String(item.terms[2].value)
-    this.estadoNew = String(item.terms[3].value)
+    //this.bairroNew = String(item.terms[1].value)
+    //this.cidadeNew = String(item.terms[2].value)
+    //this.estadoNew = String(item.terms[3].value)
 
     console.log(this.newCadastro.value.bairroNew)
     console.log(this.newCadastro.value.cidadeNew)

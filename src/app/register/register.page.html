@@ -20,9 +20,7 @@
 	<ion-fab-button color="dark" (click)="segundoPasso()"  [hidden]="terceiraDiv">
 	  <ion-icon  name="arrow-back-outline"></ion-icon> 2
 	</ion-fab-button>
-	<ion-fab-button color="dark" (click)="terceiroPasso()"  [hidden]="quartaDiv">
-	  <ion-icon  name="arrow-back-outline"></ion-icon> 3
-	</ion-fab-button>
+
   </ion-fab>
   <ion-content>
 	<div [hidden]="started" class="header-page">
@@ -64,7 +62,7 @@
 	  </div>
 	  <div class="input-div">
 		<label for="nome" class="cpf">CPF</label>
-		<input  maxlength="40" [brmasker]="{person: true}" [(ngModel)]="CPF"  placeholder="Preencha aqui o CPF do responsável..." class="emailInput">
+		<input  maxlength="40" [brmasker]="{person: true}" [(ngModel)]="CPF"  placeholder="Preencha aqui o seu CPF..." class="emailInput">
 		<label *ngIf="CPF === undefined || CPF === ''" class="required">* CPF é obrigatório </label>
 	  </div>
   
@@ -81,15 +79,15 @@
 		<ion-row>
 		  <ion-col>
 			<div class="input-div">
-			  <label for="ddd" class="ddd">DDD</label>
-			  <input type="text" [(ngModel)]="ddd" mask="00" maxlength="2"  placeholder="Digite aqui o ddd da loja..." class="senhaInput">
+			  <label for="ddd" class="ddd">DDD (Número)</label>
+			  <input type="text" [(ngModel)]="ddd" mask="00" maxlength="2"  placeholder="Digite aqui o seu ddd..." class="senhaInput">
 			  <label *ngIf="ddd === undefined || ddd === ''" class="required">* DDD é obrigatório </label>
 			</div>
 		  </ion-col>
 		  <ion-col>
 			<div class="input-div">
 			  <label for="telefone" class="telefone">Whatsapp/Telefone</label>
-			  <input type="text" [(ngModel)]="telefone" mask="00000-0000"  placeholder="Digite aqui o telefone da loja..." class="senhaInput">
+			  <input type="text" [(ngModel)]="telefone" mask="00000-0000"  placeholder="Digite aqui o seu telefone ..." class="senhaInput">
 			  <label *ngIf="telefone === undefined || telefone === ''" class="required">* Telefone é obrigatório </label>
 			</div>
 		  </ion-col>
@@ -166,8 +164,10 @@
 	</div>
 	<div [hidden]="quartaDiv" class="quarta-div">
 	  <div class="header-quarta">
-		<h4>
-		  Finalizado! Antes de continuar, habilite as notificações!
+		<h4 style="font-size: 15px;
+		text-align: center;
+		margin-bottom: 10%;">
+		  Finalizado! Antes de continuar, clique em "Habilitar notificações"!
 		</h4>
 	  </div>
 	  <ion-button expand="block" (click)="habilitar()">Habilitar notificações</ion-button>
@@ -183,7 +183,7 @@
 
   </ion-content>
   <ion-footer class="ion-no-border">
-  <ion-button expand="block" fill="outline" color="success"> 
+  <ion-button href="https://wa.me/5521997955586" expand="block" fill="outline" color="success"> 
 	<ion-icon name="logo-whatsapp"></ion-icon>
 	Dúvidas? Clique aqui!     
   </ion-button>

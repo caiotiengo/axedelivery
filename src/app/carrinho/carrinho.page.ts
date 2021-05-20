@@ -107,6 +107,8 @@ export class CarrinhoPage implements OnInit {
     payID
     percentageUP
     valorTotalPrd
+    valorR
+    valorDeliveryOpt
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -137,23 +139,30 @@ export class CarrinhoPage implements OnInit {
                       console.log(this.loja)
 
                       this.storage.get('valorProdutos').then(data =>{
-                        this.valor = data;
-                        var x = this.valor.replace('.','')
+                        this.valorR = data;
+                        console.log(this.valorR + ' Valor dos produtos')
+                        var x = this.valorR.replace('.','')
                         console.log(x)
-                        this.valorTotalPrd = Number(x)
+                        var per = Number(this.loja.porcentagemAxe) / 100 * Number(x);
+                        console.log(per)
+                        this.percentageUP = String(Math.round(per)).replace('.','')
+                        this.valorTotalPrd = Number(x) - Number(this.percentageUP)
                         console.log(this.valorTotalPrd)
-                        var per = Number(this.loja.porcentagemAxe) / 100 * this.valor;
-                        this.percentageUP = String(per).replace('.','')
                         console.log(this.percentageUP)
-                        console.log(this.valor)
                         
                       })
                       this.storage.get('valorFrete').then((data) => {
                         this.valorDelivery =  data.toFixed(2);
                         console.log(this.valorDelivery)
+                        console.log(this.valorR)
+                        var r = Number(this.valorR) + Number(this.valorDelivery)
+                        this.valor = r
+                        console.log(this.valor.toFixed(2))
                         var y = this.valorDelivery.replace('.','')
                         this.valorFrete = Number(y) + Number(this.percentageUP)
                         console.log(this.valorFrete);
+                        this.valorDeliveryOpt = this.valorDelivery.replace('.','')
+                        console.log(this.valorDeliveryOpt)
                       });
                     })
 
@@ -346,8 +355,29 @@ export class CarrinhoPage implements OnInit {
   
   }
 
+
+  pagamentoCredito(){
+    if(this.loja.optEntregas === 'Sim'){
+      this.teste()
+    }else{
+      this.teste2()
+    }
+  }
   
+  async presenting(){
+
+  const loading = await this.loadingController.create({
+    cssClass: 'my-custom-class',
+    message: 'Aguarde...',
+    duration: 10000
+  });
+  await loading.present();
+  const { role, data } = await loading.onDidDismiss();
+  console.log('Loading dismissed!');
+}
 async teste(){
+  this.presenting()
+  console.log('Com entregas')
 
   const loading = await this.loadingController.create({
     cssClass: 'my-custom-class',
@@ -355,6 +385,7 @@ async teste(){
     duration:6000
   });
   await loading.present();
+  await loading.dismiss();
 
   //let birthdate = this.DOB
   //var x = format(new Date(birthdate), "yyyy-MM-dd");
@@ -797,7 +828,449 @@ async teste(){
 
 }
 
+async teste2(){
+  this.presenting()
+  console.log('Sem entregas')
+  //let birthdate = this.DOB
+  //var x = format(new Date(birthdate), "yyyy-MM-dd");
+  let birthdateCard = this.dataNCartao
+  var b = format(new Date(birthdateCard),"yyyy-MM-dd")
 
+  MoipCreditCard
+    .setEncrypter(jsencrypt, 'ionic')
+    .setPubKey(this.pubKey)
+    .setCreditCard({
+        number: this.numeroCard, //'4012001037141112',
+        cvc: this.CVV, //'123',
+        expirationMonth: this.mesValidade ,//'05',
+        expirationYear: this.anoValidade//'22'
+    })
+    .hash()
+    .then(hash => {
+      console.log('hash', hash)
+      this.hash = hash;
+        this.moip.order.create({
+            ownId: this.cpfCartao,
+            amount: {
+                currency: 'BRL',
+                subtotals: {
+                    shipping: Number(this.valorDeliveryOpt)
+                }
+            },
+            items: this.carrinhoDes,
+            customer: {
+                ownId: this.cpfCartao,
+                fullname: this.nomeCartao,
+                email: this.email,
+                birthDate: b,
+                taxDocument: {
+                    type: 'CPF',
+                    number: this.cpfCartao
+                },
+                phone: {
+                    countryCode: '55',
+                    areaCode: this.ddd,
+                    number: this.telefone
+                },
+                shippingAddress: {
+                    street: this.endereco,
+                    streetNumber: this.numeroEND,
+                    complement: this.complemento,
+                    district: this.bairro,
+                    city: this.cidade,
+                    state: this.estado,
+                    country: 'BRA',
+                    zipCode: this.CEP
+                },
+            },
+            receivers: [
+              {
+                moipAccount: {
+                    id: "MPA-888C5307676A"
+                },
+                type: "PRIMARY",
+                feePayor: true,
+                amount: {
+                  percentual: Number(this.loja.porcentagemAxe)
+                  }
+              },
+              {
+                moipAccount: {
+                    id: this.loja.idmoip
+                },
+                type: "SECONDARY",
+                feePayor: false,
+                amount: {
+                  percentual: Number(this.loja.porcentagemLoja)
+                  }
+              }
+            ]
+        }).then((response) => {
+            console.log(response.body)
+            this.moip.payment.create(response.body.id, {
+            installmentCount: Number(this.parcelamento),
+            fundingInstrument: {
+                method: 'CREDIT_CARD',
+                creditCard: {
+                    hash: this.hash,
+                    holder: {
+                        fullname: this.nomeCartao,
+                        birthdate: b,
+                        taxDocument: {
+                            type: 'CPF',
+                            number: this.cpfCartao
+                        },
+                        phone: {
+                            countryCode: '55',
+                            areaCode: this.dddCartao,
+                            number: this.telefoneCartao
+                        }
+                    }
+                }
+            }
+        }).then( (response) => {
+          this.payID = response.body.id
+
+          if(response.body.status === 'AUTHORIZED'){
+              console.log(response.body.id)
+
+              const user = firebase.auth().currentUser;
+            if (user) {
+              this.mainuser = this.afStore.doc(`users/${user.uid}`);
+              console.log(user);
+            } else {}
+               this.showalert('Obrigado pela compra!', 'A loja foi informada e você' +
+                    ' pode acompanhar o seu pedido pela aba "Seus Pedidos"')
+                this.sub = this.storage.get('usuario').then(event => {
+                this.nome = event.nome;
+                this.endereco = event.endereco;
+                this.cidade = event.cidade;
+                this.email = event.email;
+                this.bairro = event.bairro;
+                this.telefone = event.telefone;
+                this.zona = event.zona;
+                this.like = event.LikeValue;
+                this.disklike = event.DislikeValue;
+
+                const date = new Date();
+                date.setMonth(date.getMonth() + 1);
+                const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+                console.log(dia);
+                const mes = date.getMonth();
+                this.valores = this.carrinho.map(res => res.valor);
+                this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+                this.storage.get('carrinhoUser').then((data) => {
+                  this.produtos =  JSON.parse(data);
+                  
+                  
+                  console.log(this.produtos);
+                  var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                  console.log(seq);
+                  this.services.updateCupom(this.uid, this.cuponNome)
+
+                  this.afStore.collection('vendas').add({
+                    nPedido:Number(seq),
+                    valorFrete: this.valorDelivery,
+                    nomeComprador: this.nome,
+                    bairroEnt: this.bairro,
+                    entregador:"Não Solicitado",
+                    endereco: this.endereco + ', '+ this.numeroEND +', ' + this.complemento +', '+ this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                    nomeLoja: this.loja.nome,
+                    valor: Number(this.valor),
+                    enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                    dia,
+                    mes,
+                    produtos: this.produtos,
+                    emailComprador: this.email,
+                    lojaUID: this.produtos[0].lojaUID,
+                    emailLoja: this.loja.email,
+                    statusPag: 'Aprovado',
+                    statusEnt: 'Loja informada',
+                    telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                    telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
+                    CPFComprador: this.userCPF,
+                    idPagamento: response.body.id,
+                    compradorUID: this.uid,
+                    cupom: this.cuponNome
+                  }).then(() => {
+                    this.storage.remove('carrinhoUser').then(() => {
+                      this.navCtrl.navigateRoot('/status');
+                    });        
+                  });
+                });
+              });
+          }else if(response.body.status === 'IN_ANALYSIS'){
+
+            this.showalert('Opa!', 'Seu pagamento está em análise, assim que for autorizado vamos liberar o produto para você!')
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  valorFrete: this.valorDelivery,
+                  nomeComprador: this.nome,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.loja.email,
+                  statusPag: 'Em análise',
+                  statusEnt: 'Loja informada',
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: response.body.id,
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+          }else if(response.body.status === 'CANCELLED'){
+            this.showalert('Opa!', 'Seu pagamento foi cancelado por algum motivo, entre em contato com o seu banco!')
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  valorFrete: this.valorDelivery,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.loja.email,
+                  statusPag: 'Cancelado pelo banco',
+                  statusEnt: 'Cancelado',
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: response.body.id,
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+          }else {
+            this.showalert('Ops...', 'Houve algum erro no seu pagamento.')
+          }
+        }).catch( (err) => {
+            console.log(err)
+
+            alert("Pagamento não concluido:"+" "+ err)
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  valorFrete: this.valorDelivery,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.loja.email,
+                  statusPag:"Problema com pagamento " + err,
+                  statusEnt: 'Loja informada',
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: response.body.id,
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+
+        })
+        }).catch( (err) => {
+
+            console.log(err)
+            alert("Pagamento não concluido:"+" "+ err)
+            this.sub = this.storage.get('usuario').then(event => {
+              this.nome = event.nome;
+              this.endereco = event.endereco;
+              this.cidade = event.cidade;
+              this.email = event.email;
+              this.bairro = event.bairro;
+              this.telefone = event.telefone;
+              this.zona = event.zona;
+              this.like = event.LikeValue;
+              this.disklike = event.DislikeValue;
+
+              const date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
+              console.log(dia);
+              const mes = date.getMonth();
+              this.valores = this.carrinho.map(res => res.valor);
+              this.valorCompra = this.valores.reduce((acc, val) => acc += val, 0);
+
+
+              this.storage.get('carrinhoUser').then((data) => {
+                this.produtos =  JSON.parse(data);
+                
+                
+                console.log(this.produtos);
+                var seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                console.log(seq);
+                this.services.updateCupom(this.uid, this.cuponNome)
+
+                this.afStore.collection('vendas').add({
+                  nPedido:Number(seq),
+                  nomeComprador: this.nome,
+                  valorFrete: this.valorDelivery,
+                  bairroEnt: this.bairro,
+                  entregador:"Não Solicitado",
+                  endereco: this.endereco + ', '+ this.numeroEND + ', ' + this.complemento +', ' + this.bairro + ', ' + this.cidade +' - CEP:' + this.CEP,
+                  nomeLoja: this.loja.nome,
+                  valor: Number(this.valor),
+                  enderecoLoja:this.loja.endereco+ ', '+ this.loja.numeroEND + ', ' + this.loja.complemento + ', ' + this.loja.bairro+ ', ' + this.loja.cidade+' - CEP:'+ this.CEP,
+                  dia,
+                  mes,
+                  produtos: this.produtos,
+                  emailComprador: this.email,
+                  lojaUID: this.produtos[0].lojaUID,
+                  emailLoja: this.loja.email,
+                  statusPag:"Problema com pagamento " + err,
+                  statusEnt: 'Loja informada',
+                  telefoneLoja: '55'+ this.loja.ddd + this.loja.telefone,
+                  telefoneComprador: '55' +this.ddd+ this.telefoneComprador,
+                  CPFComprador: this.userCPF,
+                  idPagamento: this.payID ,
+                  compradorUID: this.uid,
+                  cupom: this.cuponNome
+
+                }).then(() => {
+                  this.storage.remove('carrinhoUser').then(() => {
+                    this.navCtrl.navigateRoot('/status');
+                  });        
+                });
+              });
+            });
+
+        
+        })
+
+  });
+
+}
 
 
 
@@ -1058,6 +1531,17 @@ async teste(){
     console.log(result);
     var z = Number(result) + Number(this.valorDelivery);
     this.valor = z.toFixed(2)
+    var n = result.toFixed(2)
+    this.valorR = String(n)
+    console.log(this.valorR)
+    var res = this.valorR.replace('.','')
+    console.log(res)
+    var per = Number(this.loja.porcentagemAxe) / 100 * Number(res);
+    this.percentageUP = String(Math.round(per)).replace('.','')
+    this.valorTotalPrd = Number(res) - Number(this.percentageUP)
+    console.log(this.valorTotalPrd)
+    console.log(this.percentageUP)
+
   }
   retirarQTD(index:number){
     console.log(index)
@@ -1071,6 +1555,16 @@ async teste(){
     console.log(result);
     var z = Number(result) + Number(this.valorDelivery);
     this.valor = z.toFixed(2)
+    var n = result.toFixed(2)
+    this.valorR = String(n)
+    console.log(this.valorR)
+    var res = this.valorR.replace('.','')
+    console.log(res)
+    var per = Number(this.loja.porcentagemAxe) / 100 * Number(res);
+    this.percentageUP = String(Math.round(per)).replace('.','')
+    this.valorTotalPrd = Number(res) - Number(this.percentageUP)
+    console.log(this.valorTotalPrd)
+    console.log(this.percentageUP)
     if(this.carrinhoDes[index].quantity === 0 ){
       alert('O item será retirado do seu carrinho!')
       this.carrinhoDes.splice(index, 1)

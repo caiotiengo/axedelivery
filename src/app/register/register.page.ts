@@ -240,7 +240,7 @@ async SelectSearchResult(item) {
       //this.map.setCenter(results[0].geometry.location);
     }else{
       this.endereco = ''
-      alert('Preencha novamente o campo endereço!')
+      alert('Verifique a sua conexão ou o seu endereço e preencha novamente!')
       await loading.dismiss();
 
     }
@@ -286,11 +286,13 @@ async registrarUsuario(){
   });
   await loading.present();
   const userid = this.userID
+  var telefone = this.telefone.replace('-','')
+  console.log(telefone)
   this.afStore.doc(`users/${userid}`).set({
      nome: this.nome,
      email: this.email,
      endereco: this.endereco,
-     telefone:  this.telefone,
+     telefone: telefone,
      bairro: this.bairro,
      cidade: this.cidade,
      lat: this.latitudeGoogle,

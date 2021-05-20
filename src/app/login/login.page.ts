@@ -388,11 +388,19 @@ export class LoginPage implements OnInit {
             });
               //this.showalert('Bem-vindo de volta!', 'Vamos macumbar!');
               this.mainuser.valueChanges().subscribe(event => {
-                  console.log(event)
-                  this.storage.set('usuario', event)
 
-                })
-               this.navCtrl.navigateRoot('/list');
+                if(event.tipo === 'Loja'){
+                    this.showalert('Mudou tudo!', 'Parceiro Axé! agora você conta com um app exclusivo seu... Baixe agora o App "Parceiros Axé" para ter acesso a sua loja!')
+                    this.storage.remove('usuario')
+                }else{
+                    this.storage.set('usuario', event).then(() =>{
+                        //this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
+                        this.navCtrl.navigateRoot('/list');
+                         
+                      })
+                            
+                }
+            })
               //console.log(this.userID)
               //this.navCtrl.navigateRoot('/tabs/tab1')
       } else {
@@ -484,12 +492,17 @@ async presentLoading() {
               this.services.updateFCM(this.userID, this.FCM)
 
             }
-            this.storage.set('usuario', event).then(() =>{
-              //this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
-              this.navCtrl.navigateRoot('/list');
-               
-            })
-                  
+            if(event.tipo === 'Loja'){
+                this.showalert('Mudou tudo!', 'Parceiro Axé! agora você conta com um app exclusivo seu... Baixe agora o App "Parceiros Axé" para ter acesso a sua loja!')
+            }else{
+                this.storage.set('usuario', event).then(() =>{
+                    //this.showalert('Bem-vindo de volta!', 'Vamos as compras!?');
+                    this.navCtrl.navigateRoot('/list');
+                     
+                  })
+                        
+            }
+
          })
              
 

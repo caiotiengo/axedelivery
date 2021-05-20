@@ -58,7 +58,7 @@ exports.sendTwilioOrcamentoUpd = functions.firestore.document('orcamento/{mUid}'
 
 exports.sendTwilioVenda = functions.firestore.document('vendas/{mUid}').onCreate(async (event) =>{
     const uid = event.get('idLoja');
-    const numero = event.get('numeroLoja');
+    const numero = event.get('telefoneLoja');
     const accountSid = 'AC70e5f4e0b458628e1fb7c2a14931317f';
     const authToken = '93973210e9958f84ef7bf14be1621a3c';
     const client = require('twilio')(accountSid, authToken);

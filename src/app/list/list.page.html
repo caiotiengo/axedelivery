@@ -44,7 +44,7 @@
    <h6 style="margin: 0; text-align: center;">Próximas a você</h6>
    <ion-slides [options]="slidesOptions">
      <ion-slide *ngFor="let items of lojaperto">
-      <ion-card style="height: 220px;" >
+      <ion-card style="height: 220px;" [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]" >
         <ion-card-header>
           <div class="main">
             <img src="{{items.FotoPerfil}}">

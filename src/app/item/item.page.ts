@@ -653,7 +653,7 @@ export class ItemPage implements OnInit {
         this.valores = this.produtos.map(res => res.valor);
         this.valorCompra = this.valores.reduce((acc, val) => acc += val);
         
-        if(this.valorCompra > 1.00){
+        if(this.valorCompra > 15.00){
           const date = new Date();
           date.setMonth(date.getMonth() + 1);
           const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
