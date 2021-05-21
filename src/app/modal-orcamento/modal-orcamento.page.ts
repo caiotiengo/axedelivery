@@ -10,6 +10,7 @@ import { ModalController } from '@ionic/angular';
 import {AlertController} from '@ionic/angular';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { BrMaskDirective, BrMaskModel } from 'br-mask';
 
 @Component({
   selector: 'app-modal-orcamento',
@@ -25,7 +26,7 @@ export class ModalOrcamentoPage implements OnInit {
   produtos: Array<any> = [];
   loja
   value
-  constructor(public navCtrl: NavController,    private platform: Platform,    public alertCtrl: AlertController,
+  constructor(public navCtrl: NavController,public brMask: BrMaskDirective,    private platform: Platform,    public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,
     public afStore: AngularFirestore,  public services: ServiceService,
     public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
@@ -39,8 +40,21 @@ export class ModalOrcamentoPage implements OnInit {
         this.loja = res
       })
       var valor = this.orcamento.orcamento.map(i => i.valor * i.qtdRes).reduce((a, b) =>   a + b, 0 )
+
       console.log(valor)
-      this.valor = Number(valor.toFixed(2)) + Number(this.orcamento.valorFrete)
+      var x = Number(valor.toFixed(2))
+      //var frete = this.orcamento.valorFrete.replace('.','')
+      //console.log(frete)
+      //console.log(Number(frete))
+      console.log(x)
+      //var valorCompleto = x + Number(frete)
+      //console.log(valorCompleto)
+      if(x){
+        const config: BrMaskModel = new BrMaskModel()
+        config.money = true;
+        this.valor =  this.brMask.writeValueMoney(String(x),config)
+        //this.valorTotal = mapVal
+      }
       if(String(valor) === 'NaN'){
         this.valor = '0.00'
       }
@@ -86,7 +100,14 @@ export class ModalOrcamentoPage implements OnInit {
     console.log(this.produtos)
     var valor = this.produtos.map(i => i.valor * i.quantity).reduce((a, b) =>   a + b, 0 )
     console.log(valor)
-    this.valor = Number(valor.toFixed(2)) + Number(this.orcamento.valorFrete)
+    if(valor){
+      const config: BrMaskModel = new BrMaskModel()
+      config.money = true;
+      var valorVirg =  this.brMask.writeValueMoney(String(valor),config)
+      //this.valorTotal = mapVal
+    }
+    console.log(valorVirg)
+    this.valor = valorVirg.replace(',','.')
     console.log(this.valor)
     console.log(this.id)
     this.finalizarCompra()     
@@ -102,9 +123,9 @@ export class ModalOrcamentoPage implements OnInit {
       console.log(dia);
       console.log(this.orcamento.valorFrete)
       var valorTudo = Number(this.valor)
-      console.log(valorTudo.toFixed(2))
+      console.log(valorTudo)
       this.storage.set('loja', this.loja);
-      this.storage.set('valorFinal', valorTudo);
+      this.storage.set('valorProdutos', this.valor);
       this.storage.set('valorFrete', this.orcamento.valorFrete)
       this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
         this.voltar()

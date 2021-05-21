@@ -12,14 +12,20 @@
     <ion-card *ngFor="let items of listaOrcamento">
       <ion-card-header>
         <h2 style="text-align: center;">{{items.nomeComprador}}</h2>
-        <p  style="text-align: center;" *ngIf="items.valor != 0">R${{items.valor}}</p>
+        <p  style="text-align: center;
+        padding: 10px;
+        background: #30ca30;
+        color: white;
+        border-radius: 5px;
+    " *ngIf="items.valor != 0">Valor do orçamento R${{items.valor}}!</p>
         <p  style="text-align: center;" *ngIf="items.valor === 0">Aguardando retorno</p>
-        <p>Normalmente as lojas levam 30 minutos para responder!</p>
+        <p  *ngIf="items.valor === 0">Normalmente as lojas levam 30 minutos para responder!</p>
       </ion-card-header>
       <ion-card-content>
         <!--ion-button color="warning" expand="block" (click)="chat(items)">Chat</ion-button-->
 
-        <ion-button color="light" expand="block"  (click)="modal(items.id)">Mais informações</ion-button>
+        <ion-button  *ngIf="items.valor === 0" color="light" expand="block"  (click)="modal(items.id)">Mais informações</ion-button>
+        <ion-button  *ngIf="items.valor != 0" color="light" expand="block"  (click)="modal(items.id)">Veja mais</ion-button>
 
       </ion-card-content>
     </ion-card>
