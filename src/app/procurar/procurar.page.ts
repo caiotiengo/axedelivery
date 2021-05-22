@@ -464,20 +464,17 @@ export class ProcurarPage {
               };
               
               
-             let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-            // console.log("A distancia entre as lojas é de:" + Number(kilometers));
-             
-             this.valorFrete = Math.floor(1.20)*Number(kilometers) + 5;
-             if(this.valorFrete > 30.00){
-              // console.log('maior')
-               var y = 35.00
-               this.valorDelivery = y.toFixed(2)
-
-             }else{
-              // console.log('menor')
-               this.valorDelivery = this.valorFrete.toFixed(2)
-
-             }
+              let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+              console.log("A distancia entre as lojas é de:" + Number(kilometers));
+                console.log(Number(kilometers))
+                let moto = Number(kilometers) 
+                console.log(moto)
+                this.valorFrete = Math.floor(1.70) * moto + 23.50;
+                this.valorDelivery = this.valorFrete.toFixed(2)
+                if(moto <= 6.0){
+                  this.valorDelivery = 20.00
+                }
+              
     this.valores = this.produtos.map(res => res.valor);
     this.valorCompra = this.valores.reduce((acc, val) => acc += val);
     if(this.valorCompra > 15.00){
@@ -490,12 +487,14 @@ export class ProcurarPage {
       var valorTudo = Number(this.visu.toFixed(2)) + Number(this.valorDelivery)
       console.log(valorTudo.toFixed(2))
       this.storage.set('loja', this.loja);
-      //this.storage.set('valorFinal', valorTudo.toFixed(2));
+      this.storage.set('valorFinal', valorTudo.toFixed(2));
+      this.storage.set('valorProdutos', this.visu.toFixed(2));
       this.storage.set('valorFrete', this.valorDelivery)
+      this.storage.set('orcamento','naoOrcamento')
       this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
-              this.navCtrl.navigateForward('/carrinho');
-              console.log(res)
-          });
+          this.navCtrl.navigateForward('/carrinho');
+          console.log(res)
+      });
     }else{
       alert('O valor mínimo em produtos é de R$15,00')
     }

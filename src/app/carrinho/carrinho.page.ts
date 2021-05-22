@@ -109,6 +109,7 @@ export class CarrinhoPage implements OnInit {
     valorTotalPrd
     valorR
     valorDeliveryOpt
+    orcamento
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -123,7 +124,10 @@ export class CarrinhoPage implements OnInit {
                   console.log(this.uid)            
                   this.cuponNome = 'Sem cupom'                  
                 })
-
+                this.storage.get('orcamento').then(da =>{
+                  this.orcamento = da;
+                  console.log(this.orcamento)
+                })
                 this.storage.get('carrinhoUser').then((data) => {
                   this.carrinho =  JSON.parse(data);
                   this.carrinho.forEach(element => {
@@ -156,8 +160,8 @@ export class CarrinhoPage implements OnInit {
                         console.log(this.valorDelivery + 'valor delivery puro to fixed')
                         console.log(this.valorR)
                         var r = Number(this.valorR) + Number(this.valorDelivery)
-                        this.valor = r
-                        console.log(this.valor.toFixed(2))
+                        this.valor = r.toFixed(2)
+                        console.log(this.valor)
                         var y = this.valorDelivery.replace('.','')
                         this.valorFrete = Number(y) + Number(this.percentageUP)
                         console.log(this.valorFrete);

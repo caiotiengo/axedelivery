@@ -27,7 +27,7 @@
                   <h4>
                    {{items.quantity}} {{items.nome}} 
                   </h4>
-                  <p>R${{items.valor}} cada!</p>
+                  <p>R${{items.valorHTML}} cada!</p>
                   <h6>
                    {{items.obs}} 
                   </h6>
@@ -66,9 +66,11 @@
 
 </ion-content>
 <ion-footer *ngIf="valor != '0.00'">
+  <ion-label style="font-size: small;
+  color: red;">  Valor do frete ainda será incluido: R$ {{orcamento.valorFrete}}</ion-label>
   <ion-item lines="none" class="item1">
     <ion-icon slot="start" style="color: green" name="cash"></ion-icon>
-    <p>Total</p>
+    <p>Total em produtos</p>
     <p slot="end">R${{valor}}</p>
 </ion-item>
   <ion-grid>

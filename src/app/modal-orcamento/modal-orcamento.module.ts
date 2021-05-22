@@ -8,14 +8,17 @@ import { ModalOrcamentoPageRoutingModule } from './modal-orcamento-routing.modul
 
 import { ModalOrcamentoPage } from './modal-orcamento.page';
 import { BrMaskerModule } from 'br-mask';
-
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     BrMaskerModule,
-    ModalOrcamentoPageRoutingModule
+    ModalOrcamentoPageRoutingModule,
+    NgxMaskModule.forRoot()
+
   ],
   declarations: [ModalOrcamentoPage]
 })

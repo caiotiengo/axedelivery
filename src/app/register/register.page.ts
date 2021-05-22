@@ -309,6 +309,8 @@ async registrarUsuario(){
        this.quartoPasso()
      }).catch(async (e) =>{
       console.dir(e)
+      await loading.dismiss()
+
       var erro = this.errosFirebase.filter(i => i.code === e.code)
       console.log(erro[0].message)
       if(erro.length > 0){
@@ -410,7 +412,10 @@ async registrarUsuario(){
       this.navCtrl.navigateRoot('/list')
     })
   }
+  naoQuero(){
+    this.aprovado = false;
 
+  }
   habilitar(){
     this.aprovado = false;
     const options: PushOptions = {
@@ -445,39 +450,60 @@ async registrarUsuario(){
 
 
 checklistUsuario(){
-    if(this.email !='' || this.email != undefined){
-      if(this.password !='' || this.password != undefined){
-        if(this.nome !='' || this.nome != undefined){
+    if(this.email !='' && this.email != undefined){
+      if(this.password !='' && this.password != undefined){
+        if(this.nome !='' && this.nome != undefined){
           console.log('ok nome')
-          if(this.CPF !='' || this.CPF != undefined){
+          if(this.CPF !='' && this.CPF != undefined){
             console.log('ok cpf')
-            if(this.endereco !='' || this.endereco != undefined){
+            if(this.endereco !='' && this.endereco != undefined){
               console.log('ok end')
-              if(this.numeroEND != null || this.numeroEND != undefined){
+              if(this.numeroEND != null && this.numeroEND != undefined){
                 console.log('ok num')
-                if(this.CEP !='' ||this.CEP != undefined){
+                if(this.CEP !='' && this.CEP != undefined){
                   console.log('ok Cep')
-                  if(this.complemento !='' || this.complemento != undefined){
+                  if(this.complemento !='' && this.complemento != undefined){
                     console.log('ok com')
-                    if(this.bairro !='' || this.bairro != undefined){
+                    if(this.bairro !='' && this.bairro != undefined){
                       console.log('ok bairro')
-                      if(this.cidade !='' || this.cidade != undefined){
-                        console.log('ok cid')
-                        if(this.ddd !='' || this.ddd != undefined){
-                          console.log('ok ddd')
-                          if(this.telefone !='' || this.telefone != undefined){
-                            console.log('ok Tel')
-                            this.registrarUsuario()
+                      if(this.estado  !='' && this.estado != undefined){
+                        console.log('ok est')
+
+                        if(this.cidade !='' && this.cidade != undefined){
+                          console.log('ok cid')
+                          if(this.ddd !='' && this.ddd != undefined){
+                            console.log('ok ddd')
+                            if(this.telefone !='' && this.telefone != undefined){
+                              console.log('ok Tel')
+                              if(this.latitudeGoogle !='' && this.latitudeGoogle != undefined){
+                                console.log('ok Lat')
+                                console.log(this.latitudeGoogle)
+                                if(this.longitudeGoogle !='' &&  this.longitudeGoogle != undefined){
+                                  console.log('ok lon')
+                                  console.log(this.latitudeGoogle)
+  
+                                  this.registrarUsuario()
+                                }else{
+                                  alert('Selecione um dos endereços da lista, se o seu endereço não aparece, tente outro.')
+                                } 
+                              }else{
+                                alert('Selecione um dos endereços da lista, se o seu endereço não aparece, tente outro.')
+                              }
+                            }else{
+                              alert('Preencha o campo "Telefone"')
+                            }
                           }else{
-                            alert('Preencha o campo "Telefone"')
+                            alert('Preencha o campo "DDD"')
                           }
+                    
                         }else{
-                          alert('Preencha o campo "DDD"')
+                          alert('Preencha o campo "Cidade"')
                         }
-                  
                       }else{
-                        alert('Preencha o campo "Cidade"')
+                        alert('Preencha o campo "Estado"')
+
                       }
+
                     }else{
                       alert('Preencha o campo "Bairro"')
                     }
@@ -507,5 +533,7 @@ checklistUsuario(){
       alert('Preencha o campo "Email"')
     }
   }
-
+voltar(){
+  this.navCtrl.pop()
+}
 }

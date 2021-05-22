@@ -25,8 +25,9 @@ export class ModalOrcamentoPage implements OnInit {
   valor
   produtos: Array<any> = [];
   loja
+  valorD
   value
-  constructor(public navCtrl: NavController,public brMask: BrMaskDirective,    private platform: Platform,    public alertCtrl: AlertController,
+  constructor(public navCtrl: NavController,public brMask: BrMaskDirective, private router: Router, private platform: Platform,    public alertCtrl: AlertController,
     private route: ActivatedRoute, public storage: Storage,
     public afStore: AngularFirestore,  public services: ServiceService,
     public modalController: ModalController,private geolocation: Geolocation,private _haversineService: HaversineService
@@ -116,7 +117,7 @@ export class ModalOrcamentoPage implements OnInit {
   }
   finalizarCompra() { 
     console.log(this.valor)
-    if(this.valor > 15.00){
+    if(this.valor > 1.00){
       const date = new Date();
       date.setMonth(date.getMonth() + 1);
       const dia = date.getDate() + '/' + date.getMonth()  + '/' + date.getFullYear();
@@ -127,6 +128,7 @@ export class ModalOrcamentoPage implements OnInit {
       this.storage.set('loja', this.loja);
       this.storage.set('valorProdutos', this.valor);
       this.storage.set('valorFrete', this.orcamento.valorFrete)
+      this.storage.set('orcamento','orcamento')
       this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
         this.voltar()
           this.navCtrl.navigateForward('/carrinho');
@@ -134,13 +136,14 @@ export class ModalOrcamentoPage implements OnInit {
       });
 
     }else{
-      alert('O valor mínimo em produtos é de R$15,00')
+      alert('Erro, valor não ultrapassa o minimo de R$1.00')
     }
     
 }
 desistirOrc(){
   this.services.deleteOrc(this.id)
   alert('Orçamento excluido! :(')
+  this.voltar()
 }
   voltar(){
      // using the injected ModalController this page

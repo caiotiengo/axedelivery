@@ -132,16 +132,20 @@ export class RootPage implements OnInit {
       cssClass: 'my-custom-class',
       message: 'Afinando os atabaques...',
     });
-    this.storage.get('lojas').then(async (data) => {
+    
+      this.services.getUsers().subscribe(async (data) => {
 
-      this.goalList = data;
-      this.storage.remove('carrinhoUser')
-      this.loadedGoalList = data;
-      this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
-      this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
-      await loading.dismiss();
+        this.goalList = data;
+        this.storage.remove('carrinhoUser')
+        this.loadedGoalList = data;
+        this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+        this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+        await loading.dismiss();
+  
+      })  
+   
+    
 
-    })  
 
   }
   perfilPage() {
@@ -159,7 +163,7 @@ this.storage.get('usuario').then(event =>{
 clique(){
   if(this.Platform.is("ios")){
     console.log('ios')
-    window.location.href = 'https://apps.apple.com/us/app/id1528911749'
+    window.location.href = 'https://apps.apple.com/us/app/ax%C3%A9-delivery/id1528911749'
   }else{
     window.location.href = 'https://play.google.com/store/apps/details?id=io.ionic.axeDelivery'
   }

@@ -171,11 +171,12 @@
 		</h4>
 	  </div>
 	  <ion-button expand="block" (click)="habilitar()">Habilitar notificações</ion-button>
-	  <ion-button color="white" expand="block"  fill="clear" style="text-align:center; color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
-		  <ion-item>
+	  <ion-button (click)="naoQuero()" fill="clear" style="text-align:center; color:black;" expand="block">Não quero habilitar agora</ion-button>
+		  <ion-item lines="none">
 			  <ion-label>Confirmo que li e concordo com os termos.</ion-label>
 			  <ion-checkbox [(ngModel)]="check"></ion-checkbox>
 		  </ion-item>
+		  <ion-button color="white" expand="block"  fill="clear" style="text-align:center; color:black;"(click)="politica()">Politica de Privacidade</ion-button> 
 		  
 	  <ion-button expand="block" (click)="finalizar()" [hidden]="aprovado" color="warning">Finalizar Cadastro</ion-button>
   

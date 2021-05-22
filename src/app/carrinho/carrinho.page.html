@@ -165,11 +165,11 @@
         <p *ngIf="items.especi !=' ' "><b>Tipo:</b> {{items.especi}}</p>
         <p><b>Quantidade:</b> {{items.quantity}}</p>
       </ion-label>
-      <ion-button *ngIf="items.quantity !== 0" color="warning" style="margin-right: 5%;" (click)="retirarQTD(i)">
+      <ion-button *ngIf="orcamento !== 'orcamento' && items.quantity !== 0 " color="warning" style="margin-right: 5%;" (click)="retirarQTD(i)">
         <ion-icon name="remove-outline"></ion-icon>
       </ion-button>
       {{items.quantity}}
-      <ion-button style="margin-left: 5%;" color="warning" (click)="adicionarQTD(i)">
+      <ion-button *ngIf="orcamento !== 'orcamento'" style="margin-left: 5%;" color="warning" (click)="adicionarQTD(i)">
         <ion-icon name="add-outline"></ion-icon>
       </ion-button>
     

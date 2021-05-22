@@ -215,8 +215,8 @@ async ionViewDidEnter() {
                    
                         let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
                         console.log("A distancia entre as lojas é de:" + Number(kilometers));
-  
-                        if(Number(kilometers) < 8.0){
+                        console.log(Number(kilometers))
+                        if(Number(kilometers) <= 8.0){
                           console.log('maior')
                           if(element.estado === this.estado ){
                             this.lojaperto.push(element)

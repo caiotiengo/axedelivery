@@ -465,8 +465,9 @@ export class ErvasPage {
                let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
               // console.log("A distancia entre as lojas é de:" + Number(kilometers));
                
-               this.valorFrete = Math.floor(1.20)*Number(kilometers) + 5;
-               if(this.valorFrete > 30.00){
+              this.valorFrete =  Math.floor(1.70) * Number(kilometers) + 23.50;
+              console.log(this.valorFrete)
+              if(this.valorFrete > 30.00){
                 // console.log('maior')
                  var y = 35.00
                  this.valorDelivery = y.toFixed(2)
@@ -485,9 +486,10 @@ export class ErvasPage {
         console.log(dia);
         console.log(Number(this.visu.toFixed(2)))
         console.log(this.valorDelivery)
-        var valorTudo = Number(this.visu.toFixed(2)) + Number(this.valorDelivery)
+        var valorTudo = Number(this.visu) + Number(this.valorDelivery)
         console.log(valorTudo.toFixed(2))
         this.storage.set('loja', this.loja);
+        this.storage.set('orcamento','naoOrcamento')
         //this.storage.set('valorFinal', valorTudo.toFixed(2));
         this.storage.set('valorFrete', this.valorDelivery)
         this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{

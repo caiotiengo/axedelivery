@@ -13,6 +13,7 @@ import { HaversineService, GeoCoord } from "ng2-haversine";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ModalVendaPage } from '../modal-venda/modal-venda.page';
 import { OrcamentoPage } from '../orcamento/orcamento.page';
+declare var google;
 
 export interface User {
     name: string;
@@ -146,6 +147,7 @@ export class ItemPage implements OnInit {
     hide = true;
     hide2 = false;
     opcLoja
+    distance
     constructor(public navCtrl: NavController,  public loadingController: LoadingController,  private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -353,16 +355,46 @@ export class ItemPage implements OnInit {
       };
       console.log(Usuario);
       console.log(Loja)
-      
+      /*const origin1 = { lat: this.lat, lng: this.lng };
+      const origin2 = this.endereco;
+      const destinationA = this.loja.endereco;
+      const destinationB = { lat: this.lojaLat, lng: this.lojaLng };
+    
+      const service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix(
+        {
+          origins: [origin1, origin2],
+          destinations: [destinationA, destinationB],
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.METRIC,
+          avoidHighways: false,
+          avoidTolls: false,
+        },(response, status) =>{
+          console.log(status)
+          console.log(response)
+          console.log(response.rows)
+          var elements = response.rows[0].elements
+          elements.forEach(res => {
+            console.log(res)
+            var textDistance = res.distance.text
+            var noKM = textDistance.replace(' km', '')
+            console.log(noKM)
+            var distance = noKM.replace(',','.')
+            this.distance = Number(distance)
+          });
+        
+        }) */
+      //var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(this.lat, this.lng), new google.maps.LatLng(this.lojaLat, this.lojaLng));       
+      //console.log(distance)
       let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
       console.log("A distancia entre as lojas é de:" + Number(kilometers));
         console.log(Number(kilometers))
-        let moto = Number(kilometers) - 3
+        let moto = Number(kilometers) 
         console.log(moto)
-        this.valorFrete = Math.floor(1.70) * moto + 18.50;
+        this.valorFrete = Math.floor(1.70) * moto + 23.50;
         this.valorDelivery = this.valorFrete.toFixed(2)
         if(moto <= 6.0){
-          this.valorDelivery = 18.00
+          this.valorDelivery = 20.00
         }
       });
     }
@@ -666,6 +698,7 @@ export class ItemPage implements OnInit {
           this.storage.set('valorFinal', valorTudo.toFixed(2));
           this.storage.set('valorProdutos', this.visu.toFixed(2));
           this.storage.set('valorFrete', this.valorDelivery)
+          this.storage.set('orcamento','naoOrcamento')
           this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
               this.navCtrl.navigateForward('/carrinho');
               console.log(res)
