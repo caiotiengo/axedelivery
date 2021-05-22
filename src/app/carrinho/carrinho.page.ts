@@ -156,7 +156,9 @@ export class CarrinhoPage implements OnInit {
                         
                       })
                       this.storage.get('valorFrete').then((data) => {
-                        this.valorDelivery =  data.toFixed(2);
+                        var frete =  data;
+                        console.log(frete)
+                        this.valorDelivery = frete
                         console.log(this.valorDelivery + 'valor delivery puro to fixed')
                         console.log(this.valorR)
                         var r = Number(this.valorR) + Number(this.valorDelivery)

@@ -11,7 +11,14 @@
     <ion-title style="color: white;">Ervas</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">
+  <ion-badge class="badge-produtos" style="position: absolute;
+  z-index: 1;
+  bottom: -5px;" *ngIf="produtos.length > 0" color="danger">{{produtos.length}}</ion-badge>
+    <ion-fab-button (click)="finalizarCompra()" color="dark">
+      <ion-icon style="color:#ffcb02 !important" name="cart"></ion-icon>
+   </ion-fab-button>
+</ion-fab>
 <ion-content>
 
   <ion-searchbar animated placeholder="Pesquise pelo produto" (ionInput)="filterList($event)"></ion-searchbar>	

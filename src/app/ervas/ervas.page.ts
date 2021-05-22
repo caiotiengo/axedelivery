@@ -486,16 +486,17 @@ export class ErvasPage {
         console.log(dia);
         console.log(Number(this.visu.toFixed(2)))
         console.log(this.valorDelivery)
-        var valorTudo = Number(this.visu) + Number(this.valorDelivery)
+        var valorTudo = Number(this.visu.toFixed(2)) + Number(this.valorDelivery)
         console.log(valorTudo.toFixed(2))
         this.storage.set('loja', this.loja);
-        this.storage.set('orcamento','naoOrcamento')
-        //this.storage.set('valorFinal', valorTudo.toFixed(2));
+        this.storage.set('valorFinal', valorTudo.toFixed(2));
+        this.storage.set('valorProdutos', this.visu.toFixed(2));
         this.storage.set('valorFrete', this.valorDelivery)
+        this.storage.set('orcamento','naoOrcamento')
         this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
-                this.navCtrl.navigateForward('/carrinho');
-                console.log(res)
-            });
+            this.navCtrl.navigateForward('/carrinho');
+            console.log(res)
+        });
       }else{
         alert('O valor mínimo em produtos é de R$15,00')
       }
