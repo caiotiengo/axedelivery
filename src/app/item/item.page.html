@@ -23,7 +23,9 @@
       <p>Entrega de</p>
       <h3>08:00 - 18:00</h3>
       <p>Taxa de entrega</p>
-      <h3>R${{valorDelivery}}</h3>
+      <h3 *ngIf="email !== undefined">R${{valorDelivery}}</h3>
+      <h3 *ngIf="email === undefined" >Faça o login para calcular</h3>
+
   </ion-label>
   </ion-item>
   <ion-fab vertical="top" horizontal="end" *ngIf="produtos.length > 0 " slot="fixed">

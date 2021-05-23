@@ -62,7 +62,9 @@ export class OrcamentoPage implements OnInit {
       nomeComprador: this.nome,
       nomeLoja: this.loja.nome,
       numeroLoja: "55"+ String(this.loja.ddd) + String(this.loja.telefone),
-      valorFrete: this.valorDelivery
+      valorFrete: this.valorDelivery,
+      dia: Date.now(),
+      status:'Aguardando Valores'
     }).then(res =>{
       console.log(res.id)
       this.storage.set('idOrcamento', res.id).then(()=>{

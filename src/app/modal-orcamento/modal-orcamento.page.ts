@@ -129,6 +129,7 @@ export class ModalOrcamentoPage implements OnInit {
       this.storage.set('valorProdutos', this.valor);
       this.storage.set('valorFrete', this.orcamento.valorFrete)
       this.storage.set('orcamento','orcamento')
+      this.storage.set('orcamentoID', this.id)
       this.storage.set('carrinhoUser', JSON.stringify(this.produtos)).then(res =>{
         this.voltar()
           this.navCtrl.navigateForward('/carrinho');

@@ -110,6 +110,7 @@ export class CarrinhoPage implements OnInit {
     valorR
     valorDeliveryOpt
     orcamento
+    idOrcamento
   constructor(public afStore: AngularFirestore,
               public loadingController: LoadingController,
               public navCtrl: NavController,
@@ -127,6 +128,11 @@ export class CarrinhoPage implements OnInit {
                 this.storage.get('orcamento').then(da =>{
                   this.orcamento = da;
                   console.log(this.orcamento)
+                  if(this.orcamento === 'orcamento'){
+                      this.storage.get('orcamentoID').then(res =>{
+                        this.idOrcamento = res;
+                      })
+                  }
                 })
                 this.storage.get('carrinhoUser').then((data) => {
                   this.carrinho =  JSON.parse(data);
@@ -559,6 +565,11 @@ async teste(){
                   }).then(() => {
                     this.storage.remove('carrinhoUser').then(() => {
                       this.navCtrl.navigateRoot('/status');
+                      if(this.orcamento === 'orcamento'){
+                        this.services.updateOrcamento(this.idOrcamento, "Aprovado")
+
+                      }
+
                     });        
                   });
                 });
@@ -624,6 +635,11 @@ async teste(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Aprovado")
+
+                    }
+
                   });        
                 });
               });
@@ -687,6 +703,11 @@ async teste(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Cancelado pelo banco")
+
+                    }
+
                   });        
                 });
               });
@@ -755,6 +776,11 @@ async teste(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Problema com o pagamento")
+
+                    }
+
                   });        
                 });
               });
@@ -822,6 +848,11 @@ async teste(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Problema com o pagamento")
+
+                    }
+
                   });        
                 });
               });
@@ -1003,6 +1034,11 @@ async teste2(){
                   }).then(() => {
                     this.storage.remove('carrinhoUser').then(() => {
                       this.navCtrl.navigateRoot('/status');
+                      if(this.orcamento === 'orcamento'){
+                        this.services.updateOrcamento(this.idOrcamento, "Aprovado")
+
+                      }
+
                     });        
                   });
                 });
@@ -1068,6 +1104,11 @@ async teste2(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Aprovado")
+
+                    }
+
                   });        
                 });
               });
@@ -1131,6 +1172,11 @@ async teste2(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Cancelado pelo Banco")
+
+                    }
+
                   });        
                 });
               });
@@ -1199,6 +1245,11 @@ async teste2(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Problema com o pagamento")
+
+                    }
+
                   });        
                 });
               });
@@ -1266,6 +1317,11 @@ async teste2(){
                 }).then(() => {
                   this.storage.remove('carrinhoUser').then(() => {
                     this.navCtrl.navigateRoot('/status');
+                    if(this.orcamento === 'orcamento'){
+                      this.services.updateOrcamento(this.idOrcamento, "Problema com o pagamento")
+
+                    }
+
                   });        
                 });
               });
@@ -1392,6 +1448,11 @@ async teste2(){
       }).then(() => {
         this.storage.remove('carrinhoUser').then(() => {
           this.navCtrl.navigateRoot('/status');
+          if(this.orcamento === 'orcamento'){
+            this.services.updateOrcamento(this.idOrcamento, "Aprovado")
+
+          }
+
         });        
       });
     });
@@ -1512,6 +1573,11 @@ async teste2(){
       }).then(() => {
         this.storage.remove('carrinhoUser').then(() => {
           this.navCtrl.navigateRoot('/status');
+          if(this.orcamento === 'orcamento'){
+            this.services.updateOrcamento(this.idOrcamento, "Aprovado")
+
+          }
+
         });        
       });
     });

@@ -101,6 +101,7 @@
 		placeholder="Digite aqui o endereço..." value="{{endereco}}" class="emailInput">
 		<label *ngIf="endereco === undefined || endereco === ''" class="required">* Endereço é obrigatório </label>
 		<ion-list [hidden]="autocompleteItems.length == 0 || hide">
+			<ion-label style="color:#eb445a;">Selecione um dos endereços da lista</ion-label>
 		  <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
 			{{ item.description }}
 		  </ion-item>

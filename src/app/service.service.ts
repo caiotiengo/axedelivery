@@ -154,6 +154,7 @@ export interface Orcamento{
   nomeComprador?:string;
   nomeLoja?:string;
   chat?:any;
+  status?:any
 }
 @Injectable({
   providedIn: 'root'
@@ -445,8 +446,8 @@ updateEnd(id: string, tipo:string, end: string, cep:string, bairro:string,comple
     this.userCollection.doc<User>(id).update({fcm: FCM});
   }
 
-  updateOrcamento(id:string, idChat:any){
-    this.orcamentoCollection.doc<Orcamento>(id).update({chat:idChat})
+  updateOrcamento(id:string, statuz:any){
+    this.orcamentoCollection.doc<Orcamento>(id).update({status: statuz})
   }
   updateOrcamentoVal(id:string, price:number, valor:string){
     this.orcamentoCollection.doc<Orcamento>(id).update({price:price, valor:valor})
