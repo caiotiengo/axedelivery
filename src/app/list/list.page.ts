@@ -188,11 +188,10 @@ async ionViewDidEnter() {
 
             console.log(Onlines)
             if(Onlines.length > 0){
-
-              Onlines.forEach(dado =>{
-                let unidades = dado.unidades
-                unidades.forEach(element => {
-                  this.goalListFiltrado.push(element)
+              
+              Onlines.forEach(element =>{
+                let unidades = element;
+                this.goalListFiltrado.push(unidades)
                   console.log(this.goalListFiltrado)
                   this.lojinha = this.goalListFiltrado
                   setTimeout(async () => {
@@ -238,7 +237,7 @@ async ionViewDidEnter() {
   
                         }, 1000);
   
-                });
+               
               })
               this.services.getLojasOffline().subscribe(data =>{
                 this.offlines = data.filter(i => i.estado === this.estado && i.status === 'Offline')

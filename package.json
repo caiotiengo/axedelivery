@@ -112,7 +112,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
-    "cordova-android": "^9.0.0",
+    "cordova-android": "^9.1.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-advanced-http": "^3.1.0",
     "cordova-plugin-device": "^2.0.2",
@@ -167,11 +167,13 @@
         "URL_SCHEME": "axedelivery",
         "DEEPLINK_SCHEME": "https",
         "DEEPLINK_HOST": "axedelivery.com.br"
-      }
+      },
+      "cordova-plugin-androidx": {},
+      "cordova-plugin-androidx-adapter": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

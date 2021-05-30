@@ -277,7 +277,7 @@ export class ServiceService {
         );
   }
   getLojasOnline(){
-    let lojasMapeadas = this.afs.collection('users',ref => ref.where('tipo' , '==' , 'Loja') && ref.where('aprovado' , '==' , 'Sim')  && ref.where('status' , '==' , 'Online'));
+    let lojasMapeadas = this.afs.collection('unidades', ref => ref.where('aprovado' , '==' , 'Sim')  && ref.where('status' , '==' , 'Online'));
      return lojasMapeadas.snapshotChanges().pipe(
       map(actions => actions.map(a => {
       const data = a.payload.doc.data() as User;
@@ -286,7 +286,7 @@ export class ServiceService {
     })))
   }
   getLojasOffline(){
-    let lojasMapeadas = this.afs.collection('users',ref => ref.where('tipo' , '==' , 'Loja') && ref.where('aprovado' , '==' , 'Sim'));
+    let lojasMapeadas = this.afs.collection('unidades',ref => ref.where('aprovado' , '==' , 'Sim'));
      return lojasMapeadas.snapshotChanges().pipe(
       map(actions => actions.map(a => {
       const data = a.payload.doc.data() as User;

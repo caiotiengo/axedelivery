@@ -132,6 +132,19 @@ export class RootPage implements OnInit {
       cssClass: 'my-custom-class',
       message: 'Afinando os atabaques...',
     });
+    this.storage.get('usuario').then(data =>{
+      console.log(data)
+      if (data && data.tipo === "user"){
+        console.log(data.tipo)
+        console.log('vai')
+        this.navCtrl.navigateRoot('/list');
+      }else if(data.tipo === "Loja"){
+        console.log('nao')
+        this.storage.remove('usuario');
+        alert('Amigo Lojista, para ter acesso a sua loja, entre no app "Parceiros Axé"! Faça o download agora na Play Store ou App Store.')
+        //this.navCtrl.navigateForward('/login')
+      }
+    })
     
       this.services.getUsers().subscribe(async (data) => {
 
@@ -140,6 +153,7 @@ export class RootPage implements OnInit {
         this.loadedGoalList = data;
         this.goalListFiltrei = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
         this.goalListFiltrado = this.goalList.filter(i =>  i.tipo === 'Loja' && i.aprovado === 'Sim');
+        
         await loading.dismiss();
   
       })  
@@ -163,9 +177,12 @@ this.storage.get('usuario').then(event =>{
 clique(){
   if(this.Platform.is("ios")){
     console.log('ios')
-    window.location.href = 'https://apps.apple.com/us/app/ax%C3%A9-delivery/id1528911749'
+    window.location.href = 'https://apps.apple.com/us/app/parceiros-ax%C3%A9/id1565700938'
+  }else if(this.Platform.is("android")){
+    window.location.href = 'https://play.google.com/store/apps/details?id=io.axedelivery.parceirosapp'
   }else{
-    window.location.href = 'https://play.google.com/store/apps/details?id=io.ionic.axeDelivery'
+    window.location.href = 'https://www.axedelivery.com.br/'
+
   }
 }
 entrar(){

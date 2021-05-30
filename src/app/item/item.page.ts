@@ -147,7 +147,9 @@ export class ItemPage implements OnInit {
     hide = true;
     hide2 = false;
     opcLoja
+    k
     distance
+    distancias : Array<any> = []
     constructor(public navCtrl: NavController,  public loadingController: LoadingController,  private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -233,7 +235,8 @@ export class ItemPage implements OnInit {
         this.bairro = event.bairro;
         this.telefone = event.telefone;
         this.zona = event.zona;
-
+        this.lat = event.lat;
+        this.lng = event.lng
         this.estado = event.estado
     });              
 
@@ -244,7 +247,10 @@ export class ItemPage implements OnInit {
       console.log(this.que);
       this.procUser = this.services.getProc(this.que);
       //this.comments = this.services.comment(this.que);
-      console.log(this.services.getProc(this.que));
+  
+
+   
+      console.log(this.procUser);
       if (this.que) {
         this.storage.get('produtos').then(async (data) =>{
           console.log(data)
@@ -263,19 +269,9 @@ export class ItemPage implements OnInit {
            this.opcLoja = 'Produtos'
            console.log(this.valorinicial)
     
-          /*this.goalList.forEach(element =>{
-            var x = element.fotos[0].link
-            let foto = x
-            this.novosProdutos.push({
-              nome:element.nome,
-              id:element.id,
-              foto: foto,
-              valor: element.valor,
-              quantity: element.quantity,
-              tipoPrd: element.tipoPrd
-            })
-          })*/
-          await loading.dismiss()
+           //let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
+           //console.log(ba)
+             await loading.dismiss()
 
               this.categorias = Array.from(new Set(this.lista2.map((item: any) => item.tipoPrd)))
                console.log(this.categorias)
@@ -331,17 +327,17 @@ export class ItemPage implements OnInit {
     }
     buscando(evt){
       this.bairroNome = evt.target.value
-      this.mudeOpc(this.bairroNome)
+      //this.mudeOpc(this.bairroNome)
     }
-    mudeOpc(evt){
+   /* mudeOpc(evt){
       this.bairroSelecionado = evt
       console.log(this.bairroSelecionado)
       this.storage.get('usuario').then(data=>{
         this.lat = data.lat;
         this.lng = data.lng
  
-      let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
-      console.log(ba)
+      //let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
+     // console.log(ba)
       this.lojaLat = ba.lat
       this.lojaLng = ba.lng
       let Usuario: GeoCoord = {
@@ -355,11 +351,57 @@ export class ItemPage implements OnInit {
       };
       console.log(Usuario);
       console.log(Loja)
-      /*const origin1 = { lat: this.lat, lng: this.lng };
+      
+     /* var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(this.lat, this.lng), new google.maps.LatLng(this.lojaLat, this.lojaLng));       
+      console.log(this.distance)
+      let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+      console.log("A distancia entre as lojas é de:" + Number(kilometers));
+        console.log(Number(kilometers))
+        let moto = Number(kilometers) 
+        console.log(moto)
+        this.valorFrete = Math.floor(1.70) * moto + 23.50;
+        this.valorDelivery = this.valorFrete.toFixed(2)
+        if(moto <= 6.0){
+          this.valorDelivery = 20.00
+        }
+      });
+
+    }
+*/
+    async loadFrete(distancia){
+      console.log(distancia)
+      console.log(Math.min(...distancia))
+      var kilometers = Math.min(...distancia)
+      console.log("A distancia entre as lojas é de:" + Number(kilometers));
+      console.log( Number(kilometers))
+      let moto =  Number(kilometers) - 3.0
+      console.log(moto)
+      this.valorFrete = 2.30 * moto + 13.50;
+      this.valorDelivery = this.valorFrete.toFixed(2)
+      if(moto <= 3.0){
+        this.valorDelivery = 12.50
+      }
+    }
+  async loadProduct() {
+   
+    this.services.getProc(this.que).subscribe(data => {
+      this.loja = data
+      console.log(this.loja)
+      console.log(this.estado)
+      console.log(this.loja.unidades.length)
+      console.log(this.loja.unidades)
+      this.qtdUnidades = this.loja.unidades.length
+      //this.likes = data.LikeValue;
+      //this.dislikes = data.LikeValue;
+      this.emailLoja = this.loja.email;
+      this.lojaLat = this.loja.lat
+      this.lojaLng = this.loja.lng
+      console.log(this.lojaLat)
+      const origin1 = { lat:this.lat,lng: this.lng };
       const origin2 = this.endereco;
       const destinationA = this.loja.endereco;
       const destinationB = { lat: this.lojaLat, lng: this.lojaLng };
-    
+      console.log(this.loja.endereco)
       const service = new google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {
@@ -376,46 +418,29 @@ export class ItemPage implements OnInit {
           var elements = response.rows[0].elements
           elements.forEach(res => {
             console.log(res)
-            var textDistance = res.distance.text
-            var noKM = textDistance.replace(' km', '')
-            console.log(noKM)
-            var distance = noKM.replace(',','.')
-            this.distance = Number(distance)
-          });
-        
-        }) */
-      //var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(this.lat, this.lng), new google.maps.LatLng(this.lojaLat, this.lojaLng));       
-      //console.log(distance)
-      let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-      console.log("A distancia entre as lojas é de:" + Number(kilometers));
-        console.log(Number(kilometers))
-        let moto = Number(kilometers) 
-        console.log(moto)
-        this.valorFrete = Math.floor(1.70) * moto + 23.50;
-        this.valorDelivery = this.valorFrete.toFixed(2)
-        if(moto <= 6.0){
-          this.valorDelivery = 20.00
-        }
-      });
-    }
-  async loadProduct() {
-   
-    this.services.getProc(this.que).subscribe(data => {
-      this.loja = data
-      console.log(this.loja)
-      console.log(this.estado)
-      console.log(this.loja.unidades.length)
-      console.log(this.loja.unidades)
-      this.qtdUnidades = this.loja.unidades.length
-      //this.likes = data.LikeValue;
-      //this.dislikes = data.LikeValue;
-      this.emailLoja = this.loja.email;
-      if(this.loja.unidades.length >= 1){
-        this.lojaEstado = this.loja.unidades.filter(i => i.estado === this.estado);
-        this.lojaCity = this.loja.cidade;
-        this.mudeOpc(this.bairroSelecionado)
-
-      }
+            this.k = res
+              var textDistance = res.distance.text
+              var noKM = textDistance.replace(' km', '')
+              console.log(noKM)
+              var distance = noKM.replace(',','.')
+              console.log(Math.min(Number(distance)))
+              this.distance = Number(distance)
+              this.distancias.push(this.distance)
+              console.log(this.distancias)
+           // var textDistance = res.distance.text
+           // var noKM = textDistance.replace(' km', '')
+            //console.log(noKM)
+           // var distance = noKM.replace(',','.')
+         
+           //let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+  
+            
+          })
+          this.loadFrete(this.distancias)
+  
+      
+        })
+  
 
     });
 

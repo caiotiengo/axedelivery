@@ -17,7 +17,7 @@
     </ion-avatar>
     <ion-label>
         <p>Loja,</p>
-        <h3>{{loja.nome}}</h3>
+        <h3 style="white-space: break-spaces;">{{loja.nome}}</h3>
     </ion-label>
     <ion-label slot="end">
       <p>Entrega de</p>
@@ -38,9 +38,7 @@
  </ion-fab>
  
 </ion-header>
-<ion-select okText="Ok" cancelText="Cancelar" *ngIf="qtdUnidades >= 1" placeholder="{{bairroSelecionado}} - {{lojaCity}}" (ionChange)="buscando($event)">
-  <ion-select-option *ngFor="let itens of lojaEstado" value="{{itens.bairro}}">{{itens.bairro}} - {{itens.cidade}}</ion-select-option>
-</ion-select>
+
 
 <ion-content>
 
