@@ -175,7 +175,8 @@ this.storage.get('usuario').then(event =>{
     
 }
 clique(){
-  if(this.Platform.is("ios")){
+  window.location.href = 'https://cadastro.axedelivery.com.br';
+  /*if(this.Platform.is("ios")){
     console.log('ios')
     window.location.href = 'https://apps.apple.com/us/app/parceiros-ax%C3%A9/id1565700938'
   }else if(this.Platform.is("android")){
@@ -183,7 +184,7 @@ clique(){
   }else{
     window.location.href = 'https://www.axedelivery.com.br/'
 
-  }
+  }*/
 }
 entrar(){
   this.storage.get('usuario').then(data =>{

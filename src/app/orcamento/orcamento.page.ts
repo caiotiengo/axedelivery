@@ -37,6 +37,7 @@ export class OrcamentoPage implements OnInit {
 
   ngOnInit() {
     console.log(this.valorDelivery)
+    console.log(this.idLoja)
     this.storage.get('usuario').then(data =>{
       this.user = data;
       console.log(this.user)

@@ -81,7 +81,7 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" (click)="orcamento()" color="warning">Clique aqui e peça já!</ion-button>
+            <ion-button expand="block" (click)="orcamento(loja?.uid)" color="warning">Clique aqui e peça já!</ion-button>
 
           </ion-col>
         </ion-row>
@@ -165,13 +165,13 @@
         </ion-label>
         <h6>Crédito pelo App</h6>
       </ion-item>
-      <ion-item *ngIf="loja.optEntregas === 'Não'" lines="none">
+      <ion-item *ngIf="lojaz.optEntregas === 'Não'" lines="none">
         <ion-label slot="start">
           <ion-icon name="card-outline"></ion-icon>
         </ion-label>
         <h6>Débito na entrega</h6>
       </ion-item>
-      <ion-item *ngIf="loja.optEntregas === 'Não'"  style="border-bottom-left-radius: 20px;
+      <ion-item *ngIf="lojaz.optEntregas === 'Não'"  style="border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;" lines="none">
         <ion-label slot="start">
           <ion-icon name="cash-outline"></ion-icon>

@@ -44,7 +44,7 @@
    <h6 style="margin: 0; text-align: center;">Próximas a você</h6>
    <ion-slides [options]="slidesOptions">
      <ion-slide *ngFor="let items of lojaperto">
-      <ion-card style="height: 220px;" [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]" >
+      <ion-card style="height: 220px;" [routerLink]="['/item/' + items.id + '/bairro/'+ items.bairro]" >
         <ion-card-header>
           <div class="main">
             <img src="{{items.FotoPerfil}}">
@@ -104,7 +104,7 @@
 
         <!-- Lista de lojas Fechadas #goalListFiltrado -->
 
-    <ion-item  detail='false' [routerLink]="['/item/' + items.uid + '/bairro/'+ items.bairro]"  *ngFor="let items of goalListFiltrado" lines="none">
+    <ion-item  detail='false' [routerLink]="['/item/' + items.id + '/bairro/'+ items.bairro]"  *ngFor="let items of goalListFiltrado" lines="none">
       <ion-badge style="    position: absolute;
       right: 40px;
       top: 60px;" color="success">Aberta</ion-badge>

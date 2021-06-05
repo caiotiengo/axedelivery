@@ -149,7 +149,9 @@ export class ItemPage implements OnInit {
     opcLoja
     k
     distance
-    distancias : Array<any> = []
+    distancias : Array<any> = [];
+    lojauid
+    lojaz
     constructor(public navCtrl: NavController,  public loadingController: LoadingController,  private platform: Platform,    public alertCtrl: AlertController,
               private route: ActivatedRoute, public storage: Storage,
               public afStore: AngularFirestore,  public services: ServiceService,
@@ -252,31 +254,10 @@ export class ItemPage implements OnInit {
    
       console.log(this.procUser);
       if (this.que) {
-        this.storage.get('produtos').then(async (data) =>{
-          console.log(data)
-          this.goalList = data.filter(i => i.lojaUID === this.que  && i.noApp === 'Sim');
-          this.loadedGoalList = data.filter(i => i.lojaUID === this.que && i.noApp === 'Sim')
-    
-          this.goalList.forEach(i =>{
-            //console.log(i.id)
-            this.lista.push(i)
-            this.lista2.push(i)
-            console.log(this.lista)
-           
-           })
-           this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
-           this.valorinicial = this.categorias[0]
-           this.opcLoja = 'Produtos'
-           console.log(this.valorinicial)
-    
-           //let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
-           //console.log(ba)
-             await loading.dismiss()
+            this.loadProduct().then(async () =>{
+              await loading.dismiss()
 
-              this.categorias = Array.from(new Set(this.lista2.map((item: any) => item.tipoPrd)))
-               console.log(this.categorias)
-          });
-            this.loadProduct();
+            });
       }
 
       
@@ -286,13 +267,13 @@ export class ItemPage implements OnInit {
     }
 
 
- async orcamento(){
+ async orcamento(idSt){
           const modal = await this.modalController.create({
             component: OrcamentoPage,
             cssClass: 'my-custom-modal-css',
             componentProps: {
               'id': this.idUser,
-              'idLoja': this.que,
+              'idLoja': idSt,
               'nome': this.nome,
               'valorDelivery': this.valorDelivery
             }
@@ -383,67 +364,109 @@ export class ItemPage implements OnInit {
       }
     }
   async loadProduct() {
-   
-    this.services.getProc(this.que).subscribe(data => {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Carregando dados da loja...'
+    })
+    await loading.present()
+    this.services.getFilial(this.que).subscribe(data => {
+      console.log(data)
       this.loja = data
       console.log(this.loja)
       console.log(this.estado)
-      console.log(this.loja.unidades.length)
-      console.log(this.loja.unidades)
-      this.qtdUnidades = this.loja.unidades.length
+      this.lojauid = data.uid
+      this.services.getProc(this.lojauid ).subscribe(data =>{
+        this.lojaz = data
+      })
+
       //this.likes = data.LikeValue;
       //this.dislikes = data.LikeValue;
       this.emailLoja = this.loja.email;
       this.lojaLat = this.loja.lat
       this.lojaLng = this.loja.lng
-      console.log(this.lojaLat)
-      const origin1 = { lat:this.lat,lng: this.lng };
-      const origin2 = this.endereco;
-      const destinationA = this.loja.endereco;
-      const destinationB = { lat: this.lojaLat, lng: this.lojaLng };
-      console.log(this.loja.endereco)
-      const service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix(
-        {
-          origins: [origin1, origin2],
-          destinations: [destinationA, destinationB],
-          travelMode: google.maps.TravelMode.DRIVING,
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false,
-        },(response, status) =>{
-          console.log(status)
-          console.log(response)
-          console.log(response.rows)
-          var elements = response.rows[0].elements
-          elements.forEach(res => {
-            console.log(res)
-            this.k = res
-              var textDistance = res.distance.text
-              var noKM = textDistance.replace(' km', '')
-              console.log(noKM)
-              var distance = noKM.replace(',','.')
-              console.log(Math.min(Number(distance)))
-              this.distance = Number(distance)
-              this.distancias.push(this.distance)
-              console.log(this.distancias)
-           // var textDistance = res.distance.text
-           // var noKM = textDistance.replace(' km', '')
-            //console.log(noKM)
-           // var distance = noKM.replace(',','.')
-         
-           //let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-  
-            
-          })
-          this.loadFrete(this.distancias)
-  
+      console.log(this.lojaLng)
+      setTimeout(async () => {
+        const origin1 = { lat:parseFloat(this.lat),lng: parseFloat(this.lng) };
+        const origin2 = this.endereco;
+        const destinationA = this.loja.endereco;
+        const destinationB = { lat: parseFloat(this.loja.lat), lng: parseFloat(this.lojaLng) };
+        console.log(this.loja.endereco)
+        const service = new google.maps.DistanceMatrixService();
+        try{
+          service.getDistanceMatrix(
+            {
+              origins: [origin1, origin2],
+              destinations: [destinationA, destinationB],
+              travelMode: google.maps.TravelMode.DRIVING,
+              unitSystem: google.maps.UnitSystem.METRIC,
+              avoidHighways: false,
+              avoidTolls: false,
+            },async (response, status) =>{
+              console.log(status)
+              console.log(response)
+              console.log(response.rows)
+              var elements = response.rows[0].elements
+              elements.forEach(res => {
+                console.log(res)
+                this.k = res
+                  var textDistance = res.distance.text
+                  var noKM = textDistance.replace(' km', '')
+                  console.log(noKM)
+                  var distance = noKM.replace(',','.')
+                  console.log(Math.min(Number(distance)))
+                  this.distance = Number(distance)
+                  this.distancias.push(this.distance)
+                  console.log(this.distancias)
+               // var textDistance = res.distance.text
+               // var noKM = textDistance.replace(' km', '')
+                //console.log(noKM)
+               // var distance = noKM.replace(',','.')
+             
+               //let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
       
-        })
+                
+              })
+              console.log(this.distancias)
+              this.loadFrete(this.distancias)
+      
+              await loading.dismiss()
+  
+            })
+        }catch(e){
+          console.log(e)
+          alert("Ocorreu um erro com o calculo do seu frete. Por favor, verifique seu endereço ou tente novamente mais tarde.")
+          await loading.dismiss();
+
+        }
+
+      }, 2000);
+     
   
 
     });
+        this.storage.get('produtos').then(async (data) =>{
+          console.log(data)
+          this.goalList = data.filter(i => i.lojaUID === this.lojauid  && i.noApp === 'Sim');
+          this.loadedGoalList = data.filter(i => i.lojaUID ===  this.lojauid && i.noApp === 'Sim')
+    
+          this.goalList.forEach(i =>{
+            //console.log(i.id)
+            this.lista.push(i)
+            this.lista2.push(i)
+            console.log(this.lista)
+           
+           })
+           this.categorias = Array.from(new Set(this.lista.map((item: any) => item.tipoPrd)))
+           this.valorinicial = this.categorias[0]
+           this.opcLoja = 'Produtos'
+           console.log(this.valorinicial)
+    
+           //let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
+           //console.log(ba)
 
+              this.categorias = Array.from(new Set(this.lista2.map((item: any) => item.tipoPrd)))
+               console.log(this.categorias)
+          });
 
     this.commentsSubscription = this.services.getComments().subscribe(res =>{
            this.lojaID = res.filter(i => i.emailLoja === this.emailLoja)

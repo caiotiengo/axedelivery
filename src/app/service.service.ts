@@ -179,6 +179,7 @@ export class ServiceService {
   comentario: Observable<Comentario[]>;
   entregador: Observable<Entregador[]>;
   orcamento: Observable<Orcamento[]>;
+  public filiaisCollection: AngularFirestoreCollection<User>;
 
   private user: User;
     likes: number;
@@ -199,6 +200,7 @@ export class ServiceService {
     this.cuponsCollection = afs.collection<Cupom>('cupons')
     this.chatCollection = afs.collection<Chat>('chats')
     this.entregadorCollection = afs.collection<Entregador>('entregas')
+    this.filiaisCollection = afs.collection<User>('unidades')
 
     this.orcamentoCollection = afs.collection<Orcamento>('orcamento')
     this.getUsers();
@@ -385,6 +387,9 @@ export class ServiceService {
   }
   getProc(id: string) {
     return this.userCollection.doc<User>(id).valueChanges();
+  }
+  getFilial(id: string) {
+    return this.filiaisCollection.doc<User>(id).valueChanges();
   }
   getStatusProd(id: string) {
     return this.vendasCollection.doc<Vendas>(id).valueChanges();
