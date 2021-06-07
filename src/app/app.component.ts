@@ -25,20 +25,26 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.services.getLojasOnline().subscribe(data =>{
-        this.storage.set('lojas', data).then(() =>{
-          console.log('lojas carregadas')
+      this.storage.remove('lojas').then(() =>{
+        console.log('limpou')
+        this.services.getLojasOnline().subscribe(data =>{
+          this.storage.set('lojas', data).then(() =>{
+            console.log('lojas carregadas')
+            this.services.getProccessos().subscribe(data =>{
+              this.storage.set('produtos', data).then(() =>{
+                console.log('produtos carregados')
+                this.splashScreen.hide();
+                this.statusBar.styleDefault();
+                this.statusBar.overlaysWebView(true);
+                this.iniciarPush();
+              })
+            })
+
+          })
         })
-      })
-      this.services.getProccessos().subscribe(data =>{
-        this.storage.set('produtos', data).then(() =>{
-          console.log('produtos carregados')
-        })
-      })
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.statusBar.overlaysWebView(true);
-      this.iniciarPush();
+      });
+
+
     });
   }
 

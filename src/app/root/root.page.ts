@@ -132,21 +132,9 @@ export class RootPage implements OnInit {
       cssClass: 'my-custom-class',
       message: 'Afinando os atabaques...',
     });
-    this.storage.get('usuario').then(data =>{
-      console.log(data)
-      if (data && data.tipo === "user"){
-        console.log(data.tipo)
-        console.log('vai')
-        this.navCtrl.navigateRoot('/list');
-      }else if(data.tipo === "Loja"){
-        console.log('nao')
-        this.storage.remove('usuario');
-        alert('Amigo Lojista, para ter acesso a sua loja, entre no app "Parceiros Axé"! Faça o download agora na Play Store ou App Store.')
-        //this.navCtrl.navigateForward('/login')
-      }
-    })
+ 
     
-      this.services.getUsers().subscribe(async (data) => {
+      this.services.getLojasOnline().subscribe(async (data) => {
 
         this.goalList = data;
         this.storage.remove('carrinhoUser')
@@ -157,8 +145,9 @@ export class RootPage implements OnInit {
         await loading.dismiss();
   
       })  
-   
-    
+
+
+     
 
 
   }
@@ -186,13 +175,27 @@ clique(){
 
   }*/
 }
-entrar(){
-  this.storage.get('usuario').then(data =>{
+  async entrar(){
+  const loading = await this.loadingController.create({
+    cssClass: 'my-custom-class',
+    message: 'Carregando...',
+  });
+
+  this.storage.get('usuario').then(async data =>{
     console.log(data)
-    if (data.lenght > 0){
+    if (data && data.tipo === "user"){
+      console.log(data.tipo)
+      console.log('vai')
+      await loading.dismiss();
+
       this.navCtrl.navigateRoot('/list');
-    }else{
-      this.navCtrl.navigateForward('/login')
+    }else if(data.tipo === "Loja"){
+      console.log('nao')
+      await loading.dismiss();
+
+      this.storage.remove('usuario');
+      alert('Amigo Lojista, para ter acesso a sua loja, entre no app "Parceiros Axé"! Faça o download agora na Play Store ou App Store.')
+      //this.navCtrl.navigateForward('/login')
     }
   })
 

@@ -369,81 +369,13 @@ export class ItemPage implements OnInit {
       message: 'Carregando dados da loja...'
     })
     await loading.present()
-    this.services.getFilial(this.que).subscribe(data => {
+    this.services.getFilial(this.que).subscribe(async data => {
       console.log(data)
       this.loja = data
       console.log(this.loja)
       console.log(this.estado)
       this.lojauid = data.uid
-      this.services.getProc(this.lojauid ).subscribe(data =>{
-        this.lojaz = data
-      })
-
-      //this.likes = data.LikeValue;
-      //this.dislikes = data.LikeValue;
-      this.emailLoja = this.loja.email;
-      this.lojaLat = this.loja.lat
-      this.lojaLng = this.loja.lng
-      console.log(this.lojaLng)
-      setTimeout(async () => {
-        const origin1 = { lat:parseFloat(this.lat),lng: parseFloat(this.lng) };
-        const origin2 = this.endereco;
-        const destinationA = this.loja.endereco;
-        const destinationB = { lat: parseFloat(this.loja.lat), lng: parseFloat(this.lojaLng) };
-        console.log(this.loja.endereco)
-        const service = new google.maps.DistanceMatrixService();
-        try{
-          service.getDistanceMatrix(
-            {
-              origins: [origin1, origin2],
-              destinations: [destinationA, destinationB],
-              travelMode: google.maps.TravelMode.DRIVING,
-              unitSystem: google.maps.UnitSystem.METRIC,
-              avoidHighways: false,
-              avoidTolls: false,
-            },async (response, status) =>{
-              console.log(status)
-              console.log(response)
-              console.log(response.rows)
-              var elements = response.rows[0].elements
-              elements.forEach(res => {
-                console.log(res)
-                this.k = res
-                  var textDistance = res.distance.text
-                  var noKM = textDistance.replace(' km', '')
-                  console.log(noKM)
-                  var distance = noKM.replace(',','.')
-                  console.log(Math.min(Number(distance)))
-                  this.distance = Number(distance)
-                  this.distancias.push(this.distance)
-                  console.log(this.distancias)
-               // var textDistance = res.distance.text
-               // var noKM = textDistance.replace(' km', '')
-                //console.log(noKM)
-               // var distance = noKM.replace(',','.')
-             
-               //let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
-      
-                
-              })
-              console.log(this.distancias)
-              this.loadFrete(this.distancias)
-      
-              await loading.dismiss()
-  
-            })
-        }catch(e){
-          console.log(e)
-          alert("Ocorreu um erro com o calculo do seu frete. Por favor, verifique seu endereço ou tente novamente mais tarde.")
-          await loading.dismiss();
-
-        }
-
-      }, 2000);
-     
-  
-
-    });
+      setTimeout(() => {
         this.storage.get('produtos').then(async (data) =>{
           console.log(data)
           this.goalList = data.filter(i => i.lojaUID === this.lojauid  && i.noApp === 'Sim');
@@ -463,10 +395,94 @@ export class ItemPage implements OnInit {
     
            //let ba = this.loja.unidades.find(y => y.bairro === this.bairroSelecionado)
            //console.log(ba)
-
+  
               this.categorias = Array.from(new Set(this.lista2.map((item: any) => item.tipoPrd)))
                console.log(this.categorias)
-          });
+               
+          });        
+      }, 1000);
+
+ 
+
+      //this.likes = data.LikeValue;
+      //this.dislikes = data.LikeValue;
+      this.emailLoja = this.loja.email;
+      this.lojaLat = this.loja.lat
+      this.lojaLng = this.loja.lng
+      console.log(this.lojaLng)
+      if(this.email != undefined){
+        setTimeout(async () => {
+          const origin1 = { lat:parseFloat(this.lat),lng: parseFloat(this.lng) };
+          const origin2 = this.endereco;
+          const destinationA = this.loja.endereco;
+          const destinationB = { lat: parseFloat(this.loja.lat), lng: parseFloat(this.lojaLng) };
+          console.log(this.loja.endereco)
+          const service = new google.maps.DistanceMatrixService();
+          try{
+            service.getDistanceMatrix(
+              {
+                origins: [origin1, origin2],
+                destinations: [destinationA, destinationB],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false,
+              },async (response, status) =>{
+                console.log(status)
+                console.log(response)
+                console.log(response.rows)
+                var row = response.rows
+              
+                var elements = response.rows[0].elements
+                elements.forEach(res => {
+                  console.log(res)
+                  if(res.status != "NOT_FOUND"){
+                    this.k = res
+                    var textDistance = res.distance.text
+                    var noKM = textDistance.replace(' km', '')
+                    console.log(noKM)
+                    var distance = noKM.replace(',','.')
+                    console.log(Math.min(Number(distance)))
+                    this.distance = Number(distance)
+                    this.distancias.push(this.distance)
+                    console.log(this.distancias)
+                  }else{
+                    console.log('Not found')
+                  }
+                  
+                 // var textDistance = res.distance.text
+                 // var noKM = textDistance.replace(' km', '')
+                  //console.log(noKM)
+                 // var distance = noKM.replace(',','.')
+               
+                 //let kilometers = this._haversineService.getDistanceInKilometers(Usuario, Loja).toFixed(1);
+        
+                  
+                })
+                console.log(this.distancias)
+                this.loadFrete(this.distancias)
+        
+                await loading.dismiss()
+    
+              })
+          }catch(e){
+            console.log(e)
+            alert("Ocorreu um erro com o calculo do seu frete. Por favor, verifique seu endereço ou tente novamente mais tarde.")
+            await loading.dismiss();
+  
+          }
+  
+        }, 2000);
+       
+      }else{
+        await loading.dismiss()
+
+      }
+
+  
+
+    });
+ 
 
     this.commentsSubscription = this.services.getComments().subscribe(res =>{
            this.lojaID = res.filter(i => i.emailLoja === this.emailLoja)

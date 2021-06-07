@@ -113,6 +113,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "cordova-android": "^9.1.0",
+    "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-advanced-http": "^3.1.0",
     "cordova-plugin-device": "^2.0.2",
@@ -169,7 +170,10 @@
         "DEEPLINK_HOST": "axedelivery.com.br"
       },
       "cordova-plugin-androidx": {},
-      "cordova-plugin-androidx-adapter": {}
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     },
     "platforms": [
       "ios",
